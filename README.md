@@ -43,8 +43,13 @@ A lot of practice is required to achieve this goal, and there's probably no bett
 
 ![Marko](Marko_Picture.jpg)
 
-My plan for self development:
+#### Personal Development Plan
 
-Working on some software group project in the past, showed me just how hard it is to utilise multiple people in one software project. During this course I hope to improve my **collaboration skills** and gain knowledge of how to **work effectively together**. I am looking forward to learning new methods of **task distribution** and **team management**.
+Working on some software group project in the past, showed me just how hard it is to utilise multiple people in one software project. During this course I hope to improve my **collaboration skills** and gain knowledge of how to **work effectively together**. I am looking forward to learning new methods of **task distribution** and **team management**. Besides teamwork, I hope to get familiar with **git version control** and improve my overall programming skills. Furthermore, I am perfectionist, which means I spend too much time on things that do not matter. I want to learn how to plan and **manage my time** to focus on important tasks and thus **improving my effectiveness**.
 
-Furthermore, I hope to get familiar with **git version control** and improve my overall programming skills.
+To attaining given goals:
+- I will communicate with my group-mates openly and often
+- I will research connected topics deeply to fully understand them
+- I will plan thoroughly, this will allow me focus on important things and suppress my habit of wasting time
+
+Reaching those goals will not be easy but with enough dedication, it will be manageable. To maintain my dedication I can simply remind myself that I am working on a fun group project with my peeps and that the sole process of doing so is rewarding enough. :)
