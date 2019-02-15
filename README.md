@@ -45,6 +45,6 @@ A lot of practice is required to achieve this goal, and there's probably no bett
 
 My plan for self development:
 
-Working on some software group project in the past, showed me just how hard it is to utilise multiple people in one software project. During this course I hope to improve my _collaboration skills_ and gain knowledge of how to _work effectively together_. I am looking forward to learning new methods of _task distribution_ and _team management_.
+Working on some software group project in the past, showed me just how hard it is to utilise multiple people in one software project. During this course I hope to improve my **collaboration skills** and gain knowledge of how to **work effectively together**. I am looking forward to learning new methods of **task distribution** and **team management**.
 
-Furthermore, I hope to get familiar with _git version control_ and improve my overall programming skills.
+Furthermore, I hope to get familiar with **git version control** and improve my overall programming skills.
