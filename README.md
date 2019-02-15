@@ -21,3 +21,6 @@ Run `maven install` ([Intellij](https://www.jetbrains.com/help/idea/2016.3/getti
 
 **Checkstyle**:  
 Run `maven site`
+
+Erwin van Dam
+![Erwin van Dam](C:\Users\erwin\Desktop\Erwin\foto's\"2018, 30 jarig huwelijk"\DSC_0217)
