@@ -36,6 +36,7 @@ Currently, I'm making extra exercises on places like LeetCode to practice my Jav
 
 A lot of practice is required to achieve this goal, and there's probably no better way of achieving this goal than practice. During the course I hope to get to know more about Java, and my teammates will probably be a big part in this, furthermore together with practice on my own I hope to achieve my goal.
 
+##  
 
 ### Name: Marko Matusovic
 
