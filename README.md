@@ -56,3 +56,17 @@ To attaining given goals:
 - I will plan thoroughly, this will allow me focus on important things and suppress my habit of wasting time
 
 Reaching those goals will not be easy but with enough dedication, it will be manageable. To maintain my dedication I can simply remind myself that I am working on a fun group project with my peeps and that the sole process of doing so is rewarding enough. :)
+
+##
+
+### Name: Shruti Arora
+
+### Student number: 4770501
+
+![Shruti](<a href="http://tinypic.com?ref=2d1lsgh" target="_blank"><img src="http://i64.tinypic.com/2d1lsgh.jpg" border="0" alt="Image and video hosting by TinyPic"></a>)
+
+My plan for self development:
+
+My strength is to achieve goals and not give up even if they seem almost impossible.
+
+My main goals are learning how to manipulate git and also learning how to work as a part of a large software team. The way I intend to do this is to proactively take part in the team and stop myself from trying to be overly independent. With github I intend to get familiar as much as I can.
