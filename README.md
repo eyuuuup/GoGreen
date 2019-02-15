@@ -16,3 +16,5 @@ Student number: 4928113
 ![Erwin](Erwin_Picture.jpg)
 
 My plan for self develop:
+
+This is the first time I have to work in a group of 7, which I didn't know before the project started. To functionally cooperate with this group is my biggest goal. Next to that I want to improve in developing applications from scratch. During the process I hope to pick up some Intellij skills. 
