@@ -10,6 +10,7 @@ My plan for self development:
 
 During the OOP project, I want to develop my programming skill about using Java. Since my first try of Java at first quarter was not successful, this time i will fully participate in shared lab and get help from TA. Also, for each week during the team meeting I will try to find the good coding method by cooperate with my teammate. Individually, I start the code-academy for learn the basic uses of IntelliJ.
 
+##
 
 ### Name: Erwin van Dam
 
@@ -21,6 +22,7 @@ My plan for self development:
 
 This is the first time I have to work in a group of 7, which I didn't know before the project started. To functionally cooperate with this group is my biggest goal. Next to that I want to improve in developing applications from scratch. During the process I hope to pick up some IntelliJ skills.
 
+##
 
 ### Name: Eyüp Vroegop
 
@@ -36,6 +38,7 @@ Currently, I'm making extra exercises on places like LeetCode to practice my Jav
 
 A lot of practice is required to achieve this goal, and there's probably no better way of achieving this goal than practice. During the course I hope to get to know more about Java, and my teammates will probably be a big part in this, furthermore together with practice on my own I hope to achieve my goal.
 
+##
 
 ### Name: Marko Matusovic
 
@@ -43,16 +46,22 @@ A lot of practice is required to achieve this goal, and there's probably no bett
 
 ![Marko](Marko_Picture.jpg)
 
-My plan for self development:
+#### Personal Development Plan
 
-Working on some software group project in the past, showed me just how hard it is to utilise multiple people in one software project. During this course I hope to improve my **collaboration skills** and gain knowledge of how to **work effectively together**. I am looking forward to learning new methods of **task distribution** and **team management**.
+Working on some software group project in the past, showed me just how hard it is to utilise multiple people in one software project. During this course I hope to improve my **collaboration skills** and gain knowledge of how to **work effectively together**. I am looking forward to learning new methods of **task distribution** and **team management**. Besides teamwork, I hope to get familiar with **git version control** and improve my overall programming skills. Furthermore, I am perfectionist, which means I spend too much time on things that do not matter. I want to learn how to plan and **manage my time** to focus on important tasks and thus **improving my effectiveness**.
 
-Furthermore, I hope to get familiar with **git version control** and improve my overall programming skills.
+To attaining given goals:
+- I will communicate with my group-mates openly and often
+- I will research connected topics deeply to fully understand them
+- I will plan thoroughly, this will allow me focus on important things and suppress my habit of wasting time
 
+Reaching those goals will not be easy but with enough dedication, it will be manageable. To maintain my dedication I can simply remind myself that I am working on a fun group project with my peeps and that the sole process of doing so is rewarding enough. :)
 
-## Name: Shruti Arora
+##
 
-## Student number: 4770501
+### Name: Shruti Arora
+
+### Student number: 4770501
 
 ![Shruti](http://i64.tinypic.com/2d1lsgh.jpg)
 
@@ -62,10 +71,11 @@ My strength is to achieve goals and not give up even if they seem almost impossi
 
 My main goals are learning how to manipulate git and also learning how to work as a part of a large software team. The way I intend to do this is to proactively take part in the team and stop myself from trying to be overly independent. With github I intend to get familiar as much as I can.
 
+##
 
-## Name: Marit Radder
+### Name: Marit Radder
 
-## Student number: 4957334
+### Student number: 4957334
 
 ![Marit](Marit_Picture.jpg)
 
@@ -75,7 +85,7 @@ Strong points:
 My strong points are that I'm creative, and if I find it a fun project I will work hard on it. and will stay motivated. This is shown in a team by that I am prepared to do a extra thing, or want a more visual end product.
 
 Weaker points:
-My weaker points are that I'm very chaotic, and they say I'm a little perfectionistic. How this is shown in a team is that I am all over the place with helping and ideas. And that I can be a real pain in the ass about for example something that is not centered. 
+My weaker points are that I'm very chaotic, and they say I'm a little perfectionistic. How this is shown in a team is that I am all over the place with helping and ideas. And that I can be a real pain in the ass about for example something that is not centered.
 
 G(oal)
 My first goal is to learn how to work efficient together.
@@ -85,7 +95,7 @@ I think that I have succeeded when we have a beautiful product where everyone ca
 
 
 R(eality)
-I think that I am actively working on my goal. I try to plan realistic every day, and also work together at home or at school. 
+I think that I am actively working on my goal. I try to plan realistic every day, and also work together at home or at school.
 I think the working together is going pretty well. But we haven’t worked on a big project like this yet. But the planning can use a lot of improvement. Now I plan but I don’t execute it correct and on time.
 
 (O)ptions
@@ -93,12 +103,12 @@ Options to reach my goal are:
 Plan less so it is doable
 Keep communicating with my team and help, or ask for help when needed
 
-The option I want to use the most is the second option. I think that that option will benefit me the most. 
+The option I want to use the most is the second option. I think that that option will benefit me the most.
 The thing that is stopping me is myself. If I want feedback or something, than I should ask for it. So I need to activate myself.
 
 (W)ill
-I’m going to communicate clearly with my team to reach my goal. Also I’m going to plan a more realistic plan for this project. So that I will finish everything that I need to do. 
-This I need to do from the beginning. Starting from week 3 is too late. So I start now. By making sure to keep communicating with my team, and stay involved with them. 
+I’m going to communicate clearly with my team to reach my goal. Also I’m going to plan a more realistic plan for this project. So that I will finish everything that I need to do.
+This I need to do from the beginning. Starting from week 3 is too late. So I start now. By making sure to keep communicating with my team, and stay involved with them.
 My teammates can help me achieve this goal by also communicating. And also make a clear planning for themselves. So To achieve my goal I have to do the following things:
 Communicate with the team
 Plan a realistic planning, not too much
