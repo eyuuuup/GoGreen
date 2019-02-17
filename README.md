@@ -124,7 +124,7 @@ And more communication
 
 ### Student number: 4830547
 
-![Elias]()
+![Elias](Elias_Picture.jpg)
 
 My plan for self development:
 
