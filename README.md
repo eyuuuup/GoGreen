@@ -131,3 +131,7 @@ My plan for self development:
 The main things I want to develop upon for this project, are my programming skills in Java and the ability to work in a big group.
 OOP the first quarter didn't go as planned, as I failed the course horribly, but I will do my best to fix my lack of Java.
 Of course I have worked in a group before, for all kinds of projects, however this wil be my first time working in a group this big for a project that will take a whole quarter. I can imagine that there will be lots of different problems coming our way these coming weeks, but I am sure that if we communicate properly and do our work on time (the latter where i have to work hard on) we can do very well on this project.
+
+##
+
+TA: David Alderliesten
