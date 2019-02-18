@@ -1,10 +1,10 @@
-# Group 4
+﻿# Group 4
 
 ### Name: Gyum Cho
 
 ### Student number: 4840054
 
-![Gyum](Gyum_Picture.jpg)
+![Gyum](GyumPicture.jpg)
 
 My plan for self development:
 
@@ -16,7 +16,7 @@ During the OOP project, I want to develop my programming skill about using Java.
 
 ### Student number: 4928113
 
-![Erwin](Erwin_Picture.jpg)
+![Erwin](ErwinPicture.jpg)
 
 My plan for self development:
 
@@ -28,7 +28,7 @@ This is the first time I have to work in a group of 7, which I didn't know befor
 
 ### Student number: 4929578
 
-![Eyup](Eyup_Picture.jpg)
+![Eyup](EyupPicture.jpg)
 
 My plan for self development:
 
@@ -44,7 +44,7 @@ A lot of practice is required to achieve this goal, and there's probably no bett
 
 ### Student number: 4908406
 
-![Marko](Marko_Picture.jpg)
+![Marko](MarkoPicture.jpg)
 
 #### Personal Development Plan
 
@@ -77,7 +77,7 @@ My main goals are learning how to manipulate git and also learning how to work a
 
 ### Student number: 4957334
 
-![Marit](Marit_Picture.jpg)
+![Marit](MaritPicture.jpg)
 
 My plan for self development:
 
@@ -124,7 +124,7 @@ And more communication
 
 ### Student number: 4830547
 
-![Elias](Elias_Picture.jpg)
+![Elias](EliasPicture.jpg)
 
 My plan for self development:
 
