@@ -2,7 +2,7 @@ package goGreen;
 
 import java.util.Scanner;
 
-public class GoGreenAplication {
+public class GoGreenApplication {
 
     public static void main(String[] args) {
         choice();
@@ -36,7 +36,7 @@ public class GoGreenAplication {
             switch (input) {
                 case "1":
                     System.out.println("You choose food");
-                    // implement go to food method here
+                    FoodCategory.display();
                     break;
                 case "2":
                     System.out.println("You choose transport");
