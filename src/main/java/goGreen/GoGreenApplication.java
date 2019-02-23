@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class GoGreenApplication {
 
+    //for testing and demo purposes this class has a private field food and user
     private static FoodCategory food = new FoodCategory();
     private static User user = new User("user", 1);
 
@@ -11,6 +12,7 @@ public class GoGreenApplication {
         choice();
     }
 
+    //this is the display to choose between the categories
     private static void display() {
         System.out.print(
                 "┌────────────────────────────────────────┐\n" +
@@ -64,7 +66,9 @@ public class GoGreenApplication {
 
     }
 
+    //this is the display if you chose the Category Transport
     private static void displayTransport(Scanner sc) {
+        //textual interface
         System.out.print(
                         "┌────────────────────────────────────────┐\n" +
                         "│ CHOOSE YOUR ACTION:                    │\n" +
@@ -82,6 +86,21 @@ public class GoGreenApplication {
                 user.addPoints(TransportCycle.addAction());
                 System.out.println("You chose cycling, you received " + TransportCycle.addAction() + " points for that");
                 break;
+            case 2:
+                //add car action
+                user.addPoints(Transport.addCarAction());
+                System.out.println("You chose car, you received " + Transport.addCarAction() + " points for that");
+                break;
+            case 3:
+                //add public transport action
+                user.addPoints(Transport.addPublicTransportAction());
+                System.out.println("You chose car, you received " + Transport.addPublicTransportAction() + " points for that");
+                break;
+            case 4:
+                //add plane action
+                user.addPoints(Transport.addPlaneAction());
+                System.out.println("You chose car, you received " + Transport.addPlaneAction() + " points for that");
+                break;
             default:
                 //not implemented, so turn back to home screen
                 System.out.println("Not implemented yet, bye!");
@@ -89,6 +108,7 @@ public class GoGreenApplication {
         }
     }
 
+    //this is the display if you chose the Category Food
     private static void displayFood(Scanner sc) {
         // small textual interface
         System.out.print(
@@ -109,9 +129,12 @@ public class GoGreenApplication {
                 break;
             case 2:
                 // when we reset, we reset and print the score
-                user.addPoints(food.twelveHourReset());
+                int points = food.twelveHourReset();
+                System.out.println("You chose reset, you received " + points + " food points for the last 12 hours");
+                user.addPoints(points);
                 break;
             default:
+                //go back to the category display
                 System.out.println("bye!");
                 break;
         }
