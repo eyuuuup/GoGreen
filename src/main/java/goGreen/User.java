@@ -14,8 +14,7 @@ public class User {
      * @param name
      * @param userId
      */
-    public User(String name, int userId)throws NullPointerException{
-        if(name == null)throw new NullPointerException("This name was null!");
+    public User(String name, int userId)throws IllegalArgumentException{
         if(!checkName(name))throw new IllegalArgumentException("Invalid name!");
         this.name = name;
         this.userId = userId;
@@ -27,6 +26,7 @@ public class User {
      * @param name
      */
     public boolean checkName(String name){
+        if(name == null)return false;
        if(name.length() >= 16 || name.length() <= 0)return false;
        for(int i = 0; i < name.length(); i++){
            int letter = name.charAt(i);
@@ -47,8 +47,7 @@ public class User {
      * Changes name into newName
      * @param newName
      */
-    public void changeName(String newName) throws NullPointerException{
-        if(newName == null)throw new NullPointerException("This name was null!");
+    public void changeName(String newName) throws IllegalArgumentException{
         if(!checkName(newName))throw new IllegalArgumentException("Invalid name!");
         name = newName;
     }

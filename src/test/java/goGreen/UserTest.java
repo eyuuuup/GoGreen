@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 public class UserTest {
     private static User USER = new User("Erwin", 1);
 
-    @Test (expected=NullPointerException.class)
+    @Test (expected=IllegalArgumentException.class)
     public void createUserNull() {
         User userTwo = new User(null, 1);
     }
@@ -82,7 +82,7 @@ public class UserTest {
         assertNotEquals("Erwin", userTwo.getName());
     }
 
-    @Test (expected=NullPointerException.class)
+    @Test (expected=IllegalArgumentException.class)
     public void changeNameNull() {
         User userTwo = new User("Erwin", 1);
         userTwo.changeName(null);
