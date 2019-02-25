@@ -94,12 +94,12 @@ public class GoGreenApplication {
             case 3:
                 //add public transport action
                 user.addPoints(Transport.addPublicTransportAction());
-                System.out.println("You chose car, you received " + Transport.addPublicTransportAction() + " points for that");
+                System.out.println("You chose public transport, you received " + Transport.addPublicTransportAction() + " points for that");
                 break;
             case 4:
                 //add plane action
                 user.addPoints(Transport.addPlaneAction());
-                System.out.println("You chose car, you received " + Transport.addPlaneAction() + " points for that");
+                System.out.println("You chose plane, you received " + Transport.addPlaneAction() + " points for that");
                 break;
             default:
                 //not implemented, so turn back to home screen
