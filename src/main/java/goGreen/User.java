@@ -15,11 +15,24 @@ public class User {
      * @param userId
      */
     public User(String name, int userId)throws NullPointerException{
-        //don't know what restrictions to do here for the name
-        if(name == null)throw new NullPointerException();
+        if(name == null)throw new NullPointerException("This name was null!");
+        if(!checkName(name))throw new IllegalArgumentException("Invalid name!");
         this.name = name;
         this.userId = userId;
         points = 0;
+    }
+
+    /**
+     * Checks whether a given name is according to the rules
+     * @param name
+     */
+    public boolean checkName(String name){
+       if(name.length() >= 16 || name.length() <= 0)return false;
+       for(int i = 0; i < name.length(); i++){
+           int letter = name.charAt(i);
+           if(!(letter >= 65 && letter <= 90) && !(letter >= 97 && letter <= 122)) return false;
+       }
+       return true;
     }
 
     /**
@@ -35,8 +48,8 @@ public class User {
      * @param newName
      */
     public void changeName(String newName) throws NullPointerException{
-        //don't know what restrictions to do here
-        if(newName == null)throw new NullPointerException();
+        if(newName == null)throw new NullPointerException("This name was null!");
+        if(!checkName(newName))throw new IllegalArgumentException("Invalid name!");
         name = newName;
     }
 

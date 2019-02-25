@@ -10,13 +10,52 @@ public class UserTest {
     @Test (expected=NullPointerException.class)
     public void createUserNull() {
         User userTwo = new User(null, 1);
-        userTwo.changeName(null);
     }
 
     @Test
     public void createUser() {
         User userTwo = new User("Erwin", 1);
         assertEquals("Erwin", userTwo.getName());
+    }
+
+    @Test
+    public void checkName(){
+        assertTrue(USER.checkName("aghzAKDLZ"));
+    }
+
+    @Test
+    public void checkNameTwo(){
+        assertTrue(USER.checkName("Erwin"));
+    }
+
+    @Test
+    public void checkNameWrong(){
+        assertFalse(USER.checkName("aghzAKDLZ "));
+    }
+
+    @Test
+    public void checkNameWrongTwo(){
+        assertFalse(USER.checkName("Erwin van Dam"));
+    }
+
+    @Test
+    public void checkNameTooLong(){
+        assertFalse(USER.checkName("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
+    }
+
+    @Test
+    public void checkNameInvalidCharacter(){
+        assertFalse(USER.checkName("adcblkKDL#"));
+    }
+
+    @Test
+    public void checkNameInvalidNumber(){
+        assertFalse(USER.checkName("kdsfl23"));
+    }
+
+    @Test
+    public void checkNameEmpty(){
+        assertFalse(USER.checkName(""));
     }
 
     @Test
