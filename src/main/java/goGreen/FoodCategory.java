@@ -8,6 +8,15 @@ public class FoodCategory {
         actions = new boolean[]{false, false, false};
     }
 
+    public static boolean[] getActions(){
+        return actions;
+    }
+
+    public static void setActions(boolean[] newActions){
+        actions = newActions;
+    }
+
+
     public static void addAction(Scanner sc){
         //ask questions, later will become buttons
         System.out.println("Did it contain meat? (true / false)");
