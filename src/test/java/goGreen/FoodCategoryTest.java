@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 /**
  * test class of the FoodCategory
  * @author Marit Radder
@@ -31,6 +32,14 @@ class FoodCategoryTest {
         food.setActions(actions);
 
         assertArrayEquals(actions, food.getActions());
+    }
+
+    @Test(expected=NullPointerException.class)
+    void setNullTest(){
+        //make a new object and set a null array
+        FoodCategory food = new FoodCategory();
+        boolean[] actions = null;
+        food.setActions(actions);
     }
 
     @Test
@@ -104,17 +113,7 @@ class FoodCategoryTest {
         assertEquals(0, food.twelveHourReset());
     }
 
-    @Test
-    void twelveHourResetNullCheck(){
-        // make a null array and a FoodCategory
-        boolean[] actions = null;
-        FoodCategory food = new FoodCategory();
 
-        // set the array as actions
-        food.setActions(actions);
-        assertEquals(0, food.twelveHourReset());
-
-    }
 
 
 

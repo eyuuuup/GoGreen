@@ -29,7 +29,11 @@ public class FoodCategory {
      * sets the actions array to the array you give as parameter.
      * @param newActions, is the array you want actions to change in.
      */
-    public static void setActions(boolean[] newActions){
+    public static void setActions(boolean[] newActions)throws NullPointerException{
+        // null check
+        if(newActions == null){
+            throw new NullPointerException("Actions equals null");
+        }
         actions = newActions;
     }
 
@@ -56,14 +60,7 @@ public class FoodCategory {
      */
     public static int twelveHourReset(){
         int foodScore = 0;
-
-        //null check
-        if(actions == null){
-            System.out.println("Your actions list is empty, please first add some actions.");
-            return foodScore;
-        }
-
-        // add points to total score
+                // add points to total score
         for(boolean action: actions){
             // for every good action add 50 points
             if(action){
