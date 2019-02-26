@@ -1,4 +1,4 @@
-package goGreen;
+package gogreen;
 import java.util.Scanner;
 
 /**
@@ -14,7 +14,7 @@ public class FoodCategory {
      *The foodCategory constructor, which makes an array of false booleans which are the actions.
      */
     public FoodCategory(){
-        actions = new boolean[]{false, false, false};
+        actions = new boolean[] {false, false, false};
     }
 
     /**
@@ -60,14 +60,14 @@ public class FoodCategory {
      */
     public static int twelveHourReset(){
         int foodScore = 0;
-                // add points to total score
+        // add points to total score
         for(boolean action: actions){
             // for every good action add 50 points
             if(action){
                 foodScore += 50;
-                action = false;
             }
         }
+        actions = new boolean[] {false, false, false};
         return foodScore;
     }
 }

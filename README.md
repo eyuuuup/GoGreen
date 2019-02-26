@@ -20,7 +20,18 @@ During the OOP project, I want to develop my programming skill about using Java.
 
 My plan for self development:
 
-This is the first time I have to work in a group of 7, which I didn't know before the project started. To functionally cooperate with this group is my biggest goal. Next to that I want to improve in developing applications from scratch. During the process I hope to pick up some IntelliJ skills.
+My Strong point for a project is that once I start something, I’m very determined to go on until it’s done, to deliver a half implemented result makes me feel very bad. In a team this will be visible in my motivation and determination to finish the project in a proper way. Next to that I want my code to be really clear for everyone, such that everyone understands it, which is nice for teammates.
+
+My weak point is that once I have created a vision on something, I really want to do it that way. This is a very bad thing for cooperation, as other members will have great ideas, where mine won’t be that good most of the times, so I shouldn’t see my ideas as the only way things should be done. Next to that I want to be involved into everything, which isn’t really helpful when you are in a team of 7.
+
+Because of my weak point, teamwork is my biggest goal in this course, to be concrete: I want to be a great team member during meetings, and to listen to everyone’s ideas. Next to that I want to have a clear work distribution.
+
+In reality this process will take time, I don’t think in the first week I will be very productive during the first meeting, and I don’t think the schedule for the first week will be really effective, but during the process I want to grow in planning and cooperation. 
+
+In order to achieve my goals, I think it’s really important to reflect on my work over the weeks. During meetings I should really pay attention whether everyone has the opportunity to tell their ideas, and I should not push my own ideas.
+
+I will therefor always prepare meetings, attend them in an active way, and make sure I discuss everything before I start implementing something.
+
 
 ##
 

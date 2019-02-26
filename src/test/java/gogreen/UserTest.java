@@ -1,8 +1,9 @@
-package goGreen;
+package gogreen;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class UserTest {
     private static User USER = new User("Erwin", 1);
@@ -10,13 +11,67 @@ public class UserTest {
     @Test (expected=NullPointerException.class)
     public void createUserNull() {
         User userTwo = new User(null, 1);
-        userTwo.changeName(null);
     }
 
     @Test
     public void createUser() {
         User userTwo = new User("Erwin", 1);
         assertEquals("Erwin", userTwo.getName());
+    }
+
+    @Test
+    public void checkName(){
+        assertTrue(USER.checkName("aghzAKDLZ"));
+    }
+
+    @Test
+    public void checkNameTwo(){
+        assertTrue(USER.checkName("Erwin"));
+    }
+
+    @Test (expected=IllegalArgumentException.class)
+    public void checkNameWrong(){
+        assertFalse(USER.checkName("aghzAKDLZ "));
+    }
+
+    @Test (expected=IllegalArgumentException.class)
+    public void checkNameWrongTwo(){
+        assertFalse(USER.checkName("Erwin van Dam"));
+    }
+
+    @Test (expected=IllegalArgumentException.class)
+    public void checkNameTooLong(){
+        assertFalse(USER.checkName("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
+    }
+
+    @Test (expected=IllegalArgumentException.class)
+    public void checkNameInvalidCharacter(){
+        assertFalse(USER.checkName("adcblkKDL#"));
+    }
+
+    @Test (expected=IllegalArgumentException.class)
+    public void checkNameInvalidNumber(){
+        assertFalse(USER.checkName("kdsfl23"));
+    }
+
+    @Test (expected=IllegalArgumentException.class)
+    public void checkNameEmpty(){
+        assertFalse(USER.checkName(""));
+    }
+
+    @Test (expected=IllegalArgumentException.class)
+    public void checkNameOffensive(){
+        USER.checkName("screw");
+    }
+
+    @Test (expected=IllegalArgumentException.class)
+    public void checkNameOffensiveTwo(){
+        USER.checkName("fagot");
+    }
+
+    @Test (expected=IllegalArgumentException.class)
+    public void checkNameOffensiveThree(){
+        USER.checkName("azz");
     }
 
     @Test

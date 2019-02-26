@@ -1,6 +1,6 @@
-package goGreen;
+package gogreen;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
@@ -8,15 +8,10 @@ import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
-/**
- * test class of the FoodCategory
- * @author Marit Radder
- */
-class FoodCategoryTest {
+public class FoodCategoryTest {
 
     @Test
-    void getTest(){
+    public void getTest(){
         // make a new object and an array filled with false
         FoodCategory food = new FoodCategory();
         boolean[] output = {false, false, false};
@@ -25,7 +20,7 @@ class FoodCategoryTest {
     }
 
     @Test
-    void getAndSetTest(){
+    public void getAndSetTest(){
         // make a new object and an array filled with true, and set that as actions
         FoodCategory food = new FoodCategory();
         boolean[] actions = {true, true, true};
@@ -35,7 +30,7 @@ class FoodCategoryTest {
     }
 
     @Test(expected=NullPointerException.class)
-    void setNullTest(){
+    public void setNullTest(){
         //make a new object and set a null array
         FoodCategory food = new FoodCategory();
         boolean[] actions = null;
@@ -43,7 +38,7 @@ class FoodCategoryTest {
     }
 
     @Test
-    void addActionAllTrue(){
+    public void addActionAllTrue(){
         // make a test string and make a scanner, then give the scanner the test string.
         String testString = "false true true";
         Scanner sc = new Scanner(new ByteArrayInputStream(testString.getBytes(StandardCharsets.UTF_8)));
@@ -57,7 +52,7 @@ class FoodCategoryTest {
     }
 
     @Test
-    void addActionAllFalse(){
+    public void addActionAllFalse(){
         // make a test string and make a scanner, then give the scanner the test string.
         String testString = "true false false";
         Scanner sc = new Scanner(new ByteArrayInputStream(testString.getBytes(StandardCharsets.UTF_8)));
@@ -71,7 +66,7 @@ class FoodCategoryTest {
     }
 
     @Test
-    void addActionMultiple(){
+    public void addActionMultiple(){
         // set up the first string and scanner for the first actions.
         String firstActions = "false true true";
         Scanner firstScanner = new Scanner(new ByteArrayInputStream(firstActions.getBytes(StandardCharsets.UTF_8)));
@@ -94,7 +89,7 @@ class FoodCategoryTest {
     }
 
     @Test
-    void twelveHourResetAllTrue(){
+    public void twelveHourResetAllTrue(){
         // make a new array of booleans and a new FoodCategory.
         boolean[] actions = {true, true, true};
         FoodCategory food = new FoodCategory();
@@ -104,7 +99,7 @@ class FoodCategoryTest {
     }
 
     @Test
-    void twelveHourResetAllFalse(){
+    public void twelveHourResetAllFalse(){
         //make a new array of booleans and a new FoodCategory
         boolean[] actions = {false, false, false};
         FoodCategory food = new FoodCategory();
@@ -112,10 +107,4 @@ class FoodCategoryTest {
         food.setActions(actions);
         assertEquals(0, food.twelveHourReset());
     }
-
-
-
-
-
 }
-
