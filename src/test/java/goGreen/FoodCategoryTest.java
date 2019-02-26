@@ -12,6 +12,7 @@ class FoodCategoryTest {
 
     @Test
     void getTest(){
+        // make a new object and an array filled with false
         FoodCategory food = new FoodCategory();
         boolean[] output = {false, false, false};
 
@@ -20,6 +21,7 @@ class FoodCategoryTest {
 
     @Test
     void getAndSetTest(){
+        // make a new object and an array filled with true, and set that as actions
         FoodCategory food = new FoodCategory();
         boolean[] actions = {true, true, true};
         food.setActions(actions);
@@ -29,9 +31,11 @@ class FoodCategoryTest {
 
     @Test
     void addActionAllTrue(){
+        // make a test string and make a scanner, then give the scanner the test string.
         String testString = "false true true";
         Scanner sc = new Scanner(new ByteArrayInputStream(testString.getBytes(StandardCharsets.UTF_8)));
 
+        // make a new foodCategory and add the actions you put in the scanner
         FoodCategory food = new FoodCategory();
         food.addAction(sc);
 
@@ -41,9 +45,11 @@ class FoodCategoryTest {
 
     @Test
     void addActionAllFalse(){
+        // make a test string and make a scanner, then give the scanner the test string.
         String testString = "true false false";
         Scanner sc = new Scanner(new ByteArrayInputStream(testString.getBytes(StandardCharsets.UTF_8)));
 
+        // make a new foodCategory and add the actions you put in the scanner
         FoodCategory food = new FoodCategory();
         food.addAction(sc);
 
@@ -53,6 +59,7 @@ class FoodCategoryTest {
 
     @Test
     void twelveHourResetAllTrue(){
+        // make a new array of booleans and a new FoodCategory.
         boolean[] actions = {true, true, true};
         FoodCategory food = new FoodCategory();
 
@@ -62,6 +69,7 @@ class FoodCategoryTest {
 
     @Test
     void twelveHourResetAllFalse(){
+        //make a new array of booleans and a new FoodCategory
         boolean[] actions = {false, false, false};
         FoodCategory food = new FoodCategory();
 
