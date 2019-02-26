@@ -8,9 +8,9 @@ import java.util.Scanner;
 public final class GoGreenApplication {
 
     /**
-     * for demo purposes this class has a private field actions.
+     * for demo purposes this class has a private field FoodCategory.
      */
-    private static boolean[] actions = new boolean[]{false, false, false};
+    private static FoodCategory food = new FoodCategory();
     /**
      * for demo purposes this class has a private field user.
      */
@@ -147,17 +147,15 @@ public final class GoGreenApplication {
         );
 
         final int choice = Integer.parseInt(sc.next());
-        switch (choice) {
+        switch(choice){
             case 1:
                 // add an action
-                FoodCategory.addAction(sc, actions);
+                food.addAction(sc);
                 break;
             case 2:
                 // when we reset, we reset and print the score
-                int points = FoodCategory.twelveHourReset(actions);
-                actions = new boolean[]{false, false, false};
-                System.out.println("You chose reset, you received "
-                        + points + " food points for the last 12 hours");
+                int points = food.twelveHourReset();
+                System.out.println("You chose reset, you received " + points + " food points for the last 12 hours");
                 user.addPoints(points);
                 break;
             default:
