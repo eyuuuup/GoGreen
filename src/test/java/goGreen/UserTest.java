@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 public class UserTest {
     private static User USER = new User("Erwin", 1);
 
-    @Test (expected=IllegalArgumentException.class)
+    @Test (expected=NullPointerException.class)
     public void createUserNull() {
         User userTwo = new User(null, 1);
     }
@@ -28,32 +28,32 @@ public class UserTest {
         assertTrue(USER.checkName("Erwin"));
     }
 
-    @Test
+    @Test (expected=IllegalArgumentException.class)
     public void checkNameWrong(){
         assertFalse(USER.checkName("aghzAKDLZ "));
     }
 
-    @Test
+    @Test (expected=IllegalArgumentException.class)
     public void checkNameWrongTwo(){
         assertFalse(USER.checkName("Erwin van Dam"));
     }
 
-    @Test
+    @Test (expected=IllegalArgumentException.class)
     public void checkNameTooLong(){
         assertFalse(USER.checkName("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
     }
 
-    @Test
+    @Test (expected=IllegalArgumentException.class)
     public void checkNameInvalidCharacter(){
         assertFalse(USER.checkName("adcblkKDL#"));
     }
 
-    @Test
+    @Test (expected=IllegalArgumentException.class)
     public void checkNameInvalidNumber(){
         assertFalse(USER.checkName("kdsfl23"));
     }
 
-    @Test
+    @Test (expected=IllegalArgumentException.class)
     public void checkNameEmpty(){
         assertFalse(USER.checkName(""));
     }
@@ -82,7 +82,7 @@ public class UserTest {
         assertNotEquals("Erwin", userTwo.getName());
     }
 
-    @Test (expected=IllegalArgumentException.class)
+    @Test (expected=NullPointerException.class)
     public void changeNameNull() {
         User userTwo = new User("Erwin", 1);
         userTwo.changeName(null);

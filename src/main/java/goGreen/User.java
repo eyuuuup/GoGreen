@@ -14,23 +14,25 @@ public class User {
      * @param name
      * @param userId
      */
-    public User(String name, int userId)throws IllegalArgumentException{
-        if(!checkName(name))throw new IllegalArgumentException("Invalid name!");
-        this.name = name;
-        this.userId = userId;
-        points = 0;
+    public User(String name, int userId){
+        if(checkName(name)) {
+            this.name = name;
+            this.userId = userId;
+            points = 0;
+        }
     }
 
     /**
      * Checks whether a given name is according to the rules
      * @param name
      */
-    public boolean checkName(String name){
-        if(name == null)return false;
-       if(name.length() >= 16 || name.length() <= 0)return false;
+    public boolean checkName(String name) throws NullPointerException, IllegalArgumentException{
+        if(name == null)throw new NullPointerException("Name equals null");
+       if(name.length() >= 16)throw new IllegalArgumentException("Name is too long");
+       if(name.length() <= 0)throw new IllegalArgumentException("Name is too short");
        for(int i = 0; i < name.length(); i++){
            int letter = name.charAt(i);
-           if(!(letter >= 65 && letter <= 90) && !(letter >= 97 && letter <= 122)) return false;
+           if(!(letter >= 65 && letter <= 90) && !(letter >= 97 && letter <= 122)) throw new IllegalArgumentException("Invalid character in name");
        }
        return true;
     }
@@ -47,9 +49,8 @@ public class User {
      * Changes name into newName
      * @param newName
      */
-    public void changeName(String newName) throws IllegalArgumentException{
-        if(!checkName(newName))throw new IllegalArgumentException("Invalid name!");
-        name = newName;
+    public void changeName(String newName){
+        if(checkName(newName))name = newName;
     }
 
     /**
