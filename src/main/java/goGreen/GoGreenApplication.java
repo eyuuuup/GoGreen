@@ -83,8 +83,8 @@ public class GoGreenApplication {
         switch (Integer.parseInt(sc.next())) {
             case 1:
                 //add a cycle action
-                user.addPoints(TransportCycle.addAction());
-                System.out.println("You chose cycling, you received " + TransportCycle.addAction() + " points for that");
+                user.addPoints(Transport.addCycleAction());
+                System.out.println("You chose cycling, you received " + Transport.addCycleAction() + " points for that");
                 break;
             case 2:
                 //add car action
