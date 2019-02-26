@@ -35,10 +35,7 @@ public class FoodCategory {
 
 
     /**
-     * asks you a couple of questions, and the answer will be a boolean.
-     * If your boolean is the same as the current boolean in your actions or your previous action was a good action,
-     * this would be the array {false, true, true}.
-     * Then the result will be {true, true, true}.
+     * The user will give an input, those will be stored in the actions of the category
      * @param sc, is the scanner for the user input.
      */
     public static void addAction(Scanner sc){
@@ -59,6 +56,13 @@ public class FoodCategory {
      */
     public static int twelveHourReset(){
         int foodScore = 0;
+
+        //null check
+        if(actions == null){
+            System.out.println("Your actions list is empty, please first add some actions.");
+            return foodScore;
+        }
+
         // add points to total score
         for(boolean action: actions){
             // for every good action add 50 points

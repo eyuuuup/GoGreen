@@ -8,6 +8,10 @@ import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * test class of the FoodCategory
+ * @author Marit Radder
+ */
 class FoodCategoryTest {
 
     @Test
@@ -58,6 +62,29 @@ class FoodCategoryTest {
     }
 
     @Test
+    void addActionMultiple(){
+        // set up the first string and scanner for the first actions.
+        String firstActions = "false true true";
+        Scanner firstScanner = new Scanner(new ByteArrayInputStream(firstActions.getBytes(StandardCharsets.UTF_8)));
+
+        // make the food category object and add the first actions
+        FoodCategory food = new FoodCategory();
+        food.addAction(firstScanner);
+
+        // then make the second actions string and scanner
+        String secondActions = "true false false";
+        Scanner secondScanner = new Scanner(new ByteArrayInputStream(secondActions.getBytes(StandardCharsets.UTF_8)));
+
+        //add the actions
+        food.addAction(secondScanner);
+
+        boolean[] output = {true, true, true};
+
+        assertArrayEquals(output, food.getActions());
+
+    }
+
+    @Test
     void twelveHourResetAllTrue(){
         // make a new array of booleans and a new FoodCategory.
         boolean[] actions = {true, true, true};
@@ -76,6 +103,20 @@ class FoodCategoryTest {
         food.setActions(actions);
         assertEquals(0, food.twelveHourReset());
     }
+
+    @Test
+    void twelveHourResetNullCheck(){
+        // make a null array and a FoodCategory
+        boolean[] actions = null;
+        FoodCategory food = new FoodCategory();
+
+        // set the array as actions
+        food.setActions(actions);
+        assertEquals(0, food.twelveHourReset());
+
+    }
+
+
 
 }
 
