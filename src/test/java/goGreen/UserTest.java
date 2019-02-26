@@ -58,6 +58,21 @@ public class UserTest {
         assertFalse(USER.checkName(""));
     }
 
+    @Test (expected=IllegalArgumentException.class)
+    public void checkNameOffensive(){
+        USER.checkName("screw");
+    }
+
+    @Test (expected=IllegalArgumentException.class)
+    public void checkNameOffensiveTwo(){
+        USER.checkName("fagot");
+    }
+
+    @Test (expected=IllegalArgumentException.class)
+    public void checkNameOffensiveThree(){
+        USER.checkName("azz");
+    }
+
     @Test
     public void getName() {
         assertEquals("Erwin", USER.getName());
