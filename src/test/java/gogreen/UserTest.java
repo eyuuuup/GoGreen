@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 public class UserTest {
     private static User USER = new User("Erwin", 1);
 

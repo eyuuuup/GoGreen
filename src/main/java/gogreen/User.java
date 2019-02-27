@@ -56,20 +56,7 @@ public class User {
             throw new IllegalArgumentException("Name is too short");
         }
 
-        //check if all characters in the name are valid characters
-        for (int i = 0; i < testName.length(); i++) {
-            int letter = testName.charAt(i);
-
-            final int capitalAIndex =  65;
-            final int capitalZIndex = 90;
-            final int aIndex = 97;
-            final int zIndex = 122;
-
-            if (!(letter >= capitalAIndex && letter <= capitalZIndex)
-                    && !(letter >= aIndex && letter <= zIndex)) {
-                throw new IllegalArgumentException("Invalid character");
-            }
-        }
+        checkCharacters(testName);
 
         //check whether the name is not offensive
         try {
@@ -86,6 +73,27 @@ public class User {
         }
 
         return true;
+    }
+
+    /**
+     * checks the characters in the new name.
+     * @param testName the new name
+     */
+    private void checkCharacters(String testName) {
+        //check if all characters in the name are valid characters
+        for (int i = 0; i < testName.length(); i++) {
+            int letter = testName.charAt(i);
+
+            final int capitalAIndex =  65;
+            final int capitalZIndex = 90;
+            final int aIndex = 97;
+            final int zIndex = 122;
+
+            if (!(letter >= capitalAIndex && letter <= capitalZIndex)
+                    && !(letter >= aIndex && letter <= zIndex)) {
+                throw new IllegalArgumentException("Invalid character");
+            }
+        }
     }
 
     /**

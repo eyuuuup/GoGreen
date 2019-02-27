@@ -147,7 +147,7 @@ public final class GoGreenApplication {
         );
 
         final int choice = Integer.parseInt(sc.next());
-        switch(choice){
+        switch (choice) {
             case 1:
                 // add an action
                 food.addAction(sc);
@@ -155,7 +155,8 @@ public final class GoGreenApplication {
             case 2:
                 // when we reset, we reset and print the score
                 int points = food.twelveHourReset();
-                System.out.println("You chose reset, you received " + points + " food points for the last 12 hours");
+                System.out.println("You chose reset, you received "
+                        + points + " food points for the last 12 hours");
                 user.addPoints(points);
                 break;
             default:

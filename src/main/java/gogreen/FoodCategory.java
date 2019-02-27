@@ -1,4 +1,5 @@
 package gogreen;
+
 import java.util.Scanner;
 
 /**
@@ -13,7 +14,7 @@ public class FoodCategory {
     /**
      *The foodCategory constructor, which makes an array of false booleans which are the actions.
      */
-    public FoodCategory(){
+    public FoodCategory() {
         actions = new boolean[] {false, false, false};
     }
 
@@ -21,17 +22,18 @@ public class FoodCategory {
      * gets the actions array.
      * @return actions, it returns the actions array.
      */
-    public static boolean[] getActions(){
+    public static boolean[] getActions() {
         return actions;
     }
 
     /**
-     * sets the actions array to the array you give as parameter.
-     * @param newActions, is the array you want actions to change in.
+     * Sets boolean[] actions to newActions.
+     * @param newActions the new boolean
+     * @throws NullPointerException if newActions = null
      */
-    public static void setActions(boolean[] newActions)throws NullPointerException{
+    public static void setActions(boolean[] newActions) throws NullPointerException {
         // null check
-        if(newActions == null){
+        if (newActions == null) {
             throw new NullPointerException("Actions equals null");
         }
         actions = newActions;
@@ -39,10 +41,10 @@ public class FoodCategory {
 
 
     /**
-     * The user will give an input, those will be stored in the actions of the category
-     * @param sc, is the scanner for the user input.
+     * The user will give an input, those will be stored in the actions of the category.
+     * @param sc is the scanner for the user input.
      */
-    public static void addAction(Scanner sc){
+    public static void addAction(Scanner sc) {
         //ask questions, later will become buttons
         System.out.println("Did it contain meat? (true / false)");
         actions[0] |= !Boolean.parseBoolean(sc.next());
@@ -58,12 +60,12 @@ public class FoodCategory {
      * this method looks at your actions array and will add 50 points for every true in that array.
      * @return foodscore, is an integer which represents the points you got from your actions
      */
-    public static int twelveHourReset(){
+    public static int twelveHourReset() {
         int foodScore = 0;
         // add points to total score
-        for(boolean action: actions){
+        for (boolean action: actions) {
             // for every good action add 50 points
-            if(action){
+            if (action) {
                 foodScore += 50;
             }
         }
