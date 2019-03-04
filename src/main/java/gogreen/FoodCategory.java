@@ -3,8 +3,8 @@ package gogreen;
 import java.util.Scanner;
 
 /**
- * The food category will handle adding an action in the foodcategory.
- * And distubuting the foodcategory points
+ * The food category will handle adding an action in the foodCategory.
+ * And distributing the foodCategory points
  * @author Marit Radder
  * @author Erwin van Dam
  */
@@ -58,7 +58,7 @@ public class FoodCategory {
 
     /**
      * this method looks at your actions array and will add 50 points for every true in that array.
-     * @return foodscore, is an integer which represents the points you got from your actions
+     * @return food score, is an integer which represents the points you got from your actions
      */
     public static int twelveHourReset() {
         int foodScore = 0;
