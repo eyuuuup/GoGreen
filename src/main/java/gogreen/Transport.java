@@ -7,43 +7,30 @@ package gogreen;
 public final class Transport {
 
     /**
-     * Overwrites the default constructor.
-     */
-    private Transport() { }
-
-    /**
      * This methods returns points for a Cycle action.
-     * @return points
      */
-    public static int addCycleAction() {
-        final int points = 100;
-        return points;
+    public static void addCycleAction() {
+        Communication.addAction("Cycle", 100);
     }
 
     /**
      * This methods returns points for a Car action.
-     * @return points
      */
-    public static int addCarAction() {
-        final int points = 25;
-        return points;
+    public static void addCarAction() {
+        Communication.addAction("Car", 25);
     }
 
     /**
      * This methods returns points for a Plane action.
-     * @return points
      */
-    public static int addPlaneAction() {
-        final int points = 0;
-        return points;
+    public static void addPlaneAction() {
+        Communication.addAction("Plane", 0);
     }
 
     /**
      * This methods returns points for a Public Transport action.
-     * @return points
      */
-    public static int addPublicTransportAction() {
-        final int points = 75;
-        return points;
+    public static void addPublicTransportAction() {
+        Communication.addAction("PublicTransport", 75);
     }
 }
