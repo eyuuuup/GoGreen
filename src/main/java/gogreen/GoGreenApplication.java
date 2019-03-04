@@ -35,6 +35,7 @@ public final class GoGreenApplication {
                     if (Communication.login(username)) {
                         System.out.println("Login successful, welcome " + username + "!");
                         displayCategories(sc);
+                        return;
                     } else {
                         System.out.println("Login failed!");
                     }
@@ -46,13 +47,13 @@ public final class GoGreenApplication {
                     if (Communication.register(username)) {
                         System.out.println("Registration successful, welcome " + username + "!");
                         displayCategories(sc);
+                        return;
                     } else {
                         System.out.println("Registration failed!");
                     }
                     break;
                 default:
-                    System.out.println("That is not a valid choice,"
-                            + " choose again");
+                    System.out.println("That is not a valid choice, choose again");
                     break;
             }
         }
