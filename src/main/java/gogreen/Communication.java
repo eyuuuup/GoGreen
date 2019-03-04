@@ -24,7 +24,7 @@ public class Communication {
 //        String res = restTemplate.postForObject("http://localhost:8080/addAction", request, String.class);
 
 //        System.out.println("result: " + res);
-
+        
 
         return true;
     }

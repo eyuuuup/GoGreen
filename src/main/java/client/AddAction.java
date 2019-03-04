@@ -4,7 +4,7 @@ public class AddAction {
 
     private String user;
     private String action;
-    private int value;
+    private int    value;
 
     public AddAction(String user, String action, int value) {
         this.user = user;
@@ -34,5 +34,10 @@ public class AddAction {
 
     public void setValue(int value) {
         this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "<AddAction(user=\"" + user + "\", action=\"" + action + "\", value=\"" + value + "\")>";
     }
 }
