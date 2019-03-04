@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 /**
  * this class represents an User of the gogreen Application.
+ *
  * @author Erwin van Dam
  */
 public class User {
@@ -16,15 +17,16 @@ public class User {
     /**
      * The User Id.
      */
-    private int userId;
+    private int    userId;
     /**
      * The User's points.
      */
-    private int points;
+    private int    points;
 
     /**
      * This method creates and instantiates a new User.
-     * @param newName the Name
+     *
+     * @param newName   the Name
      * @param newUserId the User Id
      */
     public User(final String newName, final int newUserId) {
@@ -37,12 +39,13 @@ public class User {
 
     /**
      * Checks whether a given name is according to the rules.
+     *
      * @param testName the name to test
      * @return boolean correct name
-     * @throws NullPointerException if null
+     * @throws NullPointerException     if null
      * @throws IllegalArgumentException if invalid
      */
-    public boolean checkName(final String testName)
+    public static boolean checkName(final String testName)
             throws NullPointerException, IllegalArgumentException {
         if (testName == null) {
             throw new NullPointerException("Name equals null");
@@ -60,8 +63,8 @@ public class User {
 
         //check whether the name is not offensive
         try {
-            File file = new File("doc/resources/InvalidNamesComma.txt");
-            Scanner sc = new Scanner(file).useDelimiter(", ");
+            File    file = new File("doc/resources/InvalidNamesComma.txt");
+            Scanner sc   = new Scanner(file).useDelimiter(", ");
             while (sc.hasNext()) {
                 if (testName.equals(sc.next())) {
                     throw new IllegalArgumentException("Offensive name");
@@ -77,20 +80,13 @@ public class User {
 
     /**
      * checks the characters in the new name.
+     *
      * @param testName the new name
      */
-    private void checkCharacters(String testName) {
+    private static void checkCharacters(String testName) {
         //check if all characters in the name are valid characters
-        for (int i = 0; i < testName.length(); i++) {
-            int letter = testName.charAt(i);
-
-            final int capitalAIndex =  65;
-            final int capitalZIndex = 90;
-            final int aIndex = 97;
-            final int zIndex = 122;
-
-            if (!(letter >= capitalAIndex && letter <= capitalZIndex)
-                    && !(letter >= aIndex && letter <= zIndex)) {
+        for (char c : testName.toCharArray()) {
+            if (!(Character.toString(c).toLowerCase()).matches("[a-zA-Z]")) {
                 throw new IllegalArgumentException("Invalid character");
             }
         }
@@ -98,6 +94,7 @@ public class User {
 
     /**
      * Getter for name.
+     *
      * @return name
      */
     public String getName() {
@@ -106,6 +103,7 @@ public class User {
 
     /**
      * Changes name into newName.
+     *
      * @param newName the new name
      */
     public void changeName(final String newName) {
@@ -116,6 +114,7 @@ public class User {
 
     /**
      * Getter for userId.
+     *
      * @return userId
      */
     public int getUserId() {
@@ -124,6 +123,7 @@ public class User {
 
     /**
      * Getter for points.
+     *
      * @return points
      */
     public int getPoints() {
@@ -132,6 +132,7 @@ public class User {
 
     /**
      * adds extra points to points.
+     *
      * @param extraPoints points to add
      */
     public void addPoints(final int extraPoints) {
