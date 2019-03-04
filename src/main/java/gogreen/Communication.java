@@ -20,10 +20,10 @@ public class Communication {
         HttpEntity<client.AddAction> request = new HttpEntity<>(send);
 
         RestTemplate restTemplate = new RestTemplate();
-        String res = restTemplate.postForObject("http://145.94.183.170:8080/addAction", request, String.class);
+        String res = restTemplate.postForObject("http://localhost:8080/addAction", request, String.class);
 //        String res = restTemplate.postForObject("http://localhost:8080/addAction", request, String.class);
 
-//        System.out.println("result: " + res);
+        System.out.println("result: " + res);
         
 
         return true;
