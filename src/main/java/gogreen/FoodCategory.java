@@ -16,12 +16,18 @@ public class FoodCategory {
     public static void addAction(Scanner sc) {
         //ask questions, later will become buttons
         System.out.println("Did it contain meat? (true / false)");
-        if(!Boolean.parseBoolean(sc.next()))Communication.addAction("Meat", 50);
+        if (!Boolean.parseBoolean(sc.next())) {
+            Communication.addAction("Meat", 50);
+        }
 
         System.out.println("Was it biological (true / false)");
-        if(Boolean.parseBoolean(sc.next()))Communication.addAction("Biological", 50);
+        if (Boolean.parseBoolean(sc.next())) {
+            Communication.addAction("Biological", 50);
+        }
 
         System.out.println("Was it locally produced(true / false)");
-        if(Boolean.parseBoolean(sc.next()))Communication.addAction("Locally", 50);
+        if (Boolean.parseBoolean(sc.next())) {
+            Communication.addAction("Locally", 50);
+        }
     }
 }
