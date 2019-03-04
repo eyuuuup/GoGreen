@@ -3,32 +3,66 @@ package gogreen;
 import java.util.Scanner;
 
 /**
- * This class represents the User Interface for the application.
+ * This class represents the Textual User Interface for the application.
  */
 public final class GoGreenApplication {
-
     /**
-     * for demo purposes this class has a private field FoodCategory.
-     */
-    private static FoodCategory food = new FoodCategory();
-    /**
-     * for demo purposes this class has a private field user.
-     */
-    private static User user = new User("user", 1);
-
-    /**
-     * Private Constructor to overwrite the default constructor.
-     */
-    private GoGreenApplication() { }
-
-    /**
-     * This method represents the main display to choose a Category.
+     * This method implements the welcome screen where you log in.
      * @param args arguments
      */
     public static void main(final String[] args) {
         // preparing the scanner and input
         Scanner sc = new Scanner(System.in);
+        while (true) {
+            System.out.print(
+                              "┌────────────────────────────────────────┐\n"
+                            + "│ Login or Register:                     │\n"
+                            + "├────────────────────────────────────────┤\n"
+                            + "│ 1 - Login                              │\n"
+                            + "│ 2 - Register                           │\n"
+                            + "└────────────────────────────────────────┘\n"
+                            + "Choice: "
+            );
 
+            // multiple options with multiple methods
+            final int choice = Integer.parseInt(sc.next());
+            String username = "";
+            switch (choice) {
+                case 1:
+                    System.out.print("Login, please enter Username: ");
+                    username = sc.next();
+                    System.out.println();
+                    if (Communication.login(username)) {
+                        System.out.println("Login successful, welcome " + username + "!");
+                        displayCategories(sc);
+                        return;
+                    } else {
+                        System.out.println("Login failed!");
+                    }
+                    break;
+                case 2:
+                    System.out.print("Register, please enter Username: ");
+                    username = sc.next();
+                    System.out.println();
+                    if (Communication.register(username)) {
+                        System.out.println("Registration successful, welcome " + username + "!");
+                        displayCategories(sc);
+                        return;
+                    } else {
+                        System.out.println("Registration failed!");
+                    }
+                    break;
+                default:
+                    System.out.println("That is not a valid choice, choose again");
+                    break;
+            }
+        }
+    }
+
+    /**
+     * This method represents the main display to choose a Category.
+     */
+    private static void displayCategories(Scanner sc) {
         while (true) {
             System.out.print(
                               "┌────────────────────────────────────────┐\n"
@@ -70,15 +104,12 @@ public final class GoGreenApplication {
                             + " choose again");
                     break;
             }
-
-            System.out.println("Hi "
-                    + user.getName() + "! Your current score = "
-                    + user.getPoints() + " points!");
         }
     }
 
     /**
      * this is the display if you chose the Category Transport.
+     *
      * @param sc input scanner
      */
     private static void displayTransport(final Scanner sc) {
@@ -98,39 +129,31 @@ public final class GoGreenApplication {
         final int choice = Integer.parseInt(sc.next());
         switch (choice) {
             case 1:
-                //add a cycle action
-                user.addPoints(Transport.addCycleAction());
-                System.out.println("You chose cycling, you received "
-                        + Transport.addCycleAction() + " points for that");
+                //add cycle action
+                Transport.addCycleAction();
                 break;
             case 2:
                 //add car action
-                user.addPoints(Transport.addCarAction());
-                System.out.println("You chose car, you received "
-                        + Transport.addCarAction() + " points for that");
+                Transport.addCarAction();
                 break;
             case 3:
                 //add public transport action
-                user.addPoints(Transport.addPublicTransportAction());
-                System.out.println("You chose public transport, you received "
-                        + Transport.addPublicTransportAction()
-                        + " points for that");
+                Transport.addPublicTransportAction();
                 break;
             case 4:
                 //add plane action
-                user.addPoints(Transport.addPlaneAction());
-                System.out.println("You chose plane, you received "
-                        + Transport.addPlaneAction() + " points for that");
+                Transport.addPlaneAction();
                 break;
             default:
                 //not implemented, so turn back to home screen
-                System.out.println("Not implemented yet, bye!");
+                System.out.println("bye!");
                 break;
         }
     }
 
     /**
      * this is the display if you chose the Category Food.
+     *
      * @param sc Input scanner
      */
     private static void displayFood(final Scanner sc) {
@@ -140,8 +163,7 @@ public final class GoGreenApplication {
                         + "│Choose what you want to do in the Food Category │\n"
                         + "├────────────────────────────────────────────────┤\n"
                         + "│ 1 - add an action                              │\n"
-                        + "│ 2 - reset                                      │\n"
-                        + "│ 3 - return                                     │\n"
+                        + "│ 2 - return                                     │\n"
                         + "└────────────────────────────────────────────────┘\n"
                         + "Choice: "
         );
@@ -150,14 +172,7 @@ public final class GoGreenApplication {
         switch (choice) {
             case 1:
                 // add an action
-                food.addAction(sc);
-                break;
-            case 2:
-                // when we reset, we reset and print the score
-                int points = food.twelveHourReset();
-                System.out.println("You chose reset, you received "
-                        + points + " food points for the last 12 hours");
-                user.addPoints(points);
+                FoodCategory.addAction(sc);
                 break;
             default:
                 //go back to the category display
