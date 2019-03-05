@@ -120,6 +120,7 @@ public class Application extends javafx.application.Application {
             @Override public void handle(ActionEvent e) {
                 //looks what is selected
                 System.out.println(veggie.isSelected() +", " + locally.isSelected() +", " +  bio.isSelected());
+                FoodCategory.addAction(veggie.isSelected(), locally.isSelected(), bio.isSelected());
             }
         });
 
