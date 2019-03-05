@@ -39,7 +39,6 @@ public class User {
 
     /**
      * Checks whether a given name is according to the rules.
-     *
      * @param testName the name to test
      * @return boolean correct name
      * @throws NullPointerException     if null

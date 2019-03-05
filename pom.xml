@@ -107,16 +107,6 @@
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <version>3.0.0</version>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-                &lt;!&ndash;<configuration>&ndash;&gt;
-                    &lt;!&ndash;<release>11</release>&ndash;&gt;
-                &lt;!&ndash;</configuration>&ndash;&gt;
-            </plugin>
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>

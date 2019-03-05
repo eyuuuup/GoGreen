@@ -12,6 +12,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 public class Application extends javafx.application.Application {
 
     public static void main(String[] args) {
@@ -36,8 +40,14 @@ public class Application extends javafx.application.Application {
         login.setMaxWidth(200);
         login.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                if(Communication.login(userName.getText(), "password")) {
-                    categoryScreen(stage);
+                String name = userName.getText();
+                try{
+                    checkName(name);
+                    if(Communication.login(name, "password")) {
+                        categoryScreen(stage);
+                    }
+                } catch (Exception exception) {
+                    loginText.setText(exception.getMessage() + ", please change the username");
                 }
             }
         });
@@ -66,7 +76,7 @@ public class Application extends javafx.application.Application {
         transport.setMinSize(200, 200);
         transport.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                //action if you choose transport
+                transportScreen(stage);
             }
         });
 
@@ -97,8 +107,105 @@ public class Application extends javafx.application.Application {
         show(categories, stage);
     }
 
+    public void transportScreen(Stage stage) {
+        Button cycle = new Button("cycle");
+        cycle.setMinSize(200, 200);
+        cycle.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                Transport.addCycleAction();
+            }
+        });
+
+        Button publicTransport = new Button("public Transport");
+        publicTransport.setMinSize(200, 200);
+        publicTransport.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                Transport.addPublicTransportAction();
+            }
+        });
+
+        Button car = new Button("car");
+        car.setMinSize(200, 200);
+        car.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                Transport.addCarAction();
+            }
+        });
+
+        Button plane = new Button("plane");
+        plane.setMinSize(200, 200);
+        plane.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                Transport.addPlaneAction();
+            }
+        });
+
+        HBox hBoxtop = new HBox();
+        hBoxtop.getChildren().addAll(cycle, publicTransport);
+        HBox hBoxbottom = new HBox();
+        hBoxbottom.getChildren().addAll(car, plane);
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(hBoxtop, hBoxbottom);
+
+        Scene categories = new Scene(vBox, 400, 400);
+        show(categories, stage);
+    }
+
     public void show(Scene scene, Stage stage) {
         stage.setScene(scene);
         stage.show();
+    }
+
+    /**
+     * Checks whether a given name is according to the rules.
+     * @param testName the name to test
+     * @return boolean correct name
+     * @throws NullPointerException     if null
+     * @throws IllegalArgumentException if invalid
+     */
+    public static boolean checkName(String testName)
+            throws NullPointerException, IllegalArgumentException {
+        if (testName == null) {
+            throw new NullPointerException("Name equals null");
+        }
+
+        final int maxSize = 16;
+        if (testName.length() >= maxSize) {
+            throw new IllegalArgumentException("Name is too long");
+        }
+        if (testName.length() <= 0) {
+            throw new IllegalArgumentException("Name is too short");
+        }
+
+        checkCharacters(testName);
+
+        //check whether the name is not offensive
+        try {
+            File file = new File("doc/resources/InvalidNamesComma.txt");
+            Scanner sc   = new Scanner(file).useDelimiter(", ");
+            while (sc.hasNext()) {
+                if (testName.contains(sc.next())) {
+                    throw new IllegalArgumentException("Offensive name");
+                }
+            }
+            sc.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
+    /**
+     * checks the characters in the new name.
+     * @param testName the new name
+     */
+    private static void checkCharacters(String testName) {
+        //check if all characters in the name are valid characters
+        for (char c : testName.toCharArray()) {
+            if (!(Character.toString(c).toLowerCase()).matches("[a-zA-Z]")) {
+                throw new IllegalArgumentException("Invalid character");
+            }
+        }
     }
 }
