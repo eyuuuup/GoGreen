@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -59,6 +60,7 @@ public class Application extends javafx.application.Application {
         food.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 //action if you choose food
+                foodCategoryScreen(stage);
             }
         });
 
@@ -100,5 +102,32 @@ public class Application extends javafx.application.Application {
     public void show(Scene scene, Stage stage) {
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void foodCategoryScreen(Stage stage){
+        CheckBox veggie = new CheckBox("It was veggie");
+        veggie.setMinSize(200,20);
+
+        CheckBox locally = new CheckBox("It was locally");
+        locally.setMinSize(200,20);
+
+        CheckBox bio = new CheckBox("It was bio");
+        bio.setMinSize(200,20);
+
+        Button send = new Button("add action");
+        send.setMinSize(200, 50);
+        send.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                //looks what is selected
+                System.out.println(veggie.isSelected() +", " + locally.isSelected() +", " +  bio.isSelected());
+            }
+        });
+
+
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(veggie,locally,bio,send);
+
+        Scene actions = new Scene(vBox, 400, 400);
+        show(actions, stage);
     }
 }
