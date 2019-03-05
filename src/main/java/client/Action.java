@@ -1,12 +1,12 @@
 package client;
 
-public class AddAction {
+public class Action {
 
     private String user;
     private String action;
     private int    value;
 
-    public AddAction(String user, String action, int value) {
+    public Action(String user, String action, int value) {
         this.user = user;
         this.action = action;
         this.value = value;

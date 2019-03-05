@@ -1,5 +1,7 @@
 package gogreen;
 
+import client.Communication;
+
 import java.util.Scanner;
 
 /**
@@ -17,17 +19,17 @@ public class FoodCategory {
         //ask questions, later will become buttons
         System.out.println("Did it contain meat? (true / false)");
         if (!Boolean.parseBoolean(sc.next())) {
-            Communication.addAction("Meat", 50);
+            Communication.addRequest("Meat", 50);
         }
 
         System.out.println("Was it biological (true / false)");
         if (Boolean.parseBoolean(sc.next())) {
-            Communication.addAction("Biological", 50);
+            Communication.addRequest("Biological", 50);
         }
 
         System.out.println("Was it locally produced(true / false)");
         if (Boolean.parseBoolean(sc.next())) {
-            Communication.addAction("Locally", 50);
+            Communication.addRequest("Locally", 50);
         }
     }
 }

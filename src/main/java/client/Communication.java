@@ -1,6 +1,5 @@
-package gogreen;
+package client;
 
-import client.AddAction;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
@@ -11,41 +10,46 @@ public class Communication {
     private static String password;
     private static String userID;
 
-    public static boolean addAction(String action, int points) {
+    public static boolean addRequest(String action, int points) {
 //        if (userID == null) new Exception("Not logged in");
 
         /*TEST*/ userID = "testUser";
 
-        AddAction send = new AddAction(userID, action, points);
-        HttpEntity<client.AddAction> request = new HttpEntity<>(send);
-
+        Action send = new Action(userID, action, points);
+        HttpEntity<client.Action> request = new HttpEntity<>(send);
+//MAKE
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject("http://localhost:8080/addAction", request, String.class);
 //        String res = restTemplate.postForObject("http://localhost:8080/addAction", request, String.class);
 
         System.out.println("result: " + res);
+
+        //if result is positive clearing shit
+        send.setAction(null);
+        send.setUser(null);
+        send.setValue(0);
         
 
         return true;
     }
 
-    public static boolean login(String username_) {
+    public static boolean login(String username) {
         //validate if username and password matched those on server
         //if they do retrieve userID and store it
         return true;
     }
 
-    public static boolean register(String username_) {
-        User.checkName(username_);
+    public static boolean register(String username) {
+        User.checkName(username);
 
         //send username_ to the server, validate if it is not taken.
         //also send hashed password
 
-        username = username_;
+        username = username;
         return true;
     }
 
     public static void main(String[] args) {
-        addAction("testingAction", 1000000);
+        addRequest("testingAction", 1000000);
     }
 }

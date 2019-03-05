@@ -1,5 +1,7 @@
 package gogreen;
 
+import client.Communication;
+
 import java.util.Scanner;
 
 /**
