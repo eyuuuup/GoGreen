@@ -73,7 +73,7 @@ public class Communication {
      */
     public static boolean silentLogin() {
 
-        //retrieve username and password from somewhere
+        //retrieve username and password from somewhere (file)
         //try to log in and retrieve userID
 
         return true;
