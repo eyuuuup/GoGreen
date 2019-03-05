@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -69,6 +70,7 @@ public class Application extends javafx.application.Application {
         food.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 //action if you choose food
+                foodCategoryScreen(stage);
             }
         });
 
@@ -156,56 +158,31 @@ public class Application extends javafx.application.Application {
         stage.show();
     }
 
-    /**
-     * Checks whether a given name is according to the rules.
-     * @param testName the name to test
-     * @return boolean correct name
-     * @throws NullPointerException     if null
-     * @throws IllegalArgumentException if invalid
-     */
-    public static boolean checkName(String testName)
-            throws NullPointerException, IllegalArgumentException {
-        if (testName == null) {
-            throw new NullPointerException("Name equals null");
-        }
+    public void foodCategoryScreen(Stage stage){
+        CheckBox veggie = new CheckBox("It was veggie");
+        veggie.setMinSize(200,20);
 
-        final int maxSize = 16;
-        if (testName.length() >= maxSize) {
-            throw new IllegalArgumentException("Name is too long");
-        }
-        if (testName.length() <= 0) {
-            throw new IllegalArgumentException("Name is too short");
-        }
+        CheckBox locally = new CheckBox("It was locally");
+        locally.setMinSize(200,20);
 
-        checkCharacters(testName);
+        CheckBox bio = new CheckBox("It was bio");
+        bio.setMinSize(200,20);
 
-        //check whether the name is not offensive
-        try {
-            File file = new File("doc/resources/InvalidNamesComma.txt");
-            Scanner sc   = new Scanner(file).useDelimiter(", ");
-            while (sc.hasNext()) {
-                if (testName.contains(sc.next())) {
-                    throw new IllegalArgumentException("Offensive name");
-                }
+        Button send = new Button("add action");
+        send.setMinSize(200, 50);
+        send.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                //looks what is selected
+                System.out.println(veggie.isSelected() +", " + locally.isSelected() +", " +  bio.isSelected());
+                FoodCategory.addAction(veggie.isSelected(), locally.isSelected(), bio.isSelected());
             }
-            sc.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        });
 
-        return true;
-    }
 
-    /**
-     * checks the characters in the new name.
-     * @param testName the new name
-     */
-    private static void checkCharacters(String testName) {
-        //check if all characters in the name are valid characters
-        for (char c : testName.toCharArray()) {
-            if (!(Character.toString(c).toLowerCase()).matches("[a-zA-Z]")) {
-                throw new IllegalArgumentException("Invalid character");
-            }
-        }
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(veggie,locally,bio,send);
+
+        Scene actions = new Scene(vBox, 400, 400);
+        show(actions, stage);
     }
 }
