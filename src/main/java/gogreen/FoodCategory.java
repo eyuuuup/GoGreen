@@ -1,7 +1,5 @@
 package gogreen;
 
-import java.util.Scanner;
-
 /**
  * The food category will handle adding an action in the foodCategory.
  * And distributing the foodCategory points
@@ -9,9 +7,13 @@ import java.util.Scanner;
  * @author Erwin van Dam
  */
 public class FoodCategory {
+
+
     /**
-     * The user will give an input, those will be stored in the actions of the category.
-     *
+     * will recieve three booleans and
+     * @param veggie
+     * @param locally
+     * @param bio
      */
     public static void addAction(Boolean veggie, boolean locally, boolean bio) {
         //ask questions, later will become buttons
@@ -24,7 +26,7 @@ public class FoodCategory {
 
         if (locally) {
             System.out.println("locally");
-
+//hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
             Communication.addAction("Biological", 50);
         }
 
