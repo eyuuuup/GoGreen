@@ -13,6 +13,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 public class Application extends javafx.application.Application {
 
     public static void main(String[] args) {
@@ -37,8 +41,14 @@ public class Application extends javafx.application.Application {
         login.setMaxWidth(200);
         login.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                if(Communication.login(userName.getText(), "password")) {
-                    categoryScreen(stage);
+                String name = userName.getText();
+                try{
+                    checkName(name);
+                    if(Communication.login(name, "password")) {
+                        categoryScreen(stage);
+                    }
+                } catch (Exception exception) {
+                    loginText.setText(exception.getMessage() + ", please change the username");
                 }
             }
         });
@@ -68,7 +78,7 @@ public class Application extends javafx.application.Application {
         transport.setMinSize(200, 200);
         transport.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                //action if you choose transport
+                transportScreen(stage);
             }
         });
 
@@ -94,6 +104,50 @@ public class Application extends javafx.application.Application {
         hBoxTwo.getChildren().addAll(extra, energy);
         VBox vBox = new VBox();
         vBox.getChildren().addAll(hBoxOne, hBoxTwo);
+
+        Scene categories = new Scene(vBox, 400, 400);
+        show(categories, stage);
+    }
+
+    public void transportScreen(Stage stage) {
+        Button cycle = new Button("cycle");
+        cycle.setMinSize(200, 200);
+        cycle.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                Transport.addCycleAction();
+            }
+        });
+
+        Button publicTransport = new Button("public Transport");
+        publicTransport.setMinSize(200, 200);
+        publicTransport.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                Transport.addPublicTransportAction();
+            }
+        });
+
+        Button car = new Button("car");
+        car.setMinSize(200, 200);
+        car.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                Transport.addCarAction();
+            }
+        });
+
+        Button plane = new Button("plane");
+        plane.setMinSize(200, 200);
+        plane.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                Transport.addPlaneAction();
+            }
+        });
+
+        HBox hBoxtop = new HBox();
+        hBoxtop.getChildren().addAll(cycle, publicTransport);
+        HBox hBoxbottom = new HBox();
+        hBoxbottom.getChildren().addAll(car, plane);
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(hBoxtop, hBoxbottom);
 
         Scene categories = new Scene(vBox, 400, 400);
         show(categories, stage);
