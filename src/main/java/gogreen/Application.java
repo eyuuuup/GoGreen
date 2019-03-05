@@ -42,9 +42,9 @@ public class Application extends javafx.application.Application {
         login.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 String name = userName.getText();
-                try{
+                try {
                     checkName(name);
-                    if(Communication.login(name, "password")) {
+                    if (Communication.login(name, "password")) {
                         categoryScreen(stage);
                     }
                 } catch (Exception exception) {
@@ -158,7 +158,7 @@ public class Application extends javafx.application.Application {
         stage.show();
     }
 
-    public void foodCategoryScreen(Stage stage){
+    public void foodCategoryScreen(Stage stage) {
         CheckBox veggie = new CheckBox("It was veggie");
         veggie.setMinSize(200,20);
 
@@ -184,5 +184,57 @@ public class Application extends javafx.application.Application {
 
         Scene actions = new Scene(vBox, 400, 400);
         show(actions, stage);
+    }
+
+    /**
+     * Checks whether a given name is according to the rules.
+     * @param testName the name to test
+     * @return boolean correct name
+     * @throws NullPointerException     if null
+     * @throws IllegalArgumentException if invalid
+     */
+    public static boolean checkName(final String testName)
+            throws NullPointerException, IllegalArgumentException {
+        if (testName == null) {
+            throw new NullPointerException("Name equals null");
+        }
+
+        final int maxSize = 16;
+        if (testName.length() >= maxSize) {
+            throw new IllegalArgumentException("Name is too long");
+        }
+        if (testName.length() <= 0) {
+            throw new IllegalArgumentException("Name is too short");
+        }
+
+        checkCharacters(testName);
+
+        //check whether the name is not offensive
+        try {
+            File file = new File("doc/resources/InvalidNamesComma.txt");
+            Scanner sc   = new Scanner(file).useDelimiter(", ");
+            while (sc.hasNext()) {
+                if (testName.contains(sc.next())) {
+                    throw new IllegalArgumentException("Offensive name");
+                }
+            }
+            sc.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    /**
+     * checks the characters in the new name.
+     * @param testName the new name
+     */
+    private static void checkCharacters(String testName) {
+        //check if all characters in the name are valid characters
+        for (char c : testName.toCharArray()) {
+            if (!(Character.toString(c).toLowerCase()).matches("[a-zA-Z]")) {
+                throw new IllegalArgumentException("Invalid character");
+            }
+        }
     }
 }

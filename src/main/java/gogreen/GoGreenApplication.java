@@ -172,7 +172,7 @@ public final class GoGreenApplication {
         switch (choice) {
             case 1:
                 // add an action
-//                FoodCategory.addAction(sc);
+                // FoodCategory.addAction(sc);
                 break;
             default:
                 //go back to the category display

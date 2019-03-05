@@ -59,7 +59,6 @@ public class Communication {
      * @return boolean correctly logged in and userID recieved
      */
     public static boolean register(String username, String password) {
-        User.checkName(username);
 
         //send username_ to the server, validate if it is not taken.
         //also send hashed password

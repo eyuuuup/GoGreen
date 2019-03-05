@@ -26,14 +26,12 @@ public class FoodCategory {
 
         if (locally) {
             System.out.println("locally");
-//hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
             Communication.addAction("Biological", 50);
         }
 
 
         if (bio) {
             System.out.println("bio");
-
             Communication.addAction("Locally", 50);
         }
     }
