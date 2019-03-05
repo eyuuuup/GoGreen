@@ -10,25 +10,22 @@ public class FoodCategory {
 
 
     /**
-     * will recieve three booleans and
-     * @param veggie
-     * @param locally
-     * @param bio
+     * will receive three booleans and calculate the points for them.
+     * @param veggie vegetarian
+     * @param locally locally produced
+     * @param bio biological
      */
     public static void addAction(Boolean veggie, boolean locally, boolean bio) {
         //ask questions, later will become buttons
-
         if (veggie) {
             System.out.println("veggie");
             Communication.addAction("Meat", 50);
         }
 
-
         if (locally) {
             System.out.println("locally");
             Communication.addAction("Biological", 50);
         }
-
 
         if (bio) {
             System.out.println("bio");

@@ -18,7 +18,6 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Application extends javafx.application.Application {
-
     public static void main(String[] args) {
         launch();
     }
@@ -29,7 +28,11 @@ public class Application extends javafx.application.Application {
         loginScreen(stage);
     }
 
-    public void loginScreen(Stage stage) {
+    /**
+     * The login screen.
+     * @param stage the stage
+     */
+    private void loginScreen(Stage stage) {
         Label loginText = new Label("Login: ");
         loginText.setPadding(new Insets(0, 100, 0, 100));
 
@@ -40,15 +43,17 @@ public class Application extends javafx.application.Application {
         Button login = new Button("Login");
         login.setMaxWidth(200);
         login.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+            @Override public void handle(ActionEvent actionEvent) {
                 String name = userName.getText();
                 try {
                     checkName(name);
                     if (Communication.login(name, "password")) {
                         categoryScreen(stage);
                     }
-                } catch (Exception exception) {
+                } catch (IllegalArgumentException exception) {
                     loginText.setText(exception.getMessage() + ", please change the username");
+                } catch (NullPointerException exception) {
+                    loginText.setText("Something went wrong, please login again");
                 }
             }
         });
@@ -56,19 +61,23 @@ public class Application extends javafx.application.Application {
         Button register = new Button("Or register");
         register.setMaxWidth(200);
 
-        VBox vBox = new VBox();
-        vBox.getChildren().addAll(loginText, userName, login, register);
-        vBox.setAlignment(Pos.CENTER);
+        VBox vbox = new VBox();
+        vbox.getChildren().addAll(loginText, userName, login, register);
+        vbox.setAlignment(Pos.CENTER);
 
-        Scene loginScreen = new Scene(vBox, 500, 250);
+        Scene loginScreen = new Scene(vbox, 500, 250);
         show(loginScreen, stage);
     }
 
-    public void categoryScreen(Stage stage) {
+    /**
+     * Category screen.
+     * @param stage stage
+     */
+    private void categoryScreen(Stage stage) {
         Button food = new Button("food");
         food.setMinSize(200, 200);
         food.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+            @Override public void handle(ActionEvent actionEvent) {
                 //action if you choose food
                 foodCategoryScreen(stage);
             }
@@ -77,7 +86,7 @@ public class Application extends javafx.application.Application {
         Button transport = new Button("transport");
         transport.setMinSize(200, 200);
         transport.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+            @Override public void handle(ActionEvent actionEvent) {
                 transportScreen(stage);
             }
         });
@@ -85,7 +94,7 @@ public class Application extends javafx.application.Application {
         Button energy = new Button("energy");
         energy.setMinSize(200, 200);
         energy.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+            @Override public void handle(ActionEvent actionEvent) {
                 //action if you choose energy
             }
         });
@@ -93,27 +102,31 @@ public class Application extends javafx.application.Application {
         Button extra = new Button("extra");
         extra.setMinSize(200, 200);
         extra.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+            @Override public void handle(ActionEvent actionEvent) {
                 //action if you choose transport
             }
         });
 
-        HBox hBoxOne = new HBox();
-        hBoxOne.getChildren().addAll(food, transport);
-        HBox hBoxTwo = new HBox();
-        hBoxTwo.getChildren().addAll(extra, energy);
-        VBox vBox = new VBox();
-        vBox.getChildren().addAll(hBoxOne, hBoxTwo);
+        HBox hboxOne = new HBox();
+        hboxOne.getChildren().addAll(food, transport);
+        HBox hboxTwo = new HBox();
+        hboxTwo.getChildren().addAll(extra, energy);
+        VBox vbox = new VBox();
+        vbox.getChildren().addAll(hboxOne, hboxTwo);
 
-        Scene categories = new Scene(vBox, 400, 400);
+        Scene categories = new Scene(vbox, 400, 400);
         show(categories, stage);
     }
 
-    public void transportScreen(Stage stage) {
+    /**
+     * The transport screen.
+     * @param stage stage
+     */
+    private void transportScreen(Stage stage) {
         Button cycle = new Button("cycle");
         cycle.setMinSize(200, 200);
         cycle.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+            @Override public void handle(ActionEvent actionEvent) {
                 Transport.addCycleAction();
             }
         });
@@ -121,7 +134,7 @@ public class Application extends javafx.application.Application {
         Button publicTransport = new Button("public Transport");
         publicTransport.setMinSize(200, 200);
         publicTransport.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+            @Override public void handle(ActionEvent actionEvent) {
                 Transport.addPublicTransportAction();
             }
         });
@@ -129,7 +142,7 @@ public class Application extends javafx.application.Application {
         Button car = new Button("car");
         car.setMinSize(200, 200);
         car.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+            @Override public void handle(ActionEvent actionEvent) {
                 Transport.addCarAction();
             }
         });
@@ -137,28 +150,27 @@ public class Application extends javafx.application.Application {
         Button plane = new Button("plane");
         plane.setMinSize(200, 200);
         plane.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+            @Override public void handle(ActionEvent actionEvent) {
                 Transport.addPlaneAction();
             }
         });
 
-        HBox hBoxtop = new HBox();
-        hBoxtop.getChildren().addAll(cycle, publicTransport);
-        HBox hBoxbottom = new HBox();
-        hBoxbottom.getChildren().addAll(car, plane);
-        VBox vBox = new VBox();
-        vBox.getChildren().addAll(hBoxtop, hBoxbottom);
+        HBox hboxtop = new HBox();
+        hboxtop.getChildren().addAll(cycle, publicTransport);
+        HBox hboxBottom = new HBox();
+        hboxBottom.getChildren().addAll(car, plane);
+        VBox vbox = new VBox();
+        vbox.getChildren().addAll(hboxtop, hboxBottom);
 
-        Scene categories = new Scene(vBox, 400, 400);
+        Scene categories = new Scene(vbox, 400, 400);
         show(categories, stage);
     }
 
-    public void show(Scene scene, Stage stage) {
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void foodCategoryScreen(Stage stage) {
+    /**
+     * The food screen.
+     * @param stage stage
+     */
+    private void foodCategoryScreen(Stage stage) {
         CheckBox veggie = new CheckBox("It was veggie");
         veggie.setMinSize(200,20);
 
@@ -171,18 +183,19 @@ public class Application extends javafx.application.Application {
         Button send = new Button("add action");
         send.setMinSize(200, 50);
         send.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+            @Override public void handle(ActionEvent actionEvent) {
                 //looks what is selected
-                System.out.println(veggie.isSelected() +", " + locally.isSelected() +", " +  bio.isSelected());
+                System.out.println(veggie.isSelected() + ", "
+                        + locally.isSelected() + ", " +  bio.isSelected());
                 FoodCategory.addAction(veggie.isSelected(), locally.isSelected(), bio.isSelected());
             }
         });
 
 
-        VBox vBox = new VBox();
-        vBox.getChildren().addAll(veggie,locally,bio,send);
+        VBox vbox = new VBox();
+        vbox.getChildren().addAll(veggie,locally,bio,send);
 
-        Scene actions = new Scene(vBox, 400, 400);
+        Scene actions = new Scene(vbox, 400, 400);
         show(actions, stage);
     }
 
@@ -233,8 +246,18 @@ public class Application extends javafx.application.Application {
         //check if all characters in the name are valid characters
         for (char c : testName.toCharArray()) {
             if (!(Character.toString(c).toLowerCase()).matches("[a-zA-Z]")) {
-                throw new IllegalArgumentException("Invalid character");
+                throw new IllegalArgumentException("Invalid character " + c);
             }
         }
+    }
+
+    /**
+     * shows the given scene to the user.
+     * @param scene scene
+     * @param stage stage
+     */
+    private void show(Scene scene, Stage stage) {
+        stage.setScene(scene);
+        stage.show();
     }
 }
