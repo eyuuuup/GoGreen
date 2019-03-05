@@ -32,7 +32,7 @@ public final class GoGreenApplication {
                     System.out.print("Login, please enter Username: ");
                     username = sc.next();
                     System.out.println();
-                    if (Communication.login(username)) {
+                    if (Communication.login(username, "password")) {
                         System.out.println("Login successful, welcome " + username + "!");
                         displayCategories(sc);
                         return;
@@ -44,7 +44,7 @@ public final class GoGreenApplication {
                     System.out.print("Register, please enter Username: ");
                     username = sc.next();
                     System.out.println();
-                    if (Communication.register(username)) {
+                    if (Communication.register(username, "password")) {
                         System.out.println("Registration successful, welcome " + username + "!");
                         displayCategories(sc);
                         return;

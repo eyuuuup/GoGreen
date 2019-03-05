@@ -7,31 +7,33 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.awt.*;
 
 @RestController
 @RequestMapping("/")
 public class Controller {
 
-    @RequestMapping(value={"/login"}, method= RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE)
-    public String login(@Valid @RequestBody UserDetails u)
-    {
-//        if(check in database)
-//            return "ERWIN";
-
+    /**
+     * This is the login method which connects the server and client.
+     * @param userDetails user details
+     * @return login successful
+     */
+    @RequestMapping(value = {"/login"}, method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public String login(@Valid @RequestBody UserDetails userDetails) {
+        //if(check in database)
+        //return "Erwin"
         return "ERWIN";
     }
 
-    @RequestMapping(value={"/addAction"}, method=RequestMethod.POST)//, produces=MediaType.APPLICATION_JSON_VALUE)
-    public String addAction(@Valid @RequestBody AddAction a)
-    {
-
+    //, produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = {"/addAction"}, method = RequestMethod.POST)
+    public String addAction(@Valid @RequestBody AddAction addAction) {
         return "ERWIN";
     }
 
-    @RequestMapping(value={"/newLogin"}, method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
-    public String newUser(@Valid @RequestBody UserDetails l)
-    {
+    @RequestMapping(value = {"/newLogin"}, method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public String newUser(@Valid @RequestBody UserDetails userDetails) {
 
         return "ERWIN";
     }

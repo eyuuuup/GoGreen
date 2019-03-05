@@ -20,8 +20,9 @@ public class Communication {
      * @throws Exception if not logged in
      */
     public static boolean addAction(String action, int points) {
-        if (userID == null) new Exception("Not logged in");
-
+        if (userID == null) {
+            new Exception("Not logged in");
+        }
 
         AddAction send = new AddAction(userID, action, points);
         HttpEntity<client.AddAction> request = new HttpEntity<>(send);
@@ -39,11 +40,11 @@ public class Communication {
      * Checks whether a given username and password matches on the server.
      * If yes, retrieves userID for such combination
      *
-     * @param username_ the username
-     * @param password_ the password
+     * @param username the username
+     * @param password the password
      * @return boolean correctly logged in and userID recieved
      */
-    public static boolean login(String username_, String password_) {
+    public static boolean login(String username, String password) {
         //validate if username and password matched those on server
         //if they do retrieve userID and store it
         return true;
@@ -53,12 +54,12 @@ public class Communication {
      * Checks whether a given username is not taken on the server.
      * Stores the username and password, retrieves assigned userID.
      *
-     * @param username_ the username
-     * @param password_ the password
+     * @param username the username
+     * @param password the password
      * @return boolean correctly logged in and userID recieved
      */
-    public static boolean register(String username_, String password_) {
-        User.checkName(username_);
+    public static boolean register(String username, String password) {
+        User.checkName(username);
 
         //send username_ to the server, validate if it is not taken.
         //also send hashed password
@@ -67,9 +68,8 @@ public class Communication {
     }
 
     /**
-     * Tries to log in with the stored username and password
-     *
-     * @return boolean correctly logged in and userID recieved
+     * Tries to log in with the stored username and password.
+     * @return boolean correctly logged in and userID received
      */
     public static boolean silentLogin() {
 

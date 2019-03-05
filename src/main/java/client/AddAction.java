@@ -6,6 +6,12 @@ public class AddAction {
     private String action;
     private int    value;
 
+    /**
+     * Creates a new Action.
+     * @param user the user
+     * @param action the action
+     * @param value the value
+     */
     public AddAction(String user, String action, int value) {
         this.user = user;
         this.action = action;
@@ -38,6 +44,7 @@ public class AddAction {
 
     @Override
     public String toString() {
-        return "<AddAction(user=\"" + user + "\", action=\"" + action + "\", value=\"" + value + "\")>";
+        return "<AddAction(user=\"" + user + "\", action=\""
+                + action + "\", value=\"" + value + "\")>";
     }
 }

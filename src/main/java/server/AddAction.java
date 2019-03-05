@@ -1,29 +1,46 @@
 package server;
 
+/**
+ * This class adds an Action to the Database.
+ */
 public class AddAction {
     private String user;
     private String action;
     private int value;
 
-    public AddAction(String user, String action, int value)
-    {
-        this.user=user;
-        this.action=action;
-        this.value=value;
+    /**
+     * Create a new action.
+     * @param user the user
+     * @param action the action
+     * @param value the value
+     */
+    public AddAction(String user, String action, int value) {
+        this.user = user;
+        this.action = action;
+        this.value = value;
     }
 
-    public String getUser()
-    {
+    /**
+     * getter for User.
+     * @return user
+     */
+    public String getUser() {
         return user;
     }
 
-    public String getAction()
-    {
+    /**
+     * getter for Action.
+     * @return action
+     */
+    public String getAction() {
         return action;
     }
 
-    public int getValue()
-    {
+    /**
+     * getter for Value.
+     * @return value
+     */
+    public int getValue() {
         return value;
     }
 }
