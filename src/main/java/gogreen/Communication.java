@@ -44,7 +44,7 @@ public class Communication {
      * @param password the password
      * @return boolean correctly logged in and userID recieved
      */
-    public static boolean login(String username, String password) {
+    public static boolean login(String username, String password, boolean remember) {
         //validate if username and password matched those on server
         //if they do retrieve userID and store it
         return true;
@@ -58,7 +58,7 @@ public class Communication {
      * @param password the password
      * @return boolean correctly logged in and userID recieved
      */
-    public static boolean register(String username, String password) {
+    public static boolean register(String username, String password, boolean remember) {
 
         //send username_ to the server, validate if it is not taken.
         //also send hashed password
@@ -75,7 +75,7 @@ public class Communication {
         //retrieve username and password from somewhere (file)
         //try to log in and retrieve userID
 
-        return true;
+        return false;
     }
 
     //*TEST_METHOD
