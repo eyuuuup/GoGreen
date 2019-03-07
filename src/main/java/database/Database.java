@@ -42,7 +42,8 @@ public class Database {
 
     /**
      * This method checks if the username and password combination exists in the database
-     * @param user An user object with the password and username
+     * @param username A String with the username
+     * @param password A String with the password
      * @return if the username and password match
      */
     public boolean checkLogin(String username, String password){
@@ -51,6 +52,7 @@ public class Database {
 
     /**
      * This method queries the database for a taken in the username and password match.
+     * @param username A string with the username
      * @return the token for the user
      */
     public String returnToken(String username){ return ""; }
