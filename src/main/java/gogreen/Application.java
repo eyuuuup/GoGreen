@@ -44,7 +44,7 @@ public class Application extends javafx.application.Application {
 
         //if the user chose to remember the password in the app
         //the silentLogin will login for the user
-        if (Communication.silentLogin()) {
+        if (client.Communication.silentLogin()) {
             categoryScreen();
         } else {
             loginScreen();
@@ -214,7 +214,7 @@ public class Application extends javafx.application.Application {
                                 e.printStackTrace();
                             }
 
-                            if (Communication.register(name,
+                            if (client.Communication.register(name,
                                     encryptedPassword, rememberUser.isSelected())) {
                                 categoryScreen();
                             }
@@ -319,7 +319,7 @@ public class Application extends javafx.application.Application {
                     e.printStackTrace();
                 }
 
-                if (Communication.login(encodedUserName, encryptedPassword,
+                if (client.Communication.login(encodedUserName, encryptedPassword,
                         rememberUser.isSelected())) {
                     categoryScreen();
                 }
