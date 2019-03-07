@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+import java.util.UUID;
+
 import static server.ReplaceByDatabaseMethods.*;
 
 @RestController
@@ -42,7 +44,8 @@ public class Controller {
         boolean bool=checkUsername(userDetails.getUsername());
         if(bool==true)
         {
-            //generate TOKEN IMP
+            //generate TOKEN
+            token = UUID.randomUUID().toString();
             setNewUser(userDetails,token);
             return new TokenResponse(token, true);
         }
