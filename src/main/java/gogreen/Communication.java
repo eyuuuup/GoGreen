@@ -5,6 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 
+//import org.jasypt.util.password.StrongPasswordEncryptor;
+
 @SpringBootApplication
 public class Communication {
     private static String userID;
@@ -45,6 +47,11 @@ public class Communication {
      * @return boolean correctly logged in and userID recieved
      */
     public static boolean login(String username, String password, boolean remember) {
+//        if (passwordEncryptor.checkPassword(inputPassword, encryptedPassword)) {
+//            // correct!
+//        } else {
+//            // bad login!
+//        }
         //validate if username and password matched those on server
         //if they do retrieve userID and store it
         return true;

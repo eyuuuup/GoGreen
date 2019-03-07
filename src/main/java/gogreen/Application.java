@@ -15,9 +15,13 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Scanner;
 
 public class Application extends javafx.application.Application {
@@ -199,8 +203,19 @@ public class Application extends javafx.application.Application {
                     //and whether the server accepts the registration
                     if (password.getText().equals(passwordTwo.getText())) {
                         if (password.getText().length() > 7) {
+                            StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+                            String encryptedPassword = passwordEncryptor.encryptPassword(password.getText());
+
+                            String encodedUserName = "";
+                            try {
+                                encodedUserName = (String) Base64.getEncoder().encodeToString(
+                                        name.getBytes("utf-8"));
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+
                             if (Communication.register(name,
-                                    password.getText(), rememberUser.isSelected())) {
+                                    encryptedPassword, rememberUser.isSelected())) {
                                 categoryScreen();
                             }
                         } else {
@@ -293,7 +308,18 @@ public class Application extends javafx.application.Application {
         login.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent actionEvent) {
                 //checks whether the given name and password belong to an existing account
-                if (Communication.login(userName.getText(), password.getText(),
+                StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+                String encryptedPassword = passwordEncryptor.encryptPassword(password.getText());
+
+                String encodedUserName = "";
+                try {
+                    encodedUserName = (String) Base64.getEncoder().encodeToString(
+                            userName.getText().getBytes("utf-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                if (Communication.login(encodedUserName, encryptedPassword,
                         rememberUser.isSelected())) {
                     categoryScreen();
                 }
