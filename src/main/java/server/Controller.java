@@ -8,40 +8,73 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+import java.util.UUID;
+
+import static server.ReplaceByDatabaseMethods.*;
+
 @RestController
 @RequestMapping("/")
 public class Controller {
 
     /**
      * This is the login method which connects the server and client.
-     * @param userDetails user details
-     * @return login successful
+     * @param userDetails username, password
+     * @return TokenResponse token, bool
      */
     @RequestMapping(value = {"/login"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public String login(@Valid @RequestBody UserDetails userDetails) {
+    public TokenResponse login(@Valid @RequestBody UserDetails userDetails) {
         //if(check in database)
-        //return "Erwin"
-        return "ERWIN";
+        TokenResponse t= checkLogin(userDetails);
+        return t;
     }
 
-    //, produces=MediaType.APPLICATION_JSON_VALUE)
-    @RequestMapping(value = {"/addAction"}, method = RequestMethod.POST)
-    public String addAction(@Valid @RequestBody AddAction addAction) {
-        return "ERWIN";
+    /**
+     * Register as new user
+     * checks if username already taken or not and generates new token
+     * @param userDetails username, passsword
+     * @return TokenResponse token, bool
+     * true user set
+     * false username already exists
+     */
+    @RequestMapping(value={"/register"}, method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public TokenResponse register(UserDetails userDetails)
+    {
+        String token=null;
+        boolean bool=checkUsername(userDetails.getUsername());
+        if(bool==true)
+        {
+            //generate TOKEN
+            token = UUID.randomUUID().toString();
+            setNewUser(userDetails,token);
+            return new TokenResponse(token, true);
+        }
+
+        else
+        {
+            return new TokenResponse(token, false);
+        }
     }
 
-    @RequestMapping(value = {"/newLogin"}, method = RequestMethod.POST,
+    /**
+     * don'trequire to enter password
+     * @param token
+     * @return
+     */
+    @RequestMapping(value = {"/silentLogin"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public String newUser(@Valid @RequestBody UserDetails userDetails) {
+    public String silentLogin(@Valid @RequestBody String token) {
 
+        //IMPLEMENT
         return "ERWIN";
     }
 
-    //    public void addAction(AddAction a)
-    //    {
-    //
-    //    }
+    @RequestMapping(value = {"/addAction"}, method = RequestMethod.POST)
+    public boolean addAction(@Valid @RequestBody AddAction addAction) {
+        boolean bool =ReplaceByDatabaseMethods.addAction(addAction);
+        return bool;
+    }
+
 
 }
 

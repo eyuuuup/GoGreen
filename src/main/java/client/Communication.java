@@ -1,14 +1,12 @@
-package gogreen;
+package client;
 
-import client.AddAction;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 
-//import org.jasypt.util.password.StrongPasswordEncryptor;
-
 @SpringBootApplication
 public class Communication {
+
     private static String userID;
 
     private static final String host = "http://localhost:8080";
@@ -23,11 +21,11 @@ public class Communication {
      */
     public static boolean addAction(String action, int points) {
         if (userID == null) {
-            new Exception("Not logged in");
+            return false;
         }
 
-        AddAction send = new AddAction(userID, action, points);
-        HttpEntity<client.AddAction> request = new HttpEntity<>(send);
+        Action send = new Action(userID, action, points);
+        HttpEntity<client.Action> request = new HttpEntity<>(send);
 
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(host + "/addAction", request, String.class);
@@ -47,13 +45,6 @@ public class Communication {
      * @return boolean correctly logged in and userID recieved
      */
     public static boolean login(String username, String password, boolean remember) {
-//        if (passwordEncryptor.checkPassword(inputPassword, encryptedPassword)) {
-//            // correct!
-//        } else {
-//            // bad login!
-//        }
-        //validate if username and password matched those on server
-        //if they do retrieve userID and store it
         return true;
     }
 

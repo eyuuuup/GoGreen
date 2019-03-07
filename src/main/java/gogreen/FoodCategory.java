@@ -1,5 +1,7 @@
 package gogreen;
 
+import client.Communication;
+
 /**
  * The food category will handle adding an action in the foodCategory.
  * And distributing the foodCategory points
