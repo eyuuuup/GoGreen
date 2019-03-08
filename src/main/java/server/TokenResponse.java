@@ -4,10 +4,9 @@ public class TokenResponse {
     private String token;
     private boolean bool;
 
-    public TokenResponse(String token, boolean bool)
-    {
-        this.token=token;
-        this.bool=bool;
+    public TokenResponse(String token, boolean bool) {
+        this.token = token;
+        this.bool = bool;
     }
 
     public String getToken() {

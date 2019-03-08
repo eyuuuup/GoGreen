@@ -6,11 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID; //LEAVE ONE LINE
 import javax.validation.Valid;
 
-import java.util.UUID;
-
-import static server.ReplaceByDatabaseMethods.*;
 
 @RestController
 @RequestMapping("/")
@@ -24,41 +22,35 @@ public class Controller {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public TokenResponse login(@Valid @RequestBody User user) {
         //if(check in database)
-        TokenResponse t= checkLogin(user);
-        return t;
+        TokenResponse token = ReplaceByDatabaseMethods.checkLogin(user);
+        return token;
     }
 
     /**
-     * Register as new user
+     * Register as new user.
      * checks if username already taken or not and generates new token
      * @param user username, passsword
      * @return TokenResponse token, bool
-     * true user set
-     * false username already exists
+     * if true user is added else false username already exists
      */
-
-    @RequestMapping(value={"/register"}, method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public TokenResponse register(User user)
-    {
-        String token=null;
-        boolean bool=checkUsername(user.getName());
-        if(bool==true)
-        {
+    @RequestMapping(value = {"/register"}, method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public TokenResponse register(User user) {
+        String token = null;
+        boolean bool=ReplaceByDatabaseMethods.checkUsername(user.getName());
+        if (bool == true) {
             //generate TOKEN
             token = UUID.randomUUID().toString();
-            setNewUser(user,token);
+            ReplaceByDatabaseMethods.setNewUser(user,token);
             return new TokenResponse(token, true);
-        }
-
-        else
-        {
+         } else {
             return new TokenResponse(token, false);
         }
     }
 
     /**
-     * don'trequire to enter password
-     * @param token
+     * don'trequire to enter password.
+     * @param token string
      * @return
      */
     @RequestMapping(value = {"/silentLogin"}, method = RequestMethod.POST,
@@ -71,7 +63,7 @@ public class Controller {
 
     @RequestMapping(value = {"/addAction"}, method = RequestMethod.POST)
     public boolean addAction(@Valid @RequestBody AddAction addAction) {
-        boolean bool =ReplaceByDatabaseMethods.addAction(addAction);
+        boolean bool = ReplaceByDatabaseMethods.addAction(addAction);
         return bool;
     }
 
