@@ -5,17 +5,17 @@ package server;
  */
 public class ReplaceByDatabaseMethods {
 
-    /**
-     *checks if username and password right or not
-     * @param userDetails (username, password)
-     * @return TokenResponse (token, boolean)
-     */
-    public static TokenResponse checkLogin(UserDetails userDetails)
-    {
-        String token =null;
-        boolean bool=false;
-        return new TokenResponse(token, bool);
-    }
+//    /**
+//     *checks if username and password right or not
+//     * @param userDetails (username, password)
+//     * @return TokenResponse (token, boolean)
+//     */
+//    public static TokenResponse checkLogin(UserDetails userDetails)
+//    {
+//        String token =null;
+//        boolean bool=false;
+//        return new TokenResponse(token, bool);
+//    }
 
     /**
      * checks if username already exists or not in database
@@ -29,14 +29,14 @@ public class ReplaceByDatabaseMethods {
         return  bool;
     }
 
-    /**
-     * adds new user in the database
-     * @param userDeatails
-     */
-    public static void setNewUser(UserDetails userDeatails, String token)
-    {
-
-    }
+//    /**
+//     * adds new user in the database
+//     * @param userDeatails
+//     */
+//    public static void setNewUser(UserDetails userDeatails, String token)
+//    {
+//
+//    }
 
     /**
      * add actoin to database and add points

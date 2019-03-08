@@ -1,3 +1,4 @@
-.button {
+.root {
     -fx-min-width: 200;
+    -fx-alignment: CENTER;
 }
