@@ -43,9 +43,28 @@ public class Communication {
      * @return boolean correctly logged in and token recieved
      */
     public static boolean login(String username, String password, boolean remember) {
+        if (!checkName(username)) {
+            // username contains prohibited characters
+            return false;
+        }
 
         //validate if username and password matched those on server
         //if they do retrieve token and store it
+
+        User             user    = new User(username, password);
+        HttpEntity<User> message = new HttpEntity<>(user);
+
+        RestTemplate request  = new RestTemplate();
+        String       response = request.postForObject(hostDir + "/login", message, String.class);
+
+        if (response == null || response.equalsIgnoreCase("")) {
+            // not matching login and password
+            return false;
+        }
+
+        if (remember) {
+            //save token to file
+        }
 
         return true;
     }
