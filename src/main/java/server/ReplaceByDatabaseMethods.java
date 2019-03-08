@@ -10,7 +10,7 @@ public class ReplaceByDatabaseMethods {
      * @param userDetails (username, password)
      * @return TokenResponse (token, boolean)
      */
-    public static TokenResponse checkLogin(UserDetails userDetails)
+    public static TokenResponse checkLogin(User userDetails)
     {
         String token =null;
         boolean bool=false;
@@ -33,7 +33,7 @@ public class ReplaceByDatabaseMethods {
      * adds new user in the database
      * @param userDeatails
      */
-    public static void setNewUser(UserDetails userDeatails, String token)
+    public static void setNewUser(User userDeatails, String token)
     {
 
     }

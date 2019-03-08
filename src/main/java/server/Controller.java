@@ -18,35 +18,35 @@ public class Controller {
 
     /**
      * This is the login method which connects the server and client.
-     * @param userDetails username, password
+     * @param user username, password
      * @return TokenResponse token, bool
      */
     @RequestMapping(value = {"/login"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public TokenResponse login(@Valid @RequestBody UserDetails userDetails) {
+    public TokenResponse login(@Valid @RequestBody User user) {
         //if(check in database)
-        TokenResponse t= checkLogin(userDetails);
+        TokenResponse t= checkLogin(user);
         return t;
     }
 
     /**
      * Register as new user
      * checks if username already taken or not and generates new token
-     * @param userDetails username, passsword
+     * @param user username, passsword
      * @return TokenResponse token, bool
      * true user set
      * false username already exists
      */
     @RequestMapping(value={"/register"}, method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public TokenResponse register(UserDetails userDetails)
+    public TokenResponse register(User user)
     {
         String token=null;
-        boolean bool=checkUsername(userDetails.getUsername());
+        boolean bool=checkUsername(user.getName());
         if(bool==true)
         {
             //generate TOKEN
             token = UUID.randomUUID().toString();
-            setNewUser(userDetails,token);
+            setNewUser(user,token);
             return new TokenResponse(token, true);
         }
 
