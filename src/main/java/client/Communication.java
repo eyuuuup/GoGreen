@@ -26,7 +26,7 @@ public class Communication {
         HttpEntity<client.Action> request = new HttpEntity<>(send);
 
         RestTemplate restTemplate = new RestTemplate();
-        String       res          = restTemplate.postForObject(host + "/addAction", request, String.class);
+        String res= restTemplate.postForObject(host + "/addAction", request, String.class);
 
         System.out.println("result: " + res);
 
