@@ -4,7 +4,6 @@ package server;
  * Class to be replaced.
  */
 public class ReplaceByDatabaseMethods {
-
     /**
      *checks if username and password right or not.
      * @param userDetails (username, password)

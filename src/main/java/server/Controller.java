@@ -13,7 +13,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/")
 public class Controller {
-
     /**
      * This is the login method which connects the server and client.
      * @param user username, password

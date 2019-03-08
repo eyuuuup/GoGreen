@@ -37,7 +37,7 @@ public final class GoGreenApplication {
                     username = sc.next();
                     try {
                         checkName(username);
-                    } catch (Exception e) {
+                    } catch (NullPointerException | IllegalArgumentException e) {
                         System.out.println(e.getMessage());
                         break;
                     }
@@ -55,7 +55,7 @@ public final class GoGreenApplication {
                     username = sc.next();
                     try {
                         checkName(username);
-                    } catch (Exception e) {
+                    } catch (NullPointerException | IllegalArgumentException e) {
                         System.out.println(e.getMessage());
                         break;
                     }
