@@ -48,7 +48,7 @@ public class Application extends javafx.application.Application {
     private void loginScreen() {
         GridPane body = loginBody();
         Scene loginScene = new Scene(body, 500, 250);
-        loginScene.getStylesheets().add("doc/resources/Style.css");
+        loginScene.getStylesheets().add("src/styles/Style.css");
         show(loginScene);
     }
 

@@ -102,7 +102,7 @@ class ApplicationMethods {
 
         //check whether the name is not offensive
         try {
-            File file = new File("doc/resources/InvalidNamesComma.txt");
+            File file = new File("src/extraFiles/InvalidNamesComma.txt");
             Scanner sc = new Scanner(file).useDelimiter(", ");
             while (sc.hasNext()) {
                 if (testName.contains(sc.next())) {
