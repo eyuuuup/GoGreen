@@ -6,8 +6,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
 
-import static gogreen.Application.checkName;
-
 @SpringBootApplication
 public class Communication {
     private static String token = null;
@@ -56,11 +54,6 @@ public class Communication {
      * @return boolean wether the submit/fetch was sucessfull
      */
     private static boolean submit(String username, String password, boolean remember, String postURL) {
-        if (!checkName(username)) {
-            // username contains prohibited characters
-            return false;
-        }
-
         User             user    = new User(username, password);
         HttpEntity<User> message = new HttpEntity<>(user);
 
