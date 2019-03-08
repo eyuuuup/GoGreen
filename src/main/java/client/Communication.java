@@ -4,6 +4,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import static gogreen.Application.checkName;
 
 @SpringBootApplication
@@ -11,7 +15,7 @@ public class Communication {
     private static String token;
 
     private static final String hostDir = "http://localhost:8080";
-    private static final String fileDir = "src/docs/files/token.txt";
+    private static final String fileDir = "src/extraFiles/token.txt";
 
     /**
      * Checks whether a given name is according to the rules.
@@ -62,8 +66,16 @@ public class Communication {
             return false;
         }
 
-        if (remember) {
-            //save token to file
+        try {
+            FileWriter out = new FileWriter(new File(fileDir));
+            if (remember) {
+                //save token to file
+                out.write(token);
+            } // else over-write perhaps stored token
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return true;
