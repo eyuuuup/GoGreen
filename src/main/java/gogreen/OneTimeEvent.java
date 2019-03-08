@@ -22,11 +22,11 @@ public final class OneTimeEvent {
 
         if (RecycleCup) {
             System.out.println("RecycleCup");
-            Communication.addRequest("RecycleCup", 100);
+            Communication.addAction("RecycleCup", 100);
         }
         if (SignInEvGroup) {
             System.out.println("SignInEvGroup");
-            Communication.addRequest("SignIn", 100);
+            Communication.addAction("SignIn", 100);
         }
 
     }
