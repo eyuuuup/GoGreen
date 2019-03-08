@@ -21,17 +21,17 @@ public class FoodCategory {
         //ask questions, later will become buttons
         if (veggie) {
             System.out.println("veggie");
-            Communication.addRequest("Meat", 50);
+            Communication.addAction("Meat", 50);
         }
 
         if (locally) {
             System.out.println("locally");
-            Communication.addRequest("Biological", 50);
+            Communication.addAction("Biological", 50);
         }
 
         if (bio) {
             System.out.println("bio");
-            Communication.addRequest("Locally", 50);
+            Communication.addAction("Locally", 50);
         }
     }
 }

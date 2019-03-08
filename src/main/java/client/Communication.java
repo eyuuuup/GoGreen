@@ -4,38 +4,39 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 
+import static gogreen.Application.checkName;
+
 @SpringBootApplication
 public class Communication {
     private static String token;
 
-    private static final String host = "http://localhost:8080";
+    private static final String hostDir = "http://localhost:8080";
+    private static final String fileDir = "src/docs/files/token.txt";
 
     /**
      * Checks whether a given name is according to the rules.
      *
-     * @param action the name of the action
-     * @param points the value of points to send
+     * @param actionName the name of the action
+     * @param points     the value of points to send
      * @return boolean correctly sent to server
      */
-    public static boolean addRequest(String action, int points) {
+    public static boolean addAction(String actionName, int points) {
         if (token == null) {
             return false; // not logged in
         }
 
-        Action send = new Action(token, action, points);
-        HttpEntity<client.Action> request = new HttpEntity<>(send);
+        Action                    action  = new Action(token, actionName, points);
+        HttpEntity<client.Action> message = new HttpEntity<>(action);
 
-        RestTemplate restTemplate = new RestTemplate();
-        String       res          = restTemplate.postForObject(host + "/addAction", request, String.class);
+        RestTemplate request  = new RestTemplate();
+        boolean      response = request.postForObject(hostDir + "/addAction", message, boolean.class);
 
-        System.out.println("result: " + res);
-
-        return true;
+        return response;
     }
 
     /**
      * Checks whether a given username and password matches on the server.
-     * If yes, retrieves token for such combination
+     * If yes, retrieves token for such combination for further authentication
      *
      * @param username the username
      * @param password the password

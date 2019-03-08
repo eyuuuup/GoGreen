@@ -12,27 +12,27 @@ public final class Transport {
      * This methods returns points for a Cycle action.
      */
     public static void addCycleAction() {
-        Communication.addRequest("Cycle", 100);
+        Communication.addAction("Cycle", 100);
     }
 
     /**
      * This methods returns points for a Car action.
      */
     public static void addCarAction() {
-        Communication.addRequest("Car", 25);
+        Communication.addAction("Car", 25);
     }
 
     /**
      * This methods returns points for a Plane action.
      */
     public static void addPlaneAction() {
-        Communication.addRequest("Plane", 0);
+        Communication.addAction("Plane", 0);
     }
 
     /**
      * This methods returns points for a Public Transport action.
      */
     public static void addPublicTransportAction() {
-        Communication.addRequest("PublicTransport", 75);
+        Communication.addAction("PublicTransport", 75);
     }
 }
