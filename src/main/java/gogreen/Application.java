@@ -14,6 +14,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
+import java.io.File;
+
 public class Application extends javafx.application.Application {
     //the stage this application uses
     private static Stage stage;
@@ -48,7 +50,9 @@ public class Application extends javafx.application.Application {
     private void loginScreen() {
         GridPane body = loginBody();
         Scene loginScene = new Scene(body, 500, 250);
-        loginScene.getStylesheets().add("src/styles/Style.css");
+        //File f = new File("src/styles/style.css");
+        //loginScene.getStylesheets().add("file:///" + f.getAbsolutePath().replace("\\", "/"));
+        loginScene.getStylesheets().add("src/styles/style.css");
         show(loginScene);
     }
 

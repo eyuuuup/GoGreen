@@ -17,7 +17,7 @@ public class Communication {
      * @param points the value of points to send
      * @return boolean correctly sent to server
      */
-    public static boolean addAction(String action, int points) {
+    public static boolean addRequest(String action, int points) {
         if (token == null) {
             return false; // not logged in
         }
