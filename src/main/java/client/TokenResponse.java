@@ -1,4 +1,4 @@
-package server;
+package client;
 
 public class TokenResponse {
     private String  token;
