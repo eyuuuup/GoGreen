@@ -1,6 +1,6 @@
 package gogreen;
 
-import java.util.Scanner;
+import client.Communication;
 
 /**
  * The food category will handle adding an action in the foodCategory.
@@ -9,24 +9,28 @@ import java.util.Scanner;
  * @author Erwin van Dam
  */
 public class FoodCategory {
+
+
     /**
-     * The user will give an input, those will be stored in the actions of the category.
-     * @param sc is the scanner for the user input.
+     * will receive three booleans and calculate the points for them.
+     * @param veggie vegetarian
+     * @param locally locally produced
+     * @param bio biological
      */
-    public static void addAction(Scanner sc) {
+    public static void addAction(Boolean veggie, boolean locally, boolean bio) {
         //ask questions, later will become buttons
-        System.out.println("Did it contain meat? (true / false)");
-        if (!Boolean.parseBoolean(sc.next())) {
+        if (veggie) {
+            System.out.println("veggie");
             Communication.addAction("Meat", 50);
         }
 
-        System.out.println("Was it biological (true / false)");
-        if (Boolean.parseBoolean(sc.next())) {
+        if (locally) {
+            System.out.println("locally");
             Communication.addAction("Biological", 50);
         }
 
-        System.out.println("Was it locally produced(true / false)");
-        if (Boolean.parseBoolean(sc.next())) {
+        if (bio) {
+            System.out.println("bio");
             Communication.addAction("Locally", 50);
         }
     }

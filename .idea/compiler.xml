@@ -7,12 +7,16 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="GIT" />
+        <module name="OOP-Project" />
+        <module name="template" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="GIT" options="" />
+      <module name="GIT" options="-parameters" />
+      <module name="OOP-Project" options="-parameters" />
+      <module name="template" options="-parameters" />
     </option>
   </component>
 </project>

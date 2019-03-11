@@ -1,5 +1,9 @@
 package gogreen;
 
+import client.Communication;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
@@ -31,8 +35,14 @@ public final class GoGreenApplication {
                 case 1:
                     System.out.print("Login, please enter Username: ");
                     username = sc.next();
+                    try {
+                        checkName(username);
+                    } catch (NullPointerException | IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                        break;
+                    }
                     System.out.println();
-                    if (Communication.login(username)) {
+                    if (Communication.login(username, "password", false)) {
                         System.out.println("Login successful, welcome " + username + "!");
                         displayCategories(sc);
                         return;
@@ -43,8 +53,14 @@ public final class GoGreenApplication {
                 case 2:
                     System.out.print("Register, please enter Username: ");
                     username = sc.next();
+                    try {
+                        checkName(username);
+                    } catch (NullPointerException | IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                        break;
+                    }
                     System.out.println();
-                    if (Communication.register(username)) {
+                    if (Communication.register(username, "password", false)) {
                         System.out.println("Registration successful, welcome " + username + "!");
                         displayCategories(sc);
                         return;
@@ -172,7 +188,7 @@ public final class GoGreenApplication {
         switch (choice) {
             case 1:
                 // add an action
-                FoodCategory.addAction(sc);
+                // FoodCategory.addAction(sc);
                 break;
             default:
                 //go back to the category display
@@ -181,4 +197,55 @@ public final class GoGreenApplication {
         }
     }
 
+    /**
+     * Checks whether a given name is according to the rules.
+     * @param testName the name to test
+     * @return boolean correct name
+     * @throws NullPointerException     if null
+     * @throws IllegalArgumentException if invalid
+     */
+    public static boolean checkName(final String testName)
+            throws NullPointerException, IllegalArgumentException {
+        if (testName == null) {
+            throw new NullPointerException("Name equals null");
+        }
+
+        final int maxSize = 16;
+        if (testName.length() >= maxSize) {
+            throw new IllegalArgumentException("Name is too long");
+        }
+        if (testName.length() <= 0) {
+            throw new IllegalArgumentException("Name is too short");
+        }
+
+        checkCharacters(testName);
+
+        //check whether the name is not offensive
+        try {
+            File file = new File("doc/resources/InvalidNamesComma.txt");
+            Scanner sc   = new Scanner(file).useDelimiter(", ");
+            while (sc.hasNext()) {
+                if (testName.contains(sc.next())) {
+                    throw new IllegalArgumentException("Offensive name");
+                }
+            }
+            sc.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    /**
+     * checks the characters in the new name.
+     * @param testName the new name
+     */
+    private static void checkCharacters(String testName) {
+        //check if all characters in the name are valid characters
+        for (char c : testName.toCharArray()) {
+            if (!(Character.toString(c).toLowerCase()).matches("[a-zA-Z]")) {
+                throw new IllegalArgumentException("Invalid character");
+            }
+        }
+    }
 }

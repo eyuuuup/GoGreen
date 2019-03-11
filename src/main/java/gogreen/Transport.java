@@ -1,5 +1,7 @@
 package gogreen;
 
+import client.Communication;
+
 /**
  * This class represents the Transport Category.
  * @author Erwin van Dam
