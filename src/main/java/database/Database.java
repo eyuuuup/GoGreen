@@ -76,7 +76,23 @@ public class Database {
      * @return if the users exists or not
      */
     public static boolean checkUsername(String username){
-        return true;
+
+        try{
+            Connection con=DriverManager.getConnection();
+            PreparedStatement state =con.prepareStatement("select * from user_data where user_data.username =  username ");
+            ResultSet Rs = state.executeQuery();
+            if(Rs.getFetchSize()==0)
+            {
+                return false;
+            }
+            else
+                return true;
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 
     /**
