@@ -352,6 +352,9 @@ public class Application extends javafx.application.Application {
         show(actions);
     }
 
+    /**
+     * the energy screen
+     */
     private static void energyScreen () {
         //GUI buttons for the energy category
         //Button for reduece energy use
@@ -381,6 +384,9 @@ public class Application extends javafx.application.Application {
         show(categories);
     }
 
+    /**
+     * the extra screen
+     */
         private static void extraScreen () {
             //GUI buttons for the extra category
             //Button for clean near place
