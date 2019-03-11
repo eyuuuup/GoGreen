@@ -52,7 +52,7 @@ public class Application extends javafx.application.Application {
         Scene loginScene = new Scene(body, 500, 250);
         //File f = new File("src/styles/style.css");
         //loginScene.getStylesheets().add("file:///" + f.getAbsolutePath().replace("\\", "/"));
-        loginScene.getStylesheets().add("src/styles/style.css");
+        loginScene.getStylesheets().add(new File("src/styles/Style.css").toURI().toString());
         show(loginScene);
     }
 
