@@ -352,6 +352,38 @@ public class Application extends javafx.application.Application {
         show(actions);
     }
 
+    private static void energyScreen () {
+        //GUI buttons for the energy category
+        //Button for reduece energy use
+        Button ReduceEnergy = new Button ("ReduceEnergy");
+        ReduceEnergy.setOnAction(e -> {
+            Energy.addReduceEnergyAction();
+        });
+
+        //Button for less shower time
+        Button showertime = new Button ("Less Shower");
+        showertime.setOnAction(e -> {
+            Energy.addReduceWater();
+        });
+
+        //button for reduce electric use
+        Button ReduceElectricity = new Button ("Reduce Electric");
+        ReduceElectricity.setOnAction(e -> {
+            Energy.addReduceElectricity();
+        });
+
+        //the buttons are put into a framework
+        FlowPane body = new FlowPane();
+        body.getChildren().addAll(ReduceEnergy, showertime, ReduceElectricity);
+
+        //and displayed to the user
+        Scene categories = new Scene(body, 400, 400);
+        show(categories);
+
+
+
+    }
+
     /**
      * shows the given scene to the user.
      *
