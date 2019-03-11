@@ -13,6 +13,15 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import javafx.scene.input.MouseEvent;
+
+
+import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
+import com.jfoenix.transitions.hamburger.HamburgerNextArrowBasicTransition;
+import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+
 
 import java.io.File;
 
@@ -249,6 +258,17 @@ public class Application extends javafx.application.Application {
      * Category screen.
      */
     static void categoryScreen() {
+
+        // make the hamburger button
+        JFXHamburger menu = new JFXHamburger();
+        HamburgerBasicCloseTransition menuTask = new HamburgerBasicCloseTransition(menu);
+        menuTask.setRate(-1);
+        menu.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+            menuTask.setRate(menuTask.getRate() * -1);
+            menuTask.play();
+        });
+
+
         //button that redirects to the food category
         Button food = new Button("food");
         food.setOnAction(e -> {
@@ -275,7 +295,7 @@ public class Application extends javafx.application.Application {
 
         //put into a framework
         FlowPane body = new FlowPane();
-        body.getChildren().addAll(food, transport, energy, extra);
+        body.getChildren().addAll(menu, food, transport, energy, extra);
 
         //and displayed
         Scene categories = new Scene(body, 400, 400);
