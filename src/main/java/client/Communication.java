@@ -44,8 +44,8 @@ public class Communication {
     }
 
     /**
-     * Handles login and register
-     * avoid duplicate code
+     * Handles login and register.
+     * avoid duplicate code.
      *
      * @param username the username
      * @param password the password
