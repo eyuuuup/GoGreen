@@ -9,6 +9,8 @@ import client.Communication;
  * @author Erwin van Dam
  */
 public class FoodCategory {
+    private FoodCategory() {}
+
     /**
      * will receive three booleans and calculate the points for them.
      * @param veggie vegetarian
@@ -16,20 +18,16 @@ public class FoodCategory {
      * @param bio biological
      */
     public static void addAction(boolean veggie, boolean locally, boolean bio) {
-        //ask questions, later will become buttons
         if (veggie) {
-            System.out.println("veggie");
             Communication.addAction("Meat", 50);
         }
 
         if (locally) {
-            System.out.println("locally");
-            Communication.addAction("Biological", 50);
+            Communication.addAction("Local", 50);
         }
 
         if (bio) {
-            System.out.println("bio");
-            Communication.addAction("Locally", 50);
+            Communication.addAction("Biological", 50);
         }
     }
 }
