@@ -4,6 +4,7 @@ import client.Communication;
 
 /**
  * Represent the Energy Category.
+ * @author Gyum cho
  */
 final class Energy {
     private Energy() {}
