@@ -9,8 +9,6 @@ import client.Communication;
  * @author Erwin van Dam
  */
 public class FoodCategory {
-
-
     /**
      * will receive three booleans and calculate the points for them.
      * @param veggie vegetarian

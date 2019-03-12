@@ -7,6 +7,7 @@ import client.Communication;
  * @author Erwin van Dam
  */
 public final class Transport {
+    private Transport() {}
 
     /**
      * This methods returns points for a Cycle action.
