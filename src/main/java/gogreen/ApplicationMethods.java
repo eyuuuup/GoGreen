@@ -14,6 +14,8 @@ import java.util.Scanner;
  * This class includes some useful methods for the GUI.
  */
 class ApplicationMethods {
+    private ApplicationMethods() {}
+
     /**
      * Toggle visibility between Textfield and PasswordField.
      * @param visible the Textfield
