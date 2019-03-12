@@ -17,7 +17,7 @@ public class FoodCategory {
      * @param locally locally produced
      * @param bio biological
      */
-    public static void addAction(Boolean veggie, boolean locally, boolean bio) {
+    public static void addAction(boolean veggie, boolean locally, boolean bio) {
         //ask questions, later will become buttons
         if (veggie) {
             System.out.println("veggie");
