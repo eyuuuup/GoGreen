@@ -38,6 +38,6 @@ public class Action {
 
     @Override
     public String toString() {
-        return "<AddAction(user=\"" + user + "\", action=\"" + action + "\", value=\"" + value + "\")>";
+        return "<Action(user=\"" + user + "\", action=\"" + action + "\", value=\"" + value + "\")>";
     }
 }

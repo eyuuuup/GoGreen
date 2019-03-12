@@ -63,8 +63,8 @@ public class Controller {
     }
 
     @RequestMapping(value = {"/addAction"}, method = RequestMethod.POST)
-    public static boolean addAction(@Valid @RequestBody AddAction addAction) {
-        boolean bool = Database.addAction(addAction);
+    public static boolean addAction(@Valid @RequestBody Action action) {
+        boolean bool = Database.addAction(action);
         return bool;
     }
 

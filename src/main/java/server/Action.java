@@ -3,7 +3,7 @@ package server;
 /**
  * This class adds an Action to the Database.
  */
-public class AddAction {
+public class Action {
     private String user;
     private String action;
     private int value;
@@ -14,7 +14,7 @@ public class AddAction {
      * @param action the action
      * @param value the value
      */
-    public AddAction(String user, String action, int value) {
+    public Action(String user, String action, int value) {
         this.user = user;
         this.action = action;
         this.value = value;

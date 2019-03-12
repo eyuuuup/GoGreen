@@ -39,7 +39,7 @@ public class ReplaceByDatabaseMethods {
      * @param action token, action, points
      * @return
      */
-    public static boolean addAction(AddAction action) {
+    public static boolean addAction(Action action) {
         //if action added return true
         return true;
     }

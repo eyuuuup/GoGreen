@@ -1,6 +1,6 @@
 package database;
 
-import server.AddAction;
+import server.Action;
 import server.TokenResponse;
 import server.User;
 
@@ -17,11 +17,11 @@ import java.util.Calendar;
 public class Database {
 
     /**
-     * This method saves the AddAction object in the database.
+     * This method saves the Action object in the database.
      * @param action An object of the class Action.
      * @return if the query succeeded.
      */
-    public static boolean addAction(AddAction action) {
+    public static boolean addAction(Action action) {
         try {
             Connection con = DriverManager.getConnection();
             PreparedStatement state =
