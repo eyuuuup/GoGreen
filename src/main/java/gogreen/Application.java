@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Tab;
 
 
 import com.jfoenix.controls.JFXHamburger;
@@ -21,6 +22,7 @@ import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import com.jfoenix.transitions.hamburger.HamburgerNextArrowBasicTransition;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import com.jfoenix.controls.JFXTabPane;
 
 
 import java.io.File;
@@ -259,43 +261,40 @@ public class Application extends javafx.application.Application {
      */
     static void categoryScreen() {
 
-        // make the hamburger button
-        JFXHamburger menu = new JFXHamburger();
-        HamburgerBasicCloseTransition menuTask = new HamburgerBasicCloseTransition(menu);
-        menuTask.setRate(-1);
-        menu.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
-            menuTask.setRate(menuTask.getRate() * -1);
-            menuTask.play();
-        });
+        //make tab thing
+        JFXTabPane navigation = new JFXTabPane();
+        navigation.setPrefSize(400, 200);
+
+        // home tab
+        Tab homeTab = new Tab();
+        homeTab.setText("Home");
 
 
-        //button that redirects to the food category
-        Button food = new Button("food");
-        food.setOnAction(e -> {
-            foodCategoryScreen();
-        });
+        // transport tab
+        Tab transportTab = new Tab();
+        transportTab.setText("Transport");
+        transportTab.setContent(transportScreen());
 
-        //button that redirects to the transport category
-        Button transport = new Button("transport");
-        transport.setOnAction(e -> {
-            transportScreen();
-        });
+        // food tab
+        Tab foodTab = new Tab();
+        foodTab.setText("Food");
+        foodTab.setContent(foodCategoryScreen());
 
-        //button that redirects to the energy category
-        Button energy = new Button("energy");
-        energy.setOnAction(e -> {
-            //action if you choose energy
-        });
 
-        //button that redirects to the extra category
-        Button extra = new Button("extra");
-        extra.setOnAction(e -> {
-            //action if you choose transport
-        });
+        // energy tab
+        Tab energyTab = new Tab();
+        energyTab.setText("Energy");
+
+        // extra tab
+        Tab extraTab = new Tab();
+        extraTab.setText("Extra");
+
+        navigation.getTabs().addAll(homeTab, transportTab, foodTab, energyTab, extraTab);
 
         //put into a framework
         FlowPane body = new FlowPane();
-        body.getChildren().addAll(menu, food, transport, energy, extra);
+        body.getChildren().addAll(navigation);
+
 
         //and displayed
         Scene categories = new Scene(body, 400, 400);
@@ -305,7 +304,7 @@ public class Application extends javafx.application.Application {
     /**
      * The transport screen.
      */
-    private static void transportScreen() {
+    private static FlowPane transportScreen() {
         //button for the cycle action
         Button cycle = new Button("cycle");
         cycle.setOnAction(e -> {
@@ -334,15 +333,13 @@ public class Application extends javafx.application.Application {
         FlowPane body = new FlowPane();
         body.getChildren().addAll(cycle, publicTransport, car, plane);
 
-        //and displayed to the user
-        Scene categories = new Scene(body, 400, 400);
-        show(categories);
+        return body;
     }
 
     /**
      * The food screen.
      */
-    private static void foodCategoryScreen() {
+    private static VBox foodCategoryScreen() {
         //checkbox for vegetarian meal
         CheckBox veggie = new CheckBox("It was veggie");
         veggie.setMinSize(200, 20);
@@ -367,9 +364,7 @@ public class Application extends javafx.application.Application {
         VBox vbox = new VBox();
         vbox.getChildren().addAll(veggie, locally, bio, send);
 
-        //and displayed to the user
-        Scene actions = new Scene(vbox, 400, 400);
-        show(actions);
+        return vbox;
     }
 
     /**
