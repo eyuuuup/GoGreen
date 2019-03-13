@@ -1,6 +1,8 @@
 package gogreen;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTabPane;
+import com.jfoenix.controls.JFXToggleNode;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
@@ -8,7 +10,9 @@ import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
@@ -291,50 +295,57 @@ public class Application extends javafx.application.Application {
     /**
      * The transport screen.
      */
-    private static VBox transportScreen() {
+    private static GridPane transportScreen() {
 
         //button for the cycle action
-        JFXButton cycle = new JFXButton("cycle");
+        JFXButton cycle = new JFXButton();
+        FontAwesomeIconView bikeIcon = new FontAwesomeIconView(FontAwesomeIcon.BICYCLE);
+        bikeIcon.setSize("50px");
+        cycle.setGraphic(bikeIcon);
         cycle.setPrefSize(200,200);
         cycle.setOnAction(e -> {
             Transport.addCycleAction();
         });
 
         //button for the public transport action
-        JFXButton publicTransport = new JFXButton("public Transport");
-        publicTransport.setPrefSize(200,200);
+        JFXButton publicTransport = new JFXButton();
+        MaterialDesignIconView subwayIcon = new MaterialDesignIconView(MaterialDesignIcon.SUBWAY);
+        subwayIcon.setSize("50px");
+        publicTransport.setGraphic(subwayIcon);
+        publicTransport.setPrefSize(230,230);
         publicTransport.setOnAction(e -> {
             Transport.addPublicTransportAction();
         });
 
         //button for the car action
-        JFXButton car = new JFXButton("car");
-        car.setPrefSize(200,200);
+        JFXButton car = new JFXButton();
+        FontAwesomeIconView carIcon = new FontAwesomeIconView(FontAwesomeIcon.AUTOMOBILE);
+        carIcon.setSize("50px");
+        car.setGraphic(carIcon);
+        car.setPrefSize(230,230);
         car.setOnAction(e -> {
             Transport.addCarAction();
         });
 
         //button for the plane action
-        JFXButton plane = new JFXButton("plane");
-        plane.setPrefSize(200,200);
+        JFXButton plane = new JFXButton();
+        FontAwesomeIconView planeIcon = new FontAwesomeIconView(FontAwesomeIcon.PLANE);
+        planeIcon.setSize("50px");
+        plane.setGraphic(planeIcon);
+        plane.setPrefSize(230,230);
         plane.setOnAction(e -> {
             Transport.addPlaneAction();
         });
 
-        JFXSlider distanceSlider = new JFXSlider();
-        distanceSlider.setMinWidth(400);
 
-
-        HBox top = new HBox(20);
-        top.getChildren().addAll(cycle, publicTransport);
-
-        HBox middle = new HBox(20);
-        middle.getChildren().addAll(car, plane);
-
-
-        VBox transportPage = new VBox(20);
-
-        transportPage.getChildren().addAll(top, middle, distanceSlider);
+        GridPane transportPage = new GridPane();
+        transportPage.add(cycle, 0 ,0);
+        transportPage.add(publicTransport, 0, 1);
+        transportPage.add(car, 1, 0);
+        transportPage.add(plane, 1,1 );
+        transportPage.setVgap(10);
+        transportPage.setHgap(10);
+        transportPage.setAlignment(Pos.CENTER);
 
        return transportPage;
     }
@@ -379,15 +390,15 @@ public class Application extends javafx.application.Application {
         });
 
         //make the body and stop the toggles in them
-        GridPane body = new GridPane();
-        body.add(veggie, 0, 0);
-        body.add(locally, 0, 1);
-        body.add(bio, 0, 2);
-        body.add(send, 0, 3);
-        body.setVgap(10);
-        
+        GridPane foodPage = new GridPane();
+        foodPage.add(veggie, 0, 0);
+        foodPage.add(locally, 0, 1);
+        foodPage.add(bio, 0, 2);
+        foodPage.add(send, 0, 3);
+        foodPage.setVgap(10);
+
         // return the body
-        return body;
+        return foodPage;
     }
 
     /**
