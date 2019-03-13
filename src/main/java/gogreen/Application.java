@@ -1,29 +1,16 @@
 package gogreen;
 
+import com.jfoenix.controls.*;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.control.Tab;
-
-
-import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
-import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
-import com.jfoenix.transitions.hamburger.HamburgerNextArrowBasicTransition;
-import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
-import com.jfoenix.controls.JFXTabPane;
-
 
 import java.io.File;
 
@@ -261,110 +248,146 @@ public class Application extends javafx.application.Application {
      */
     static void categoryScreen() {
 
-        //make tab thing
+        //make the navigation tab pane
         JFXTabPane navigation = new JFXTabPane();
-        navigation.setPrefSize(400, 200);
+        navigation.setPrefSize(500, 500);
 
-        // home tab
+        //  make the home tab
         Tab homeTab = new Tab();
         homeTab.setText("Home");
 
 
-        // transport tab
+        // make the transport tab
         Tab transportTab = new Tab();
         transportTab.setText("Transport");
         transportTab.setContent(transportScreen());
 
-        // food tab
+        // make the food tab
         Tab foodTab = new Tab();
         foodTab.setText("Food");
         foodTab.setContent(foodCategoryScreen());
 
 
-        // energy tab
+        // make the energy tab
         Tab energyTab = new Tab();
         energyTab.setText("Energy");
 
-        // extra tab
+        // make the extra tab
         Tab extraTab = new Tab();
         extraTab.setText("Extra");
 
         navigation.getTabs().addAll(homeTab, transportTab, foodTab, energyTab, extraTab);
 
+
         //put into a framework
-        FlowPane body = new FlowPane();
+        Pane body = new Pane();
         body.getChildren().addAll(navigation);
 
-
         //and displayed
-        Scene categories = new Scene(body, 400, 400);
+        Scene categories = new Scene(body, 500, 500);
         show(categories);
     }
 
     /**
      * The transport screen.
      */
-    private static FlowPane transportScreen() {
+    private static VBox transportScreen() {
+
         //button for the cycle action
-        Button cycle = new Button("cycle");
+        JFXButton cycle = new JFXButton("cycle");
+        cycle.setPrefSize(200,200);
         cycle.setOnAction(e -> {
             Transport.addCycleAction();
         });
 
         //button for the public transport action
-        Button publicTransport = new Button("public Transport");
+        JFXButton publicTransport = new JFXButton("public Transport");
+        publicTransport.setPrefSize(200,200);
         publicTransport.setOnAction(e -> {
             Transport.addPublicTransportAction();
         });
 
         //button for the car action
-        Button car = new Button("car");
+        JFXButton car = new JFXButton("car");
+        car.setPrefSize(200,200);
         car.setOnAction(e -> {
             Transport.addCarAction();
         });
 
         //button for the plane action
-        Button plane = new Button("plane");
+        JFXButton plane = new JFXButton("plane");
+        plane.setPrefSize(200,200);
         plane.setOnAction(e -> {
             Transport.addPlaneAction();
         });
 
-        //the buttons are put into a framework
-        FlowPane body = new FlowPane();
-        body.getChildren().addAll(cycle, publicTransport, car, plane);
+        JFXSlider distanceSlider = new JFXSlider();
+        distanceSlider.setMinWidth(400);
 
-        return body;
+
+        HBox top = new HBox(20);
+        top.getChildren().addAll(cycle, publicTransport);
+
+        HBox middle = new HBox(20);
+        middle.getChildren().addAll(car, plane);
+
+
+        VBox transportPage = new VBox(20);
+
+        transportPage.getChildren().addAll(top, middle, distanceSlider);
+
+       return transportPage;
     }
 
     /**
      * The food screen.
      */
-    private static VBox foodCategoryScreen() {
-        //checkbox for vegetarian meal
-        CheckBox veggie = new CheckBox("It was veggie");
-        veggie.setMinSize(200, 20);
+    private static GridPane foodCategoryScreen() {
 
-        //checkbox for locally produced food
-        CheckBox locally = new CheckBox("It was locally");
-        locally.setMinSize(200, 20);
+        // makes the veggie toggle plus the icon
+        JFXToggleNode veggie = new JFXToggleNode();
+        MaterialDesignIconView cowIcon = new MaterialDesignIconView(MaterialDesignIcon.COW);
+        veggie.setGraphic(new Label("Meat", cowIcon));
+        cowIcon.setSize("50px");
+        veggie.setMinSize(500,100);
 
-        //checkbox for biological food
-        CheckBox bio = new CheckBox("It was bio");
-        bio.setMinSize(200, 20);
+        // makes the locally toggle plus the icon
+        JFXToggleNode locally = new JFXToggleNode();
+        FontAwesomeIconView locallyIcon = new FontAwesomeIconView(FontAwesomeIcon.MAP_MARKER);
+        locallyIcon.setSize("50px");
+        locally.setGraphic(new Label("Locally", locallyIcon));
+        locally.setMinSize(500,100);
 
-        //sends the checked items to the server
-        Button send = new Button("add action");
-        send.setMinSize(200, 50);
+        // makes the bio toggle plus the icon
+        JFXToggleNode bio = new JFXToggleNode();
+        FontAwesomeIconView leafIcon = new FontAwesomeIconView(FontAwesomeIcon.LEAF);
+        leafIcon.setSize("50px");
+        bio.setGraphic(new Label("Bio", leafIcon));
+        bio.setMinSize(500,100);
+
+        //makes send button
+        JFXButton send = new JFXButton("add action");
+        send.setMinSize(500, 100);
         send.setOnAction(e -> {
             //looks what is selected
             FoodCategory.addAction(veggie.isSelected(), locally.isSelected(), bio.isSelected());
+
+            // then sets it to false to select it again
+            veggie.setSelected(false);
+            locally.setSelected(false);
+            bio.setSelected(false);
         });
 
-        //the nodes are put in a vertical box
-        VBox vbox = new VBox();
-        vbox.getChildren().addAll(veggie, locally, bio, send);
-
-        return vbox;
+        //make the body and stop the toggles in them
+        GridPane body = new GridPane();
+        body.add(veggie, 0, 0);
+        body.add(locally, 0, 1);
+        body.add(bio, 0, 2);
+        body.add(send, 0, 3);
+        body.setVgap(10);
+        
+        // return the body
+        return body;
     }
 
     /**
