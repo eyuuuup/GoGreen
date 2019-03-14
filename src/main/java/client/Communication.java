@@ -156,6 +156,24 @@ public class Communication {
         return response;
     }
 
+    /**
+     * Sends request to the server to retrieve last three actions for current user.
+     *
+     * @return string containing last three actions
+     */
+    public static String getLastThreeActions() {
+        if (!isLoggedIn()) {
+            return null; // not logged in
+        }
+
+        HttpEntity<String> message = new HttpEntity<>(token);
+
+        RestTemplate request  = new RestTemplate();
+        String       response = request.postForObject(hostURL + "/retract", message, String.class);
+
+        return response;
+    }
+
     /*  TEST_METHOD
     public static void main(String[] args) {
         addAction("testingAction", 1000000);
