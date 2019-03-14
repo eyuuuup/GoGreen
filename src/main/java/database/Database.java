@@ -139,8 +139,8 @@ public class Database {
 
             String result = "";
             while (rs.next()) {
-                result = rs.getString(1);
-                System.out.println("Username: " + rs.getString(1));
+                result = rs.getString(2);
+                System.out.println("Username: " + rs.getString(2));
 
             }
             con.close();
