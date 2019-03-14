@@ -1,12 +1,13 @@
 package gogreen;
 
+import com.google.common.hash.Hashing;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Scanner;
 
@@ -43,8 +44,9 @@ class ApplicationMethods {
     static void login(String username, String password, boolean remember)
             throws IllegalAccessException {
         String encodedUsername = encodeUsername(username);
-        String encryptedPassword = encryptPassword(password);
-        if (client.Communication.login(encodedUsername, encryptedPassword, remember)) {
+        String hashedPassword = hashPassword(password);
+
+        if (client.Communication.login(encodedUsername, hashedPassword, remember)) {
             Application.categoryScreen();
         } else {
             throw new IllegalAccessException("Login unsuccessful");
@@ -71,9 +73,9 @@ class ApplicationMethods {
         }
 
         String encodedUsername = encodeUsername(username);
-        String encryptedPassword = encryptPassword(password);
+        String hashedPassword = hashPassword(password);
 
-        if (client.Communication.register(encodedUsername, encryptedPassword, remember)) {
+        if (client.Communication.register(encodedUsername, hashedPassword, remember)) {
             Application.categoryScreen();
         } else {
             throw new IllegalAccessException("Registration unsuccessful");
@@ -91,19 +93,21 @@ class ApplicationMethods {
     }
 
     /**
+     * This method hashs the given password, using SHA256
+     * @param password the password
+     * @return the hashed password
+     */
+    private static String hashPassword(String password) {
+        return Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
+    }
+
+    /**
      * This method encodes the username.
      * @param username the username
      * @return the encoded username
      */
     private static String encodeUsername(String username) {
-        String encodedUsername = "";
-        try {
-            encodedUsername = Base64.getEncoder().encodeToString(
-                    username.getBytes("utf-8"));
-        } catch (UnsupportedEncodingException exception) {
-            exception.printStackTrace();
-        }
-        return encodedUsername;
+        return Base64.getEncoder().encodeToString(username.getBytes(StandardCharsets.UTF_8));
     }
 
     /**

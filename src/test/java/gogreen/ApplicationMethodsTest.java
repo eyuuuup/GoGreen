@@ -1,6 +1,7 @@
 package gogreen;
 
 import client.Communication;
+import com.google.common.hash.Hashing;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 import org.junit.Before;
@@ -11,11 +12,10 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import javafx.scene.control.TextField;
-import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.powermock.reflect.Whitebox;
 import org.testfx.framework.junit.ApplicationTest;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 import static org.junit.Assert.*;
@@ -26,6 +26,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @PrepareForTest({Communication.class, Application.class})
 public class ApplicationMethodsTest extends ApplicationTest {
     private String encodedUsername;
+    private String hashedPassword;
 
     @Before
     public void setUp() {
@@ -33,12 +34,10 @@ public class ApplicationMethodsTest extends ApplicationTest {
         PowerMockito.mockStatic(Application.class);
 
         String username = "username";
-        try {
-            encodedUsername = Base64.getEncoder().encodeToString(
-                    username.getBytes("utf-8"));
-        } catch (UnsupportedEncodingException exception) {
-            exception.printStackTrace();
-        }
+        encodedUsername = Base64.getEncoder().encodeToString(username.getBytes(StandardCharsets.UTF_8));
+
+        String password = "password";
+        hashedPassword = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
     }
 
     @Override
@@ -68,16 +67,14 @@ public class ApplicationMethodsTest extends ApplicationTest {
         ArgumentCaptor<String> usernameCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<Boolean> rememberCaptor = ArgumentCaptor.forClass(Boolean.class);
 
-        StrongPasswordEncryptor passwordEncrypt = new StrongPasswordEncryptor();
-
         when(Communication.login(anyString(), anyString(), anyBoolean())).thenReturn(true);
 
         ApplicationMethods.login("username", "password", true);
         PowerMockito.verifyStatic();
         Communication.login(usernameCaptor.capture(), passwordCaptor.capture(), rememberCaptor.capture());
         assertEquals(encodedUsername, usernameCaptor.getValue());
+        assertEquals(hashedPassword, passwordCaptor.getValue());
         assertTrue(rememberCaptor.getValue());
-        assertTrue(passwordEncrypt.checkPassword("password", passwordCaptor.getValue()));
 
         PowerMockito.verifyStatic();
         Application.categoryScreen();
@@ -89,19 +86,11 @@ public class ApplicationMethodsTest extends ApplicationTest {
         ApplicationMethods.login("username", "password", true);
     }
 
-//    @Test (expected = UnsupportedEncodingException.class)
-//    public void encoding() throws Exception {
-//        when(ApplicationMethods.class, "encodeUsername", "username").thenThrow(new UnsupportedEncodingException());
-//        Whitebox.invokeMethod(ApplicationMethods.class, "encodeUsername", "username");
-//    }
-
     @Test
     public void register() throws IllegalAccessException {
         ArgumentCaptor<String> passwordCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> usernameCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<Boolean> rememberCaptor = ArgumentCaptor.forClass(Boolean.class);
-
-        StrongPasswordEncryptor passwordEncrypt = new StrongPasswordEncryptor();
 
         when(Communication.register(anyString(), anyString(), anyBoolean())).thenReturn(true);
 
@@ -109,8 +98,8 @@ public class ApplicationMethodsTest extends ApplicationTest {
         PowerMockito.verifyStatic();
         Communication.register(usernameCaptor.capture(), passwordCaptor.capture(), rememberCaptor.capture());
         assertEquals(encodedUsername, usernameCaptor.getValue());
+        assertEquals(hashedPassword, passwordCaptor.getValue());
         assertTrue(rememberCaptor.getValue());
-        assertTrue(passwordEncrypt.checkPassword("password", passwordCaptor.getValue()));
 
         PowerMockito.verifyNoMoreInteractions();
     }
@@ -169,5 +158,17 @@ public class ApplicationMethodsTest extends ApplicationTest {
     @Test (expected = IllegalArgumentException.class)
     public void checkNameOffensiveNameThree() throws Exception {
         Whitebox.invokeMethod(ApplicationMethods.class, "checkName", "usernameSLUT");
+    }
+
+    @Test
+    public void hashPasswordLegitManual() throws Exception {
+        String response = Whitebox.invokeMethod(ApplicationMethods.class, "hashPassword", "password");
+        assertEquals(response.toUpperCase(), "5E884898DA28047151D0E56F8DC6292773603D0D6AABBDD62A11EF721D1542D8");
+    }
+
+    @Test
+    public void hashPasswordLegitCalculation() throws Exception {
+        String response = Whitebox.invokeMethod(ApplicationMethods.class, "hashPassword", "password");
+        assertEquals(response, Hashing.sha256().hashString("password", StandardCharsets.UTF_8).toString());
     }
 }

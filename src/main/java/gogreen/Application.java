@@ -396,7 +396,7 @@ public class Application extends javafx.application.Application {
             //Button for clean near place
             Button RecycleClean = new Button ("SurroundClean");
             RecycleClean.setOnAction(e -> {
-                Extra.addCleansurroundAction();
+                Extra.addCleanSurroundingAction();
             });
 
             //Button for recycle
