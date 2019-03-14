@@ -15,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
@@ -23,6 +24,7 @@ import java.io.File;
 public class Application extends javafx.application.Application {
     //the stage this application uses
     private static Stage stage;
+    private static String theme;
 
     //launches the app
     public static void main(String[] args) {
@@ -41,6 +43,7 @@ public class Application extends javafx.application.Application {
 
         //if the user chose to remember the password in the app
         //the silentLogin will login for the user
+        theme = "src/styles/mainSceneDefaultTheme.css";
         if (client.Communication.silentLogin()) {
             mainScreen();
         } else {
@@ -254,6 +257,7 @@ public class Application extends javafx.application.Application {
      */
     static void mainScreen() {
 
+
         //make the navigation tab pane
         JFXTabPane navigation = new JFXTabPane();
         navigation.setPrefSize(500, 600);
@@ -285,7 +289,7 @@ public class Application extends javafx.application.Application {
 
         //and displayed
         Scene mainScene = new Scene(body, 500, 600);
-        mainScene.getStylesheets().add(new File("src/styles/mainSceneDefaultSkin.css").toURI().toString());
+        mainScene.getStylesheets().add(new File(theme).toURI().toString());
         show(mainScene);
     }
 
@@ -294,10 +298,11 @@ public class Application extends javafx.application.Application {
         homeNavigation.setPrefSize(500,500);
 
         Tab homeTab = new Tab();
-        homeTab.setText("Home");
+        homeTab.setText("Your world");
 
         Tab settingsTab = new Tab();
         settingsTab.setText("Settings");
+        settingsTab.setContent(settingsScreen());
 
 
 
@@ -307,6 +312,33 @@ public class Application extends javafx.application.Application {
         homePage.getChildren().addAll(homeNavigation);
 
         return homePage;
+    }
+
+    public static VBox settingsScreen(){
+
+        JFXToggleNode darkTheme = new JFXToggleNode();
+        darkTheme.setGraphic(new Label("Enable dark theme"));
+        darkTheme.setPrefSize(500, 100);
+        if(theme.equals("src/styles/mainSceneDarkTheme.css") ){
+            darkTheme.setSelected(true);
+        }
+
+        darkTheme.setOnAction(e -> {
+            System.out.println(darkTheme.isSelected());
+           if(darkTheme.isSelected()){
+              theme = "src/styles/mainSceneDarkTheme.css";
+              mainScreen();
+           } else {
+               theme = "src/styles/mainSceneDefaultTheme.css";
+               mainScreen();
+           }
+        });
+
+        VBox settingsPage = new VBox(10);
+        settingsPage.getChildren().addAll(darkTheme);
+        settingsPage.setAlignment(Pos.CENTER);
+
+        return settingsPage;
     }
 
     private static Pane categoryScreen(){
