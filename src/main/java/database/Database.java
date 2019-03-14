@@ -29,7 +29,12 @@ public class Database {
                             + "FROM actions WHERE actions.action_name = ?");
             state.setString(1, action.getAction());
             ResultSet rs = state.executeQuery();
-            int actionId = rs.getInt(1);
+
+            int actionId = 0;
+            while(rs.next()){
+                actionId = rs.getInt(1);
+                System.out.println("actionId: " + actionId);
+            }
 
             PreparedStatement state1 =
                     con.prepareStatement("INSERT INTO events (action_id, date_time, points, token)"
@@ -41,6 +46,8 @@ public class Database {
                             .format(Calendar.getInstance().getTime()));
             state1.setInt(3, action.getValue());
             state1.setString(4, action.getUser());
+            state1.executeUpdate();
+            System.out.println("INSERT success");
             con.close();
             return true;
         } catch (SQLException ex) {
@@ -63,16 +70,18 @@ public class Database {
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
 
-            if (rs.getFetchSize() == 0) {
-                return false;
-            } else {
-                while (rs.next()) {
+            while (rs.next()) {
 
-                    System.out.println(rs.getString(1));
+                System.out.println("token: " + rs.getString(1));
+                String tokenResult = rs.getString(1);
+                if(tokenResult.equals(token)){
+                    System.out.println("Token exists");
+                    return true;
                 }
-                con.close();
-                return true;
             }
+            con.close();
+            return false;
+
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -98,7 +107,8 @@ public class Database {
             state.setString(2, user.getName());
             state.setString(3, user.getPassword());
             state.setString(4, tempMail);
-            ResultSet rs = state.executeQuery();
+            state.executeUpdate();
+            System.out.println("INSERT success");
             con.close();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -119,9 +129,18 @@ public class Database {
                     con.prepareStatement("SELECT * "
                             + "FROM user_data WHERE user_data.username =  ? ");
             state.setString(1, username);
+
             ResultSet rs = state.executeQuery();
+
+
+            String result = "";
+            while (rs.next()) {
+                result = rs.getString(1);
+                System.out.println("Username: " + rs.getString(1));
+
+            }
             con.close();
-            return rs.getFetchSize() != 0;
+            return result.equals(username);
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -143,7 +162,12 @@ public class Database {
                                 + "FROM user_data WHERE user_data.username =  ? ");
                 state.setString(1, user.getName());
                 ResultSet rs = state.executeQuery();
-                String token = rs.getString(1);
+
+                String token = "";
+                while(rs.next()){
+                    token = rs.getString(1);
+                }
+
                 con.close();
                 return new TokenResponse(token, true);
 
