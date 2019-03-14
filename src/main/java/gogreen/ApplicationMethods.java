@@ -44,7 +44,7 @@ class ApplicationMethods {
         String encodedUsername = encodeUsername(username);
         String encryptedPassword = encryptPassword(password);
         if (client.Communication.login(encodedUsername, encryptedPassword, remember)) {
-            Application.homeScreen();
+            Application.mainScreen();
         }
     }
 
@@ -71,7 +71,7 @@ class ApplicationMethods {
         String encryptedPassword = encryptPassword(password);
 
         if (client.Communication.register(encodedUsername, encryptedPassword, remember)) {
-            Application.homeScreen();
+            Application.mainScreen();
         } else {
             throw new IllegalArgumentException("Registration unsuccessful");
         }

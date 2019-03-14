@@ -42,7 +42,7 @@ public class Application extends javafx.application.Application {
         //if the user chose to remember the password in the app
         //the silentLogin will login for the user
         if (client.Communication.silentLogin()) {
-            homeScreen();
+            mainScreen();
         } else {
             loginScreen();
         }
@@ -252,16 +252,66 @@ public class Application extends javafx.application.Application {
     /**
      * Category screen.
      */
-    static void homeScreen() {
+    static void mainScreen() {
 
         //make the navigation tab pane
         JFXTabPane navigation = new JFXTabPane();
-        navigation.setPrefSize(500, 500);
+        navigation.setPrefSize(500, 600);
 
         //  make the home tab
         Tab homeTab = new Tab();
         homeTab.setText("Home");
+        homeTab.setContent(homeScreen());
 
+        // make the category tab
+        Tab categoryTab = new Tab();
+        categoryTab.setText("Category");
+        categoryTab.setContent(categoryScreen());
+
+        Tab statsTab = new Tab();
+        statsTab.setText("Stats");
+        statsTab.setContent(statsScreen());
+
+        // make the leaderboard tab
+        Tab leaderboardTab = new Tab();
+        leaderboardTab.setText("Leaderboard");
+        leaderboardTab.setContent(leaderboardScreen());
+
+        navigation.getTabs().addAll(homeTab, categoryTab,statsTab, leaderboardTab);
+
+        //put into a framework
+        Pane body = new Pane();
+        body.getChildren().addAll(navigation);
+
+        //and displayed
+        Scene mainScene = new Scene(body, 500, 600);
+        mainScene.getStylesheets().add(new File("src/styles/mainSceneDefaultSkin.css").toURI().toString());
+        show(mainScene);
+    }
+
+    private static Pane homeScreen(){
+        JFXTabPane homeNavigation = new JFXTabPane();
+        homeNavigation.setPrefSize(500,500);
+
+        Tab homeTab = new Tab();
+        homeTab.setText("Home");
+
+        Tab settingsTab = new Tab();
+        settingsTab.setText("Settings");
+
+
+
+        homeNavigation.getTabs().addAll(homeTab, settingsTab);
+
+        Pane homePage = new Pane();
+        homePage.getChildren().addAll(homeNavigation);
+
+        return homePage;
+    }
+
+    private static Pane categoryScreen(){
+        JFXTabPane categoryNavigation = new JFXTabPane();
+        categoryNavigation.setPrefSize(500, 500);
 
         // make the transport tab
         Tab transportTab = new Tab();
@@ -284,17 +334,43 @@ public class Application extends javafx.application.Application {
         extraTab.setText("Extra");
         extraTab.setContent(extraScreen());
 
-        navigation.getTabs().addAll(homeTab, transportTab, foodTab, energyTab, extraTab);
+        categoryNavigation.getTabs().addAll(transportTab, foodTab, energyTab, extraTab);
 
+        Pane categoryBody = new Pane();
+        categoryBody.getChildren().addAll(categoryNavigation);
 
-        //put into a framework
-        Pane body = new Pane();
-        body.getChildren().addAll(navigation);
+        return categoryBody;
 
-        //and displayed
-        Scene categories = new Scene(body, 500, 500);
-        show(categories);
     }
+
+    private static Pane statsScreen(){
+        JFXTabPane statsNavigation = new JFXTabPane();
+        statsNavigation.setPrefSize(500,500);
+
+        Tab stats = new Tab();
+
+        statsNavigation.getTabs().addAll(stats);
+
+        Pane statsBody = new Pane();
+        statsBody.getChildren().addAll(statsNavigation);
+
+        return statsBody;
+    }
+
+    private static Pane leaderboardScreen(){
+        JFXTabPane leaderboardNavigation = new JFXTabPane();
+       leaderboardNavigation.setPrefSize(500,500);
+
+        Tab leaderboard = new Tab();
+
+        leaderboardNavigation.getTabs().addAll(leaderboard);
+
+        Pane leaderboardBody = new Pane();
+        leaderboardBody.getChildren().addAll(leaderboardNavigation);
+
+        return leaderboardBody;
+    }
+
 
     /**
      * The transport screen.
@@ -306,7 +382,7 @@ public class Application extends javafx.application.Application {
         FontAwesomeIconView bikeIcon = new FontAwesomeIconView(FontAwesomeIcon.BICYCLE);
         bikeIcon.setSize("50px");
         cycle.setGraphic(bikeIcon);
-        cycle.setPrefSize(220,220);
+        cycle.setPrefSize(500,100);
         cycle.setOnAction(e -> {
             Transport.addCycleAction();
         });
@@ -316,7 +392,7 @@ public class Application extends javafx.application.Application {
         MaterialDesignIconView subwayIcon = new MaterialDesignIconView(MaterialDesignIcon.SUBWAY);
         subwayIcon.setSize("50px");
         publicTransport.setGraphic(subwayIcon);
-        publicTransport.setPrefSize(220,220);
+        publicTransport.setPrefSize(500,100);
         publicTransport.setOnAction(e -> {
             Transport.addPublicTransportAction();
         });
@@ -326,7 +402,7 @@ public class Application extends javafx.application.Application {
         FontAwesomeIconView carIcon = new FontAwesomeIconView(FontAwesomeIcon.AUTOMOBILE);
         carIcon.setSize("50px");
         car.setGraphic(carIcon);
-        car.setPrefSize(220,220);
+        car.setPrefSize(500,100);
         car.setOnAction(e -> {
             Transport.addCarAction();
         });
@@ -336,19 +412,19 @@ public class Application extends javafx.application.Application {
         FontAwesomeIconView planeIcon = new FontAwesomeIconView(FontAwesomeIcon.PLANE);
         planeIcon.setSize("50px");
         plane.setGraphic(planeIcon);
-        plane.setPrefSize(220,220);
+        plane.setPrefSize(500,100);
         plane.setOnAction(e -> {
             Transport.addPlaneAction();
         });
 
 
         GridPane transportPage = new GridPane();
+        transportPage.setVgap(10);
         transportPage.add(cycle, 0 ,0);
         transportPage.add(publicTransport, 0, 1);
-        transportPage.add(car, 1, 0);
-        transportPage.add(plane, 1,1 );
-        transportPage.setVgap(10);
-        transportPage.setHgap(10);
+        transportPage.add(car, 0, 2);
+        transportPage.add(plane, 0,3 );
+
         transportPage.setAlignment(Pos.CENTER);
 
        return transportPage;
@@ -385,7 +461,7 @@ public class Application extends javafx.application.Application {
         send.setMinSize(500, 100);
         send.setOnAction(e -> {
             //looks what is selected
-            FoodCategory.addAction(veggie.isSelected(), locally.isSelected(), bio.isSelected());
+            FoodCategory.addAction(!veggie.isSelected(), locally.isSelected(), bio.isSelected());
 
             // then sets it to false to select it again
             veggie.setSelected(false);
@@ -400,6 +476,7 @@ public class Application extends javafx.application.Application {
         foodPage.add(bio, 0, 2);
         foodPage.add(send, 0, 3);
         foodPage.setVgap(10);
+        foodPage.setAlignment(Pos.CENTER);
 
         // return the body
         return foodPage;
@@ -431,6 +508,7 @@ public class Application extends javafx.application.Application {
         energyPage.setVgap(10);
         energyPage.add(waterTime, 0, 0);
         energyPage.add(energyTime, 0, 1);
+        energyPage.setAlignment(Pos.CENTER);
 
         return energyPage;
     }
@@ -445,7 +523,7 @@ public class Application extends javafx.application.Application {
         cleanSurronding.setOnAction(e -> {
             Extra.addCleanSurroundingAction();
         });
-        
+
         JFXButton recycle = new JFXButton();
         MaterialDesignIconView recycleIcon = new MaterialDesignIconView(MaterialDesignIcon.RECYCLE);
         recycleIcon.setSize("50px");
@@ -460,6 +538,7 @@ public class Application extends javafx.application.Application {
         extraPage.setVgap(10);
         extraPage.add(cleanSurronding, 0,0 );
         extraPage.add(recycle,0,1);
+        extraPage.setAlignment(Pos.CENTER);
 
         return extraPage;
     }
