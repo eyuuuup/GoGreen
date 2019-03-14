@@ -1,5 +1,6 @@
 package server;
 
+import database.Database;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +21,9 @@ public class Controller {
      */
     @RequestMapping(value = {"/login"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public TokenResponse login(@Valid @RequestBody User user) {
+    public static TokenResponse login(@Valid @RequestBody User user) {
         //if(check in database)
-        TokenResponse token = ReplaceByDatabaseMethods.checkLogin(user);
+        TokenResponse token = Database.checkLogin(user);
         return token;
     }
 
@@ -35,13 +36,13 @@ public class Controller {
      */
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public TokenResponse register(User user) {
+    public static TokenResponse register(User user) {
         String token = null;
-        boolean bool=ReplaceByDatabaseMethods.checkUsername(user.getName());
+        boolean bool=Database.checkUsername(user.getName());
         if (bool == true) {
             //generate TOKEN
             token = UUID.randomUUID().toString();
-            ReplaceByDatabaseMethods.setNewUser(user,token);
+            Database.register(user,token);
             return new TokenResponse(token, true);
          } else {
             return new TokenResponse(token, false);
@@ -55,15 +56,15 @@ public class Controller {
      */
     @RequestMapping(value = {"/silentLogin"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public String silentLogin(@Valid @RequestBody String token) {
-
+    public static String silentLogin(@Valid @RequestBody String token) {
+        Database.silentLoginCheck(token);
         //IMPLEMENT
         return "ERWIN";
     }
 
     @RequestMapping(value = {"/addAction"}, method = RequestMethod.POST)
-    public boolean addAction(@Valid @RequestBody AddAction addAction) {
-        boolean bool = ReplaceByDatabaseMethods.addAction(addAction);
+    public static boolean addAction(@Valid @RequestBody Action action) {
+        boolean bool = Database.addAction(action);
         return bool;
     }
 
