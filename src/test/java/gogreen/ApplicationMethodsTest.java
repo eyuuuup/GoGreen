@@ -79,7 +79,7 @@ public class ApplicationMethodsTest extends ApplicationTest {
         assertTrue(passwordEncrypt.checkPassword("password", passwordCaptor.getValue()));
 
         PowerMockito.verifyStatic();
-        Application.categoryScreen();
+        Application.homeScreen();
     }
 
     @Test

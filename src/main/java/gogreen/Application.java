@@ -7,6 +7,8 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
+import de.jensd.fx.glyphs.octicons.OctIcon;
+import de.jensd.fx.glyphs.octicons.OctIconView;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -275,10 +277,12 @@ public class Application extends javafx.application.Application {
         // make the energy tab
         Tab energyTab = new Tab();
         energyTab.setText("Energy");
+        energyTab.setContent(energyScreen());
 
         // make the extra tab
         Tab extraTab = new Tab();
         extraTab.setText("Extra");
+        extraTab.setContent(extraScreen());
 
         navigation.getTabs().addAll(homeTab, transportTab, foodTab, energyTab, extraTab);
 
@@ -302,7 +306,7 @@ public class Application extends javafx.application.Application {
         FontAwesomeIconView bikeIcon = new FontAwesomeIconView(FontAwesomeIcon.BICYCLE);
         bikeIcon.setSize("50px");
         cycle.setGraphic(bikeIcon);
-        cycle.setPrefSize(200,200);
+        cycle.setPrefSize(220,220);
         cycle.setOnAction(e -> {
             Transport.addCycleAction();
         });
@@ -312,7 +316,7 @@ public class Application extends javafx.application.Application {
         MaterialDesignIconView subwayIcon = new MaterialDesignIconView(MaterialDesignIcon.SUBWAY);
         subwayIcon.setSize("50px");
         publicTransport.setGraphic(subwayIcon);
-        publicTransport.setPrefSize(230,230);
+        publicTransport.setPrefSize(220,220);
         publicTransport.setOnAction(e -> {
             Transport.addPublicTransportAction();
         });
@@ -322,7 +326,7 @@ public class Application extends javafx.application.Application {
         FontAwesomeIconView carIcon = new FontAwesomeIconView(FontAwesomeIcon.AUTOMOBILE);
         carIcon.setSize("50px");
         car.setGraphic(carIcon);
-        car.setPrefSize(230,230);
+        car.setPrefSize(220,220);
         car.setOnAction(e -> {
             Transport.addCarAction();
         });
@@ -332,7 +336,7 @@ public class Application extends javafx.application.Application {
         FontAwesomeIconView planeIcon = new FontAwesomeIconView(FontAwesomeIcon.PLANE);
         planeIcon.setSize("50px");
         plane.setGraphic(planeIcon);
-        plane.setPrefSize(230,230);
+        plane.setPrefSize(220,220);
         plane.setOnAction(e -> {
             Transport.addPlaneAction();
         });
@@ -401,18 +405,61 @@ public class Application extends javafx.application.Application {
         return foodPage;
     }
 
+
+
     public static GridPane energyScreen(){
 
+        JFXButton waterTime = new JFXButton();
+        MaterialDesignIconView waterIcon = new MaterialDesignIconView(MaterialDesignIcon.WATER);
+        waterIcon.setSize("50px");
+        waterTime.setGraphic(new Label("Water time", waterIcon));
+        waterTime.setPrefSize(500, 100);
+        waterTime.setOnAction(e -> {
+            Energy.addReduceWater();
+        });
 
+        JFXButton energyTime = new JFXButton();
+        MaterialDesignIconView energyIcon = new MaterialDesignIconView(MaterialDesignIcon.FLASH);
+        energyIcon.setSize("50px");
+        energyTime.setGraphic(new Label("Energy time", energyIcon));
+        energyTime.setPrefSize(500, 100);
+        energyTime.setOnAction(e -> {
+            Energy.addReduceEnergyAction();
+        });
 
         GridPane energyPage = new GridPane();
+        energyPage.setVgap(10);
+        energyPage.add(waterTime, 0, 0);
+        energyPage.add(energyTime, 0, 1);
 
         return energyPage;
     }
 
     public static GridPane extraScreen(){
 
+        JFXButton cleanSurronding = new JFXButton();
+        OctIconView trashIcon = new OctIconView(OctIcon.TRASHCAN);
+        trashIcon.setSize("50px");
+        cleanSurronding.setGraphic(new Label("clean surronding", trashIcon));
+        cleanSurronding.setPrefSize(500, 100);
+        cleanSurronding.setOnAction(e -> {
+            Extra.addCleanSurroundingAction();
+        });
+        
+        JFXButton recycle = new JFXButton();
+        MaterialDesignIconView recycleIcon = new MaterialDesignIconView(MaterialDesignIcon.RECYCLE);
+        recycleIcon.setSize("50px");
+        recycle.setGraphic(new Label("Recycle", recycleIcon));
+        recycle.setPrefSize(500, 100);
+        recycle.setOnAction(e -> {
+            Extra.addRecycleAction();
+        });
+
+
         GridPane extraPage = new GridPane();
+        extraPage.setVgap(10);
+        extraPage.add(cleanSurronding, 0,0 );
+        extraPage.add(recycle,0,1);
 
         return extraPage;
     }
