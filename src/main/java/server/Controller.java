@@ -68,6 +68,13 @@ public class Controller {
         return bool;
     }
 
+    @RequestMapping(value={"/retract"}, method = RequestMethod.POST)
+    public static String forDemo(@Valid @RequestBody String token)
+    {
+        String result=null;
+        //result=Database.retract(token);
+        return result;
+    }
 
 }
 
