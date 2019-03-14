@@ -4,7 +4,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 @SpringBootApplication
 public class Communication {
@@ -12,25 +16,25 @@ public class Communication {
     private static final String fileDir = "src/extraFiles/Token.txt";
     private static       String token   = null;
 
+    private Communication() {}
+
     /**
      * Checks whether a given username is not taken on the server.
      * Stores the username and password, retrieves assigned token.
-     *
      * @param username the username
      * @param password the password
-     * @param remember wether to store token in a file
+     * @param remember whether to store token in a file
      * @return boolean correctly logged in and token recieved
      */
     public static boolean register(String username, String password, boolean remember) {
         //send username and password to the server, validate if it is not taken
-        //expect generated token if successfull, null if username taken
+        //expect generated token if successful, null if username taken
         return submit(username, password, remember, "/register");
     }
 
     /**
      * Checks whether a given username and password matches on the server.
      * If yes, retrieves token for such combination for further authentication
-     *
      * @param username the username
      * @param password the password
      * @param remember wether to store token in a file
@@ -45,19 +49,20 @@ public class Communication {
     /**
      * Handles login and register.
      * avoid duplicate code.
-     *
      * @param username the username
      * @param password the password
      * @param remember wether to store token in a file
-     * @param postURL  determine between login and register
-     * @return boolean wether the submit/fetch was sucessfull
+     * @param postUrl determine between login and register
+     * @return boolean wether the submit/fetch was sucessful
      */
-    private static boolean submit(String username, String password, boolean remember, String postURL) {
+    private static boolean submit(
+            String username, String password, boolean remember, String postUrl) {
         User             user    = new User(username, password);
         HttpEntity<User> message = new HttpEntity<>(user);
 
         RestTemplate  request  = new RestTemplate();
-        TokenResponse response = request.postForObject(hostURL + postURL, message, TokenResponse.class);
+        TokenResponse response =
+                request.postForObject(hostURL + postUrl, message, TokenResponse.class);
 
         if (!response.isLegit()) {
             System.out.println("not found");
@@ -84,11 +89,9 @@ public class Communication {
 
     /**
      * Tries to log in with the stored username and password.
-     *
      * @return boolean correctly logged in and token received
      */
     public static boolean silentLogin() {
-
         //retrieve username and password from somewhere (file)
         //try to log in and retrieve token
 
@@ -102,14 +105,6 @@ public class Communication {
             e.printStackTrace();
             return false;
         }
-
-//        Walidate on Server
-//        HttpEntity<TokenResponse> message = new HttpEntity<>(new TokenResponse(token, true));
-//
-//        RestTemplate request  = new RestTemplate();
-//        boolean      response = request.postForObject(hostURL + "/silentLogin", message, boolean.class);
-//
-//        return response;
 
         return true;
     }
@@ -137,7 +132,6 @@ public class Communication {
 
     /**
      * Checks whether a given name is according to the rules.
-     *
      * @param actionName the name of the action
      * @param points     the value of points to send
      * @return boolean correctly sent to server
@@ -151,9 +145,7 @@ public class Communication {
         HttpEntity<client.Action> message = new HttpEntity<>(action);
 
         RestTemplate request  = new RestTemplate();
-        boolean      response = request.postForObject(hostURL + "/addAction", message, boolean.class);
-
-        return response;
+        return request.postForObject(hostURL + "/addAction", message, boolean.class);
     }
 
     /**
@@ -169,14 +161,8 @@ public class Communication {
         HttpEntity<String> message = new HttpEntity<>(token);
 
         RestTemplate request  = new RestTemplate();
-        String       response = request.postForObject(hostURL + "/retract", message, String.class);
 
-        return response;
+        return request.postForObject(hostURL + "/retract", message, String.class);
     }
 
-    /*  TEST_METHOD
-    public static void main(String[] args) {
-        addAction("testingAction", 1000000);
-    }
-    //*/
 }

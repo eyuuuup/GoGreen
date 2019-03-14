@@ -11,7 +11,6 @@ public class User {
 
     /**
      * This method creates and instantiates a new User.
-     *
      * @param name  the Name
      * @param password the password
      */
@@ -22,7 +21,6 @@ public class User {
 
     /**
      * Getter for name.
-     *
      * @return name
      */
     public String getName() {
@@ -31,7 +29,6 @@ public class User {
 
     /**
      * Changes name into newName.
-     *
      * @param newName the new name
      */
     public void changeName(String newName) {
@@ -40,7 +37,6 @@ public class User {
 
     /**
      * Getter for password.
-     *
      * @return password
      */
     public String getPassword() {
@@ -49,7 +45,6 @@ public class User {
 
     /**
      * Changes name into new password.
-     *
      * @param newPassword the new name
      */
     public void changePassword(String newPassword) {

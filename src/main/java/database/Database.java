@@ -18,6 +18,7 @@ public class Database {
 
     /**
      * This method saves the Action object in the database.
+     *
      * @param action An object of the class Action.
      * @return if the query succeeded.
      */
@@ -31,9 +32,10 @@ public class Database {
             state.setString(1, action.getAction());
             ResultSet rs = state.executeQuery();
 
-            int actionId = 0;
+            int actionId       = 0;
             int parentCategory = 0;
-            while(rs.next()){
+
+            while (rs.next()) {
                 actionId = rs.getInt(1);
                 parentCategory = rs.getInt(2);
                 System.out.println("parentcategpry: " + parentCategory);
@@ -42,7 +44,7 @@ public class Database {
 
             PreparedStatement state1 =
                     con.prepareStatement("INSERT INTO events (action_id, date_time, points, token, parent_category)"
-                    + "VALUES (?, ?, ?, ?, ?);");
+                            + "VALUES (?, ?, ?, ?, ?);");
             state1.setInt(1, actionId);
             state1.setString(
                     2,
@@ -69,11 +71,11 @@ public class Database {
                     con.prepareStatement("select action_name, date_time, events.parent_category " +
                             "FROM actions, events WHERE actions.action_id = events.action_id \n" +
                             "AND events.parent_category = 1 AND events.token = ? ORDER BY date_time DESC LIMIT 3");
-            state.setString(1,token);
+            state.setString(1, token);
             ResultSet rs = state.executeQuery();
 
             StringBuilder result = new StringBuilder();
-            while(rs.next()){
+            while (rs.next()) {
 
                 result.append(rs.getString(1) + " ");
                 result.append(rs.getString(2) + "\n");
@@ -82,7 +84,7 @@ public class Database {
 
             System.out.println("retract success");
             con.close();
-            System.out.println(result.toString()+"fffff");
+            System.out.println(result.toString() + "fffff");
             return result.toString();
 
         } catch (SQLException ex) {
@@ -92,9 +94,8 @@ public class Database {
     }
 
 
-
-    public static void updateTotalScores(String token, int score){
-        try{
+    public static void updateTotalScores(String token, int score) {
+        try {
             Connection con = DriverManager.getConnection();
             System.out.println("updateTotalScores called");
 
@@ -106,7 +107,7 @@ public class Database {
             ResultSet rs = state.executeQuery();
 
             int currentTotalScore = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 currentTotalScore = rs.getInt(1);
                 System.out.println("currentTotalScore: " + currentTotalScore);
             }
@@ -115,17 +116,18 @@ public class Database {
             PreparedStatement state1 =
                     con.prepareStatement("UPDATE total_score SET total_score = ? WHERE token = ?");
             state1.setInt(1, currentTotalScore);
-            state1.setString(2,token);
+            state1.setString(2, token);
             state1.executeUpdate();
             System.out.println("UPDATE success");
             con.close();
-        } catch(SQLException ex) {
+        } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
     }
 
     /**
      * This method queries the database with a token to look if the user exists.
+     *
      * @param token A string that contains the token.
      * @return if the query succeeded.
      */
@@ -143,7 +145,7 @@ public class Database {
 
                 System.out.println("token: " + rs.getString(1));
                 String tokenResult = rs.getString(1);
-                if(tokenResult.equals(token)){
+                if (tokenResult.equals(token)) {
                     System.out.println("Token exists");
                     return true;
                 }
@@ -161,7 +163,8 @@ public class Database {
 
     /**
      * This method registers a new user in the database.
-     * @param user An User object.
+     *
+     * @param user  An User object.
      * @param token A String with the token.
      */
     public static void register(User user, String token) {
@@ -185,7 +188,7 @@ public class Database {
                             + "VALUES (?, ?);");
 
             state1.setInt(1, 0);
-            state1.setString(2,token);
+            state1.setString(2, token);
             state1.executeUpdate();
 
             System.out.println("INSERT success");
@@ -198,6 +201,7 @@ public class Database {
 
     /**
      * This method checks if the username exists in the database.
+     *
      * @param username A string with the username.
      * @return if the users exists or not.
      */
@@ -231,6 +235,7 @@ public class Database {
 
     /**
      * This method checks if the user has a token in the database.
+     *
      * @param user A user Object.
      * @return A TokenResponse object
      */
@@ -248,7 +253,7 @@ public class Database {
                 ResultSet rs = state.executeQuery();
 
                 String token = "";
-                while(rs.next()){
+                while (rs.next()) {
                     token = rs.getString(1);
                 }
 

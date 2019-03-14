@@ -39,7 +39,10 @@
     -fx-background-color: #b8ebad;
 
 }
-
+/* icon color */
+.glyph-icon{
+    -fx-fill: #9ACD32;
+}
 /* labels */
 .label
 {
@@ -48,4 +51,40 @@
     -fx-font-size: 24;
 }
 
+/* level bar */
+.progress-bar {
+    -fx-indeterminate-bar-length: 60;
+    -fx-indeterminate-bar-escape: true;
+    -fx-indeterminate-bar-flip: true;
+    -fx-indeterminate-bar-animation-time: 2;
+}
+.progress-bar > .bar {
+    -fx-background-color: #9ACD32;
+    -fx-background-insets: 3 3 4 3;
+    -fx-background-radius: 2;
+    -fx-padding: 0.75em;
+}
 
+.progress-bar > .track {
+    -fx-background-color: #249677;
+    -fx-background-insets: 0, 0 0 1 0, 1 1 2 1;
+    -fx-background-radius: 4, 3, 2; /* 10, 9, 8 */
+}
+
+#levelStatus{
+    -fx-text-fill: #249677;
+    -fx-font-weight: bold;
+    -fx-font-size: 14;
+}
+
+#history {
+    -fx-text-fill: #249677;
+    -fx-font-weight: bold;
+    -fx-font-size: 14;
+}
+
+#loginText{
+    -fx-text-fill: #249677;
+    -fx-font-weight: bold;
+    -fx-font-size: 24;
+}

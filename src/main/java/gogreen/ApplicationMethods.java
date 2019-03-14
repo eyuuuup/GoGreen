@@ -1,9 +1,9 @@
 package gogreen;
 
 import com.google.common.hash.Hashing;
+
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -61,14 +61,15 @@ class ApplicationMethods {
      * @param remember whether to remember this user
      */
     static void register(String username, String password, String passwordTwo, boolean remember)
-            throws NullPointerException, IllegalArgumentException, IllegalAccessException {
+            throws NullPointerException, IllegalArgumentException,
+            IllegalAccessException, FileNotFoundException {
         checkName(username);
 
         if (!password.equals(passwordTwo)) {
             throw new IllegalArgumentException("Passwords not equal!");
         }
 
-        if (password.length() <= 7) {
+        if (password.length() <= 1) {
             throw new IllegalArgumentException("Password too short");
         }
 
@@ -76,7 +77,6 @@ class ApplicationMethods {
         String hashedPassword = hashPassword(password);
 
         if (client.Communication.register(encodedUsername, hashedPassword, remember)) {
-            System.out.println("Dfsdfs");
             Application.mainScreen();
         } else {
             throw new IllegalAccessException("Registration unsuccessful");
@@ -84,17 +84,7 @@ class ApplicationMethods {
     }
 
     /**
-     * This method encrypts the given password.
-     * @param password the password
-     * @return the encrypted password
-     */
-    private static String encryptPassword(String password) {
-        StrongPasswordEncryptor passwordEncrypt = new StrongPasswordEncryptor();
-        return passwordEncrypt.encryptPassword(password);
-    }
-
-    /**
-     * This method hashs the given password, using SHA256
+     * This method hashes the given password, using SHA256.
      * @param password the password
      * @return the hashed password
      */
@@ -114,12 +104,11 @@ class ApplicationMethods {
     /**
      * Checks whether a given name is according to the rules.
      * @param testName the name to test
-     * @return boolean correct name
      * @throws NullPointerException     if null
      * @throws IllegalArgumentException if invalid
      */
-    private static boolean checkName(String testName)
-            throws NullPointerException, IllegalArgumentException {
+    private static void checkName(String testName)
+            throws NullPointerException, IllegalArgumentException, FileNotFoundException {
         //check if name is null
         if (testName == null) {
             throw new NullPointerException("Name equals null!");
@@ -142,19 +131,14 @@ class ApplicationMethods {
         testName = testName.toLowerCase();
 
         //check whether the name is not offensive
-        try {
-            File file = new File("src/extraFiles/InvalidNamesComma.txt");
-            Scanner sc = new Scanner(file).useDelimiter(", ");
-            while (sc.hasNext()) {
-                if (testName.contains(sc.next())) {
-                    throw new IllegalArgumentException("Offensive name!");
-                }
+        File file = new File("src/extraFiles/InvalidNamesComma.txt");
+        Scanner sc = new Scanner(file).useDelimiter(", ");
+        while (sc.hasNext()) {
+            if (testName.contains(sc.next())) {
+                throw new IllegalArgumentException("Offensive name!");
             }
-            sc.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
-        return true;
+        sc.close();
     }
 
     /**
@@ -162,7 +146,6 @@ class ApplicationMethods {
      * @param testName the new name
      */
     private static void checkCharacters(String testName) {
-        //check if all characters in the name are valid characters
         for (char c : testName.toCharArray()) {
             if (!(Character.toString(c).toLowerCase()).matches("[a-zA-Z]")) {
                 throw new IllegalArgumentException("Invalid character!");

@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import org.powermock.reflect.Whitebox;
 import org.testfx.framework.junit.ApplicationTest;
 
+import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
@@ -87,7 +88,7 @@ public class ApplicationMethodsTest extends ApplicationTest {
     }
 
     @Test
-    public void register() throws IllegalAccessException {
+    public void register() throws IllegalAccessException, FileNotFoundException {
         ArgumentCaptor<String> passwordCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> usernameCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<Boolean> rememberCaptor = ArgumentCaptor.forClass(Boolean.class);
@@ -105,18 +106,18 @@ public class ApplicationMethodsTest extends ApplicationTest {
     }
 
     @Test (expected = IllegalAccessException.class)
-    public void registrationNotAccepted() throws IllegalAccessException {
+    public void registrationNotAccepted() throws IllegalAccessException, FileNotFoundException {
         when(Communication.register(anyString(), anyString(), anyBoolean())).thenReturn(false);
         ApplicationMethods.register("username", "password", "password", true);
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void registrationPasswordsNotEqual() throws IllegalAccessException {
+    public void registrationPasswordsNotEqual() throws IllegalAccessException, FileNotFoundException {
         ApplicationMethods.register("username", "password", "passwordTwo", true);
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void registrationPasswordsTooShort() throws IllegalAccessException {
+    public void registrationPasswordsTooShort() throws IllegalAccessException, FileNotFoundException {
         ApplicationMethods.register("username", "pwd", "pwd", true);
     }
 
