@@ -24,6 +24,7 @@ public class Database {
     public static boolean addAction(Action action) {
         try {
             Connection con = DriverManager.getConnection();
+            System.out.println("addAction called");
             PreparedStatement state =
                     con.prepareStatement("SELECT action_id "
                             + "FROM actions WHERE actions.action_name = ?");
@@ -65,6 +66,7 @@ public class Database {
 
         try {
             Connection con = DriverManager.getConnection();
+            System.out.println("silentLogicCheck called");
             PreparedStatement state =
                     con.prepareStatement("SELECT * FROM user_data WHERE user_data.token = ?");
             state.setString(1, token);
@@ -99,6 +101,7 @@ public class Database {
         String tempMail = "yuhyeet@gmail.com";
         try {
             Connection con = DriverManager.getConnection();
+            System.out.println("register called");
             PreparedStatement state =
                     con.prepareStatement("INSERT INTO "
                             + "user_data (token, username, hashpassword, mail)"
@@ -125,6 +128,7 @@ public class Database {
 
         try {
             Connection con = DriverManager.getConnection();
+            System.out.println("checkUsername called");
             PreparedStatement state =
                     con.prepareStatement("SELECT * "
                             + "FROM user_data WHERE user_data.username =  ? ");
@@ -157,6 +161,7 @@ public class Database {
         if (checkUsername(user.getName())) {
             try {
                 Connection con = DriverManager.getConnection();
+                System.out.println("checkLogin called");
                 PreparedStatement state =
                         con.prepareStatement("SELECT * "
                                 + "FROM user_data WHERE user_data.username =  ? ");
