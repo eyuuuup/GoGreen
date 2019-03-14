@@ -74,6 +74,7 @@ public class Database {
 
             StringBuilder result = new StringBuilder();
             while(rs.next()){
+
                 result.append(rs.getString(1) + " ");
                 result.append(rs.getString(2) + "\n");
             }
@@ -81,6 +82,7 @@ public class Database {
 
             System.out.println("retract success");
             con.close();
+            System.out.println(result.toString()+"fffff");
             return result.toString();
 
         } catch (SQLException ex) {

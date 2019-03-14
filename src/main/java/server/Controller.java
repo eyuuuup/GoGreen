@@ -71,9 +71,7 @@ public class Controller {
     @RequestMapping(value={"/retract"}, method = RequestMethod.POST)
     public static String forDemo(@Valid @RequestBody String token)
     {
-        String result=null;
-        //result=Database.retract(token);
-        return result;
+        return Database.retract(token);
     }
 
 }
