@@ -14,18 +14,24 @@ public class TokenResponseTest {
     }
 
     @Test
-    public void getToken() {
+    public void getToken() { assertEquals(tokenResponse.getToken(), "Token");
     }
 
     @Test
     public void setToken() {
+        TokenResponse tokenResponse = new TokenResponse("Token", true);
+        tokenResponse.setToken("token");
+        assertEquals(tokenResponse.getToken(), "token");
     }
 
     @Test
-    public void isLegit() {
+    public void isLegit() { assertTrue(tokenResponse.isLegit());
     }
 
     @Test
     public void setLegit() {
+        TokenResponse tokenResponse = new TokenResponse("Token", true);
+        tokenResponse.setLegit(false);
+        assertFalse(tokenResponse.isLegit());
     }
 }
