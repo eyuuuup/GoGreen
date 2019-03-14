@@ -125,6 +125,16 @@ public class Communication {
         File file = new File(fileDir);
         file.delete();
     }
+
+    /**
+     * Checks wether the user is logged in, checked by comparing token to null
+     *
+     * @return wether the user is logged in
+     */
+    private static boolean isLoggedIn() {
+        return token != null;
+    }
+
     /**
      * Checks whether a given name is according to the rules.
      *
@@ -133,7 +143,7 @@ public class Communication {
      * @return boolean correctly sent to server
      */
     public static boolean addAction(String actionName, int points) {
-        if (token == null) {
+        if (!isLoggedIn()) {
             return false; // not logged in
         }
 
