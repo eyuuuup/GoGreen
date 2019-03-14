@@ -115,6 +115,17 @@ public class Communication {
     }
 
     /**
+     * Removes traces of previous user
+     */
+    public static void logout() {
+        // remove token from Main Memory
+        token = null;
+
+        // remove token from Secondary Memory
+        File file = new File(fileDir);
+        file.delete();
+    }
+    /**
      * Checks whether a given name is according to the rules.
      *
      * @param actionName the name of the action
