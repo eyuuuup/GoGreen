@@ -1,0 +1,173 @@
+package gogreen;
+
+import client.Communication;
+import javafx.scene.control.PasswordField;
+import javafx.stage.Stage;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import javafx.scene.control.TextField;
+import org.jasypt.util.password.StrongPasswordEncryptor;
+import org.powermock.reflect.Whitebox;
+import org.testfx.framework.junit.ApplicationTest;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
+
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
+import static org.powermock.api.mockito.PowerMockito.when;
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({Communication.class, Application.class})
+public class ApplicationMethodsTest extends ApplicationTest {
+    private String encodedUsername;
+
+    @Before
+    public void setUp() {
+        PowerMockito.mockStatic(Communication.class);
+        PowerMockito.mockStatic(Application.class);
+
+        String username = "username";
+        try {
+            encodedUsername = Base64.getEncoder().encodeToString(
+                    username.getBytes("utf-8"));
+        } catch (UnsupportedEncodingException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {}
+
+    @Test
+    public void toggleVisibilityTrue() {
+        TextField text = new TextField("test");
+        PasswordField password = new PasswordField();
+        ApplicationMethods.toggleVisibility(text, password, true);
+        assertTrue(text.isVisible());
+        assertFalse(password.isVisible());
+    }
+
+    @Test
+    public void toggleVisibilityFalse() {
+        TextField text = new TextField("test");
+        PasswordField password = new PasswordField();
+        ApplicationMethods.toggleVisibility(text, password, false);
+        assertFalse(text.isVisible());
+        assertTrue(password.isVisible());
+    }
+
+    @Test
+    public void login() throws IllegalAccessException {
+        ArgumentCaptor<String> passwordCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> usernameCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Boolean> rememberCaptor = ArgumentCaptor.forClass(Boolean.class);
+
+        StrongPasswordEncryptor passwordEncrypt = new StrongPasswordEncryptor();
+
+        when(Communication.login(anyString(), anyString(), anyBoolean())).thenReturn(true);
+
+        ApplicationMethods.login("username", "password", true);
+        PowerMockito.verifyStatic();
+        Communication.login(usernameCaptor.capture(), passwordCaptor.capture(), rememberCaptor.capture());
+        assertEquals(encodedUsername, usernameCaptor.getValue());
+        assertTrue(rememberCaptor.getValue());
+        assertTrue(passwordEncrypt.checkPassword("password", passwordCaptor.getValue()));
+
+        PowerMockito.verifyStatic();
+        Application.categoryScreen();
+    }
+
+    @Test (expected = IllegalAccessException.class)
+    public void loginNotInDatabase() throws IllegalAccessException {
+        when(Communication.login(anyString(), anyString(), anyBoolean())).thenReturn(false);
+        ApplicationMethods.login("username", "password", true);
+    }
+
+//    @Test (expected = UnsupportedEncodingException.class)
+//    public void encoding() throws Exception {
+//        when(ApplicationMethods.class, "encodeUsername", "username").thenThrow(new UnsupportedEncodingException());
+//        Whitebox.invokeMethod(ApplicationMethods.class, "encodeUsername", "username");
+//    }
+
+    @Test
+    public void register() throws IllegalAccessException {
+        ArgumentCaptor<String> passwordCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> usernameCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Boolean> rememberCaptor = ArgumentCaptor.forClass(Boolean.class);
+
+        StrongPasswordEncryptor passwordEncrypt = new StrongPasswordEncryptor();
+
+        when(Communication.register(anyString(), anyString(), anyBoolean())).thenReturn(true);
+
+        ApplicationMethods.register("username", "password", "password", true);
+        PowerMockito.verifyStatic();
+        Communication.register(usernameCaptor.capture(), passwordCaptor.capture(), rememberCaptor.capture());
+        assertEquals(encodedUsername, usernameCaptor.getValue());
+        assertTrue(rememberCaptor.getValue());
+        assertTrue(passwordEncrypt.checkPassword("password", passwordCaptor.getValue()));
+
+        PowerMockito.verifyNoMoreInteractions();
+    }
+
+    @Test (expected = IllegalAccessException.class)
+    public void registrationNotAccepted() throws IllegalAccessException {
+        when(Communication.register(anyString(), anyString(), anyBoolean())).thenReturn(false);
+        ApplicationMethods.register("username", "password", "password", true);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void registrationPasswordsNotEqual() throws IllegalAccessException {
+        ApplicationMethods.register("username", "password", "passwordTwo", true);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void registrationPasswordsTooShort() throws IllegalAccessException {
+        ApplicationMethods.register("username", "pwd", "pwd", true);
+    }
+
+    @Test (expected = NullPointerException.class)
+    public void checkNameNull() throws Exception {
+        Whitebox.invokeMethod(ApplicationMethods.class, "checkName", null);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void checkNameTooLong() throws Exception {
+        Whitebox.invokeMethod(ApplicationMethods.class, "checkName", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void checkNameTooShort() throws Exception {
+        Whitebox.invokeMethod(ApplicationMethods.class, "checkName", "");
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void checkNameIllegalCharacter() throws Exception {
+        Whitebox.invokeMethod(ApplicationMethods.class, "checkName", "2");
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void checkNameIllegalCharacterTwo() throws Exception {
+        Whitebox.invokeMethod(ApplicationMethods.class, "checkName", "Username_");
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void checkNameOffensiveName() throws Exception {
+        Whitebox.invokeMethod(ApplicationMethods.class, "checkName", "slut");
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void checkNameOffensiveNameTwo() throws Exception {
+        Whitebox.invokeMethod(ApplicationMethods.class, "checkName", "SLUT");
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void checkNameOffensiveNameThree() throws Exception {
+        Whitebox.invokeMethod(ApplicationMethods.class, "checkName", "usernameSLUT");
+    }
+}

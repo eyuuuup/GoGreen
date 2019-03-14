@@ -35,9 +35,4 @@ public class Action {
     public void setValue(int value) {
         this.value = value;
     }
-
-    @Override
-    public String toString() {
-        return "<Action(user=\"" + user + "\", action=\"" + action + "\", value=\"" + value + "\")>";
-    }
 }

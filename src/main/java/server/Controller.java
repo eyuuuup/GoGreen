@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID; //LEAVE ONE LINE
 import javax.validation.Valid;
 
-
 @RestController
 @RequestMapping("/")
 public class Controller {
+    private Controller() {}
+
     /**
      * This is the login method which connects the server and client.
      * @param user username, password
@@ -37,21 +38,21 @@ public class Controller {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public static TokenResponse register(User user) {
         String token = null;
-        boolean bool=Database.checkUsername(user.getName());
-        if (bool == true) {
+        boolean bool = Database.checkUsername(user.getName());
+        if (bool) {
             //generate TOKEN
             token = UUID.randomUUID().toString();
             Database.register(user,token);
             return new TokenResponse(token, true);
-         } else {
-            return new TokenResponse(token, false);
+        } else {
+            return new TokenResponse(null, false);
         }
     }
 
     /**
      * don'trequire to enter password.
      * @param token string
-     * @return
+     * @return String
      */
     @RequestMapping(value = {"/silentLogin"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -63,10 +64,7 @@ public class Controller {
 
     @RequestMapping(value = {"/addAction"}, method = RequestMethod.POST)
     public static boolean addAction(@Valid @RequestBody Action action) {
-        boolean bool = Database.addAction(action);
-        return bool;
+        return Database.addAction(action);
     }
-
-
 }
 
