@@ -6,17 +6,17 @@ package client;
  * @author Erwin van Dam
  */
 public class User {
-    private static String name;
-    private static String password;
+    private String name;
+    private String password;
 
     /**
      * This method creates and instantiates a new User.
      *
-     * @param newName  the Name
+     * @param name  the Name
      * @param password the password
      */
-    public User(String newName, String password) {
-        this.name = newName;
+    public User(String name, String password) {
+        this.name = name;
         this.password = password;
     }
 

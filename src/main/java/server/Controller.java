@@ -36,10 +36,10 @@ public class Controller {
      */
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public static TokenResponse register(User user) {
+    public static TokenResponse register(@Valid @RequestBody User user) {
         String token = null;
         boolean bool=Database.checkUsername(user.getName());
-        if (bool == true) {
+        if (bool == false) {
             //generate TOKEN
             token = UUID.randomUUID().toString();
             Database.register(user,token);
