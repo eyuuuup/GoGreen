@@ -46,7 +46,7 @@ class ApplicationMethods {
             throws IllegalAccessException {
         String encodedUsername = encodeUsername(username);
         String hashedPassword = hashPassword(password);
-        
+
         if (client.Communication.login(encodedUsername, hashedPassword, remember)) {
             Application.categoryScreen();
         } else {
@@ -74,9 +74,9 @@ class ApplicationMethods {
         }
 
         String encodedUsername = encodeUsername(username);
-        String encryptedPassword = encryptPassword(password);
+        String hashedPassword = hashPassword(password);
 
-        if (client.Communication.register(encodedUsername, encryptedPassword, remember)) {
+        if (client.Communication.register(encodedUsername, hashedPassword, remember)) {
             Application.categoryScreen();
         } else {
             throw new IllegalAccessException("Registration unsuccessful");
