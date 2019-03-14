@@ -6,6 +6,12 @@ import static org.junit.Assert.*;
 
 public class TokenResponseTest {
     private TokenResponse tokenResponse = new TokenResponse("Token", true);
+
+    @Test
+    public void constructorEmpty(){
+        TokenResponse tokenResponse = new TokenResponse();
+    }
+
     @Test
     public void constructor(){
         TokenResponse tokenResponse = new TokenResponse("token", false);
