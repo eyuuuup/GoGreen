@@ -16,6 +16,9 @@
 .jfx-button {
     -jfx-button-type: FLAT;
     -fx-background-color: #29AB87;
+    -fx-text-fill:#e5e5e5;
+    -fx-font-weight: bold;
+    -fx-font-size: 24;
 }
 
 .jfx-button .jfx-rippler{
@@ -35,6 +38,14 @@
 .root{
     -fx-background-color: #b8ebad;
 
+}
+
+/* labels */
+.label
+{
+    -fx-text-fill: #e5e5e5;
+    -fx-font-weight: bold;
+    -fx-font-size: 24;
 }
 
 

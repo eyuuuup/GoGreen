@@ -489,7 +489,7 @@ public class Application extends javafx.application.Application {
         bio.setMinSize(500,100);
 
         //makes send button
-        JFXButton send = new JFXButton("add action");
+        JFXButton send = new JFXButton("Add action");
         send.setMinSize(500, 100);
         send.setOnAction(e -> {
             //looks what is selected
@@ -550,7 +550,7 @@ public class Application extends javafx.application.Application {
         JFXButton cleanSurronding = new JFXButton();
         OctIconView trashIcon = new OctIconView(OctIcon.TRASHCAN);
         trashIcon.setSize("50px");
-        cleanSurronding.setGraphic(new Label("clean surronding", trashIcon));
+        cleanSurronding.setGraphic(new Label("Clean surronding", trashIcon));
         cleanSurronding.setPrefSize(500, 100);
         cleanSurronding.setOnAction(e -> {
             Extra.addCleanSurroundingAction();
