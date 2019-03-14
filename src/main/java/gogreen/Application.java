@@ -231,8 +231,8 @@ public class Application extends javafx.application.Application {
             try {
                 ApplicationMethods.login(
                         username.getText(), password.getText(), rememberUser.isSelected());
-            } catch (IllegalAccessException exception) {
-                exception.printStackTrace();
+            } catch (IllegalAccessException e1) {
+                e1.printStackTrace();
             }
         });
 
@@ -444,7 +444,7 @@ public class Application extends javafx.application.Application {
 
     private static Pane leaderboardScreen() {
         JFXTabPane leaderboardNavigation = new JFXTabPane();
-       leaderboardNavigation.setPrefSize(500,500);
+        leaderboardNavigation.setPrefSize(500,500);
 
         Tab leaderboard = new Tab();
 
@@ -512,7 +512,7 @@ public class Application extends javafx.application.Application {
 
         transportPage.setAlignment(Pos.CENTER);
 
-       return transportPage;
+        return transportPage;
     }
 
     /**

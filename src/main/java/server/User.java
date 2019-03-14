@@ -6,8 +6,8 @@ package server;
  * @author Erwin van Dam
  */
 public class User {
-    private static String name;
-    private static String password;
+    private String name;
+    private String password;
 
     /**
      * This method creates and instantiates a new User.

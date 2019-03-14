@@ -12,10 +12,9 @@ import java.io.IOException;
 
 @SpringBootApplication
 public class Communication {
-    private static String token = null;
-
     private static final String hostURL = "http://localhost:8080";
-    private static final String fileDir = "src/extraFiles/token.txt";
+    private static final String fileDir = "src/extraFiles/Token.txt";
+    private static       String token   = null;
 
     private Communication() {}
 
@@ -66,6 +65,7 @@ public class Communication {
                 request.postForObject(hostURL + postUrl, message, TokenResponse.class);
 
         if (!response.isLegit()) {
+            System.out.println("not found");
             // not matching login and password
             return false;
         }
@@ -110,13 +110,34 @@ public class Communication {
     }
 
     /**
+     * Removes traces of previous user
+     */
+    public static void logout() {
+        // remove token from Main Memory
+        token = null;
+
+        // remove token from Secondary Memory
+        File file = new File(fileDir);
+        file.delete();
+    }
+
+    /**
+     * Checks wether the user is logged in, checked by comparing token to null
+     *
+     * @return wether the user is logged in
+     */
+    private static boolean isLoggedIn() {
+        return token != null;
+    }
+
+    /**
      * Checks whether a given name is according to the rules.
      * @param actionName the name of the action
      * @param points     the value of points to send
      * @return boolean correctly sent to server
      */
     public static boolean addAction(String actionName, int points) {
-        if (token == null) {
+        if (!isLoggedIn()) {
             return false; // not logged in
         }
 
@@ -126,4 +147,22 @@ public class Communication {
         RestTemplate request  = new RestTemplate();
         return request.postForObject(hostURL + "/addAction", message, boolean.class);
     }
+
+    /**
+     * Sends request to the server to retrieve last three actions for current user.
+     *
+     * @return string containing last three actions
+     */
+    public static String getLastThreeActions() {
+        if (!isLoggedIn()) {
+            return null; // not logged in
+        }
+
+        HttpEntity<String> message = new HttpEntity<>(token);
+
+        RestTemplate request  = new RestTemplate();
+
+        return request.postForObject(hostURL + "/retract", message, String.class);
+    }
+
 }
