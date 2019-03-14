@@ -77,7 +77,7 @@ public class ApplicationMethodsTest extends ApplicationTest {
         assertTrue(rememberCaptor.getValue());
 
         PowerMockito.verifyStatic();
-        Application.categoryScreen();
+        Application.mainScreen();
     }
 
     @Test (expected = IllegalAccessException.class)

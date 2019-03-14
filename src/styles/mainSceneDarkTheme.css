@@ -1,0 +1,50 @@
+/* css for the navigation bar */
+.jfx-tab-pane .headers-region {
+    -fx-background-color: #263238;
+}
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #263238;
+}
+.jfx-tab-pane .tab-header-area .jfx-rippler{
+    -jfx-rippler-fill :#006064;
+}
+.jfx-tab-pane .tab-selected-line {
+    -fx-background-color: #006064;
+}
+
+/* buttons */
+.jfx-button {
+    -jfx-button-type: FLAT;
+    -fx-background-color: #263238;
+    -fx-text-fill:#e5e5e5;
+    -fx-font-weight: bold;
+    -fx-font-size: 24;
+}
+
+.jfx-button .jfx-rippler{
+    -jfx-rippler-fill :#006064;
+}
+
+/* toggle buttons */
+.jfx-toggle-node {
+    -jfx-toggle-color: #37474F;
+    -jfx-untoggle-color: #263238;
+}
+.jfx-toggle-node .jfx-rippler{
+    -jfx-rippler-fill :#006064;
+}
+
+/* background of the root */
+.root{
+    -fx-background-color: #304047;
+   
+
+}
+
+/* labels */
+.label
+{
+    -fx-text-fill: #e5e5e5;
+    -fx-font-weight: bold;
+    -fx-font-size: 24;
+}

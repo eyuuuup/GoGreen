@@ -1,14 +1,19 @@
 package gogreen;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTabPane;
+import com.jfoenix.controls.JFXToggleNode;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
+import de.jensd.fx.glyphs.octicons.OctIcon;
+import de.jensd.fx.glyphs.octicons.OctIconView;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
@@ -19,6 +24,7 @@ import java.io.File;
 public class Application extends javafx.application.Application {
     //the stage this application uses
     private static Stage stage;
+    private static String theme;
 
     //launches the app
     public static void main(String[] args) {
@@ -37,8 +43,9 @@ public class Application extends javafx.application.Application {
 
         //if the user chose to remember the password in the app
         //the silentLogin will login for the user
+        theme = "src/styles/mainSceneDefaultTheme.css";
         if (client.Communication.silentLogin()) {
-            categoryScreen();
+            mainScreen();
         } else {
             loginScreen();
         }
@@ -219,8 +226,8 @@ public class Application extends javafx.application.Application {
             try {
                 ApplicationMethods.login(
                         username.getText(), password.getText(), rememberUser.isSelected());
-            } catch (IllegalAccessException exception) {
-                exception.printStackTrace();
+            } catch (IllegalAccessException e1) {
+                e1.printStackTrace();
             }
         });
 
@@ -252,167 +259,325 @@ public class Application extends javafx.application.Application {
     /**
      * Category screen.
      */
-    static void categoryScreen() {
-        //button that redirects to the food category
-        Button food = new Button("food");
-        food.setOnAction(e -> {
-            foodCategoryScreen();
-        });
+    static void mainScreen() {
 
-        //button that redirects to the transport category
-        Button transport = new Button("transport");
-        transport.setOnAction(e -> {
-            transportScreen();
-        });
 
-        //button that redirects to the energy category
-        Button energy = new Button("energy");
-        energy.setOnAction(e -> {
-            energyScreen();
-        });
+        //make the navigation tab pane
+        JFXTabPane navigation = new JFXTabPane();
+        navigation.setPrefSize(500, 600);
 
-        //button that redirects to the extra category
-        Button extra = new Button("extra");
-        extra.setOnAction(e -> {
-            extraScreen();
-        });
+        //  make the home tab
+        Tab homeTab = new Tab();
+        homeTab.setText("Home");
+        homeTab.setContent(homeScreen());
+
+        // make the category tab
+        Tab categoryTab = new Tab();
+        categoryTab.setText("Category");
+        categoryTab.setContent(categoryScreen());
+
+        Tab statsTab = new Tab();
+        statsTab.setText("Stats");
+        statsTab.setContent(statsScreen());
+
+        // make the leaderboard tab
+        Tab leaderboardTab = new Tab();
+        leaderboardTab.setText("Leaderboard");
+        leaderboardTab.setContent(leaderboardScreen());
+
+        navigation.getTabs().addAll(homeTab, categoryTab,statsTab, leaderboardTab);
 
         //put into a framework
-        FlowPane body = new FlowPane();
-        body.getChildren().addAll(food, transport, energy, extra);
+        Pane body = new Pane();
+        body.getChildren().addAll(navigation);
 
         //and displayed
-        Scene categories = new Scene(body, 400, 400);
-        show(categories);
+        Scene mainScene = new Scene(body, 500, 600);
+        mainScene.getStylesheets().add(new File(theme).toURI().toString());
+        show(mainScene);
     }
+
+    static Pane homeScreen(){
+        JFXTabPane homeNavigation = new JFXTabPane();
+        homeNavigation.setPrefSize(500,500);
+
+        Tab homeTab = new Tab();
+        homeTab.setText("Your world");
+
+        Tab settingsTab = new Tab();
+        settingsTab.setText("Settings");
+        settingsTab.setContent(settingsScreen());
+
+
+
+        homeNavigation.getTabs().addAll(homeTab, settingsTab);
+
+        Pane homePage = new Pane();
+        homePage.getChildren().addAll(homeNavigation);
+
+        return homePage;
+    }
+
+    public static VBox settingsScreen(){
+
+        JFXToggleNode darkTheme = new JFXToggleNode();
+        darkTheme.setGraphic(new Label("Enable dark theme"));
+        darkTheme.setPrefSize(500, 100);
+        if(theme.equals("src/styles/mainSceneDarkTheme.css") ){
+            darkTheme.setSelected(true);
+        }
+
+        darkTheme.setOnAction(e -> {
+            System.out.println(darkTheme.isSelected());
+            if(darkTheme.isSelected()){
+                theme = "src/styles/mainSceneDarkTheme.css";
+                mainScreen();
+            } else {
+                theme = "src/styles/mainSceneDefaultTheme.css";
+                mainScreen();
+            }
+        });
+
+        VBox settingsPage = new VBox(10);
+        settingsPage.getChildren().addAll(darkTheme);
+        settingsPage.setAlignment(Pos.CENTER);
+
+        return settingsPage;
+    }
+
+    private static Pane categoryScreen(){
+        JFXTabPane categoryNavigation = new JFXTabPane();
+        categoryNavigation.setPrefSize(500, 500);
+
+        // make the transport tab
+        Tab transportTab = new Tab();
+        transportTab.setText("Transport");
+        transportTab.setContent(transportScreen());
+
+        // make the food tab
+        Tab foodTab = new Tab();
+        foodTab.setText("Food");
+        foodTab.setContent(foodCategoryScreen());
+
+
+        // make the energy tab
+        Tab energyTab = new Tab();
+        energyTab.setText("Energy");
+        energyTab.setContent(energyScreen());
+
+        // make the extra tab
+        Tab extraTab = new Tab();
+        extraTab.setText("Extra");
+        extraTab.setContent(extraScreen());
+
+        categoryNavigation.getTabs().addAll(transportTab, foodTab, energyTab, extraTab);
+
+        Pane categoryBody = new Pane();
+        categoryBody.getChildren().addAll(categoryNavigation);
+
+        return categoryBody;
+
+    }
+
+    private static Pane statsScreen(){
+        JFXTabPane statsNavigation = new JFXTabPane();
+        statsNavigation.setPrefSize(500,500);
+
+        Tab stats = new Tab();
+
+        statsNavigation.getTabs().addAll(stats);
+
+        Pane statsBody = new Pane();
+        statsBody.getChildren().addAll(statsNavigation);
+
+        return statsBody;
+    }
+
+    private static Pane leaderboardScreen(){
+        JFXTabPane leaderboardNavigation = new JFXTabPane();
+        leaderboardNavigation.setPrefSize(500,500);
+
+        Tab leaderboard = new Tab();
+
+        leaderboardNavigation.getTabs().addAll(leaderboard);
+
+        Pane leaderboardBody = new Pane();
+        leaderboardBody.getChildren().addAll(leaderboardNavigation);
+
+        return leaderboardBody;
+    }
+
 
     /**
      * The transport screen.
      */
-    private static void transportScreen() {
+    private static GridPane transportScreen() {
+
         //button for the cycle action
-        Button cycle = new Button("cycle");
+        JFXButton cycle = new JFXButton();
+        FontAwesomeIconView bikeIcon = new FontAwesomeIconView(FontAwesomeIcon.BICYCLE);
+        bikeIcon.setSize("50px");
+        cycle.setGraphic(bikeIcon);
+        cycle.setPrefSize(500,100);
         cycle.setOnAction(e -> {
             Transport.addCycleAction();
         });
 
         //button for the public transport action
-        Button publicTransport = new Button("public Transport");
+        JFXButton publicTransport = new JFXButton();
+        MaterialDesignIconView subwayIcon = new MaterialDesignIconView(MaterialDesignIcon.SUBWAY);
+        subwayIcon.setSize("50px");
+        publicTransport.setGraphic(subwayIcon);
+        publicTransport.setPrefSize(500,100);
         publicTransport.setOnAction(e -> {
             Transport.addPublicTransportAction();
         });
 
         //button for the car action
-        Button car = new Button("car");
+        JFXButton car = new JFXButton();
+        FontAwesomeIconView carIcon = new FontAwesomeIconView(FontAwesomeIcon.AUTOMOBILE);
+        carIcon.setSize("50px");
+        car.setGraphic(carIcon);
+        car.setPrefSize(500,100);
         car.setOnAction(e -> {
             Transport.addCarAction();
         });
 
         //button for the plane action
-        Button plane = new Button("plane");
+        JFXButton plane = new JFXButton();
+        FontAwesomeIconView planeIcon = new FontAwesomeIconView(FontAwesomeIcon.PLANE);
+        planeIcon.setSize("50px");
+        plane.setGraphic(planeIcon);
+        plane.setPrefSize(500,100);
         plane.setOnAction(e -> {
             Transport.addPlaneAction();
         });
 
-        //the buttons are put into a framework
-        FlowPane body = new FlowPane();
-        body.getChildren().addAll(cycle, publicTransport, car, plane);
 
-        //and displayed to the user
-        Scene categories = new Scene(body, 400, 400);
-        show(categories);
+        GridPane transportPage = new GridPane();
+        transportPage.setVgap(10);
+        transportPage.add(cycle, 0 ,0);
+        transportPage.add(publicTransport, 0, 1);
+        transportPage.add(car, 0, 2);
+        transportPage.add(plane, 0,3 );
+
+        transportPage.setAlignment(Pos.CENTER);
+
+        return transportPage;
     }
 
     /**
      * The food screen.
      */
-    private static void foodCategoryScreen() {
-        //checkbox for vegetarian meal
-        CheckBox veggie = new CheckBox("It was veggie");
-        veggie.setMinSize(200, 20);
+    private static GridPane foodCategoryScreen() {
 
-        //checkbox for locally produced food
-        CheckBox locally = new CheckBox("It was locally");
-        locally.setMinSize(200, 20);
+        // makes the veggie toggle plus the icon
+        JFXToggleNode veggie = new JFXToggleNode();
+        MaterialDesignIconView cowIcon = new MaterialDesignIconView(MaterialDesignIcon.COW);
+        veggie.setGraphic(new Label("Meat", cowIcon));
+        cowIcon.setSize("50px");
+        veggie.setMinSize(500,100);
 
-        //checkbox for biological food
-        CheckBox bio = new CheckBox("It was bio");
-        bio.setMinSize(200, 20);
+        // makes the locally toggle plus the icon
+        JFXToggleNode locally = new JFXToggleNode();
+        FontAwesomeIconView locallyIcon = new FontAwesomeIconView(FontAwesomeIcon.MAP_MARKER);
+        locallyIcon.setSize("50px");
+        locally.setGraphic(new Label("Locally", locallyIcon));
+        locally.setMinSize(500,100);
 
-        //sends the checked items to the server
-        Button send = new Button("add action");
-        send.setMinSize(200, 50);
+        // makes the bio toggle plus the icon
+        JFXToggleNode bio = new JFXToggleNode();
+        FontAwesomeIconView leafIcon = new FontAwesomeIconView(FontAwesomeIcon.LEAF);
+        leafIcon.setSize("50px");
+        bio.setGraphic(new Label("Bio", leafIcon));
+        bio.setMinSize(500,100);
+
+        //makes send button
+        JFXButton send = new JFXButton("Add action");
+        send.setMinSize(500, 100);
         send.setOnAction(e -> {
             //looks what is selected
-            FoodCategory.addAction(veggie.isSelected(), locally.isSelected(), bio.isSelected());
+            FoodCategory.addAction(!veggie.isSelected(), locally.isSelected(), bio.isSelected());
+
+            // then sets it to false to select it again
+            veggie.setSelected(false);
+            locally.setSelected(false);
+            bio.setSelected(false);
         });
 
-        //the nodes are put in a vertical box
-        VBox vbox = new VBox();
-        vbox.getChildren().addAll(veggie, locally, bio, send);
+        //make the body and stop the toggles in them
+        GridPane foodPage = new GridPane();
+        foodPage.add(veggie, 0, 0);
+        foodPage.add(locally, 0, 1);
+        foodPage.add(bio, 0, 2);
+        foodPage.add(send, 0, 3);
+        foodPage.setVgap(10);
+        foodPage.setAlignment(Pos.CENTER);
 
-        //and displayed to the user
-        Scene actions = new Scene(vbox, 400, 400);
-        show(actions);
+        // return the body
+        return foodPage;
     }
 
-    /**
-     * the energy screen
-     */
-    private static void energyScreen () {
-        //GUI buttons for the energy category
-        //Button for reduece energy use
-        Button ReduceEnergy = new Button("ReduceEnergy");
-        ReduceEnergy.setOnAction(e -> {
-            Energy.addReduceEnergyAction();
-        });
 
-        //Button for less shower time
-        Button showertime = new Button("Less Shower");
-        showertime.setOnAction(e -> {
+
+    public static GridPane energyScreen(){
+
+        JFXButton waterTime = new JFXButton();
+        MaterialDesignIconView waterIcon = new MaterialDesignIconView(MaterialDesignIcon.WATER);
+        waterIcon.setSize("50px");
+        waterTime.setGraphic(new Label("Water time", waterIcon));
+        waterTime.setPrefSize(500, 100);
+        waterTime.setOnAction(e -> {
             Energy.addReduceWater();
         });
 
-        //button for reduce electric use
-        Button ReduceElectricity = new Button("Reduce Electric");
-        ReduceElectricity.setOnAction(e -> {
-            Energy.addReduceElectricity();
+        JFXButton energyTime = new JFXButton();
+        MaterialDesignIconView energyIcon = new MaterialDesignIconView(MaterialDesignIcon.FLASH);
+        energyIcon.setSize("50px");
+        energyTime.setGraphic(new Label("Energy time", energyIcon));
+        energyTime.setPrefSize(500, 100);
+        energyTime.setOnAction(e -> {
+            Energy.addReduceEnergyAction();
         });
 
-        //the buttons are put into a framework
-        FlowPane body = new FlowPane();
-        body.getChildren().addAll(ReduceEnergy, showertime, ReduceElectricity);
+        GridPane energyPage = new GridPane();
+        energyPage.setVgap(10);
+        energyPage.add(waterTime, 0, 0);
+        energyPage.add(energyTime, 0, 1);
+        energyPage.setAlignment(Pos.CENTER);
 
-        //and displayed to the user
-        Scene categories = new Scene(body, 400, 400);
-        show(categories);
+        return energyPage;
     }
 
-    /**
-     * the extra screen
-     */
-        private static void extraScreen () {
-            //GUI buttons for the extra category
-            //Button for clean near place
-            Button RecycleClean = new Button ("SurroundClean");
-            RecycleClean.setOnAction(e -> {
-                Extra.addCleanSurroundingAction();
-            });
+    public static GridPane extraScreen(){
 
-            //Button for recycle
-            Button Recycle = new Button ("recycle");
-            Recycle.setOnAction(e -> {
-                Extra.addRecycleAction();
-            });
+        JFXButton cleanSurronding = new JFXButton();
+        OctIconView trashIcon = new OctIconView(OctIcon.TRASHCAN);
+        trashIcon.setSize("50px");
+        cleanSurronding.setGraphic(new Label("Clean surronding", trashIcon));
+        cleanSurronding.setPrefSize(500, 100);
+        cleanSurronding.setOnAction(e -> {
+            Extra.addCleanSurroundingAction();
+        });
 
-            //the buttons are put into a framework
-            FlowPane body = new FlowPane();
-            body.getChildren().addAll(RecycleClean, Recycle);
+        JFXButton recycle = new JFXButton();
+        MaterialDesignIconView recycleIcon = new MaterialDesignIconView(MaterialDesignIcon.RECYCLE);
+        recycleIcon.setSize("50px");
+        recycle.setGraphic(new Label("Recycle", recycleIcon));
+        recycle.setPrefSize(500, 100);
+        recycle.setOnAction(e -> {
+            Extra.addRecycleAction();
+        });
 
-            //and displayed to the user
-            Scene categories = new Scene(body, 400, 400);
-            show(categories);
-        }
+
+        GridPane extraPage = new GridPane();
+        extraPage.setVgap(10);
+        extraPage.add(cleanSurronding, 0,0 );
+        extraPage.add(recycle,0,1);
+        extraPage.setAlignment(Pos.CENTER);
+
+        return extraPage;
+    }
 
     /**
      * shows the given scene to the user.

@@ -47,7 +47,7 @@ class ApplicationMethods {
         String hashedPassword = hashPassword(password);
 
         if (client.Communication.login(encodedUsername, hashedPassword, remember)) {
-            Application.categoryScreen();
+            Application.homeScreen();
         } else {
             throw new IllegalAccessException("Login unsuccessful");
         }
@@ -76,7 +76,7 @@ class ApplicationMethods {
         String hashedPassword = hashPassword(password);
 
         if (client.Communication.register(encodedUsername, hashedPassword, remember)) {
-            Application.categoryScreen();
+            Application.homeScreen();
         } else {
             throw new IllegalAccessException("Registration unsuccessful");
         }
