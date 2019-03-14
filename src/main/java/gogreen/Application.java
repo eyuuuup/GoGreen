@@ -40,7 +40,7 @@ public class Application extends javafx.application.Application {
         //if the user chose to remember the password in the app
         //the silentLogin will login for the user
         if (client.Communication.silentLogin()) {
-            categoryScreen();
+            homeScreen();
         } else {
             loginScreen();
         }
@@ -250,7 +250,7 @@ public class Application extends javafx.application.Application {
     /**
      * Category screen.
      */
-    static void categoryScreen() {
+    static void homeScreen() {
 
         //make the navigation tab pane
         JFXTabPane navigation = new JFXTabPane();
@@ -399,6 +399,22 @@ public class Application extends javafx.application.Application {
 
         // return the body
         return foodPage;
+    }
+
+    public static GridPane energyScreen(){
+
+
+
+        GridPane energyPage = new GridPane();
+
+        return energyPage;
+    }
+
+    public static GridPane extraScreen(){
+
+        GridPane extraPage = new GridPane();
+
+        return extraPage;
     }
 
     /**
