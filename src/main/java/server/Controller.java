@@ -23,8 +23,7 @@ public class Controller {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public static TokenResponse login(@Valid @RequestBody User user) {
         //if(check in database)
-        TokenResponse token = Database.checkLogin(user);
-        return token;
+        return Database.checkLogin(user);
     }
 
     /**

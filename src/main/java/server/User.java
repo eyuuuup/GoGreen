@@ -12,11 +12,11 @@ public class User {
     /**
      * This method creates and instantiates a new User.
      *
-     * @param newName  the Name
+     * @param name  the Name
      * @param password the password
      */
-    public User(String newName, String password) {
-        this.name = newName;
+    public User(String name, String password) {
+        this.name = name;
         this.password = password;
     }
 
@@ -48,9 +48,9 @@ public class User {
     }
 
 //    /**
-//     * Changes name into new password.
+//     * Changes password into new password.
 //     *
-//     * @param newPassword the new name
+//     * @param newPassword the new password
 //     */
 //    public void changePassword(String newPassword) {
 //        this.password = newPassword;
