@@ -39,7 +39,10 @@
     -fx-background-color: #b8ebad;
 
 }
-
+/* icon color */
+.glyph-icon{
+    -fx-fill: #9ACD32;
+}
 /* labels */
 .label
 {

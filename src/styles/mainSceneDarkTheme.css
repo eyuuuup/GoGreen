@@ -37,9 +37,12 @@
 /* background of the root */
 .root{
     -fx-background-color: #304047;
-   
-
 }
+/* icon color */
+.glyph-icon{
+    -fx-fill: #006064;
+}
+
 
 /* labels */
 .label

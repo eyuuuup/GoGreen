@@ -316,12 +316,19 @@ public class Application extends javafx.application.Application {
 
     public static VBox settingsScreen(){
 
+        String status = "Enable";
+
         JFXToggleNode darkTheme = new JFXToggleNode();
-        darkTheme.setGraphic(new Label("Enable dark theme"));
+        MaterialDesignIconView darkThemeIcon = new MaterialDesignIconView(MaterialDesignIcon.THEME_LIGHT_DARK);
+        darkThemeIcon.setSize("50px");
+
+
         darkTheme.setPrefSize(500, 100);
         if(theme.equals("src/styles/mainSceneDarkTheme.css") ){
             darkTheme.setSelected(true);
+            status = "Disable";
         }
+        darkTheme.setGraphic(new Label(status + " dark theme", darkThemeIcon));
 
         darkTheme.setOnAction(e -> {
             System.out.println(darkTheme.isSelected());
