@@ -76,3 +76,9 @@
     -fx-font-weight: bold;
     -fx-font-size: 14;
 }
+
+#history {
+    -fx-text-fill: #249677;
+    -fx-font-weight: bold;
+    -fx-font-size: 14;
+}

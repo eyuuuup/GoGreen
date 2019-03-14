@@ -41,6 +41,7 @@ public class Application extends javafx.application.Application {
         this.stage = stage;
         stage.setTitle("GoGreen");
 
+
         //if the user chose to remember the password in the app
         //the silentLogin will login for the user
         theme = "src/styles/mainSceneDefaultTheme.css";
@@ -358,8 +359,18 @@ public class Application extends javafx.application.Application {
            }
         });
 
+        JFXButton logoutButton = new JFXButton();
+        MaterialDesignIconView logoutIcon = new MaterialDesignIconView(MaterialDesignIcon.LOGOUT);
+        logoutIcon.setSize("50px");
+        logoutButton.setGraphic(new Label("Log out", logoutIcon));
+        logoutButton.setPrefSize(500, 100);
+        logoutButton.setOnAction(e -> {
+            // here comes the log out method....
+
+        });
+
         VBox settingsPage = new VBox(10);
-        settingsPage.getChildren().addAll(darkTheme);
+        settingsPage.getChildren().addAll(darkTheme, logoutButton);
         settingsPage.setAlignment(Pos.CENTER);
 
         return settingsPage;
@@ -403,14 +414,27 @@ public class Application extends javafx.application.Application {
         JFXTabPane statsNavigation = new JFXTabPane();
         statsNavigation.setPrefSize(500,500);
 
-        Tab stats = new Tab();
+        Tab overview = new Tab();
+        overview.setText("Overview");
+        overview.setContent(overviewScreen());
 
-        statsNavigation.getTabs().addAll(stats);
+
+        statsNavigation.getTabs().addAll(overview);
 
         Pane statsBody = new Pane();
         statsBody.getChildren().addAll(statsNavigation);
 
         return statsBody;
+    }
+
+    private static VBox overviewScreen(){
+
+        Label history = new Label("Recent activities \n History 1 \n History 2 \n History 3 \n");
+        history.setId("history");
+
+        VBox overviewPage = new VBox();
+        overviewPage.getChildren().addAll(history);
+        return overviewPage;
     }
 
     private static Pane leaderboardScreen(){
