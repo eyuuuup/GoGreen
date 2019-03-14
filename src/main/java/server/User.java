@@ -12,11 +12,11 @@ public class User {
     /**
      * This method creates and instantiates a new User.
      *
-     * @param newName  the Name
+     * @param name  the Name
      * @param password the password
      */
-    public User(String newName, String password) {
-        this.name = newName;
+    public User(String name, String password) {
+        this.name = name;
         this.password = password;
     }
 
@@ -29,14 +29,14 @@ public class User {
         return name;
     }
 
-    /**
-     * Changes name into newName.
-     *
-     * @param newName the new name
-     */
-    public void changeName(String newName) {
-        name = newName;
-    }
+    //    /**
+    //     * Changes name into newName.
+    //     *
+    //     * @param newName the new name
+    //     */
+    //    public void changeName(String newName) {
+    //        name = newName;
+    //    }
 
     /**
      * Getter for password.
@@ -47,12 +47,12 @@ public class User {
         return password;
     }
 
-    /**
-     * Changes name into new password.
-     *
-     * @param newPassword the new name
-     */
-    public void changePassword(String newPassword) {
-        this.password = newPassword;
-    }
+    //    /**
+    //     * Changes password into new password.
+    //     *
+    //     * @param newPassword the new password
+    //     */
+    //    public void changePassword(String newPassword) {
+    //        this.password = newPassword;
+    //    }
 }

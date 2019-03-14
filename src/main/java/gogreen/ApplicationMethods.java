@@ -1,12 +1,13 @@
 package gogreen;
 
+import com.google.common.hash.Hashing;
+
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Scanner;
 
@@ -40,11 +41,15 @@ class ApplicationMethods {
      * @param password the password
      * @param remember whether to remember this user
      */
-    static void login(String username, String password, boolean remember) {
+    static void login(String username, String password, boolean remember)
+            throws IllegalAccessException {
         String encodedUsername = encodeUsername(username);
-        String encryptedPassword = encryptPassword(password);
-        if (client.Communication.login(encodedUsername, encryptedPassword, remember)) {
+        String hashedPassword = hashPassword(password);
+
+        if (client.Communication.login(encodedUsername, hashedPassword, remember)) {
             Application.mainScreen();
+        } else {
+            throw new IllegalAccessException("Login unsuccessful");
         }
     }
 
@@ -56,35 +61,35 @@ class ApplicationMethods {
      * @param remember whether to remember this user
      */
     static void register(String username, String password, String passwordTwo, boolean remember)
-            throws NullPointerException, IllegalArgumentException {
+            throws NullPointerException, IllegalArgumentException,
+            IllegalAccessException, FileNotFoundException {
         checkName(username);
 
         if (!password.equals(passwordTwo)) {
             throw new IllegalArgumentException("Passwords not equal!");
         }
 
-        if (password.length() <= 7) {
+        if (password.length() <= 1) {
             throw new IllegalArgumentException("Password too short");
         }
 
         String encodedUsername = encodeUsername(username);
-        String encryptedPassword = encryptPassword(password);
+        String hashedPassword = hashPassword(password);
 
-        if (client.Communication.register(encodedUsername, encryptedPassword, remember)) {
+        if (client.Communication.register(encodedUsername, hashedPassword, remember)) {
             Application.mainScreen();
         } else {
-            throw new IllegalArgumentException("Registration unsuccessful");
+            throw new IllegalAccessException("Registration unsuccessful");
         }
     }
 
     /**
-     * This method encrypts the given password.
+     * This method hashes the given password, using SHA256.
      * @param password the password
-     * @return the encrypted password
+     * @return the hashed password
      */
-    private static String encryptPassword(String password) {
-        StrongPasswordEncryptor passwordEncrypt = new StrongPasswordEncryptor();
-        return passwordEncrypt.encryptPassword(password);
+    private static String hashPassword(String password) {
+        return Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
     }
 
     /**
@@ -93,25 +98,17 @@ class ApplicationMethods {
      * @return the encoded username
      */
     private static String encodeUsername(String username) {
-        String encodedUsername = "";
-        try {
-            encodedUsername = Base64.getEncoder().encodeToString(
-                    username.getBytes("utf-8"));
-        } catch (UnsupportedEncodingException exception) {
-            exception.printStackTrace();
-        }
-        return encodedUsername;
+        return Base64.getEncoder().encodeToString(username.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
      * Checks whether a given name is according to the rules.
      * @param testName the name to test
-     * @return boolean correct name
      * @throws NullPointerException     if null
      * @throws IllegalArgumentException if invalid
      */
-    private static boolean checkName(String testName)
-            throws NullPointerException, IllegalArgumentException {
+    private static void checkName(String testName)
+            throws NullPointerException, IllegalArgumentException, FileNotFoundException {
         //check if name is null
         if (testName == null) {
             throw new NullPointerException("Name equals null!");
@@ -134,19 +131,14 @@ class ApplicationMethods {
         testName = testName.toLowerCase();
 
         //check whether the name is not offensive
-        try {
-            File file = new File("src/extraFiles/InvalidNamesComma.txt");
-            Scanner sc = new Scanner(file).useDelimiter(", ");
-            while (sc.hasNext()) {
-                if (testName.contains(sc.next())) {
-                    throw new IllegalArgumentException("Offensive name!");
-                }
+        File file = new File("src/extraFiles/InvalidNamesComma.txt");
+        Scanner sc = new Scanner(file).useDelimiter(", ");
+        while (sc.hasNext()) {
+            if (testName.contains(sc.next())) {
+                throw new IllegalArgumentException("Offensive name!");
             }
-            sc.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
-        return true;
+        sc.close();
     }
 
     /**
@@ -154,7 +146,6 @@ class ApplicationMethods {
      * @param testName the new name
      */
     private static void checkCharacters(String testName) {
-        //check if all characters in the name are valid characters
         for (char c : testName.toCharArray()) {
             if (!(Character.toString(c).toLowerCase()).matches("[a-zA-Z]")) {
                 throw new IllegalArgumentException("Invalid character!");

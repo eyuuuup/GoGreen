@@ -20,6 +20,7 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public class Application extends javafx.application.Application {
     //the stage this application uses
@@ -165,7 +166,7 @@ public class Application extends javafx.application.Application {
             try {
                 ApplicationMethods.register(username.getText(), password.getText(),
                         passwordTwo.getText(), rememberUser.isSelected());
-            } catch (NullPointerException | IllegalArgumentException exception) {
+            } catch (NullPointerException | IllegalArgumentException | IllegalAccessException | FileNotFoundException exception) {
                 registerText.setText(exception.getMessage());
                 registerText.setTextFill(Paint.valueOf("#FF0000"));
             }
@@ -224,8 +225,12 @@ public class Application extends javafx.application.Application {
         //button to log in with the given credentials
         Button login = new Button("Login");
         login.setOnAction(e -> {
-            ApplicationMethods.login(
-                    username.getText(), password.getText(), rememberUser.isSelected());
+            try {
+                ApplicationMethods.login(
+                        username.getText(), password.getText(), rememberUser.isSelected());
+            } catch (IllegalAccessException exception) {
+                exception.printStackTrace();
+            }
         });
 
         //button if the user wants to register instead of to log in
@@ -257,8 +262,6 @@ public class Application extends javafx.application.Application {
      * Category screen.
      */
     static void mainScreen() {
-
-
         //make the navigation tab pane
         JFXTabPane navigation = new JFXTabPane();
         navigation.setPrefSize(500, 600);
@@ -294,7 +297,7 @@ public class Application extends javafx.application.Application {
         show(mainScene);
     }
 
-    private static Pane homeScreen(){
+    private static Pane homeScreen() {
         JFXTabPane homeNavigation = new JFXTabPane();
         homeNavigation.setPrefSize(500,500);
 
@@ -316,7 +319,7 @@ public class Application extends javafx.application.Application {
         return homePage;
     }
 
-    private static GridPane yourWorldScreen(){
+    private static GridPane yourWorldScreen() {
         ProgressBar levelBar = new ProgressBar(0.5);
         levelBar.setPrefSize(400, 10);
 
@@ -332,7 +335,7 @@ public class Application extends javafx.application.Application {
         yourWorldPage.setAlignment(Pos.BOTTOM_CENTER);
         return yourWorldPage;
     }
-    private static VBox settingsScreen(){
+    private static VBox settingsScreen() {
 
         String status = "Enable";
 
@@ -342,7 +345,7 @@ public class Application extends javafx.application.Application {
 
 
         darkTheme.setPrefSize(500, 100);
-        if(theme.equals("src/styles/mainSceneDarkTheme.css") ){
+        if (theme.equals("src/styles/mainSceneDarkTheme.css")) {
             darkTheme.setSelected(true);
             status = "Disable";
         }
@@ -350,7 +353,7 @@ public class Application extends javafx.application.Application {
 
         darkTheme.setOnAction(e -> {
             System.out.println(darkTheme.isSelected());
-           if(darkTheme.isSelected()){
+           if (darkTheme.isSelected()) {
               theme = "src/styles/mainSceneDarkTheme.css";
               mainScreen();
            } else {
@@ -376,7 +379,7 @@ public class Application extends javafx.application.Application {
         return settingsPage;
     }
 
-    private static Pane categoryScreen(){
+    private static Pane categoryScreen() {
         JFXTabPane categoryNavigation = new JFXTabPane();
         categoryNavigation.setPrefSize(500, 500);
 
@@ -410,7 +413,7 @@ public class Application extends javafx.application.Application {
 
     }
 
-    private static Pane statsScreen(){
+    private static Pane statsScreen() {
         JFXTabPane statsNavigation = new JFXTabPane();
         statsNavigation.setPrefSize(500,500);
 
@@ -427,7 +430,7 @@ public class Application extends javafx.application.Application {
         return statsBody;
     }
 
-    private static VBox overviewScreen(){
+    private static VBox overviewScreen() {
 
         Label history = new Label("Recent activities \n History 1 \n History 2 \n History 3 \n");
         history.setId("history");
@@ -437,7 +440,7 @@ public class Application extends javafx.application.Application {
         return overviewPage;
     }
 
-    private static Pane leaderboardScreen(){
+    private static Pane leaderboardScreen() {
         JFXTabPane leaderboardNavigation = new JFXTabPane();
        leaderboardNavigation.setPrefSize(500,500);
 
@@ -564,7 +567,7 @@ public class Application extends javafx.application.Application {
 
 
 
-    public static GridPane energyScreen(){
+    static GridPane energyScreen() {
 
         JFXButton waterTime = new JFXButton();
         MaterialDesignIconView waterIcon = new MaterialDesignIconView(MaterialDesignIcon.WATER);
@@ -593,7 +596,7 @@ public class Application extends javafx.application.Application {
         return energyPage;
     }
 
-    public static GridPane extraScreen(){
+    static GridPane extraScreen() {
 
         JFXButton cleanSurronding = new JFXButton();
         OctIconView trashIcon = new OctIconView(OctIcon.TRASHCAN);
