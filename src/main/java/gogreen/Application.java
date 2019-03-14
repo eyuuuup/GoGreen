@@ -157,7 +157,7 @@ public class Application extends javafx.application.Application {
             try {
                 ApplicationMethods.register(username.getText(), password.getText(),
                         passwordTwo.getText(), rememberUser.isSelected());
-            } catch (NullPointerException | IllegalArgumentException exception) {
+            } catch (NullPointerException | IllegalArgumentException | IllegalAccessException exception) {
                 registerText.setText(exception.getMessage());
                 registerText.setTextFill(Paint.valueOf("#FF0000"));
             }
@@ -216,8 +216,12 @@ public class Application extends javafx.application.Application {
         //button to log in with the given credentials
         Button login = new Button("Login");
         login.setOnAction(e -> {
-            ApplicationMethods.login(
-                    username.getText(), password.getText(), rememberUser.isSelected());
+            try {
+                ApplicationMethods.login(
+                        username.getText(), password.getText(), rememberUser.isSelected());
+            } catch (IllegalAccessException exception) {
+                exception.printStackTrace();
+            }
         });
 
         //button if the user wants to register instead of to log in

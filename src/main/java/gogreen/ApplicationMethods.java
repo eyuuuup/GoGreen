@@ -40,11 +40,14 @@ class ApplicationMethods {
      * @param password the password
      * @param remember whether to remember this user
      */
-    static void login(String username, String password, boolean remember) {
+    static void login(String username, String password, boolean remember)
+            throws IllegalAccessException {
         String encodedUsername = encodeUsername(username);
         String encryptedPassword = encryptPassword(password);
         if (client.Communication.login(encodedUsername, encryptedPassword, remember)) {
             Application.categoryScreen();
+        } else {
+            throw new IllegalAccessException("Login unsuccessful");
         }
     }
 
@@ -56,7 +59,7 @@ class ApplicationMethods {
      * @param remember whether to remember this user
      */
     static void register(String username, String password, String passwordTwo, boolean remember)
-            throws NullPointerException, IllegalArgumentException {
+            throws NullPointerException, IllegalArgumentException, IllegalAccessException {
         checkName(username);
 
         if (!password.equals(passwordTwo)) {
@@ -73,7 +76,7 @@ class ApplicationMethods {
         if (client.Communication.register(encodedUsername, encryptedPassword, remember)) {
             Application.categoryScreen();
         } else {
-            throw new IllegalArgumentException("Registration unsuccessful");
+            throw new IllegalAccessException("Registration unsuccessful");
         }
     }
 
