@@ -161,14 +161,14 @@ public class ApplicationMethodsTest extends ApplicationTest {
     }
 
     @Test
-    public void hashPasswordLegit1() throws Exception {
-        String response = Whitebox.invokeMethod(ApplicationMethods.class, "hashPassword", "abc123");
-        assertEquals(response.toUpperCase(), "6CA13D52CA70C883E0F0BB101E425A89E8624DE51DB2D2392593AF6A84118090");
+    public void hashPasswordLegitManual() throws Exception {
+        String response = Whitebox.invokeMethod(ApplicationMethods.class, "hashPassword", "password");
+        assertEquals(response.toUpperCase(), "5E884898DA28047151D0E56F8DC6292773603D0D6AABBDD62A11EF721D1542D8");
     }
 
     @Test
-    public void hashPasswordLegit2() throws Exception {
+    public void hashPasswordLegitCalculation() throws Exception {
         String response = Whitebox.invokeMethod(ApplicationMethods.class, "hashPassword", "password");
-        assertEquals(response.toUpperCase(), "5E884898DA28047151D0E56F8DC6292773603D0D6AABBDD62A11EF721D1542D8");
+        assertEquals(response, Hashing.sha256().hashString("password", StandardCharsets.UTF_8).toString());
     }
 }
