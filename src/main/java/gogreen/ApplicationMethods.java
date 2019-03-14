@@ -47,7 +47,7 @@ class ApplicationMethods {
         String hashedPassword = hashPassword(password);
 
         if (client.Communication.login(encodedUsername, hashedPassword, remember)) {
-            Application.categoryScreen();
+            Application.mainScreen();
         } else {
             throw new IllegalAccessException("Login unsuccessful");
         }
@@ -69,7 +69,7 @@ class ApplicationMethods {
             throw new IllegalArgumentException("Passwords not equal!");
         }
 
-        if (password.length() <= 7) {
+        if (password.length() <= 1) {
             throw new IllegalArgumentException("Password too short");
         }
 
@@ -77,7 +77,7 @@ class ApplicationMethods {
         String hashedPassword = hashPassword(password);
 
         if (client.Communication.register(encodedUsername, hashedPassword, remember)) {
-            Application.categoryScreen();
+            Application.mainScreen();
         } else {
             throw new IllegalAccessException("Registration unsuccessful");
         }
