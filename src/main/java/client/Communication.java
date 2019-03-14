@@ -11,7 +11,7 @@ public class Communication {
     private static String token = null;
 
     private static final String hostURL = "http://localhost:8080";
-    private static final String fileDir = "src/extraFiles/token.txt";
+    private static final String fileDir = "src/extraFiles/Token.txt";
 
     /**
      * Checks whether a given username is not taken on the server.
@@ -61,6 +61,7 @@ public class Communication {
         TokenResponse response = request.postForObject(hostURL + postURL, message, TokenResponse.class);
 
         if (!response.isLegit()) {
+            System.out.println("not found");
             // not matching login and password
             return false;
         }

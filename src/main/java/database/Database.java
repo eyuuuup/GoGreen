@@ -158,7 +158,9 @@ public class Database {
      * @return A TokenResponse object
      */
     public static TokenResponse checkLogin(User user) {
+        System.out.println("checkLogin called");
         if (checkUsername(user.getName())) {
+
             try {
                 Connection con = DriverManager.getConnection();
                 System.out.println("checkLogin called");
