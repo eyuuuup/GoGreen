@@ -4,11 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 @SpringBootApplication
 public class Communication {
@@ -71,17 +67,17 @@ public class Communication {
         }
 
         token = response.getToken();
+        if (remember) {
+            try {
+                FileWriter out = new FileWriter(new File(fileDir));
 
-        try {
-            FileWriter out = new FileWriter(new File(fileDir));
-            if (remember) {
                 //save token to file
                 out.write(token);
-            } // else over-write perhaps stored token
-            out.flush();
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+                out.flush();
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         return true;
