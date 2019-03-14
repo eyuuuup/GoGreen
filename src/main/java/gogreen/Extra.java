@@ -1,18 +1,25 @@
 package gogreen;
 
-//Represent of ExtraCategory
-
 import client.Communication;
 
-public final class Extra{
+/**
+ * Representation of the ExtraCategory.
+ * @author Gyum cho
+ */
+final class Extra {
+    private Extra() {}
 
-    //For clean surround place
-    public static void addCleansurroundAction() {
-        Communication.addAction("CleanSurround", 100);
+    /**
+     * Method for cleaning your surrounding.
+     */
+    static void addCleanSurroundingAction() {
+        Communication.addAction("CleanSurrounding", 100);
     }
 
-    //For recycle activity
-    public static void addRecycleAction() {
+    /**
+     * Method for recycling something.
+     */
+    static void addRecycleAction() {
         Communication.addAction("Recycle", 100);
     }
 }
