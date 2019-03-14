@@ -9,10 +9,7 @@ public class TokenResponse {
         this.legit = legit;
     }
 
-    public TokenResponse()
-    {
-
-    }
+    public TokenResponse() { }
 
     public String getToken() {
         return token;
