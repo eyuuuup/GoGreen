@@ -45,8 +45,9 @@ class ApplicationMethods {
     static void login(String username, String password, boolean remember)
             throws IllegalAccessException {
         String encodedUsername = encodeUsername(username);
-        String encryptedPassword = encryptPassword(password);
-        if (client.Communication.login(encodedUsername, encryptedPassword, remember)) {
+        String hashedPassword = hashPassword(password);
+        
+        if (client.Communication.login(encodedUsername, hashedPassword, remember)) {
             Application.categoryScreen();
         } else {
             throw new IllegalAccessException("Login unsuccessful");
