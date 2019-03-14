@@ -1,25 +1,33 @@
 package gogreen;
 
-//Represent the Energy Category
-
 import client.Communication;
 
-public final class Energy {
+/**
+ * Represent the Energy Category.
+ * @author Gyum cho
+ */
+final class Energy {
+    private Energy() {}
 
-    //Method for reduce energy use
-    public static void addReduceEnergyAction() {
-
+    /**
+     * Method for reduce energy use.
+     */
+    static void addReduceEnergyAction() {
         Communication.addAction("ReduceEnergy", 100);
     }
 
-    //Method for less showertime
-    public static void addReduceWater() {
+    /**
+     * Method for less shower time.
+     */
+    static void addReduceWater() {
         Communication.addAction("ReduceWater", 100);
     }
 
-    //Method for turn off electricity
-    public static void addReduceElectricity() {
-        Communication.addAction("ReduceElectric", 100);
+    /**
+     * Method for reduction electricity usage.
+     */
+    static void addReduceElectricity() {
+        Communication.addAction("ReduceElectricity", 100);
     }
 }
 

@@ -10,7 +10,18 @@ import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.Scanner;
 
+/**
+ * This class includes some useful methods for the GUI.
+ */
 class ApplicationMethods {
+    private ApplicationMethods() {}
+
+    /**
+     * Toggle visibility between Textfield and PasswordField.
+     * @param visible the Textfield
+     * @param invisible the PasswordField
+     * @param show whether to show the password
+     */
     static void toggleVisibility(TextField visible, PasswordField invisible, boolean show) {
         if (show) {
             invisible.setVisible(false);
@@ -23,14 +34,27 @@ class ApplicationMethods {
         }
     }
 
+    /**
+     * This methods logs in using the given username and password.
+     * @param username the username
+     * @param password the password
+     * @param remember whether to remember this user
+     */
     static void login(String username, String password, boolean remember) {
         String encodedUsername = encodeUsername(username);
         String encryptedPassword = encryptPassword(password);
         if (client.Communication.login(encodedUsername, encryptedPassword, remember)) {
-            Application.categoryScreen();
+            Application.homeScreen();
         }
     }
 
+    /**
+     * This methods registers using the given username and password.
+     * @param username the username
+     * @param password the password
+     * @param passwordTwo the rewritten password
+     * @param remember whether to remember this user
+     */
     static void register(String username, String password, String passwordTwo, boolean remember)
             throws NullPointerException, IllegalArgumentException {
         checkName(username);
@@ -47,17 +71,27 @@ class ApplicationMethods {
         String encryptedPassword = encryptPassword(password);
 
         if (client.Communication.register(encodedUsername, encryptedPassword, remember)) {
-            Application.categoryScreen();
+            Application.homeScreen();
         } else {
             throw new IllegalArgumentException("Registration unsuccessful");
         }
     }
 
+    /**
+     * This method encrypts the given password.
+     * @param password the password
+     * @return the encrypted password
+     */
     private static String encryptPassword(String password) {
         StrongPasswordEncryptor passwordEncrypt = new StrongPasswordEncryptor();
         return passwordEncrypt.encryptPassword(password);
     }
 
+    /**
+     * This method encodes the username.
+     * @param username the username
+     * @return the encoded username
+     */
     private static String encodeUsername(String username) {
         String encodedUsername = "";
         try {
@@ -71,7 +105,6 @@ class ApplicationMethods {
 
     /**
      * Checks whether a given name is according to the rules.
-     *
      * @param testName the name to test
      * @return boolean correct name
      * @throws NullPointerException     if null
@@ -118,7 +151,6 @@ class ApplicationMethods {
 
     /**
      * checks the characters in the new name.
-     *
      * @param testName the new name
      */
     private static void checkCharacters(String testName) {
