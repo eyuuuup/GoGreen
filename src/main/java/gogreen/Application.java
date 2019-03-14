@@ -299,6 +299,7 @@ public class Application extends javafx.application.Application {
 
         Tab homeTab = new Tab();
         homeTab.setText("Your world");
+        homeTab.setContent(yourWorldScreen());
 
         Tab settingsTab = new Tab();
         settingsTab.setText("Settings");
@@ -314,7 +315,23 @@ public class Application extends javafx.application.Application {
         return homePage;
     }
 
-    public static VBox settingsScreen(){
+    private static GridPane yourWorldScreen(){
+        ProgressBar levelBar = new ProgressBar(0.5);
+        levelBar.setPrefSize(400, 10);
+
+        Label levelStatus = new Label("Lv. INSERT HERE LEVEL");
+        levelStatus.setId("levelStatus");
+
+
+        VBox levelContainer = new VBox();
+        levelContainer.getChildren().addAll(levelStatus, levelBar);
+
+        GridPane yourWorldPage = new GridPane();
+        yourWorldPage.add(levelContainer, 0,0);
+        yourWorldPage.setAlignment(Pos.BOTTOM_CENTER);
+        return yourWorldPage;
+    }
+    private static VBox settingsScreen(){
 
         String status = "Enable";
 
