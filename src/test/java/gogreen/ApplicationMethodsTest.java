@@ -100,16 +100,14 @@ public class ApplicationMethodsTest extends ApplicationTest {
         ArgumentCaptor<String> usernameCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<Boolean> rememberCaptor = ArgumentCaptor.forClass(Boolean.class);
 
-        StrongPasswordEncryptor passwordEncrypt = new StrongPasswordEncryptor();
-
         when(Communication.register(anyString(), anyString(), anyBoolean())).thenReturn(true);
 
         ApplicationMethods.register("username", "password", "password", true);
         PowerMockito.verifyStatic();
         Communication.register(usernameCaptor.capture(), passwordCaptor.capture(), rememberCaptor.capture());
         assertEquals(encodedUsername, usernameCaptor.getValue());
+        assertEquals(hashedPassword, passwordCaptor.getValue());
         assertTrue(rememberCaptor.getValue());
-        assertTrue(passwordEncrypt.checkPassword("password", passwordCaptor.getValue()));
 
         PowerMockito.verifyNoMoreInteractions();
     }
