@@ -82,3 +82,9 @@
     -fx-font-weight: bold;
     -fx-font-size: 14;
 }
+
+#loginText{
+    -fx-text-fill: #249677;
+    -fx-font-weight: bold;
+    -fx-font-size: 24;
+}

@@ -42,6 +42,7 @@ public class Application extends javafx.application.Application {
         stage.setTitle("GoGreen");
 
 
+
         //if the user chose to remember the password in the app
         //the silentLogin will login for the user
         theme = "src/styles/mainSceneDefaultTheme.css";
@@ -57,10 +58,10 @@ public class Application extends javafx.application.Application {
      */
     private void loginScreen() {
         GridPane body = loginBody();
-        Scene loginScene = new Scene(body, 500, 250);
+        Scene loginScene = new Scene(body, 500, 500);
         //File f = new File("src/styles/style.css");
         //loginScene.getStylesheets().add("file:///" + f.getAbsolutePath().replace("\\", "/"));
-        loginScene.getStylesheets().add(new File("src/styles/Style.css").toURI().toString());
+        loginScene.getStylesheets().add(new File(theme).toURI().toString());
         show(loginScene);
     }
 
@@ -91,7 +92,8 @@ public class Application extends javafx.application.Application {
      */
     private void registerScreen() {
         GridPane body = registerScreenBody();
-        Scene registerScene = new Scene(body, 500, 250);
+        Scene registerScene = new Scene(body, 500, 500);
+        registerScene.getStylesheets().add(new File(theme).toURI().toString());
         show(registerScene);
     }
 
@@ -145,22 +147,19 @@ public class Application extends javafx.application.Application {
         showPassword.setOnAction(e -> {
             ApplicationMethods.toggleVisibility(
                     visiblePassword, password, showPassword.isSelected());
-        });
-
-        //checkbox to toggle between visible password two and masked password two
-        CheckBox showPasswordTwo = new CheckBox();
-        showPasswordTwo.setOnAction(e -> {
             ApplicationMethods.toggleVisibility(
-                    visiblePasswordTwo, passwordTwo, showPasswordTwo.isSelected());
+                    visiblePasswordTwo, passwordTwo, showPassword.isSelected());
+
         });
 
         //checkbox if the user wants his username and password to be remembered
         CheckBox rememberUser = new CheckBox();
 
         Label registerText = new Label("Register:");
+        registerText.setId("loginText");
 
         //button to register the stuff the user filled in
-        Button register = new Button("Register");
+        JFXButton register = new JFXButton("Register");
         register.setOnAction(e -> {
             try {
                 ApplicationMethods.register(username.getText(), password.getText(),
@@ -171,6 +170,7 @@ public class Application extends javafx.application.Application {
             }
         });
 
+
         //creates the gridpane with all the nodes in it
         GridPane body = new GridPane();
         body.setVgap(5);
@@ -179,9 +179,7 @@ public class Application extends javafx.application.Application {
         body.add(username, 0, 1);
         body.add(new StackPane(password, visiblePassword), 0, 2);
         body.add(new StackPane(passwordTwo, visiblePasswordTwo), 0, 3);
-        body.add(showPassword, 1, 2);
-        body.add(showPasswordTwo, 1, 3);
-        body.add(new Label("show password"), 2, 2);
+        body.add(showPassword, 1, 3);
         body.add(new Label("show password"), 2, 3);
         body.add(register, 0, 4);
         body.add(rememberUser, 1, 4);
@@ -209,43 +207,47 @@ public class Application extends javafx.application.Application {
 
         //passwordfield for if the user wants to see the password
         TextField visiblePassword = new TextField();
+        visiblePassword.setPrefHeight(50);
         visiblePassword.setVisible(false);
 
         //checkbox to toggle between visible password and masked password
-        CheckBox showPassword = new CheckBox();
+        JFXToggleNode showPassword = new JFXToggleNode();
+        MaterialDesignIconView showIcon = new MaterialDesignIconView(MaterialDesignIcon.EYE);
+        showIcon.setSize("20px");
+        showPassword.setGraphic(new Label("Show password", showIcon));
         showPassword.setOnAction(e -> {
             ApplicationMethods.toggleVisibility(
                     visiblePassword, password, showPassword.isSelected());
         });
 
         //checkbox if the user wants the application to remember the username and password
-        CheckBox rememberUser = new CheckBox();
+        JFXToggleNode rememberUser = new JFXToggleNode();
+        rememberUser.setGraphic(new Label("Remember me"));
 
         //button to log in with the given credentials
-        Button login = new Button("Login");
+        JFXButton login = new JFXButton("Login");
         login.setOnAction(e -> {
             ApplicationMethods.login(
                     username.getText(), password.getText(), rememberUser.isSelected());
         });
 
         //button if the user wants to register instead of to log in
-        Button register = new Button("or register");
+        JFXButton register = new JFXButton("or register");
         register.setOnAction(e -> {
             registerScreen();
         });
-
+        Label loginText = new Label("Login");
+        loginText.setId("loginText");
         //create the body
         GridPane body = new GridPane();
         body.setVgap(5);
         body.setHgap(10);
-        body.add(new Label("Login"), 0, 0);
+        body.add(loginText, 0, 0);
         body.add(username, 0, 1);
         body.add(new StackPane(password, visiblePassword), 0, 2);
         body.add(showPassword, 1, 2);
-        body.add(new Label("show password"), 2, 2);
         body.add(login, 0, 3);
         body.add(rememberUser, 1, 3);
-        body.add(new Label("Remember me"), 2, 3);
         body.add(register, 0, 5);
         body.setAlignment(Pos.CENTER);
 
