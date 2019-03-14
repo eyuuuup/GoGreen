@@ -1,5 +1,6 @@
 package gogreen;
 
+import client.Communication;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXToggleNode;
@@ -21,6 +22,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Application extends javafx.application.Application {
     //the stage this application uses
@@ -434,12 +436,31 @@ public class Application extends javafx.application.Application {
 
     private static VBox overviewScreen() {
 
-        Label history = new Label("Recent activities \n History 1 \n History 2 \n History 3 \n");
+        AtomicReference<String> recentActivity = new AtomicReference<>("");
+        JFXButton refresh = new JFXButton("refresh");
+
+        Label history = new Label("Recent activities:");
         history.setId("history");
 
+        refresh.setOnAction(e -> {
+            if(client.Communication.getLastThreeActions() != null){
+                recentActivity.set(Communication.getLastThreeActions());
+                changeText(history, "Recent activities: \n" + recentActivity.get());
+            } else {
+                recentActivity.set("");
+                System.out.println(recentActivity.get());
+                changeText(history, "Recent activities: \n none");
+            }
+            overviewScreen();
+        });
+
         VBox overviewPage = new VBox();
-        overviewPage.getChildren().addAll(history);
+        overviewPage.getChildren().addAll(history, refresh);
         return overviewPage;
+    }
+
+    private static void changeText(Label label, String text){
+        label.setText(text);
     }
 
     private static Pane leaderboardScreen() {
