@@ -7,7 +7,6 @@ import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Scanner;

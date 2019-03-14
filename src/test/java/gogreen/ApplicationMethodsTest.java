@@ -12,11 +12,9 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import javafx.scene.control.TextField;
-import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.powermock.reflect.Whitebox;
 import org.testfx.framework.junit.ApplicationTest;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
