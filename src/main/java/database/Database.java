@@ -31,7 +31,7 @@ public class Database {
             ResultSet rs = state.executeQuery();
 
             int actionId = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 actionId = rs.getInt(1);
                 System.out.println("actionId: " + actionId);
             }
@@ -74,7 +74,7 @@ public class Database {
 
                 System.out.println("token: " + rs.getString(1));
                 String tokenResult = rs.getString(1);
-                if(tokenResult.equals(token)){
+                if (tokenResult.equals(token)) {
                     System.out.println("Token exists");
                     return true;
                 }
@@ -164,7 +164,7 @@ public class Database {
                 ResultSet rs = state.executeQuery();
 
                 String token = "";
-                while(rs.next()){
+                while (rs.next()) {
                     token = rs.getString(1);
                 }
 

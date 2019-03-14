@@ -15,6 +15,7 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public class Application extends javafx.application.Application {
     //the stage this application uses
@@ -157,7 +158,7 @@ public class Application extends javafx.application.Application {
             try {
                 ApplicationMethods.register(username.getText(), password.getText(),
                         passwordTwo.getText(), rememberUser.isSelected());
-            } catch (NullPointerException | IllegalArgumentException | IllegalAccessException exception) {
+            } catch (NullPointerException | IllegalArgumentException | IllegalAccessException | FileNotFoundException exception) {
                 registerText.setText(exception.getMessage());
                 registerText.setTextFill(Paint.valueOf("#FF0000"));
             }
