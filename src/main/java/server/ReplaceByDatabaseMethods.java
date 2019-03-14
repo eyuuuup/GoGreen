@@ -10,8 +10,8 @@ public class ReplaceByDatabaseMethods {
      * @return TokenResponse (token, boolean)
      */
     public static TokenResponse checkLogin(User userDetails) {
-        String token = null;
-        boolean bool = false;
+        String token = "demo";
+        boolean bool = true;
         return new TokenResponse(token, bool);
     }
 

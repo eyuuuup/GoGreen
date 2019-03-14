@@ -157,7 +157,7 @@ public class Application extends javafx.application.Application {
             try {
                 ApplicationMethods.register(username.getText(), password.getText(),
                         passwordTwo.getText(), rememberUser.isSelected());
-            } catch (NullPointerException | IllegalArgumentException exception) {
+            } catch (NullPointerException | IllegalArgumentException | IllegalAccessException exception) {
                 registerText.setText(exception.getMessage());
                 registerText.setTextFill(Paint.valueOf("#FF0000"));
             }
@@ -216,8 +216,12 @@ public class Application extends javafx.application.Application {
         //button to log in with the given credentials
         Button login = new Button("Login");
         login.setOnAction(e -> {
-            ApplicationMethods.login(
-                    username.getText(), password.getText(), rememberUser.isSelected());
+            try {
+                ApplicationMethods.login(
+                        username.getText(), password.getText(), rememberUser.isSelected());
+            } catch (IllegalAccessException exception) {
+                exception.printStackTrace();
+            }
         });
 
         //button if the user wants to register instead of to log in
@@ -264,13 +268,13 @@ public class Application extends javafx.application.Application {
         //button that redirects to the energy category
         Button energy = new Button("energy");
         energy.setOnAction(e -> {
-            //action if you choose energy
+            energyScreen();
         });
 
         //button that redirects to the extra category
         Button extra = new Button("extra");
         extra.setOnAction(e -> {
-            //action if you choose transport
+            extraScreen();
         });
 
         //put into a framework
@@ -351,6 +355,64 @@ public class Application extends javafx.application.Application {
         Scene actions = new Scene(vbox, 400, 400);
         show(actions);
     }
+
+    /**
+     * the energy screen
+     */
+    private static void energyScreen () {
+        //GUI buttons for the energy category
+        //Button for reduece energy use
+        Button ReduceEnergy = new Button("ReduceEnergy");
+        ReduceEnergy.setOnAction(e -> {
+            Energy.addReduceEnergyAction();
+        });
+
+        //Button for less shower time
+        Button showertime = new Button("Less Shower");
+        showertime.setOnAction(e -> {
+            Energy.addReduceWater();
+        });
+
+        //button for reduce electric use
+        Button ReduceElectricity = new Button("Reduce Electric");
+        ReduceElectricity.setOnAction(e -> {
+            Energy.addReduceElectricity();
+        });
+
+        //the buttons are put into a framework
+        FlowPane body = new FlowPane();
+        body.getChildren().addAll(ReduceEnergy, showertime, ReduceElectricity);
+
+        //and displayed to the user
+        Scene categories = new Scene(body, 400, 400);
+        show(categories);
+    }
+
+    /**
+     * the extra screen
+     */
+        private static void extraScreen () {
+            //GUI buttons for the extra category
+            //Button for clean near place
+            Button RecycleClean = new Button ("SurroundClean");
+            RecycleClean.setOnAction(e -> {
+                Extra.addCleanSurroundingAction();
+            });
+
+            //Button for recycle
+            Button Recycle = new Button ("recycle");
+            Recycle.setOnAction(e -> {
+                Extra.addRecycleAction();
+            });
+
+            //the buttons are put into a framework
+            FlowPane body = new FlowPane();
+            body.getChildren().addAll(RecycleClean, Recycle);
+
+            //and displayed to the user
+            Scene categories = new Scene(body, 400, 400);
+            show(categories);
+        }
 
     /**
      * shows the given scene to the user.

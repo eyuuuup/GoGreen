@@ -10,37 +10,30 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Communication.class)
-public class TransportTest {
+public class OneTimeEventTest {
     @Before
     public void setUp() {
         PowerMockito.mockStatic(Communication.class);
     }
 
     @Test
-    public void addCycleAction() {
-        Transport.addCycleAction();
+    public void addSolarPanelAction() {
+        OneTimeEvent.addSolarPanelAction();
         PowerMockito.verifyStatic();
-        Communication.addAction("Cycle", 100);
+        Communication.addAction("SolarPanel", 1000);
     }
 
     @Test
-    public void addCarAction() {
-        Transport.addCarAction();
+    public void addElectricCarAction() {
+        OneTimeEvent.addElectricCarAction();
         PowerMockito.verifyStatic();
-        Communication.addAction("Car", 25);
+        Communication.addAction("ElectricCar", 1000);
     }
 
     @Test
-    public void addPlaneAction() {
-        Transport.addPlaneAction();
+    public void addEvGroupAction() {
+        OneTimeEvent.addEvGroupAction();
         PowerMockito.verifyStatic();
-        Communication.addAction("Plane", 0);
-    }
-
-    @Test
-    public void addPublicTransportAction() {
-        Transport.addPublicTransportAction();
-        PowerMockito.verifyStatic();
-        Communication.addAction("PublicTransport", 75);
+        Communication.addAction("EvGroup", 1000);
     }
 }
