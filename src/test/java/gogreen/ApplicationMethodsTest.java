@@ -86,12 +86,6 @@ public class ApplicationMethodsTest extends ApplicationTest {
         ApplicationMethods.login("username", "password", true);
     }
 
-//    @Test (expected = UnsupportedEncodingException.class)
-//    public void encoding() throws Exception {
-//        when(ApplicationMethods.class, "encodeUsername", "username").thenThrow(new UnsupportedEncodingException());
-//        Whitebox.invokeMethod(ApplicationMethods.class, "encodeUsername", "username");
-//    }
-
     @Test
     public void register() throws IllegalAccessException {
         ArgumentCaptor<String> passwordCaptor = ArgumentCaptor.forClass(String.class);

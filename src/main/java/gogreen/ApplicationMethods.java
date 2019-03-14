@@ -107,14 +107,7 @@ class ApplicationMethods {
      * @return the encoded username
      */
     private static String encodeUsername(String username) {
-        String encodedUsername = "";
-        try {
-            encodedUsername = Base64.getEncoder().encodeToString(
-                    username.getBytes("utf-8"));
-        } catch (UnsupportedEncodingException exception) {
-            exception.printStackTrace();
-        }
-        return encodedUsername;
+        return Base64.getEncoder().encodeToString(username.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
