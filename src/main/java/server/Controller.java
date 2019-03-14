@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.UUID; //LEAVE ONE LINE
+import java.util.UUID;
 import javax.validation.Valid;
 
 @RestController
@@ -29,10 +29,10 @@ public class Controller {
 
     /**
      * Register as new user.
-     * checks if username already taken or not and generates new token
+     * checks if username already taken or not and generates new token.
+     * if true user is added else false username already exists.
      * @param user username, passsword
-     * @return TokenResponse token, bool
-     * if true user is added else false username already exists
+     * @return TokenResponse token,
      */
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)

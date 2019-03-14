@@ -17,12 +17,14 @@ public class Communication {
     private static final String hostURL = "http://localhost:8080";
     private static final String fileDir = "src/extraFiles/token.txt";
 
+    private Communication() {}
+
     /**
      * Checks whether a given username is not taken on the server.
      * Stores the username and password, retrieves assigned token.
      * @param username the username
      * @param password the password
-     * @param remember wether to store token in a file
+     * @param remember whether to store token in a file
      * @return boolean correctly logged in and token recieved
      */
     public static boolean register(String username, String password, boolean remember) {
