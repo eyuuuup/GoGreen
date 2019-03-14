@@ -8,10 +8,9 @@ import java.io.*;
 
 @SpringBootApplication
 public class Communication {
-    private static String token = null;
-
     private static final String hostURL = "http://localhost:8080";
     private static final String fileDir = "src/extraFiles/Token.txt";
+    private static       String token   = null;
 
     /**
      * Checks whether a given username is not taken on the server.
@@ -50,7 +49,7 @@ public class Communication {
      * @param username the username
      * @param password the password
      * @param remember wether to store token in a file
-     * @param postURL determine between login and register
+     * @param postURL  determine between login and register
      * @return boolean wether the submit/fetch was sucessfull
      */
     private static boolean submit(String username, String password, boolean remember, String postURL) {
