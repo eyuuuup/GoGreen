@@ -26,20 +26,23 @@ public class Database {
             Connection con = DriverManager.getConnection();
             System.out.println("addAction called");
             PreparedStatement state =
-                    con.prepareStatement("SELECT action_id "
+                    con.prepareStatement("SELECT action_id, parent_category "
                             + "FROM actions WHERE actions.action_name = ?");
             state.setString(1, action.getAction());
             ResultSet rs = state.executeQuery();
 
             int actionId = 0;
+            int parentCategory = 0;
             while(rs.next()){
                 actionId = rs.getInt(1);
+                parentCategory = rs.getInt(2);
+                System.out.println("parentcategpry: " + parentCategory);
                 System.out.println("actionId: " + actionId);
             }
 
             PreparedStatement state1 =
-                    con.prepareStatement("INSERT INTO events (action_id, date_time, points, token)"
-                    + "VALUES (?, ?, ?, ?);");
+                    con.prepareStatement("INSERT INTO events (action_id, date_time, points, token, parent_category)"
+                    + "VALUES (?, ?, ?, ?, ?);");
             state1.setInt(1, actionId);
             state1.setString(
                     2,
@@ -47,6 +50,7 @@ public class Database {
                             .format(Calendar.getInstance().getTime()));
             state1.setInt(3, action.getValue());
             state1.setString(4, action.getUser());
+            state1.setInt(5, parentCategory);
             state1.executeUpdate();
             System.out.println("INSERT success");
             con.close();
@@ -54,6 +58,67 @@ public class Database {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return false;
+        }
+    }
+
+    public static String retract(String token) {
+        try {
+            Connection con = DriverManager.getConnection();
+            System.out.println("retract called");
+            PreparedStatement state =
+                    con.prepareStatement("select action_name, date_time, events.parent_category " +
+                            "FROM actions, events WHERE actions.action_id = events.action_id \n" +
+                            "AND events.parent_category = 1 AND events.token = ? ORDER BY date_time DESC LIMIT 3");
+            state.setString(1,token);
+            ResultSet rs = state.executeQuery();
+
+            StringBuilder result = new StringBuilder();
+            while(rs.next()){
+                result.append(rs.getString(1) + " ");
+                result.append(rs.getString(2) + "\n");
+            }
+
+
+            System.out.println("retract success");
+            con.close();
+            return result.toString();
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return "broke";
+        }
+    }
+
+
+
+    public static void updateTotalScores(String token, int score){
+        try{
+            Connection con = DriverManager.getConnection();
+            System.out.println("updateTotalScores called");
+
+
+            PreparedStatement state =
+                    con.prepareStatement("SELECT total_score "
+                            + "FROM total_score WHERE total_score.token = ?");
+            state.setString(1, token);
+            ResultSet rs = state.executeQuery();
+
+            int currentTotalScore = 0;
+            while(rs.next()){
+                currentTotalScore = rs.getInt(1);
+                System.out.println("currentTotalScore: " + currentTotalScore);
+            }
+
+            currentTotalScore = currentTotalScore + score;
+            PreparedStatement state1 =
+                    con.prepareStatement("UPDATE total_score SET total_score = ? WHERE token = ?");
+            state1.setInt(1, currentTotalScore);
+            state1.setString(2,token);
+            state1.executeUpdate();
+            System.out.println("UPDATE success");
+            con.close();
+        } catch(SQLException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -111,6 +176,16 @@ public class Database {
             state.setString(3, user.getPassword());
             state.setString(4, tempMail);
             state.executeUpdate();
+
+            PreparedStatement state1 =
+                    con.prepareStatement("INSERT INTO "
+                            + "total_score (total_score, token)"
+                            + "VALUES (?, ?);");
+
+            state1.setInt(1, 0);
+            state1.setString(2,token);
+            state1.executeUpdate();
+
             System.out.println("INSERT success");
             con.close();
         } catch (SQLException ex) {
