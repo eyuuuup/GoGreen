@@ -18,7 +18,6 @@ public class Database {
 
     /**
      * This method saves the Action object in the database.
-     *
      * @param action An object of the class Action.
      * @return if the query succeeded.
      */
@@ -63,6 +62,11 @@ public class Database {
         }
     }
 
+    /**
+     * This method gets the history of a user.
+     * @param token the token from a user.
+     * @return the history in a String.
+     */
     public static String retract(String token) {
         try {
             Connection con = DriverManager.getConnection();
@@ -93,7 +97,11 @@ public class Database {
         }
     }
 
-
+    /**
+     * This method updates the total score of a user.
+     * @param token the token from a user.
+     * @param score the score that should be added to the total.
+     */
     public static void updateTotalScores(String token, int score) {
         try {
             Connection con = DriverManager.getConnection();
@@ -245,7 +253,6 @@ public class Database {
 
             try {
                 Connection con = DriverManager.getConnection();
-                System.out.println("checkLogin called");
                 PreparedStatement state =
                         con.prepareStatement("SELECT * "
                                 + "FROM user_data WHERE user_data.username =  ? ");
@@ -268,6 +275,58 @@ public class Database {
             return new TokenResponse("null", false);
         }
 
+    }
+
+    /**
+     * This method adds User B as a friend of User A.
+     * @param usernameA A String of the username.
+     * @param usernameB A String of the username.
+     * @return if the query succeeded.
+     */
+    public static boolean addFriend(String usernameA, String usernameB) {
+        System.out.println("addFriend called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state =
+                    con.prepareStatement("INSERT INTO friends (user_a, user_b) VALUES" +
+                            "(?, ?) ");
+            state.setString(1,usernameA);
+            state.setString(2,usernameB);
+            state.executeUpdate();
+            con.close();
+            return true;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * This method shows the friends of a user.
+     * @param username A String of the username.
+     * @return the String of all friends of a user.
+     */
+    public static String showFriends(String username) {
+        System.out.println("showFriends called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state =
+                    con.prepareStatement("SELECT user_b FROM friends WHERE user_a = ?");
+            state.setString(1, username);
+            ResultSet rs = state.executeQuery();
+
+            StringBuilder result = new StringBuilder();
+            while (rs.next()) {
+                result.append(rs.getString(1));
+                result.append("\n");
+            }
+            con.close();
+            return result.toString();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return "no friends";
+        }
     }
 
 }
