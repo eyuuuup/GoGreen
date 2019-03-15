@@ -43,7 +43,8 @@ public class Database {
             }
 
             PreparedStatement state1 =
-                    con.prepareStatement("INSERT INTO events (action_id, date_time, points, token, parent_category)"
+                    con.prepareStatement("INSERT INTO events (action_id, date_time, "
+                            + "points, token, parent_category)"
                             + "VALUES (?, ?, ?, ?, ?);");
             state1.setInt(1, actionId);
             state1.setString(
@@ -63,14 +64,20 @@ public class Database {
         }
     }
 
+    /**
+     * Tries to retract from database.
+     * @param token the token
+     * @return result
+     */
     public static String retract(String token) {
         try {
             Connection con = DriverManager.getConnection();
             System.out.println("retract called");
             PreparedStatement state =
-                    con.prepareStatement("select action_name, date_time, events.parent_category " +
-                            "FROM actions, events WHERE actions.action_id = events.action_id \n" +
-                            "AND events.parent_category = 1 AND events.token = ? ORDER BY date_time DESC LIMIT 3");
+                    con.prepareStatement("select action_name, date_time, events.parent_category "
+                           + "FROM actions, events WHERE actions.action_id = events.action_id \n"
+                           + "AND events.parent_category = 1 AND events.token = ? "
+                           + "ORDER BY date_time DESC LIMIT 3");
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
 
@@ -93,7 +100,11 @@ public class Database {
         }
     }
 
-
+    /**
+     * Updates the total score.
+     * @param token the token
+     * @param score the score
+     */
     public static void updateTotalScores(String token, int score) {
         try {
             Connection con = DriverManager.getConnection();

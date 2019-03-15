@@ -5,6 +5,12 @@ public class Action {
     private String action;
     private int    value;
 
+    /**
+     * Constructs and initialises a new instance of Action.
+     * @param user the username
+     * @param action the action name
+     * @param value the amount of points
+     */
     public Action(String user, String action, int value) {
         this.user = user;
         this.action = action;
