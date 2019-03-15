@@ -39,8 +39,8 @@ public class ControllerTest {
         PowerMockito.verifyStatic();
         Database.checkUsername(USER.getName());
 
-        assertNotNull(tokenResponse.getToken());
-        assertTrue(tokenResponse.isLegit());
+        assertNull(tokenResponse.getToken());
+        assertFalse(tokenResponse.isLegit());
     }
 
     @Test
@@ -51,8 +51,8 @@ public class ControllerTest {
         Database.checkUsername(USER.getName());
         PowerMockito.verifyNoMoreInteractions();
 
-        assertNull(tokenResponse.getToken());
-        assertFalse(tokenResponse.isLegit());
+        assertNotNull(tokenResponse.getToken());
+        assertTrue(tokenResponse.isLegit());
     }
 
     @Test
