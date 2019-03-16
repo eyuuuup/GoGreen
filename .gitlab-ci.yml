@@ -1,0 +1,38 @@
+image: kaiwinter/docker-java8-maven
+
+stages:
+  - build
+  - test
+  - report
+
+build:
+  stage: build
+  script:
+    - mvn compile
+
+test:
+  stage: test
+  script:
+    - mvn test
+
+coverage:
+  stage: report
+  script:
+    - mvn install -B
+    - cat target/site/jacoco/index.html
+  coverage: '/Total.*?ctr2.*?ctr2">([0-9]{1,3})%/'
+  artifacts:
+    name: test_coverage
+    paths:
+      - target/site/jacoco/
+
+checkstyle:
+  stage: report
+  script:
+    - mvn site -B
+  artifacts:
+    name: checkstyle
+    paths:
+      - target/site/checkstyle.html
+      - target/site/css/
+      - target/site/images/
