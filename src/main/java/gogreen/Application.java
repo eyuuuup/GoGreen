@@ -11,7 +11,11 @@ import de.jensd.fx.glyphs.octicons.OctIcon;
 import de.jensd.fx.glyphs.octicons.OctIconView;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -34,7 +38,6 @@ public class Application extends javafx.application.Application {
 
     /**
      * this method starts the application.
-     *
      * @param stage stage
      */
     @Override
@@ -72,8 +75,7 @@ public class Application extends javafx.application.Application {
     }
 
     /**
-     * The login screen
-     *
+     * The login screen.
      * @return the screen
      */
     private GridPane loginScreen() {
@@ -197,7 +199,8 @@ public class Application extends javafx.application.Application {
             try {
                 ApplicationMethods.register(username.getText(), password.getText(),
                         passwordTwo.getText(), rememberUser.isSelected());
-            } catch (NullPointerException | IllegalArgumentException | IllegalAccessException | FileNotFoundException exception) {
+            } catch (NullPointerException | IllegalArgumentException
+                    | IllegalAccessException | FileNotFoundException exception) {
                 registerText.setText(exception.getMessage());
                 registerText.setTextFill(Paint.valueOf("#FF0000"));
             }
@@ -266,7 +269,7 @@ public class Application extends javafx.application.Application {
     }
 
     /**
-     * makes the home screen
+     * makes the home screen.
      * @return home screen
      */
     private static Pane homeScreen() {
@@ -297,7 +300,7 @@ public class Application extends javafx.application.Application {
     }
 
     /**
-     * makes the your world screen
+     * makes the your world screen.
      * @return your world screen
      */
     private static GridPane yourWorldScreen() {
@@ -323,7 +326,7 @@ public class Application extends javafx.application.Application {
     }
 
     /**
-     * makes the settings screen
+     * makes the settings screen.
      * @return settings screen
      */
     private static VBox settingsScreen() {
@@ -332,7 +335,8 @@ public class Application extends javafx.application.Application {
 
         // makes the dark mode button
         JFXToggleNode darkTheme = new JFXToggleNode();
-        MaterialDesignIconView darkThemeIcon = new MaterialDesignIconView(MaterialDesignIcon.THEME_LIGHT_DARK);
+        MaterialDesignIconView darkThemeIcon =
+                new MaterialDesignIconView(MaterialDesignIcon.THEME_LIGHT_DARK);
         darkThemeIcon.setSize("50px");
         darkTheme.setPrefSize(500, 100);
         darkTheme.setGraphic(new Label(status + " dark theme", darkThemeIcon));
@@ -346,13 +350,13 @@ public class Application extends javafx.application.Application {
         // if you toggle the button, you change the theme
         darkTheme.setOnAction(e -> {
             System.out.println(darkTheme.isSelected());
-           if (darkTheme.isSelected()) {
-              theme = "src/styles/mainSceneDarkTheme.css";
-              mainScreen();
-           } else {
-               theme = "src/styles/mainSceneDefaultTheme.css";
-               mainScreen();
-           }
+            if (darkTheme.isSelected()) {
+                theme = "src/styles/mainSceneDarkTheme.css";
+                mainScreen();
+            } else {
+                theme = "src/styles/mainSceneDefaultTheme.css";
+                mainScreen();
+            }
         });
 
         // make the logout button
@@ -379,7 +383,7 @@ public class Application extends javafx.application.Application {
     }
 
     /**
-     * make the category screen
+     * make the category screen.
      * @return the category screen
      */
     private static Pane categoryScreen() {
@@ -420,7 +424,7 @@ public class Application extends javafx.application.Application {
     }
 
     /**
-     * makes the transport screen
+     * makes the transport screen.
      * @return the transport screen
      */
     private static GridPane transportScreen() {
@@ -487,7 +491,7 @@ public class Application extends javafx.application.Application {
     }
 
     /**
-     * make the food screen
+     * make the food screen.
      * @return
      */
     private static GridPane foodScreen() {
@@ -541,7 +545,7 @@ public class Application extends javafx.application.Application {
     }
 
     /**
-     * makes the energy screen
+     * makes the energy screen.
      * @return the energy screen
      */
     static GridPane energyScreen() {
@@ -582,7 +586,7 @@ public class Application extends javafx.application.Application {
     }
 
     /**
-     * makes the extra screen
+     * makes the extra screen.
      * @return the extra screen
      */
     static GridPane extraScreen() {
@@ -623,7 +627,7 @@ public class Application extends javafx.application.Application {
     }
 
     /**
-     * make the stats screen
+     * make the stats screen.
      * @return the stats screen
      */
     private static Pane statsScreen() {
@@ -647,7 +651,7 @@ public class Application extends javafx.application.Application {
     }
 
     /**
-     * make the overview screen
+     * make the overview screen.
      * @return the overview screen
      */
     private static VBox overviewScreen() {
@@ -656,12 +660,13 @@ public class Application extends javafx.application.Application {
         JFXButton refresh = new JFXButton("refresh");
 
         // make the recent activites text
-        Label history = new Label("Recent Activities: \t\t date: \t\t\t time: \n " + ApplicationMethods.recentActivitiesToString(client.Communication.getLastThreeActions()));
+        Label history = new Label("Recent Activities: \t\t date: \t\t\t time: \n " + client.Communication.getLastThreeActions());
         history.setId("history");
 
         // if the refresh button is pressed, we display the last three recent activities
         refresh.setOnAction(e -> {
-                history.setText("Recent Activities: \t\t date: \t\t\t time: \n " + ApplicationMethods.recentActivitiesToString(client.Communication.getLastThreeActions()));
+            history.setText("Recent Activities: \t\t date: \t\t\t time: \n "
+                        + client.Communication.getLastThreeActions());
         });
 
         // make the overview page
@@ -673,7 +678,7 @@ public class Application extends javafx.application.Application {
     }
 
     /**
-     * make the leaderboard screen
+     * make the leaderboard screen.
      * @return the leaderboard screen
      */
     private static Pane leaderboardScreen() {
@@ -698,7 +703,6 @@ public class Application extends javafx.application.Application {
 
     /**
      * shows the given scene to the user.
-     *
      * @param scene scene
      */
     private static void show(Scene scene) {

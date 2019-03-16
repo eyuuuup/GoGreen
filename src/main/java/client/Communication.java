@@ -4,7 +4,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 @SpringBootApplication
 public class Communication {
@@ -106,7 +110,7 @@ public class Communication {
     }
 
     /**
-     * Removes traces of previous user
+     * Removes traces of previous user.
      */
     public static void logout() {
         // remove token from Main Memory
@@ -118,9 +122,8 @@ public class Communication {
     }
 
     /**
-     * Checks wether the user is logged in, checked by comparing token to null
-     *
-     * @return wether the user is logged in
+     * Checks whether the user is logged in, checked by comparing token to null.
+     * @return whether the user is logged in
      */
     private static boolean isLoggedIn() {
         return token != null;
