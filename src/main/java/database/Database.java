@@ -290,8 +290,8 @@ public class Database {
         try {
             Connection con = DriverManager.getConnection();
             PreparedStatement state =
-                    con.prepareStatement("INSERT INTO friends (user_a, user_b) VALUES" +
-                            "(?, ?) ");
+                    con.prepareStatement("INSERT INTO friends (user_a, user_b) VALUES"
+                            + "(?, ?) ");
             state.setString(1,usernameA);
             state.setString(2,usernameB);
             state.executeUpdate();

@@ -660,7 +660,8 @@ public class Application extends javafx.application.Application {
         JFXButton refresh = new JFXButton("refresh");
 
         // make the recent activites text
-        Label history = new Label("Recent Activities: \t\t date: \t\t\t time: \n " + client.Communication.getLastThreeActions());
+        Label history = new Label("Recent Activities: \t\t date: \t\t\t time: \n "
+                + client.Communication.getLastThreeActions());
         history.setId("history");
 
         // if the refresh button is pressed, we display the last three recent activities
