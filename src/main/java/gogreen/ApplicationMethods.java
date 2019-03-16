@@ -154,18 +154,20 @@ class ApplicationMethods {
     }
 
     /**
-     * makes a string of the recent activities
-     * @param recentActivites
+     * makes a string of the recent activities.
+     * @param recentActivities recent activities
      * @return a String of the recent activities
      */
-    public static String recentActivitiesToString(String recentActivites) {
-        if(recentActivites != null){
-            String[] split = recentActivites.split("\\s|_");
-            String output = split[0] + "\t\t\t\t" + split[1] + "\t\t" + split[2] + "\n"
-                    + split[3] + "\t\t\t\t" + split[4] + "\t\t" + split[5] + "\n"
-                    + split[6] + "\t\t\t\t" + split[7] + "\t\t" + split[8];
-            return output;
-        }
+    static String recentActivitiesToString(String recentActivities) {
+        //        if (recentActivities != null) {
+        //            System.out.println("rA: " + recentActivities);
+        //            String[] split = recentActivities.split("\\s|_");
+        //            String output = split[0] + "\t\t\t\t" + split[1] + "\t\t" + split[2] + "\n"
+        //                    + split[3] + "\t\t\t\t" + split[4] + "\t\t" + split[5] + "\n"
+        //                    + split[6] + "\t\t\t\t" + split[7] + "\t\t" + split[8];
+        //            System.out.println(output);
+        //            return output;
+        //        }
         return "none";
     }
 }
