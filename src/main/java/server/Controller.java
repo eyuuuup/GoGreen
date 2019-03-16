@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.UUID;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping ("/")
@@ -71,7 +71,8 @@ public class Controller {
         return Database.addAction(action);
     }
 
-    @RequestMapping (value = {"/retract"}, method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping (value = {"/retract"}, method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public static String forDemo(@Valid @RequestBody String token) {
         return Database.retract(token);
     }

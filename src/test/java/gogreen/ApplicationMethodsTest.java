@@ -116,7 +116,7 @@
 //        ApplicationMethods.register("username", "password", "passwordTwo", true);
 //    }
 //
-//    @Test (expected = IllegalArgumentException.class)
+//    @Test (expected = IllegalAccessException.class)
 //    public void registrationPasswordsTooShort() throws IllegalAccessException, FileNotFoundException {
 //        ApplicationMethods.register("username", "pwd", "pwd", true);
 //    }
