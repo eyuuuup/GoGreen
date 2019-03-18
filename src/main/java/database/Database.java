@@ -54,6 +54,9 @@ public class Database {
             state1.setString(4, action.getUser());
             state1.setInt(5, parentCategory);
             state1.executeUpdate();
+
+            updateTotalScores(action.getUser(), action.getValue());
+
             System.out.println("INSERT success");
             con.close();
             return true;
@@ -110,17 +113,7 @@ public class Database {
             System.out.println("updateTotalScores called");
 
 
-            PreparedStatement state =
-                    con.prepareStatement("SELECT total_score "
-                            + "FROM total_score WHERE total_score.token = ?");
-            state.setString(1, token);
-            ResultSet rs = state.executeQuery();
-
-            int currentTotalScore = 0;
-            while (rs.next()) {
-                currentTotalScore = rs.getInt(1);
-                System.out.println("currentTotalScore: " + currentTotalScore);
-            }
+            int currentTotalScore = getTotalScore(token);
 
             currentTotalScore = currentTotalScore + score;
             PreparedStatement state1 =
@@ -134,10 +127,41 @@ public class Database {
             System.out.println(ex.getMessage());
         }
     }
+    /**
+     * This method queries the database to get the total score of a user.
+     * @param token A String with the token of the user.
+     * @return the total score of a user.
+     */
+    public static int getTotalScore(String token){
+        try {
+            Connection con = DriverManager.getConnection();
+            System.out.println("getTotalScore called");
+
+
+            PreparedStatement state =
+                    con.prepareStatement("SELECT total_score "
+                            + "FROM total_score WHERE total_score.token = ?");
+            state.setString(1, token);
+            ResultSet rs = state.executeQuery();
+
+            int currentTotalScore = 0;
+            while (rs.next()) {
+                currentTotalScore = rs.getInt(1);
+                System.out.println("currentTotalScore: " + currentTotalScore);
+            }
+
+
+            System.out.println("UPDATE success");
+            con.close();
+            return currentTotalScore;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return 0;
+        }
+    }
 
     /**
      * This method queries the database with a token to look if the user exists.
-     *
      * @param token A string that contains the token.
      * @return if the query succeeded.
      */
