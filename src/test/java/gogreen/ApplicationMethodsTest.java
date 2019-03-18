@@ -25,7 +25,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Communication.class, Application.class})
-public class ApplicationMethodsTest { //extends ApplicationTest {
+public class ApplicationMethodsTest extends ApplicationTest {
     private String encodedUsername;
     private String hashedPassword;
 
@@ -41,26 +41,26 @@ public class ApplicationMethodsTest { //extends ApplicationTest {
         hashedPassword = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
     }
 
-//    @Override
-//    public void start(Stage stage) throws Exception {}
-//
-//    @Test
-//    public void toggleVisibilityTrue() {
-//        TextField text = new TextField("test");
-//        PasswordField password = new PasswordField();
-//        ApplicationMethods.toggleVisibility(text, password, true);
-//        assertTrue(text.isVisible());
-//        assertFalse(password.isVisible());
-//    }
-//
-//    @Test
-//    public void toggleVisibilityFalse() {
-//        TextField text = new TextField("test");
-//        PasswordField password = new PasswordField();
-//        ApplicationMethods.toggleVisibility(text, password, false);
-//        assertFalse(text.isVisible());
-//        assertTrue(password.isVisible());
-//    }
+    @Override
+    public void start(Stage stage) throws Exception {}
+
+    @Test
+    public void toggleVisibilityTrue() {
+        TextField text = new TextField("test");
+        PasswordField password = new PasswordField();
+        ApplicationMethods.toggleVisibility(text, password, true);
+        assertTrue(text.isVisible());
+        assertFalse(password.isVisible());
+    }
+
+    @Test
+    public void toggleVisibilityFalse() {
+        TextField text = new TextField("test");
+        PasswordField password = new PasswordField();
+        ApplicationMethods.toggleVisibility(text, password, false);
+        assertFalse(text.isVisible());
+        assertTrue(password.isVisible());
+    }
 
     @Test
     public void login() throws IllegalAccessException {
