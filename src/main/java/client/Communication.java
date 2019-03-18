@@ -185,4 +185,21 @@ public class Communication {
         return request.postForObject(hostURL + "/getTotalScore", message, Integer.class);
     }
 
+    /**
+     *
+     * adds a friend by it's username
+     * @param friendUsername
+     * @return
+     */
+    public static boolean addFriend(String friendUsername) {
+        if(!isLoggedIn()) {
+            return false;
+        }
+
+        Friends friend= new Friends(token, friendUsername);
+
+        HttpEntity<Friends> message= new HttpEntity<>(friend);
+        RestTemplate request=new RestTemplate();
+        return request.postForObject(hostURL +"/addFriend", message, boolean.class);
+    }
 }
