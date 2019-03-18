@@ -4,11 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 @SpringBootApplication
 public class Communication {
@@ -16,11 +12,13 @@ public class Communication {
     private static final String fileDir = "src/extraFiles/Token.txt";
     private static       String token   = null;
 
-    private Communication() {}
+    private Communication() {
+    }
 
     /**
      * Checks whether a given username is not taken on the server.
      * Stores the username and password, retrieves assigned token.
+     *
      * @param username the username
      * @param password the password
      * @param remember whether to store token in a file
@@ -35,6 +33,7 @@ public class Communication {
     /**
      * Checks whether a given username and password matches on the server.
      * If yes, retrieves token for such combination for further authentication
+     *
      * @param username the username
      * @param password the password
      * @param remember wether to store token in a file
@@ -49,10 +48,11 @@ public class Communication {
     /**
      * Handles login and register.
      * avoid duplicate code.
+     *
      * @param username the username
      * @param password the password
      * @param remember wether to store token in a file
-     * @param postUrl determine between login and register
+     * @param postUrl  determine between login and register
      * @return boolean wether the submit/fetch was sucessful
      */
     private static boolean submit(
@@ -60,7 +60,7 @@ public class Communication {
         User             user    = new User(username, password);
         HttpEntity<User> message = new HttpEntity<>(user);
 
-        RestTemplate  request  = new RestTemplate();
+        RestTemplate request = new RestTemplate();
         TokenResponse response =
                 request.postForObject(hostURL + postUrl, message, TokenResponse.class);
 
@@ -89,6 +89,7 @@ public class Communication {
 
     /**
      * Tries to log in with the stored username and password.
+     *
      * @return boolean correctly logged in and token received
      */
     public static boolean silentLogin() {
@@ -123,6 +124,7 @@ public class Communication {
 
     /**
      * Checks whether the user is logged in, checked by comparing token to null.
+     *
      * @return whether the user is logged in
      */
     private static boolean isLoggedIn() {
@@ -131,6 +133,7 @@ public class Communication {
 
     /**
      * Checks whether a given name is according to the rules.
+     *
      * @param actionName the name of the action
      * @param points     the value of points to send
      * @return boolean correctly sent to server
@@ -143,7 +146,7 @@ public class Communication {
         Action                    action  = new Action(token, actionName, points);
         HttpEntity<client.Action> message = new HttpEntity<>(action);
 
-        RestTemplate request  = new RestTemplate();
+        RestTemplate request = new RestTemplate();
         return request.postForObject(hostURL + "/addAction", message, boolean.class);
     }
 
@@ -159,9 +162,27 @@ public class Communication {
 
         HttpEntity<String> message = new HttpEntity<>(token);
 
-        RestTemplate request  = new RestTemplate();
+        RestTemplate request = new RestTemplate();
 
         return request.postForObject(hostURL + "/retract", message, String.class);
+    }
+
+
+    /**
+     * Sends request to the server to retrieve this user's total score.
+     *
+     * @return integer containing total score
+     */
+    public static int getMyTotalScore() {
+        if (!isLoggedIn()) {
+            return -1;
+        }
+
+        HttpEntity<String> message = new HttpEntity<>(token);
+
+        RestTemplate request = new RestTemplate();
+
+        return request.postForObject(hostURL + "/getTotalScore", message, Integer.class);
     }
 
 }
