@@ -66,16 +66,43 @@ public class Controller {
         return "ERWIN";
     }
 
+    /**
+     * add action to the database
+     * @param action
+     * @return boolean if action added or not
+     */
     @RequestMapping (value = {"/addAction"}, method = RequestMethod.POST)
     public static boolean addAction(@Valid @RequestBody Action action) {
         return Database.addAction(action);
     }
 
+    /**
+     * For the history
+     *
+     * @param token
+     * @return String last three actions
+     */
     @RequestMapping (value = {"/retract"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public static String forDemo(@Valid @RequestBody String token) {
         return Database.retract(token);
     }
+
+    /**
+     *
+     * @param token
+     * @return int returns the total score
+     */
+    @RequestMapping(value={"/getTotalScore"}, method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public static int totalScore(@Valid @RequestBody String token)
+    {
+        int score=0;
+        score= Database.getTotalScore(token);
+        return score;
+    }
+
+
 
 }
 
