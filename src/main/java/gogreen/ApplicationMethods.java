@@ -1,8 +1,6 @@
 package gogreen;
 
 import com.google.common.hash.Hashing;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,10 +14,9 @@ import java.util.Scanner;
 class ApplicationMethods {
     private ApplicationMethods() {
     }
-
+    
     /**
      * This methods logs in using the given username and password.
-     *
      * @param username the username
      * @param password the password
      * @param remember whether to remember this user
@@ -28,17 +25,16 @@ class ApplicationMethods {
             throws IllegalAccessException {
         String encodedUsername = encodeUsername(username);
         String hashedPassword  = hashPassword(password);
-
+        
         if (client.Communication.login(encodedUsername, hashedPassword, remember)) {
             Application.mainScreen();
         } else {
             throw new IllegalAccessException("Login unsuccessful");
         }
     }
-
+    
     /**
      * This methods registers using the given username and password.
-     *
      * @param username    the username
      * @param password    the password
      * @param passwordTwo the rewritten password
@@ -48,48 +44,45 @@ class ApplicationMethods {
             throws NullPointerException, IllegalArgumentException,
             IllegalAccessException, FileNotFoundException {
         checkName(username);
-
+        
         if (!password.equals(passwordTwo)) {
             throw new IllegalArgumentException("Passwords not equal!");
         }
-
+        
         if (password.length() <= 1) {
             throw new IllegalArgumentException("Password too short");
         }
-
+        
         String encodedUsername = encodeUsername(username);
         String hashedPassword  = hashPassword(password);
-
+        
         if (client.Communication.register(encodedUsername, hashedPassword, remember)) {
             Application.mainScreen();
         } else {
             throw new IllegalAccessException("Registration unsuccessful");
         }
     }
-
+    
     /**
      * This method hashes the given password, using SHA256.
-     *
      * @param password the password
      * @return the hashed password
      */
     private static String hashPassword(String password) {
         return Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
     }
-
+    
     /**
      * This method encodes the username.
-     *
      * @param username the username
      * @return the encoded username
      */
     private static String encodeUsername(String username) {
         return Base64.getEncoder().encodeToString(username.getBytes(StandardCharsets.UTF_8));
     }
-
+    
     /**
      * Checks whether a given name is according to the rules.
-     *
      * @param testName the name to test
      * @throws NullPointerException     if null
      * @throws IllegalArgumentException if invalid
@@ -100,23 +93,23 @@ class ApplicationMethods {
         if (testName == null) {
             throw new NullPointerException("Name equals null!");
         }
-
+        
         //check whether name is too long
         if (testName.length() >= 16) {
             throw new IllegalArgumentException("Name is too long!");
         }
-
+        
         //check if name is too short
         if (testName.length() <= 0) {
             throw new IllegalArgumentException("Name is too short!");
         }
-
+        
         //check if all characters are permitted
         checkCharacters(testName);
-
+        
         //for the invalid name test the name should consist of lowercase letters
         testName = testName.toLowerCase();
-
+        
         //check whether the name is not offensive
         File    file = new File("src/extraFiles/InvalidNamesComma.txt");
         Scanner sc   = new Scanner(file).useDelimiter(", ");
@@ -127,10 +120,9 @@ class ApplicationMethods {
         }
         sc.close();
     }
-
+    
     /**
      * checks the characters in the new name.
-     *
      * @param testName the new name
      */
     private static void checkCharacters(String testName) {
@@ -140,10 +132,9 @@ class ApplicationMethods {
             }
         }
     }
-
+    
     /**
      * makes a string of the recent activities.
-     *
      * @param recentActivities recent activities
      * @return a String of the recent activities
      */
@@ -159,15 +150,15 @@ class ApplicationMethods {
         //        }
         return "none";
     }
-
+    
     static int getLevel(int points) {
         return (int) (Math.floor(Math.pow(points / 250, 0.75)));
     }
-
+    
     static int getLevelInv(int lvl) {
         return (int) Math.floor(250 * Math.pow(lvl, 1 / 0.75));
     }
-
+    
     static double getLevelProgress(int points) {
         int    lvl   = getLevel(points);
         double start = getLevelInv(lvl);
