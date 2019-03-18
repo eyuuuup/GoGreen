@@ -108,7 +108,7 @@ public class Database {
             PreparedStatement state =
                     con.prepareStatement("select action_name, date_time, events.parent_category "
                            + "FROM actions, events WHERE actions.action_id = events.action_id \n"
-                           + "AND events.parent_category = 1 AND events.username = ? "
+                           + "AND events.username = ? "
                            + "ORDER BY date_time DESC LIMIT 3");
             state.setString(1, getUsername(token));
             ResultSet rs = state.executeQuery();
