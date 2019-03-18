@@ -499,7 +499,7 @@ public class Application extends javafx.application.Application {
         // makes the veggie toggle
         JFXToggleNode veggie = new JFXToggleNode();
         MaterialDesignIconView cowIcon = new MaterialDesignIconView(MaterialDesignIcon.COW);
-        veggie.setGraphic(new Label("Meat", cowIcon));
+        veggie.setGraphic(new Label("Vegetarian", cowIcon));
         cowIcon.setSize("50px");
         veggie.setMinSize(500,100);
 
@@ -523,7 +523,7 @@ public class Application extends javafx.application.Application {
 
         // when you press the send button, it will look what is selected and add those actions
         send.setOnAction(e -> {
-            FoodCategory.addAction(!veggie.isSelected(), locally.isSelected(), bio.isSelected());
+            FoodCategory.addAction(veggie.isSelected(), locally.isSelected(), bio.isSelected());
 
             // then sets it to false to select it again
             veggie.setSelected(false);

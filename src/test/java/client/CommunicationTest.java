@@ -2,40 +2,65 @@ package client;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
+import org.springframework.web.client.RestTemplate;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(Communication.class)
+import java.lang.reflect.Field;
+
 public class CommunicationTest {
+    private RestTemplate restTemplate;
+
     @Before
     public void setUp() {
-        PowerMockito.mockStatic(Communication.class);
+        restTemplate = Mockito.mock(RestTemplate.class);
     }
 
     @Test
-    public void register() throws Exception {
-        PowerMockito.doReturn(true).when(Communication.class, "submit", "Username", "Password", true, "/login");
+    public void register() {
         Communication.register("Username", "Password", true);
     }
 
     @Test
-    public void login() throws Exception{
-        PowerMockito.doReturn(true).when(Communication.class, "submit", "Username", "Password", true, "/login");
+    public void login() {
         Communication.login("Username", "Password", true);
     }
 
     @Test
-    public void silentLogin() throws Exception{
-        PowerMockito.doReturn(true).when(Communication.class, "silentLogin");
+    public void silentLogin() {
         Communication.silentLogin();
     }
 
     @Test
-    public void addAction() throws Exception{
-        PowerMockito.doReturn(true).when(Communication.class, "addAction", "Action", 100);
+    public void addAction() {
         Communication.addAction("Action", 100);
+    }
+
+    @Test
+    public void addActionLoggedIn() {
+        Whitebox.setInternalState( Communication.class, "token", "token");
+        Communication.addAction("Action", 100);
+    }
+
+    @Test
+    public void logout() {
+        Communication.logout();
+    }
+
+    @Test
+    public void isLoggedIn() throws Exception {
+        Whitebox.invokeMethod(Communication.class, "isLoggedIn");
+    }
+
+    @Test
+    public void getLastThreeActions() {
+        Communication.getLastThreeActions();
+    }
+
+    @Test
+    public void getLastThreeActionsLoggedIn() throws IllegalAccessException {
+        Whitebox.setInternalState( Communication.class, "token", "token");
+        Communication.getLastThreeActions();
     }
 }
