@@ -59,7 +59,7 @@ public class Application extends javafx.application.Application {
     /**
      * This method displays the Login screen.
      */
-    private void loginScene() {
+    private static void loginScene() {
         Scene loginScene = new Scene(loginScreen(), 500, 500);
         loginScene.getStylesheets().add(new File(theme).toURI().toString());
         show(loginScene);
@@ -68,7 +68,7 @@ public class Application extends javafx.application.Application {
     /**
      * This method displays the register screen.
      */
-    private void registerScene() {
+    private static void registerScene() {
         Scene registerScene = new Scene(registerScreen(), 500, 500);
         registerScene.getStylesheets().add(new File(theme).toURI().toString());
         show(registerScene);
@@ -78,7 +78,7 @@ public class Application extends javafx.application.Application {
      * The login screen.
      * @return the screen
      */
-    private GridPane loginScreen() {
+    private static GridPane loginScreen() {
 
         //textfield for the username
         TextField username = new TextField();
@@ -150,7 +150,7 @@ public class Application extends javafx.application.Application {
      *
      * @return the body
      */
-    private GridPane registerScreen() {
+    private static GridPane registerScreen() {
         //textfield for the username
         TextField username = new TextField();
         username.setPromptText("username");
@@ -206,6 +206,11 @@ public class Application extends javafx.application.Application {
             }
         });
 
+        JFXButton back = new JFXButton("go Back");
+        back.setOnAction(e -> {
+            loginScene();
+        });
+
 
         //creates the gridpane with all the nodes in it
         GridPane registerPage = new GridPane();
@@ -218,6 +223,7 @@ public class Application extends javafx.application.Application {
         registerPage.add(new StackPane(passwordTwo, visiblePasswordTwo), 0, 3);
         registerPage.add(showPassword, 1, 3);
         registerPage.add(register, 0, 4);
+        registerPage.add(back, 1, 4);
 
         registerPage.setAlignment(Pos.CENTER);
 
@@ -371,6 +377,8 @@ public class Application extends javafx.application.Application {
             // TODO
             // log out method does not work...
             client.Communication.logout();
+            loginScene();
+
         });
 
         // make the page and add the nodes
