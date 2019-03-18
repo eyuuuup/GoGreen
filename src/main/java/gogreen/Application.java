@@ -91,7 +91,7 @@ public class Application extends javafx.application.Application {
         showIcon.setSize("20px");
         showPassword.setGraphic(new Label("Show password", showIcon));
         showPassword.setOnAction(e -> {
-            ApplicationMethods.toggleVisibility(
+            toggleVisibility(
                     visiblePassword, password, showPassword.isSelected());
         });
 
@@ -170,9 +170,9 @@ public class Application extends javafx.application.Application {
         showIcon.setSize("20px");
         showPassword.setGraphic(new Label("Show password", showIcon));
         showPassword.setOnAction(e -> {
-            ApplicationMethods.toggleVisibility(
+            toggleVisibility(
                     visiblePassword, password, showPassword.isSelected());
-            ApplicationMethods.toggleVisibility(
+            toggleVisibility(
                     visiblePasswordTwo, passwordTwo, showPassword.isSelected());
 
         });
@@ -515,7 +515,7 @@ public class Application extends javafx.application.Application {
         // makes the veggie toggle
         JFXToggleNode          veggie  = new JFXToggleNode();
         MaterialDesignIconView cowIcon = new MaterialDesignIconView(MaterialDesignIcon.COW);
-        veggie.setGraphic(new Label("Meat", cowIcon));
+        veggie.setGraphic(new Label("Vegetarian", cowIcon));
         cowIcon.setSize("50px");
         veggie.setMinSize(500, 100);
 
@@ -539,7 +539,7 @@ public class Application extends javafx.application.Application {
 
         // when you press the send button, it will look what is selected and add those actions
         send.setOnAction(e -> {
-            FoodCategory.addAction(!veggie.isSelected(), locally.isSelected(), bio.isSelected());
+            FoodCategory.addAction(veggie.isSelected(), locally.isSelected(), bio.isSelected());
 
             // then sets it to false to select it again
             veggie.setSelected(false);
@@ -719,6 +719,24 @@ public class Application extends javafx.application.Application {
         leaderboardPage.getChildren().addAll(leaderboardNavigation);
 
         return leaderboardPage;
+    }
+
+    /**
+     * Toggle visibility between Textfield and PasswordField.
+     * @param visible the Textfield
+     * @param invisible the PasswordField
+     * @param show whether to show the password
+     */
+    static void toggleVisibility(TextField visible, PasswordField invisible, boolean show) {
+        if (show) {
+            invisible.setVisible(false);
+            visible.setText(invisible.getText());
+            visible.setVisible(true);
+        } else {
+            invisible.setVisible(true);
+            invisible.setText(visible.getText());
+            visible.setVisible(false);
+        }
     }
 
     /**

@@ -1,41 +1,58 @@
-package client;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(Communication.class)
-public class CommunicationTest {
-    @Before
-    public void setUp() {
-        PowerMockito.mockStatic(Communication.class);
-    }
-
-    @Test
-    public void register() throws Exception {
-        PowerMockito.doReturn(true).when(Communication.class, "submit", "Username", "Password", true, "/login");
-        Communication.register("Username", "Password", true);
-    }
-
-    @Test
-    public void login() throws Exception{
-        PowerMockito.doReturn(true).when(Communication.class, "submit", "Username", "Password", true, "/login");
-        Communication.login("Username", "Password", true);
-    }
-
-    @Test
-    public void silentLogin() throws Exception{
-        PowerMockito.doReturn(true).when(Communication.class, "silentLogin");
-        Communication.silentLogin();
-    }
-
-    @Test
-    public void addAction() throws Exception{
-        PowerMockito.doReturn(true).when(Communication.class, "addAction", "Action", 100);
-        Communication.addAction("Action", 100);
-    }
-}
+//package client;
+//
+//import org.junit.Test;
+//import org.junit.runner.RunWith;
+//import org.powermock.reflect.Whitebox;
+//import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.test.context.junit4.SpringRunner;
+//
+//@RunWith(SpringRunner.class)
+//@SpringBootTest(properties = "spring.main.web-application-type=reactive")
+//public class CommunicationTest {
+//    @Test
+//    public void register() {
+//        Communication.register("Username", "Password", true);
+//    }
+//
+//    @Test
+//    public void login() {
+//        Communication.login("Username", "Password", true);
+//    }
+//
+//    @Test
+//    public void silentLogin() {
+//        Communication.silentLogin();
+//    }
+//
+//    @Test
+//    public void addAction() {
+//        Communication.addAction("Action", 100);
+//    }
+//
+//    @Test
+//    public void addActionLoggedIn() {
+//        Whitebox.setInternalState( Communication.class, "token", "token");
+//        Communication.addAction("Action", 100);
+//    }
+//
+//    @Test
+//    public void logout() {
+//        Communication.logout();
+//    }
+//
+//    @Test
+//    public void isLoggedIn() throws Exception {
+//        Whitebox.invokeMethod(Communication.class, "isLoggedIn");
+//    }
+//
+//    @Test
+//    public void getLastThreeActions() {
+//        Communication.getLastThreeActions();
+//    }
+//
+//    @Test
+//    public void getLastThreeActionsLoggedIn() throws IllegalAccessException {
+//        Whitebox.setInternalState( Communication.class, "token", "token");
+//        Communication.getLastThreeActions();
+//    }
+//}
