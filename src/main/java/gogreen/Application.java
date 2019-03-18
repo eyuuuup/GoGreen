@@ -29,6 +29,203 @@ public class Application extends javafx.application.Application {
         launch();
     }
 
+    /**
+     * this method starts the application.
+     * @param stage stage
+     */
+    @Override
+    public void start(Stage stage) {
+        this.stage = stage;
+        stage.setTitle("GoGreen");
+
+        // sets the theme
+        theme = "src/styles/mainSceneDefaultTheme.css";
+
+        //the silentLogin will login for the user
+        if (client.Communication.silentLogin()) {
+            mainScreen();
+        } else {
+            loginScene();
+        }
+    }
+
+    /**
+     * This method displays the Login screen.
+     */
+    private static void loginScene() {
+        Scene loginScene = new Scene(loginScreen(), 500, 500);
+        loginScene.getStylesheets().add(new File(theme).toURI().toString());
+        show(loginScene);
+    }
+
+    /**
+     * This method displays the register screen.
+     */
+    private static void registerScene() {
+        Scene registerScene = new Scene(registerScreen(), 500, 500);
+        registerScene.getStylesheets().add(new File(theme).toURI().toString());
+        show(registerScene);
+    }
+
+    /**
+     * The login screen.
+     * @return the screen
+     */
+    private static GridPane loginScreen() {
+
+        //textfield for the username
+        TextField username = new TextField();
+        username.setPromptText("username");
+
+        //passwordfield
+        PasswordField password = new PasswordField();
+        password.setPromptText("password");
+
+        //passwordfield for if the user wants to see the password
+        TextField visiblePassword = new TextField();
+        visiblePassword.setVisible(false);
+
+        //checkbox to toggle between visible password and masked password
+        JFXToggleNode showPassword = new JFXToggleNode();
+        MaterialDesignIconView showIcon = new MaterialDesignIconView(MaterialDesignIcon.EYE);
+        showIcon.setSize("20px");
+        showPassword.setGraphic(new Label("Show password", showIcon));
+        showPassword.setOnAction(e -> {
+            ApplicationMethods.toggleVisibility(
+                    visiblePassword, password, showPassword.isSelected());
+        });
+
+        //checkbox if the user wants the application to remember the username and password
+        JFXToggleNode rememberUser = new JFXToggleNode();
+        rememberUser.setGraphic(new Label("Remember me"));
+
+
+        //button to log in with the given credentials
+        JFXButton login = new JFXButton("Login");
+        login.setOnAction(e -> {
+            try {
+                ApplicationMethods.login(
+                        username.getText(), password.getText(), rememberUser.isSelected());
+            } catch (IllegalAccessException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //button if the user wants to register instead of to log in
+        JFXButton register = new JFXButton("or register");
+        register.setOnAction(e -> {
+            registerScene();
+        });
+
+        // make the login title
+        Label loginText = new Label("Login:");
+        loginText.setId("loginText");
+
+        //create the page
+        GridPane loginPage = new GridPane();
+        loginPage.setVgap(5);
+        loginPage.setHgap(10);
+        loginPage.add(loginText, 0, 0);
+        loginPage.add(username, 0, 1);
+        loginPage.add(rememberUser, 1, 1);
+        loginPage.add(new StackPane(password, visiblePassword), 0, 2);
+        loginPage.add(showPassword, 1, 2);
+        loginPage.add(login, 0, 3);
+        loginPage.add(register, 1, 3);
+        loginPage.setAlignment(Pos.CENTER);
+
+        //and return it
+        return loginPage;
+    }
+
+    /**
+     * The body for the register display.
+     *
+     * @return the body
+     */
+    private static GridPane registerScreen() {
+        //textfield for the username
+        TextField username = new TextField();
+        username.setPromptText("username");
+
+        //password field
+        PasswordField password = new PasswordField();
+        password.setPromptText("password");
+
+        //password field if the user wants to see the password
+        TextField visiblePassword = new TextField();
+        visiblePassword.setVisible(false);
+
+        //for registration the user should insert twice the same password
+        PasswordField passwordTwo = new PasswordField();
+        passwordTwo.setPromptText("password again");
+
+        //password two can also be set to visible
+        TextField visiblePasswordTwo = new TextField();
+        visiblePasswordTwo.setVisible(false);
+
+        //checkbox to toggle between visible password and masked password
+        JFXToggleNode showPassword = new JFXToggleNode();
+        MaterialDesignIconView showIcon = new MaterialDesignIconView(MaterialDesignIcon.EYE);
+        showIcon.setSize("20px");
+        showPassword.setGraphic(new Label("Show password", showIcon));
+        showPassword.setOnAction(e -> {
+            ApplicationMethods.toggleVisibility(
+                    visiblePassword, password, showPassword.isSelected());
+            ApplicationMethods.toggleVisibility(
+                    visiblePasswordTwo, passwordTwo, showPassword.isSelected());
+
+        });
+
+        //checkbox if the user wants his username and password to be remembered
+        JFXToggleNode rememberUser = new JFXToggleNode();
+        rememberUser.setGraphic(new Label("Remember me"));
+        // no action implemented yet......
+
+        // make the register text
+        Label registerText = new Label("Register:");
+        registerText.setId("loginText");
+
+        //button to register the information the user filled in
+        JFXButton register = new JFXButton("Register");
+        register.setOnAction(e -> {
+            try {
+                ApplicationMethods.register(username.getText(), password.getText(),
+                        passwordTwo.getText(), rememberUser.isSelected());
+            } catch (NullPointerException | IllegalArgumentException
+                    | IllegalAccessException | FileNotFoundException exception) {
+                registerText.setText(exception.getMessage());
+                registerText.setTextFill(Paint.valueOf("#FF0000"));
+            }
+        });
+
+        JFXButton back = new JFXButton("go Back");
+        back.setOnAction(e -> {
+            loginScene();
+        });
+
+
+        //creates the gridpane with all the nodes in it
+        GridPane registerPage = new GridPane();
+        registerPage.setVgap(5);
+        registerPage.setHgap(10);
+        registerPage.add(registerText, 0, 0);
+        registerPage.add(username, 0, 1);
+        registerPage.add(new StackPane(password, visiblePassword), 0, 2);
+        registerPage.add(rememberUser, 1, 2);
+        registerPage.add(new StackPane(passwordTwo, visiblePasswordTwo), 0, 3);
+        registerPage.add(showPassword, 1, 3);
+        registerPage.add(register, 0, 4);
+        registerPage.add(back, 1, 4);
+
+        registerPage.setAlignment(Pos.CENTER);
+
+        //and returns it
+        return registerPage;
+    }
+
+
+
     /*
      * the main screen
      */
@@ -185,6 +382,8 @@ public class Application extends javafx.application.Application {
             // TODO
             // log out method does not work...
             client.Communication.logout();
+            loginScene();
+
         });
 
         // make the page and add the nodes
