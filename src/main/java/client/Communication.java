@@ -24,7 +24,7 @@ public class Communication {
      * @param username the username
      * @param password the password
      * @param remember whether to store token in a file
-     * @return boolean correctly logged in and token received
+     * @return boolean correctly logged in and token recieved
      */
     public static boolean register(String username, String password, boolean remember) {
         //send username and password to the server, validate if it is not taken
@@ -37,8 +37,8 @@ public class Communication {
      * If yes, retrieves token for such combination for further authentication
      * @param username the username
      * @param password the password
-     * @param remember whether to store token in a file
-     * @return boolean correctly logged in and token received
+     * @param remember wether to store token in a file
+     * @return boolean correctly logged in and token recieved
      */
     public static boolean login(String username, String password, boolean remember) {
         //validate if username and password matched those on server
@@ -51,9 +51,9 @@ public class Communication {
      * avoid duplicate code.
      * @param username the username
      * @param password the password
-     * @param remember whether to store token in a file
+     * @param remember wether to store token in a file
      * @param postUrl determine between login and register
-     * @return boolean whether the submit/fetch was successful
+     * @return boolean wether the submit/fetch was sucessful
      */
     private static boolean submit(
             String username, String password, boolean remember, String postUrl) {

@@ -18,24 +18,6 @@ class ApplicationMethods {
     private ApplicationMethods() {}
 
     /**
-     * Toggle visibility between Textfield and PasswordField.
-     * @param visible the Textfield
-     * @param invisible the PasswordField
-     * @param show whether to show the password
-     */
-    static void toggleVisibility(TextField visible, PasswordField invisible, boolean show) {
-        if (show) {
-            invisible.setVisible(false);
-            visible.setText(invisible.getText());
-            visible.setVisible(true);
-        } else {
-            invisible.setVisible(true);
-            invisible.setText(visible.getText());
-            visible.setVisible(false);
-        }
-    }
-
-    /**
      * This methods logs in using the given username and password.
      * @param username the username
      * @param password the password

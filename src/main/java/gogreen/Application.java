@@ -98,7 +98,7 @@ public class Application extends javafx.application.Application {
         showIcon.setSize("20px");
         showPassword.setGraphic(new Label("Show password", showIcon));
         showPassword.setOnAction(e -> {
-            ApplicationMethods.toggleVisibility(
+            toggleVisibility(
                     visiblePassword, password, showPassword.isSelected());
         });
 
@@ -177,9 +177,9 @@ public class Application extends javafx.application.Application {
         showIcon.setSize("20px");
         showPassword.setGraphic(new Label("Show password", showIcon));
         showPassword.setOnAction(e -> {
-            ApplicationMethods.toggleVisibility(
+            toggleVisibility(
                     visiblePassword, password, showPassword.isSelected());
-            ApplicationMethods.toggleVisibility(
+            toggleVisibility(
                     visiblePasswordTwo, passwordTwo, showPassword.isSelected());
 
         });
@@ -700,7 +700,23 @@ public class Application extends javafx.application.Application {
         return leaderboardPage;
     }
 
-
+    /**
+     * Toggle visibility between Textfield and PasswordField.
+     * @param visible the Textfield
+     * @param invisible the PasswordField
+     * @param show whether to show the password
+     */
+    static void toggleVisibility(TextField visible, PasswordField invisible, boolean show) {
+        if (show) {
+            invisible.setVisible(false);
+            visible.setText(invisible.getText());
+            visible.setVisible(true);
+        } else {
+            invisible.setVisible(true);
+            invisible.setText(visible.getText());
+            visible.setVisible(false);
+        }
+    }
 
     /**
      * shows the given scene to the user.
