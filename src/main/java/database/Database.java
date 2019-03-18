@@ -1,17 +1,14 @@
 package database;
 
-import server.Action;
-import server.Friends;
-import server.TokenResponse;
-import server.User;
+import server.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
-
 /**
  * Database is a class that will be used in communication with the server.
  */
@@ -161,7 +158,10 @@ public class Database {
      * @param token A String with the token of the user.
      * @return the total score of a user.
      */
-    public static int getTotalScore(String token){
+    public static int getTotalScore(String token) {
+        return getTotalScoreByUser(getUsername(token));
+    }
+    public static int getTotalScoreByUser(String username){
         try {
             Connection con = DriverManager.getConnection();
             System.out.println("getTotalScore called");
@@ -170,7 +170,7 @@ public class Database {
             PreparedStatement state =
                     con.prepareStatement("SELECT total_score "
                             + "FROM total_score WHERE total_score.username = ?");
-            state.setString(1, getUsername(token));
+            state.setString(1, username);
             ResultSet rs = state.executeQuery();
 
             int currentTotalScore = 0;
@@ -361,7 +361,7 @@ public class Database {
      * @param token A String of the username.
      * @return the String of all friends of a user.
      */
-    public static String showFriends(String token) {
+    public static ArrayList showFriends(String token) {
         System.out.println("showFriends called");
         try {
             Connection con = DriverManager.getConnection();
@@ -370,16 +370,18 @@ public class Database {
             state.setString(1, getUsername(token));
             ResultSet rs = state.executeQuery();
 
-            StringBuilder result = new StringBuilder();
+            ArrayList<CompareFriends> result = new ArrayList<>();
             while (rs.next()) {
-                result.append(rs.getString(1));
-                result.append("\n");
+                String usernameFriend = rs.getString(1);
+                int score = getTotalScoreByUser(usernameFriend);
+                CompareFriends friend = new CompareFriends(usernameFriend, score);
+                result.add(friend);
             }
             con.close();
-            return result.toString();
+            return result;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return "no friends";
+            return new ArrayList();
         }
     }
 
