@@ -4,14 +4,11 @@ public class TokenResponse {
     private String  token;
     private boolean legit;
 
+    public TokenResponse() {}
+
     public TokenResponse(String token, boolean legit) {
         this.token = token;
         this.legit = legit;
-    }
-
-    public TokenResponse()
-    {
-
     }
 
     public String getToken() {

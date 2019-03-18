@@ -1,16 +1,23 @@
 package client;
 
 public class Action {
-
     private String user;
     private String action;
     private int    value;
 
+    /**
+     * Constructs and initialises a new instance of Action.
+     * @param user the username
+     * @param action the action name
+     * @param value the amount of points
+     */
     public Action(String user, String action, int value) {
         this.user = user;
         this.action = action;
         this.value = value;
     }
+
+    public Action(){}
 
     public String getUser() {
         return user;
@@ -34,10 +41,5 @@ public class Action {
 
     public void setValue(int value) {
         this.value = value;
-    }
-
-    @Override
-    public String toString() {
-        return "<AddAction(user=\"" + user + "\", action=\"" + action + "\", value=\"" + value + "\")>";
     }
 }
