@@ -170,4 +170,13 @@ class ApplicationMethods {
         //        }
         return "none";
     }
+
+    static int levelUp(int points){
+        return (int) (Math.floor(points/1000) + 1);
+    }
+
+    static double levelProgress(int points){
+        double output = points%1000;
+        return output/1000;
+    }
 }

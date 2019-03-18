@@ -16,10 +16,11 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
@@ -304,17 +305,26 @@ public class Application extends javafx.application.Application {
      * @return your world screen
      */
     private static GridPane yourWorldScreen() {
+        int points = 123456789;
         // makes the level bar
-        ProgressBar levelBar = new ProgressBar(0.5);
+        ProgressBar levelBar = new ProgressBar(ApplicationMethods.levelProgress(points));
         levelBar.setPrefSize(400, 10);
 
         // makes the level text
-        Label levelStatus = new Label("Lv. INSERT HERE LEVEL");
+        Label levelStatus = new Label("Lv." + ApplicationMethods.levelUp(points));
         levelStatus.setId("levelStatus");
 
+
+        // make the total points text
+        Label totalPoints = new Label(points + " points");
+        totalPoints.setId("levelStatus");
+        totalPoints.setAlignment(Pos.CENTER_RIGHT);
+
         // makes a container for the level attributes
+        HBox levelStatusContainer = new HBox(200);
+        levelStatusContainer.getChildren().addAll(levelStatus, totalPoints);
         VBox levelContainer = new VBox();
-        levelContainer.getChildren().addAll(levelStatus, levelBar);
+        levelContainer.getChildren().addAll(levelStatusContainer, levelBar);
 
         // makes the page and adds the nodes
         GridPane yourWorldPage = new GridPane();
