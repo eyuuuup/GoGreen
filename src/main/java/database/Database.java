@@ -1,6 +1,7 @@
 package database;
 
 import server.Action;
+import server.Friends;
 import server.TokenResponse;
 import server.User;
 
@@ -15,6 +16,35 @@ import java.util.Calendar;
  * Database is a class that will be used in communication with the server.
  */
 public class Database {
+
+    /**
+     * This method gets the username from the database.
+     * @param token A String with the token.
+     * @return the username.
+     */
+    public static String getUsername(String token){
+        try{
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state =
+                    con.prepareStatement("SELECT username "
+                            + "FROM user_data WHERE token = ?");
+            state.setString(1, token);
+            ResultSet rs = state.executeQuery();
+
+            String userName = "";
+            while (rs.next()) {
+                userName = rs.getString(1);
+                System.out.println("username: " + userName);
+
+            }
+            con.close();
+            return userName;
+
+        } catch(SQLException ex) {
+            System.out.println(ex.getMessage());
+            return "no username found";
+        }
+    }
 
     /**
      * This method saves the Action object in the database.
@@ -43,7 +73,7 @@ public class Database {
 
             PreparedStatement state1 =
                     con.prepareStatement("INSERT INTO events (action_id, date_time, "
-                            + "points, token, parent_category)"
+                            + "points, parent_category, username)"
                             + "VALUES (?, ?, ?, ?, ?);");
             state1.setInt(1, actionId);
             state1.setString(
@@ -51,8 +81,8 @@ public class Database {
                     new SimpleDateFormat("yyyyMMdd_HHmmss")
                             .format(Calendar.getInstance().getTime()));
             state1.setInt(3, action.getValue());
-            state1.setString(4, action.getUser());
-            state1.setInt(5, parentCategory);
+            state1.setInt(4, parentCategory);
+            state1.setString(5, getUsername(action.getUser()));
             state1.executeUpdate();
 
             updateTotalScores(action.getUser(), action.getValue());
@@ -78,9 +108,9 @@ public class Database {
             PreparedStatement state =
                     con.prepareStatement("select action_name, date_time, events.parent_category "
                            + "FROM actions, events WHERE actions.action_id = events.action_id \n"
-                           + "AND events.parent_category = 1 AND events.token = ? "
+                           + "AND events.parent_category = 1 AND events.username = ? "
                            + "ORDER BY date_time DESC LIMIT 3");
-            state.setString(1, token);
+            state.setString(1, getUsername(token));
             ResultSet rs = state.executeQuery();
 
             StringBuilder result = new StringBuilder();
@@ -93,7 +123,6 @@ public class Database {
 
             System.out.println("retract success");
             con.close();
-            System.out.println(result.toString() + "fffff");
             return result.toString();
 
         } catch (SQLException ex) {
@@ -117,9 +146,9 @@ public class Database {
 
             currentTotalScore = currentTotalScore + score;
             PreparedStatement state1 =
-                    con.prepareStatement("UPDATE total_score SET total_score = ? WHERE token = ?");
+                    con.prepareStatement("UPDATE total_score SET total_score = ? WHERE username = ?");
             state1.setInt(1, currentTotalScore);
-            state1.setString(2, token);
+            state1.setString(2, getUsername(token));
             state1.executeUpdate();
             System.out.println("UPDATE success");
             con.close();
@@ -140,8 +169,8 @@ public class Database {
 
             PreparedStatement state =
                     con.prepareStatement("SELECT total_score "
-                            + "FROM total_score WHERE total_score.token = ?");
-            state.setString(1, token);
+                            + "FROM total_score WHERE total_score.username = ?");
+            state.setString(1, getUsername(token));
             ResultSet rs = state.executeQuery();
 
             int currentTotalScore = 0;
@@ -218,11 +247,11 @@ public class Database {
 
             PreparedStatement state1 =
                     con.prepareStatement("INSERT INTO "
-                            + "total_score (total_score, token)"
+                            + "total_score (total_score, username)"
                             + "VALUES (?, ?);");
 
             state1.setInt(1, 0);
-            state1.setString(2, token);
+            state1.setString(2, getUsername(token));
             state1.executeUpdate();
 
             System.out.println("INSERT success");
@@ -305,19 +334,18 @@ public class Database {
 
     /**
      * This method adds User B as a friend of User A.
-     * @param usernameA A String of the username.
-     * @param usernameB A String of the username.
+     * @param friend A Friend object.
      * @return if the query succeeded.
      */
-    public static boolean addFriend(String usernameA, String usernameB) {
+    public static boolean addFriend(Friends friend) {
         System.out.println("addFriend called");
         try {
             Connection con = DriverManager.getConnection();
             PreparedStatement state =
                     con.prepareStatement("INSERT INTO friends (user_a, user_b) VALUES"
                             + "(?, ?) ");
-            state.setString(1,usernameA);
-            state.setString(2,usernameB);
+            state.setString(1,getUsername(friend.getToken()));
+            state.setString(2,friend.getUsername());
             state.executeUpdate();
             con.close();
             return true;
@@ -330,16 +358,16 @@ public class Database {
 
     /**
      * This method shows the friends of a user.
-     * @param username A String of the username.
+     * @param token A String of the username.
      * @return the String of all friends of a user.
      */
-    public static String showFriends(String username) {
+    public static String showFriends(String token) {
         System.out.println("showFriends called");
         try {
             Connection con = DriverManager.getConnection();
             PreparedStatement state =
                     con.prepareStatement("SELECT user_b FROM friends WHERE user_a = ?");
-            state.setString(1, username);
+            state.setString(1, getUsername(token));
             ResultSet rs = state.executeQuery();
 
             StringBuilder result = new StringBuilder();

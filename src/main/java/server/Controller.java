@@ -104,7 +104,7 @@ public class Controller {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public static boolean addFriend(@Valid @RequestBody Friends friend)
     {
-        return Database.addFriends(friend);
+        return Database.addFriend(friend);
     }
 
 
