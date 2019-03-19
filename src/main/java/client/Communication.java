@@ -5,6 +5,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
+import java.util.ArrayList;
 
 @SpringBootApplication
 public class Communication {
@@ -155,7 +156,7 @@ public class Communication {
      *
      * @return string containing last three actions
      */
-    public static String getLastThreeActions() {
+    public static ArrayList<actionHistory> getLastThreeActions() {
         if (!isLoggedIn()) {
             return null; // not logged in
         }
@@ -164,7 +165,7 @@ public class Communication {
 
         RestTemplate request = new RestTemplate();
 
-        return request.postForObject(hostURL + "/retract", message, String.class);
+        return request.postForObject(hostURL + "/retract", message, ArrayList.class);
     }
 
 
@@ -201,5 +202,20 @@ public class Communication {
         HttpEntity<Friends> message= new HttpEntity<>(friend);
         RestTemplate request=new RestTemplate();
         return request.postForObject(hostURL +"/addFriend", message, boolean.class);
+    }
+
+    /**
+     *
+     * @return an arraylist ofCompareFriends
+     */
+    public static ArrayList<CompareFriends> showFriends()
+    {
+        ArrayList<CompareFriends> c=new ArrayList<>();
+        if(!isLoggedIn())
+            return c;
+
+        HttpEntity<String> message= new HttpEntity<>(token);
+        RestTemplate request=new RestTemplate();
+        return request.postForObject(hostURL+ "/showFriends", message, ArrayList.class);
     }
 }

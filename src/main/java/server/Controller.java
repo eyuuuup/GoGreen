@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.UUID;
 import javax.validation.Valid;
 
@@ -82,7 +83,7 @@ public class Controller {
      */
     @RequestMapping (value = {"/retract"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public static String forDemo(@Valid @RequestBody String token) {
+    public static ArrayList<actionHistory> forDemo(@Valid @RequestBody String token) {
         return Database.retract(token);
     }
 
@@ -100,11 +101,28 @@ public class Controller {
         return score;
     }
 
+    /**
+     *
+     * @param friend
+     * @return boolean
+     */
     @RequestMapping(value={"/addFriend"}, method=RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public static boolean addFriend(@Valid @RequestBody Friends friend)
     {
         return Database.addFriend(friend);
+    }
+
+    /**
+     *
+     * @param token
+     * @return ArrayList of CompareFriends
+     */
+    @RequestMapping(value={"/showFriends"}, method=RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public static ArrayList<CompareFriends> showFriends(@Valid @RequestBody String token)
+    {
+        return Database.showFriends(token);
     }
 
 

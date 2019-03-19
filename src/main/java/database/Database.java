@@ -75,7 +75,7 @@ public class Database {
             state1.setInt(1, actionId);
             state1.setString(
                     2,
-                    new SimpleDateFormat("yyyyMMdd_HHmmss")
+                    new SimpleDateFormat("yyyy-MM-dd HHmmss")
                             .format(Calendar.getInstance().getTime()));
             state1.setInt(3, action.getValue());
             state1.setInt(4, parentCategory);
@@ -98,7 +98,7 @@ public class Database {
      * @param token the token from a user.
      * @return the history in a String.
      */
-    public static String retract(String token) {
+    public static ArrayList<actionHistory> retract(String token) {
         try {
             Connection con = DriverManager.getConnection();
             System.out.println("retract called");
@@ -110,21 +110,22 @@ public class Database {
             state.setString(1, getUsername(token));
             ResultSet rs = state.executeQuery();
 
-            StringBuilder result = new StringBuilder();
+            ArrayList<actionHistory> result = new ArrayList<>();
             while (rs.next()) {
-
-                result.append(rs.getString(1) + " ");
-                result.append(rs.getString(2) + "\n");
+                String[] temp;
+                temp= rs.getString(2).split(" ");
+                temp[3]=rs.getString(1);
+                result.add(new actionHistory(temp[3],temp[1], temp[2]));
             }
 
 
             System.out.println("retract success");
             con.close();
-            return result.toString();
+            return new ArrayList<>();
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-            return "broke";
+            return new ArrayList<>();
         }
     }
 
