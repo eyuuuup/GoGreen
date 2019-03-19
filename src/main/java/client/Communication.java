@@ -16,33 +16,7 @@ public class Communication {
     private Communication() {
     }
     
-    /**
-     * Checks whether a given username is not taken on the server.
-     * Stores the username and password, retrieves assigned token.
-     * @param username the username
-     * @param password the password
-     * @param remember whether to store token in a file
-     * @return boolean correctly logged in and token recieved
-     */
-    public static boolean register(String username, String password, boolean remember) {
-        //send username and password to the server, validate if it is not taken
-        //expect generated token if successful, null if username taken
-        return submit(username, password, remember, "/register");
-    }
-    
-    /**
-     * Checks whether a given username and password matches on the server.
-     * If yes, retrieves token for such combination for further authentication
-     * @param username the username
-     * @param password the password
-     * @param remember wether to store token in a file
-     * @return boolean correctly logged in and token recieved
-     */
-    public static boolean login(String username, String password, boolean remember) {
-        //validate if username and password matched those on server
-        //if they do retrieve token and store it
-        return submit(username, password, remember, "/login");
-    }
+    // ========== PART METHODS =====================================================================
     
     /**
      * Handles login and register.
@@ -86,6 +60,49 @@ public class Communication {
     }
     
     /**
+     * sends the user's token to the server and retrieves whatever from it, then returns it.
+     * @param url    url at which to querry  the server
+     * @param expect what class to return and expect from server
+     * @return the answer from the server of the class "expect"
+     */
+    private static Object postToken(String url, Class expect) {
+        HttpEntity<String> message = new HttpEntity<>(token);
+        RestTemplate       request = new RestTemplate();
+        return request.postForObject(hostURL + url, message, expect);
+    }
+    
+    
+    // ========== USER AUTHENTICATION ==============================================================
+    
+    /**
+     * Checks whether a given username is not taken on the server.
+     * Stores the username and password, retrieves assigned token.
+     * @param username the username
+     * @param password the password
+     * @param remember whether to store token in a file
+     * @return boolean correctly logged in and token recieved
+     */
+    public static boolean register(String username, String password, boolean remember) {
+        //send username and password to the server, validate if it is not taken
+        //expect generated token if successful, null if username taken
+        return submit(username, password, remember, "/register");
+    }
+    
+    /**
+     * Checks whether a given username and password matches on the server.
+     * If yes, retrieves token for such combination for further authentication
+     * @param username the username
+     * @param password the password
+     * @param remember wether to store token in a file
+     * @return boolean correctly logged in and token recieved
+     */
+    public static boolean login(String username, String password, boolean remember) {
+        //validate if username and password matched those on server
+        //if they do retrieve token and store it
+        return submit(username, password, remember, "/login");
+    }
+    
+    /**
      * Tries to log in with the stored username and password.
      * @return boolean correctly logged in and token received
      */
@@ -104,7 +121,7 @@ public class Communication {
             return false;
         }
         
-        return true;
+        return (boolean) postToken("/silentLogin", boolean.class);
     }
     
     /**
@@ -126,6 +143,8 @@ public class Communication {
     private static boolean isLoggedIn() {
         return token != null;
     }
+    
+    // ========== ACTION HANDLERS ==================================================================
     
     /**
      * Checks whether a given name is according to the rules.
@@ -154,11 +173,7 @@ public class Communication {
             return null; // not logged in
         }
         
-        HttpEntity<String> message = new HttpEntity<>(token);
-        
-        RestTemplate request = new RestTemplate();
-        
-        return request.postForObject(hostURL + "/retract", message, ArrayList.class);
+        return (ArrayList<actionHistory>) postToken("/retract", ArrayList.class);
     }
     
     
@@ -171,15 +186,14 @@ public class Communication {
             return -1;
         }
         
-        HttpEntity<String> message = new HttpEntity<>(token);
-        
-        RestTemplate request = new RestTemplate();
-        
-        return request.postForObject(hostURL + "/getTotalScore", message, Integer.class);
+        return (int) postToken("/getTotalScore", Integer.class);
     }
     
+    // ========== SOCIAL HANDLERS ==================================================================
+    
     /**
-     * adds a friend by it's username
+     * This method adds a friend by it's username.
+     * Friend is someone who you follow.
      * @param friendUsername
      * @return
      */
@@ -196,7 +210,8 @@ public class Communication {
     }
     
     /**
-     * This method retrieves the user's list of friends from the server
+     * This method retrieves the user's list of friends from the server.
+     * Friend is someone who you follow.
      * @return an arraylist ofCompareFriends
      */
     public static ArrayList<CompareFriends> getFriends() {
@@ -204,22 +219,19 @@ public class Communication {
             return null;
         }
         
-        HttpEntity<String> message = new HttpEntity<>(token);
-        RestTemplate       request = new RestTemplate();
-        return request.postForObject(hostURL + "/showFriends", message, ArrayList.class);
+        return (ArrayList<CompareFriends>) postToken("/showFriends", ArrayList.class);
     }
     
     /**
      * This method retrieves the user's list of followers from the server
-     * @return an arraylist of CompareFriends
+     * Follower is someone who follows you.
+     * @return an arraylist of "CompareFriends"
      */
     public static ArrayList<CompareFriends> getFollowers() {
         if (!isLoggedIn()) {
             return null;
         }
         
-        HttpEntity<String> message = new HttpEntity<>(token);
-        RestTemplate       request = new RestTemplate();
-        return request.postForObject(hostURL + "/showFollowers", message, ArrayList.class);
+        return (ArrayList<CompareFriends>) postToken("/showFollowers", ArrayList.class);
     }
 }

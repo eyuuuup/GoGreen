@@ -4,7 +4,6 @@ import database.Database;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.UUID;
 import javax.validation.Valid;
@@ -55,14 +54,12 @@ public class Controller {
      * don'trequire to enter password.
      *
      * @param token string
-     * @return String
+     * @return whether token exists
      */
     @RequestMapping (value = {"/silentLogin"}, method = RequestMethod.POST,
                      produces = MediaType.APPLICATION_JSON_VALUE)
-    public static String silentLogin(@Valid @RequestBody String token) {
-        Database.silentLoginCheck(token);
-        //IMPLEMENT
-        return "ERWIN";
+    public static boolean silentLogin(@Valid @RequestBody String token) {
+        return Database.silentLoginCheck(token);
     }
 
     /**
