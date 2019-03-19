@@ -209,18 +209,13 @@ public class Database {
             ResultSet rs = state.executeQuery();
             
             while (rs.next()) {
-                
-                System.out.println("token: " + rs.getString(1));
-                String tokenResult = rs.getString(1);
-                if (tokenResult.equals(token)) {
-                    System.out.println("Token exists");
-                    return true;
-                }
+                con.close();
+                System.out.println("token found");
+                return true;
             }
+            System.out.println("token not found");
             con.close();
             return false;
-            
-            
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return false;
