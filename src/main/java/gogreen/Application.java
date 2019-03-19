@@ -724,9 +724,11 @@ public class Application extends javafx.application.Application {
      * @return the leaderboard screen
      */
     private static VBox leaderboardScreen(){
+        // array for testing purposes
         String[] placeholder = {"Marit 10000 10", "Gerrie 9000 9", "Harold 8000 8", "RobbieJetje 7000 7", "GeertjeWilders 6000 6",
                 "MarkieRutje 5000 5", "LavendelSnuifer 4000 4", "JesseKlavertje4 3000 3", "theFBI 2000 2", "Trump 1000 0"};
 
+        // make the leaderboard title
         Label header = new Label("Leaderboard");
         header.setId("title");
 
@@ -738,18 +740,24 @@ public class Application extends javafx.application.Application {
         leaderboard.setAlignment(Pos.CENTER);
         leaderboard.setPrefWidth(500);
 
+        // make the header
         leaderboard.add(new Label("Pos"), 0, 0);
         leaderboard.add(new Label("Username"), 1, 0);
         leaderboard.add(new Label("Points"), 2, 0);
         leaderboard.add(new Label("Level"), 3, 0);
 
-        for(int i = 0; i < 10; i++){
-            String[] parts = placeholder[i].split("\\s");
-            leaderboard.add(new Label(i+1 + "."), 0, i+1);
-            leaderboard.add(new Label(parts[0]), 1, i+1);
-            leaderboard.add(new Label(parts[1]), 2, i+1);
-            leaderboard.add(new Label(parts[2]), 3, i+1);
+        int pos = 1;
+        // place all the people in the leaderboard
+        for(String users : placeholder){
+            String[] parts = users.split("\\s");
+            leaderboard.add(new Label(pos + "."), 0, pos);
+            leaderboard.add(new Label(parts[0]), 1, pos);
+            leaderboard.add(new Label(parts[1]), 2, pos);
+            leaderboard.add(new Label(parts[2]), 3, pos);
+            pos++;
         }
+
+        // places the user in the leaderboard
         leaderboard.add(new Label ("69."), 0, 11);
         leaderboard.add(new Label ("Your Username"), 1, 11);
         leaderboard.add(new Label ("1"), 2, 11);
