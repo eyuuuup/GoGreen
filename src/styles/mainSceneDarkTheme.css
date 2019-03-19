@@ -78,6 +78,37 @@
     -fx-font-size: 14;
 }
 
+/* leaderboard */
+#leaderboard{
+    -fx-background-color:  #263238;
+}
+#title {
+    -fx-text-fill:  #e5e5e5;
+    -fx-font-weight: bold;
+    -fx-font-size: 32;
+}
 
+/* friend list */
+.scroll-pane > .viewport {
+    -fx-background-color: #263238;
+}
+
+.scroll-pane {
+    -fx-background-color: #263238;
+    -fx-control-inner-background: #263238;
+}
+
+.scroll-bar:horizontal, .scroll-bar:vertical{
+    -fx-background-color: #263238;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #006064;
+    -fx-background-radius: 5em;
+}
+#friends{
+    -fx-background-color: #263238;
+}
 
 
