@@ -821,50 +821,63 @@ public class Application extends javafx.application.Application {
      */
     private static VBox friendRequestScreen(){
 
-        ArrayList<String> friends = new ArrayList<>(Arrays.asList("Rachel", "Monica", "Phoebe", "Joey", "Ross", "Chandler" ,"super long friend name", "more friends", "more friends", "more friends",
-                "more friends", "more friends", "more friends"));
+        ArrayList<String> friends = new ArrayList<>(Arrays.asList("Rachel", "Monica", "Phoebe", "Joey", "Ross", "Chandler"));
 
 
-        Label noRequest = new Label(friends.size() + " friend requests:");
-        noRequest.setId("title");
+        Label nrRequest = new Label(friends.size() + " friend requests:");
+        nrRequest.setId("title");
 
-        GridPane requests = new GridPane();
-        requests.setVgap(5);
-        requests.setHgap(10);
-        requests.setAlignment(Pos.CENTER);
+        VBox requests = new VBox(5);
+        VBox acceptButton = new VBox(10);
+        VBox declineButton = new VBox(10);
 
-        int pos = 0;
         for(String request: friends){
+            Label user = new Label(request);
             JFXButton accept = new JFXButton("Accept");
             accept.setId("smallButton");
-            accept.setOnAction(e -> {
-                System.out.println("Accepted: " + request);
-                friends.remove(request);
-                System.out.println(friends.size());
-            });
-
             JFXButton decline = new JFXButton("Decline");
             decline.setId("smallButton");
-            decline.setOnAction(e -> {
-                System.out.println("Declined: " + request);
+
+
+            accept.setOnAction(e -> {
+                System.out.println("Accepted: " + request);
+
+                requests.getChildren().remove(user);
+                acceptButton.getChildren().remove(accept);
+                declineButton.getChildren().remove(decline);
+
                 friends.remove(request);
+                nrRequest.setText(friends.size() + " friend requests:");
             });
 
 
-            requests.add(accept, 1, pos);
-            requests.add(decline, 2, pos);
+            decline.setOnAction(e -> {
+                System.out.println("Declined: " + request);
 
-            requests.add(new Label(request), 0, pos++);
+                requests.getChildren().remove(user);
+                acceptButton.getChildren().remove(accept);
+                declineButton.getChildren().remove(decline);
 
+                friends.remove(request);
+                nrRequest.setText(friends.size() + " friend requests:");
+            });
+
+
+            requests.getChildren().add(user);
+            acceptButton.getChildren().add(accept);
+            declineButton.getChildren().add(decline);
         }
+
+        HBox container = new HBox(10);
+        container.getChildren().addAll(requests, acceptButton, declineButton);
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setPrefSize(500, 400);
-        scrollPane.setContent(requests);
+        scrollPane.setContent(container);
 
 
         VBox requestPage = new VBox();
-        requestPage.getChildren().addAll(noRequest, scrollPane);
+        requestPage.getChildren().addAll(nrRequest, scrollPane);
 
         return requestPage;
     }
