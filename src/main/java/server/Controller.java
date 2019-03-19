@@ -125,6 +125,12 @@ public class Controller {
         return Database.showFriends(token);
     }
 
+    @RequestMapping(value={"/showFollowers"}, method=RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public static ArrayList<CompareFriends> showFollowers(@Valid @RequestBody String token)
+    {
+        return Database.showFollowers(token);
+    }
 
 
 }

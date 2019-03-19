@@ -386,4 +386,9 @@ public class Database {
         }
     }
 
+    public static ArrayList showFollowers(String token)
+    {
+        return new ArrayList();
+    }
+
 }
