@@ -3,20 +3,31 @@ package gogreen;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXToggleNode;
+
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import de.jensd.fx.glyphs.octicons.OctIcon;
 import de.jensd.fx.glyphs.octicons.OctIconView;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
 import javafx.geometry.Pos;
+
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.*;
+
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TextField;
+
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
@@ -176,11 +187,8 @@ public class Application extends javafx.application.Application {
         showIcon.setSize("20px");
         showPassword.setGraphic(new Label("Show password", showIcon));
         showPassword.setOnAction(e -> {
-           toggleVisibility(
-                    visiblePassword, password, showPassword.isSelected());
-            toggleVisibility(
-                    visiblePasswordTwo, passwordTwo, showPassword.isSelected());
-
+            toggleVisibility(visiblePassword, password, showPassword.isSelected());
+            toggleVisibility(visiblePasswordTwo, passwordTwo, showPassword.isSelected());
         });
 
         //checkbox if the user wants his username and password to be remembered
@@ -720,13 +728,12 @@ public class Application extends javafx.application.Application {
     }
 
     /**
-     * make the leaderboard screen
+     * make the leaderboard screen.
      * @return the leaderboard screen
      */
-    private static VBox leaderboardScreen(){
-        // array for testing purposes
-        String[] placeholder = {"Marit 10000 10", "Gerrie 9000 9", "Harold 8000 8", "RobbieJetje 7000 7", "GeertjeWilders 6000 6",
-                "MarkieRutje 5000 5", "LavendelSnuifer 4000 4", "JesseKlavertje4 3000 3", "theFBI 2000 2", "Trump 1000 0"};
+    private static VBox leaderboardScreen() {
+        //array for testing purposes
+        String[] placeholder = {"Marit 10000 10", "Gerrie 9000 9", "Harold 8000 8", "RobbieJetje 7000 7", "GeertjeWilders 6000 6", "MarkieRutje 5000 5", "LavendelSnuifer 4000 4", "JesseKlavertje4 3000 3", "theFBI 2000 2", "Trump 1000 0"};
 
         // make the leaderboard title
         Label header = new Label("Leaderboard");
@@ -748,7 +755,7 @@ public class Application extends javafx.application.Application {
 
         // place all the people in the leaderboard
         int pos = 1;
-        for(String users : placeholder){
+        for (String users : placeholder) {
             String[] parts = users.split("\\s");
             leaderboard.add(new Label(pos + "."), 0, pos);
             leaderboard.add(new Label(parts[0]), 1, pos);
@@ -758,10 +765,10 @@ public class Application extends javafx.application.Application {
         }
 
         // places the user in the leaderboard
-        leaderboard.add(new Label ("69."), 0, 11);
-        leaderboard.add(new Label ("Your Username"), 1, 11);
-        leaderboard.add(new Label ("1"), 2, 11);
-        leaderboard.add(new Label ("0"), 3, 11);
+        leaderboard.add(new Label("69."), 0, 11);
+        leaderboard.add(new Label("Your Username"), 1, 11);
+        leaderboard.add(new Label("1"), 2, 11);
+        leaderboard.add(new Label("0"), 3, 11);
 
         // makes the leaderboard page
         VBox leaderboardPage = new VBox();
@@ -772,10 +779,10 @@ public class Application extends javafx.application.Application {
     }
 
     /**
-     * make the friends screen
+     * make the friends screen.
      * @return the friends screen
      */
-    private static VBox friendsScreen(){
+    private static VBox friendsScreen() {
         // makes an array list for testing purposes
         ArrayList<String> friends = new ArrayList<>(Arrays.asList("Rachel", "Monica", "Phoebe", "Joey", "Ross", "Chandler" ,"more friends", "more friends", "more friends", "more friends",
                 "more friends", "more friends", "more friends"));
@@ -791,11 +798,11 @@ public class Application extends javafx.application.Application {
         friendsList.setId("friends");
 
         // fills the friendlist with your friends
-        if(!friends.isEmpty()){
+        if (!friends.isEmpty()) {
             amountOfFriends.setText(friends.size() + " friends:");
 
             int pos = 1;
-            for(String friend : friends){
+            for (String friend : friends) {
                 friendsList.add(new Label(friend), 0, pos++);
             }
         } else {
@@ -823,9 +830,9 @@ public class Application extends javafx.application.Application {
         // puts the search field and search button together
         HBox searchBar = new HBox(10);
         searchBar.setAlignment(Pos.CENTER);
-       searchBar.getChildren().addAll(searchField, searchButton);
+        searchBar.getChildren().addAll(searchField, searchButton);
 
-       // makes the friends page
+        // makes the friends page
         VBox friendsPage = new VBox(5);
         friendsPage.getChildren().addAll(amountOfFriends, scrollPane, searchBar);
 
@@ -834,10 +841,10 @@ public class Application extends javafx.application.Application {
     }
 
     /**
-     * make the friend request screen
+     * make the friend request screen.
      * @return the friend request screen
      */
-    private static VBox friendRequestScreen(){
+    private static VBox friendRequestScreen() {
         // makes an arraylist for testing purposes
         ArrayList<String> friends = new ArrayList<>(Arrays.asList("Rachel", "Monica", "Phoebe", "Joey", "Ross", "Chandler"));
 
@@ -851,7 +858,7 @@ public class Application extends javafx.application.Application {
         VBox declineButton = new VBox(10);
 
         // puts all the friendrequests and buttons in the container
-        for(String request: friends){
+        for (String request: friends) {
             // make the username label and the buttons
             Label user = new Label(request);
             JFXButton accept = new JFXButton("Accept");
