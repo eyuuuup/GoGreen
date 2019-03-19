@@ -208,4 +208,18 @@ public class Communication {
         RestTemplate       request = new RestTemplate();
         return request.postForObject(hostURL + "/showFriends", message, ArrayList.class);
     }
+    
+    /**
+     * This method retrieves the user's list of followers from the server
+     * @return an arraylist of CompareFriends
+     */
+    public static ArrayList<CompareFriends> getFollowers() {
+        if (!isLoggedIn()) {
+            return null;
+        }
+        
+        HttpEntity<String> message = new HttpEntity<>(token);
+        RestTemplate       request = new RestTemplate();
+        return request.postForObject(hostURL + "/showFollowers", message, ArrayList.class);
+    }
 }
