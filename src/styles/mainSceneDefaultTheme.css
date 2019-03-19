@@ -123,3 +123,7 @@
 #friends{
     -fx-background-color: #249677;
 }
+
+#smallButton{
+    -fx-font-size: 14;
+}

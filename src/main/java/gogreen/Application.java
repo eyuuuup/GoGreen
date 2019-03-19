@@ -16,10 +16,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
@@ -796,10 +793,25 @@ public class Application extends javafx.application.Application {
         scrollBar.setPrefSize(500, 400);
         scrollBar.setContent(friendsList);
 
+        TextField searchField = new TextField();
+        searchField.setPromptText("search");
+        searchField.setPrefWidth(300);
+        searchField.setAlignment(Pos.CENTER);
+
+        JFXButton searchButton = new JFXButton("Search");
+        searchButton.setId("smallButton");
+        searchButton.setOnAction(e -> {
+            System.out.println(searchField.getText());
+        });
 
 
-        VBox friendsPage = new VBox();
-        friendsPage.getChildren().addAll(amountOfFriends, scrollBar);
+        HBox searchBar = new HBox(10);
+        searchBar.setAlignment(Pos.CENTER);
+       searchBar.getChildren().addAll(searchField, searchButton);
+
+
+        VBox friendsPage = new VBox(5);
+        friendsPage.getChildren().addAll(amountOfFriends, scrollBar, searchBar);
         return friendsPage;
     }
 
