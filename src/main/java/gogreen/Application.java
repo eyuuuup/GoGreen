@@ -789,9 +789,9 @@ public class Application extends javafx.application.Application {
             amountOfFriends.setText("You have no friends");
         }
 
-        ScrollPane scrollBar = new ScrollPane();
-        scrollBar.setPrefSize(500, 400);
-        scrollBar.setContent(friendsList);
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setPrefSize(500, 400);
+        scrollPane.setContent(friendsList);
 
         TextField searchField = new TextField();
         searchField.setPromptText("search");
@@ -811,7 +811,7 @@ public class Application extends javafx.application.Application {
 
 
         VBox friendsPage = new VBox(5);
-        friendsPage.getChildren().addAll(amountOfFriends, scrollBar, searchBar);
+        friendsPage.getChildren().addAll(amountOfFriends, scrollPane, searchBar);
         return friendsPage;
     }
 
@@ -821,10 +821,50 @@ public class Application extends javafx.application.Application {
      */
     private static VBox friendRequestScreen(){
 
-        Label noRequest = new Label("No friend requests");
+        ArrayList<String> friends = new ArrayList<>(Arrays.asList("Rachel", "Monica", "Phoebe", "Joey", "Ross", "Chandler" ,"super long friend name", "more friends", "more friends", "more friends",
+                "more friends", "more friends", "more friends"));
+
+
+        Label noRequest = new Label(friends.size() + " friend requests:");
+        noRequest.setId("title");
+
+        GridPane requests = new GridPane();
+        requests.setVgap(5);
+        requests.setHgap(10);
+        requests.setAlignment(Pos.CENTER);
+
+        int pos = 0;
+        for(String request: friends){
+            JFXButton accept = new JFXButton("Accept");
+            accept.setId("smallButton");
+            accept.setOnAction(e -> {
+                System.out.println("Accepted: " + request);
+                friends.remove(request);
+                System.out.println(friends.size());
+            });
+
+            JFXButton decline = new JFXButton("Decline");
+            decline.setId("smallButton");
+            decline.setOnAction(e -> {
+                System.out.println("Declined: " + request);
+                friends.remove(request);
+            });
+
+
+            requests.add(accept, 1, pos);
+            requests.add(decline, 2, pos);
+
+            requests.add(new Label(request), 0, pos++);
+
+        }
+
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setPrefSize(500, 400);
+        scrollPane.setContent(requests);
+
 
         VBox requestPage = new VBox();
-        requestPage.getChildren().addAll(noRequest);
+        requestPage.getChildren().addAll(noRequest, scrollPane);
 
         return requestPage;
     }
