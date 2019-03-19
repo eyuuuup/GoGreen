@@ -1,14 +1,13 @@
 package database;
 
+import org.joda.time.Instant;
 import server.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Database is a class that will be used in communication with the server.
@@ -65,8 +64,6 @@ public class Database {
             while (rs.next()) {
                 actionId = rs.getInt(1);
                 parentCategory = rs.getInt(2);
-                System.out.println("parentcategpry: " + parentCategory);
-                System.out.println("actionId: " + actionId);
             }
             
             PreparedStatement state1 =
@@ -74,10 +71,10 @@ public class Database {
                             + "points, parent_category, username)"
                             + "VALUES (?, ?, ?, ?, ?);");
             state1.setInt(1, actionId);
-            state1.setString(
-                    2,
-                    new SimpleDateFormat("yyyy-MM-dd HHmmss")
-                            .format(Calendar.getInstance().getTime()));
+
+            Long outputDate = Instant.now().getMillis();
+
+            state1.setLong(2, outputDate);
             state1.setInt(3, action.getValue());
             state1.setInt(4, parentCategory);
             state1.setString(5, getUsername(action.getUser()));
@@ -404,5 +401,6 @@ public class Database {
             return new ArrayList();
         }
     }
+
     
 }
