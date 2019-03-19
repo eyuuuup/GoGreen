@@ -168,12 +168,12 @@ public class Communication {
      * Sends request to the server to retrieve last three actions for current user.
      * @return string containing last three actions
      */
-    public static ArrayList<actionHistory> getLastThreeActions() {
+    public static ArrayList<ActionHistory> getLastThreeActions() {
         if (!isLoggedIn()) {
             return null; // not logged in
         }
         
-        return (ArrayList<actionHistory>) postToken("/retract", ArrayList.class);
+        return (ArrayList<ActionHistory>) postToken("/retract", ArrayList.class);
     }
     
     

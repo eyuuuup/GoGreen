@@ -99,7 +99,7 @@ public class Database {
      * @param token the token from a user.
      * @return the history in a String.
      */
-    public static ArrayList<actionHistory> retract(String token) {
+    public static ArrayList<ActionHistory> retract(String token) {
         try {
             Connection con = DriverManager.getConnection();
             System.out.println("retract called");
@@ -111,18 +111,16 @@ public class Database {
             state.setString(1, getUsername(token));
             ResultSet rs = state.executeQuery();
             
-            ArrayList<actionHistory> result = new ArrayList<>();
+            ArrayList<ActionHistory> result = new ArrayList<>();
             while (rs.next()) {
-                String[] temp;
-                temp = rs.getString(2).split(" ");
-                temp[3] = rs.getString(1);
-                result.add(new actionHistory(temp[3], temp[1], temp[2]));
+                String action = rs.getString(1);
+                long   date   = rs.getLong(2);
+                result.add(new ActionHistory(action, date));
             }
-            
             
             System.out.println("retract success");
             con.close();
-            return new ArrayList<>();
+            return result;
             
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());

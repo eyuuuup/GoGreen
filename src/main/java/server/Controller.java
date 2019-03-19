@@ -80,7 +80,7 @@ public class Controller {
      */
     @RequestMapping (value = {"/retract"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public static ArrayList<actionHistory> forDemo(@Valid @RequestBody String token) {
+    public static ArrayList<ActionHistory> forDemo(@Valid @RequestBody String token) {
         return Database.retract(token);
     }
 
