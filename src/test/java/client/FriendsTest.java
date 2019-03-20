@@ -16,6 +16,15 @@ public class FriendsTest {
     }
     
     @Test
+    public void constructorEmpty() {
+        Friends object = new Friends();
+        object.setUsername("A");
+        assertEquals(object.getUsername(), "A");
+        object.setToken("B");
+        assertEquals(object.getToken(), "B");
+    }
+    
+    @Test
     public void getToken() {
         assertEquals(OBJECT.getToken(), "ABC");
     }
