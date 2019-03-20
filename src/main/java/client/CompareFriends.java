@@ -11,11 +11,11 @@ public class CompareFriends {
     public CompareFriends() {
     }
 
-    public String getUsrname() {
+    public String getUsername() {
         return username;
     }
 
-    public void setUsrname(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
