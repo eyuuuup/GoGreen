@@ -1,22 +1,22 @@
 package client;
 
 public class CompareFriends {
-    private String usrname;
+    private String username;
     private int score;
 
-    public CompareFriends(String usrname, int score) {
-        this.usrname = usrname;
+    public CompareFriends(String username, int score) {
+        this.username = username;
         this.score = score;
     }
     public CompareFriends() {
     }
 
     public String getUsrname() {
-        return usrname;
+        return username;
     }
 
-    public void setUsrname(String usrname) {
-        this.usrname = usrname;
+    public void setUsrname(String username) {
+        this.username = username;
     }
 
     public int getScore() {
