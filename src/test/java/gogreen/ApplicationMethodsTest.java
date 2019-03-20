@@ -94,10 +94,10 @@ public class ApplicationMethodsTest {
     public void registrationPasswordsNotEqual() throws IllegalAccessException, FileNotFoundException {
         ApplicationMethods.register("username", "password", "passwordTwo", true);
     }
-
-    @Test (expected = IllegalAccessException.class)
+    
+    @Test (expected = IllegalArgumentException.class)
     public void registrationPasswordsTooShort() throws IllegalAccessException, FileNotFoundException {
-        ApplicationMethods.register("username", "pwd", "pwd", true);
+        ApplicationMethods.register("username", "p", "p", true);
     }
 
     @Test (expected = NullPointerException.class)
@@ -109,7 +109,7 @@ public class ApplicationMethodsTest {
     public void checkNameTooLong() throws Exception {
         Whitebox.invokeMethod(ApplicationMethods.class, "checkName", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     }
-
+    
     @Test (expected = IllegalArgumentException.class)
     public void checkNameTooShort() throws Exception {
         Whitebox.invokeMethod(ApplicationMethods.class, "checkName", "");
@@ -150,5 +150,34 @@ public class ApplicationMethodsTest {
     public void hashPasswordLegitCalculation() throws Exception {
         String response = Whitebox.invokeMethod(ApplicationMethods.class, "hashPassword", "password");
         assertEquals(response, Hashing.sha256().hashString("password", StandardCharsets.UTF_8).toString());
+    }
+    
+    @Test
+    public void getLevel(){
+        assertEquals(ApplicationMethods.getLevel(0), 1);
+        assertEquals(ApplicationMethods.getLevel(249), 1);
+        assertEquals(ApplicationMethods.getLevel(250), 2);
+        assertEquals(ApplicationMethods.getLevel(549), 2);
+        assertEquals(ApplicationMethods.getLevel(550), 3);
+        assertEquals(ApplicationMethods.getLevel(899), 3);
+        assertEquals(ApplicationMethods.getLevel(900), 4);
+        assertEquals(ApplicationMethods.getLevel(1299), 4);
+        assertEquals(ApplicationMethods.getLevel(1300), 5);
+    }
+    
+    @Test
+    public void getLevelInverse(){
+        assertEquals(ApplicationMethods.getLevelInv(1), 0);
+        assertEquals(ApplicationMethods.getLevelInv(2), 250);
+        assertEquals(ApplicationMethods.getLevelInv(3), 550);
+        assertEquals(ApplicationMethods.getLevelInv(4), 900);
+        assertEquals(ApplicationMethods.getLevelInv(5), 1300);
+    }
+    
+    @Test
+    public void getLevelProgress(){
+        assertEquals(ApplicationMethods.getLevelProgress(125), 0.5, 0.01);
+        assertEquals(ApplicationMethods.getLevelProgress(249), 1, 0.01);
+        assertEquals(ApplicationMethods.getLevelProgress(250), 0, 0.01);
     }
 }

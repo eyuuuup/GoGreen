@@ -49,7 +49,7 @@ class ApplicationMethods {
             throw new IllegalArgumentException("Passwords not equal!");
         }
         
-        if (password.length() <= 1) {
+        if (password.length() <= 2) {
             throw new IllegalArgumentException("Password too short");
         }
         
@@ -152,11 +152,12 @@ class ApplicationMethods {
     }
     
     static int getLevel(int points) {
-        return (int) (Math.floor(Math.pow(points / 250, 0.75)));
+        return (int) (Math.floor((-1 + Math.sqrt(1 + 8 * (points / 50 + 10))) / 2) - 3);
     }
     
     static int getLevelInv(int lvl) {
-        return (int) Math.floor(250 * Math.pow(lvl, 1 / 0.75));
+        lvl = (int) Math.floor(lvl)-1;
+        return ((50 * lvl * (9 + lvl)) / 2);
     }
     
     static double getLevelProgress(int points) {
