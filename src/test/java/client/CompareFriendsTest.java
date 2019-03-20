@@ -16,6 +16,15 @@ public class CompareFriendsTest {
     }
     
     @Test
+    public void constructorEmpty() {
+        CompareFriends object = new CompareFriends();
+        object.setUsername("A");
+        assertEquals(object.getUsername(), "A");
+        object.setScore(10);
+        assertEquals(object.getScore(), 10);
+    }
+    
+    @Test
     public void getUsername() {
         assertEquals(OBJECT.getUsername(), "ABC");
     }
