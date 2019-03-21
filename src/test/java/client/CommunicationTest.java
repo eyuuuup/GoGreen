@@ -152,6 +152,8 @@ public class CommunicationTest {
         assertEquals(150, Communication.getMyTotalScore());
     }
     
+    // ========== SOCIAL HANDLERS ==============================================
+    
     @Test
     public void addFriend() throws Exception {
         RestTemplate template = PowerMockito.mock(RestTemplate.class);
