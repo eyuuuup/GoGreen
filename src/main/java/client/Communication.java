@@ -13,10 +13,7 @@ public class Communication {
     private static final String fileDir = "src/extraFiles/Token.txt";
     private static       String token   = null;
     
-    private Communication() {
-    }
-    
-    // ========== PART METHODS =====================================================================
+    // ========== PART METHODS =================================================
     
     /**
      * Handles login and register.
@@ -72,7 +69,7 @@ public class Communication {
     }
     
     
-    // ========== USER AUTHENTICATION ==============================================================
+    // ========== USER AUTHENTICATION ==========================================
     
     /**
      * Checks whether a given username is not taken on the server.
@@ -144,7 +141,7 @@ public class Communication {
         return token != null;
     }
     
-    // ========== ACTION HANDLERS ==================================================================
+    // ========== ACTION HANDLERS ==============================================
     
     /**
      * Checks whether a given name is according to the rules.
@@ -153,10 +150,6 @@ public class Communication {
      * @return boolean correctly sent to server
      */
     public static boolean addAction(String actionName, int points) {
-        if (!isLoggedIn()) {
-            return false; // not logged in
-        }
-        
         Action                    action  = new Action(token, actionName, points);
         HttpEntity<client.Action> message = new HttpEntity<>(action);
         
@@ -169,10 +162,6 @@ public class Communication {
      * @return string containing last three actions
      */
     public static ArrayList<ActionHistory> getLastThreeActions() {
-        if (!isLoggedIn()) {
-            return null; // not logged in
-        }
-        
         return (ArrayList<ActionHistory>) postToken("/retract", ArrayList.class);
     }
     
@@ -182,14 +171,10 @@ public class Communication {
      * @return integer containing total score
      */
     public static int getMyTotalScore() {
-        if (!isLoggedIn()) {
-            return -1;
-        }
-        
         return (int) postToken("/getTotalScore", Integer.class);
     }
     
-    // ========== SOCIAL HANDLERS ==================================================================
+    // ========== SOCIAL HANDLERS ==============================================
     
     /**
      * This method adds a friend by it's username.
@@ -198,10 +183,6 @@ public class Communication {
      * @return
      */
     public static boolean addFriend(String friendUsername) {
-        if (!isLoggedIn()) {
-            return false;
-        }
-        
         Friends friend = new Friends(token, friendUsername);
         
         HttpEntity<Friends> message = new HttpEntity<>(friend);
@@ -215,10 +196,6 @@ public class Communication {
      * @return an arraylist ofCompareFriends
      */
     public static ArrayList<CompareFriends> getFriends() {
-        if (!isLoggedIn()) {
-            return null;
-        }
-        
         return (ArrayList<CompareFriends>) postToken("/showFriends", ArrayList.class);
     }
     
@@ -228,10 +205,6 @@ public class Communication {
      * @return an arraylist of "CompareFriends"
      */
     public static ArrayList<CompareFriends> getFollowers() {
-        if (!isLoggedIn()) {
-            return null;
-        }
-        
         return (ArrayList<CompareFriends>) postToken("/showFollowers", ArrayList.class);
     }
 }
