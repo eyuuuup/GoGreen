@@ -234,4 +234,18 @@ public class Communication {
         
         return (ArrayList<CompareFriends>) postToken("/showFollowers", ArrayList.class);
     }
+
+    /**
+     * This method checks if the searched username exists or not
+     * @param username
+     * @return
+     */
+    public static boolean checkUsername(String username)
+    {
+        if(!isLoggedIn())
+            return false;
+        HttpEntity<String> message= new HttpEntity<>(username);
+        RestTemplate reuquest=new RestTemplate();
+        return reuquest.postForObject(hostURL+"/checkUser", message, boolean.class);
+    }
 }
