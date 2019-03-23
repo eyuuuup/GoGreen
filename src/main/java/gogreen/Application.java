@@ -316,7 +316,7 @@ public class Application extends javafx.application.Application {
      * @return your world screen
      */
     private static GridPane yourWorldScreen() {
-        int points = 10000;
+        int points = client.Communication.getMyTotalScore();
         int level = ApplicationMethods.getLevel(points);
         String planetURL = "file:src/planets/BadPlanet.gif";
         if(33 <= level && level < 66){
