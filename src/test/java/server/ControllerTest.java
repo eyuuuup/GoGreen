@@ -54,12 +54,19 @@ public class ControllerTest {
         assertNotNull(tokenResponse.getToken());
         assertTrue(tokenResponse.isLegit());
     }
-
+    
     @Test
-    public void silentLogin() {
+    public void silentLoginValid() {
         PowerMockito.when(Database.silentLoginCheck("")).thenReturn(true);
-        String returnString = Controller.silentLogin("");
-        assertEquals(returnString, "ERWIN");
+        boolean response = Controller.silentLogin("");
+        assertTrue(response);
+    }
+    
+    @Test
+    public void silentLoginInvalid() {
+        PowerMockito.when(Database.silentLoginCheck("")).thenReturn(false);
+        boolean response = Controller.silentLogin("");
+        assertFalse(response);
     }
 
     @Test
