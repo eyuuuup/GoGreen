@@ -735,9 +735,6 @@ public class Application extends javafx.application.Application {
      * @return the leaderboard screen
      */
     private static VBox leaderboardScreen() {
-        //array for testing purposes
-        String[] placeholder = {"Marit 10000 10", "Gerrie 9000 9", "Harold 8000 8", "RobbieJetje 7000 7", "GeertjeWilders 6000 6", "MarkieRutje 5000 5", "LavendelSnuifer 4000 4", "JesseKlavertje4 3000 3", "theFBI 2000 2", "Trump 1000 0"};
-
         // make the leaderboard title
         Label header = new Label("Leaderboard");
         header.setId("title");
@@ -756,6 +753,12 @@ public class Application extends javafx.application.Application {
         leaderboard.add(new Label("Points"), 2, 0);
         leaderboard.add(new Label("Level"), 3, 0);
 
+        //array for testing purposes
+        String[] placeholder = {"Marit 10000 10",
+                                "Gerrie 9000 9", "Harold 8000 8",
+                                "RobbieJetje 7000 7", "GeertjeWilders 6000 6",
+                                "MarkieRutje 5000 5", "LavendelSnuifer 4000 4",
+                                "JesseKlavertje4 3000 3", "theFBI 2000 2", "Trump 1000 0"};
         // place all the people in the leaderboard
         int pos = 1;
         for (String users : placeholder) {
@@ -786,10 +789,6 @@ public class Application extends javafx.application.Application {
      * @return the friends screen
      */
     private static VBox friendsScreen() {
-        // makes an array list for testing purposes
-        ArrayList<String> friends = new ArrayList<>(Arrays.asList("Rachel", "Monica", "Phoebe", "Joey", "Ross", "Chandler" ,"more friends", "more friends", "more friends", "more friends",
-                "more friends", "more friends", "more friends"));
-
         // makes the title
         Label amountOfFriends = new Label("");
         amountOfFriends.setId("title");
@@ -800,6 +799,12 @@ public class Application extends javafx.application.Application {
         friendsList.setAlignment(Pos.CENTER);
         friendsList.setId("friends");
 
+        // makes an array list for testing purposes
+        ArrayList<String> friends = new ArrayList<>(Arrays.asList("Rachel",
+                "Monica", "Phoebe", "Joey", "Ross", "Chandler" ,
+                "more friends", "more friends", "more friends",
+                "more friends", "more friends", "more friends",
+                "more friends"));
         // fills the friendlist with your friends
         if (!friends.isEmpty()) {
             amountOfFriends.setText(friends.size() + " friends:");
@@ -849,7 +854,8 @@ public class Application extends javafx.application.Application {
      */
     private static VBox friendRequestScreen() {
         // makes an arraylist for testing purposes
-        ArrayList<String> friends = new ArrayList<>(Arrays.asList("Rachel", "Monica", "Phoebe", "Joey", "Ross", "Chandler"));
+        ArrayList<String> friends = new ArrayList<>(Arrays.asList(
+                "Rachel", "Monica", "Phoebe", "Joey", "Ross", "Chandler"));
 
         // makes the title
         Label nrRequest = new Label(friends.size() + " friend requests:");
