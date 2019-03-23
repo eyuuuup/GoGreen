@@ -22,6 +22,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -314,6 +316,11 @@ public class Application extends javafx.application.Application {
      * @return your world screen
      */
     private static GridPane yourWorldScreen() {
+        // make the planet
+        Image image = new Image("file:src/planets/notAsGoodPlanet.gif");
+        ImageView imageView = new ImageView();
+        imageView.setImage(image);
+
         // makes the level bar
         ProgressBar levelBar = new ProgressBar(0.5);
         levelBar.setPrefSize(400, 10);
@@ -334,7 +341,8 @@ public class Application extends javafx.application.Application {
         
         // makes the page and adds the nodes
         GridPane yourWorldPage = new GridPane();
-        yourWorldPage.add(levelContainer, 0,0);
+        yourWorldPage.add(imageView,0,0);
+        yourWorldPage.add(levelContainer, 0,1);
         yourWorldPage.setAlignment(Pos.BOTTOM_CENTER);
         
         // returns the page
