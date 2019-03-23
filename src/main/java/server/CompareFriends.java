@@ -8,8 +8,8 @@ public class CompareFriends {
         this.username = username;
         this.score = score;
     }
-    public CompareFriends() {
-    }
+
+    public CompareFriends() {}
 
     public String getUsername() {
         return username;

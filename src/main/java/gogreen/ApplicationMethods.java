@@ -133,31 +133,32 @@ class ApplicationMethods {
         }
     }
     
-//    /**
-//     * makes a string of the recent activities.
-//     * @param recentActivities recent activities
-//     * @return a String of the recent activities
-//     */
-//    static String recentActivitiesToString(String recentActivities) {
-//                if (recentActivities != null) {
-//                    System.out.println("rA: " + recentActivities);
-//                    String[] split = recentActivities.split("\\s|_");
-//                    String output = split[0] + "\t\t\t\t" + split[1] + "\t\t" + split[2] + "\n"
-//                            + split[3] + "\t\t\t\t" + split[4] + "\t\t" + split[5] + "\n"
-//                            + split[6] + "\t\t\t\t" + split[7] + "\t\t" + split[8];
-//                    System.out.println(output);
-//                    return output;
-//                }
-//        return "none";
-//    }
+    //    /**
+    //     * makes a string of the recent activities.
+    //     * @param recentActivities recent activities
+    //     * @return a String of the recent activities
+    //     */
+    //    static String recentActivitiesToString(String recentActivities) {
+    //                if (recentActivities != null) {
+    //                    System.out.println("rA: " + recentActivities);
+    //                    String[] split = recentActivities.split("\\s|_");
+    //                    String output = split[0] + "\t\t\t\t" +
+    //                    split[1] + "\t\t" + split[2] + "\n"
+    //                            + split[3] + "\t\t\t\t" + split[4] + "\t\t" + split[5] + "\n"
+    //                            + split[6] + "\t\t\t\t" + split[7] + "\t\t" + split[8];
+    //                    System.out.println(output);
+    //                    return output;
+    //                }
+    //        return "none";
+    //    }
     
     static int getLevel(int points) {
         return (int) (Math.floor((-1 + Math.sqrt(1 + 8 * (points / 50 + 10))) / 2) - 3);
     }
     
     static int getLevelInv(int lvl) {
-        lvl = (int) Math.floor(lvl)-1;
-        return ((50 * lvl * (9 + lvl)) / 2);
+        lvl = (int) Math.floor(lvl) - 1;
+        return 50 * lvl * (9 + lvl) / 2;
     }
     
     static double getLevelProgress(int points) {

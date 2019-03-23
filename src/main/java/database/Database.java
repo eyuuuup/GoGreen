@@ -1,7 +1,12 @@
 package database;
 
 import org.joda.time.Instant;
-import server.*;
+import server.Action;
+import server.ActionHistory;
+import server.CompareFriends;
+import server.Friends;
+import server.TokenResponse;
+import server.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -140,7 +145,8 @@ public class Database {
             
             currentTotalScore = currentTotalScore + score;
             PreparedStatement state1 =
-                    con.prepareStatement("UPDATE total_score SET total_score = ? WHERE username = ?");
+                    con.prepareStatement("UPDATE total_score "
+                            + "SET total_score = ? WHERE username = ?");
             state1.setInt(1, currentTotalScore);
             state1.setString(2, getUsername(token));
             state1.executeUpdate();
@@ -159,7 +165,12 @@ public class Database {
     public static int getTotalScore(String token) {
         return getTotalScoreByUser(getUsername(token));
     }
-    
+
+    /**
+     * Get the total score for a given user.
+     * @param username the username
+     * @return the total score
+     */
     public static int getTotalScoreByUser(String username) {
         try {
             Connection con = DriverManager.getConnection();
@@ -375,16 +386,21 @@ public class Database {
             return new ArrayList();
         }
     }
-    
+
+    /**
+     * show the followers.
+     * @param token token
+     * @return followers
+     */
     public static ArrayList showFollowers(String token) {
         System.out.println("showFollowers called");
         try {
             Connection con = DriverManager.getConnection();
             PreparedStatement state = con.prepareStatement(
-                    "SELECT friends.user_a, total_score.total_score " +
-                            "FROM friends " +
-                            "JOIN total_score ON friends.user_a=total_score.username " +
-                            "WHERE user_b = ?");
+                    "SELECT friends.user_a, total_score.total_score "
+                            + "FROM friends "
+                            + "JOIN total_score ON friends.user_a=total_score.username "
+                            + "WHERE user_b = ?");
             state.setString(1, getUsername(token));
             ResultSet rs = state.executeQuery();
             
