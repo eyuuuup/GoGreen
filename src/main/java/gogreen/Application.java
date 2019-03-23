@@ -40,12 +40,32 @@ public class Application extends javafx.application.Application {
     //the stage this application uses
     private static Stage stage;
     private static String theme;
-    
+
     //launches the app
     public static void main(String[] args) {
         launch();
     }
-    
+
+    /**
+     * this method starts the application.
+     * @param stage stage
+     */
+    @Override
+    public void start(Stage stage) {
+        this.stage = stage;
+        stage.setTitle("GoGreen");
+
+        // sets the theme
+        theme = "src/styles/mainSceneDefaultTheme.css";
+
+        //the silentLogin will login for the user
+        if (client.Communication.silentLogin()) {
+            mainScreen();
+        } else {
+            loginScene();
+        }
+    }
+
     /**
      * This method displays the Login screen.
      */
@@ -304,13 +324,13 @@ public class Application extends javafx.application.Application {
         
         
         // make the total points text
-        Label totalPoints = new Label(points + " points");
+        Label totalPoints = new Label(" points");
         totalPoints.setId("levelStatus");
         totalPoints.setAlignment(Pos.CENTER_RIGHT);
         
         // makes a container for the level attributes
         VBox levelContainer = new VBox();
-        levelContainer.getChildren().addAll(levelStatusContainer, levelBar);
+        levelContainer.getChildren().addAll(levelStatus, levelBar);
         
         // makes the page and adds the nodes
         GridPane yourWorldPage = new GridPane();
