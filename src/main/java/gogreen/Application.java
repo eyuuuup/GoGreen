@@ -31,6 +31,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -428,9 +429,14 @@ public class Application extends javafx.application.Application {
         Tab extraTab = new Tab();
         extraTab.setText("Extra");
         extraTab.setContent(extraScreen());
+
+        // make the one time events tab
+        Tab oneTimeEventTab = new Tab();
+        oneTimeEventTab.setText("One Time Event");
+        oneTimeEventTab.setContent(oteScreen());
         
         // add all the tabs to the navigation bar
-        categoryNavigation.getTabs().addAll(transportTab, foodTab, energyTab, extraTab);
+        categoryNavigation.getTabs().addAll(transportTab, foodTab, energyTab, extraTab, oneTimeEventTab);
         
         // make the category page
         Pane categoryPage = new Pane();
@@ -642,6 +648,51 @@ public class Application extends javafx.application.Application {
         
         // returns the page
         return extraPage;
+    }
+
+    private static GridPane oteScreen(){
+
+        JFXToggleNode solarPanels = new JFXToggleNode();
+        FontAwesomeIconView sunIcon = new FontAwesomeIconView(FontAwesomeIcon.SUN_ALT);
+        sunIcon.setSize("40px");
+        solarPanels.setGraphic(new Label("Solar Panels", sunIcon));
+        solarPanels.setMinSize(500,100);
+
+        JFXToggleNode electricCar = new JFXToggleNode();
+        FontAwesomeIconView plugIcon = new FontAwesomeIconView(FontAwesomeIcon.PLUG);
+        plugIcon.setSize("40px");
+        electricCar.setGraphic(new Label("Electric car", plugIcon));
+        electricCar.setMinSize(500,100);
+
+        JFXToggleNode joinedGroup = new JFXToggleNode();
+        FontAwesomeIconView groupIcon = new FontAwesomeIconView(FontAwesomeIcon.GROUP);
+        groupIcon.setSize("40px");
+        joinedGroup.setGraphic(new Label("Joined environment group", groupIcon));
+        joinedGroup.setMinSize(500,100);
+
+        JFXButton addOTE = new JFXButton("Add the one time event");
+        addOTE.setPrefSize(500, 100);
+        addOTE.setOnAction(e -> {
+            if (solarPanels.isSelected()) {
+                OneTimeEvent.addSolarPanelAction();
+                System.out.println("Test");
+            }
+            if (electricCar.isSelected()) {
+                OneTimeEvent.addElectricCarAction();
+            }
+            if (joinedGroup.isSelected()) {
+                OneTimeEvent.addEvGroupAction();
+            }
+        });
+
+        GridPane otePage = new GridPane();
+        otePage.setVgap(10);
+        otePage.setAlignment(Pos.CENTER);
+        otePage.add(solarPanels,0,0);
+        otePage.add(electricCar,0,1);
+        otePage.add(joinedGroup,0,2);
+        otePage.add(addOTE, 0, 3);
+        return otePage;
     }
     
     /**
