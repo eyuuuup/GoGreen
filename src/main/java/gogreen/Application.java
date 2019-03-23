@@ -650,32 +650,39 @@ public class Application extends javafx.application.Application {
         return extraPage;
     }
 
+    /**
+     * makes the one time events screen
+     * @return the one time events page
+     */
     private static GridPane oteScreen(){
 
+        // makes the solar panel toggle
         JFXToggleNode solarPanels = new JFXToggleNode();
         FontAwesomeIconView sunIcon = new FontAwesomeIconView(FontAwesomeIcon.SUN_ALT);
         sunIcon.setSize("40px");
         solarPanels.setGraphic(new Label("Solar Panels", sunIcon));
         solarPanels.setMinSize(500,100);
 
+        // makes the electric car toggle
         JFXToggleNode electricCar = new JFXToggleNode();
         FontAwesomeIconView plugIcon = new FontAwesomeIconView(FontAwesomeIcon.PLUG);
         plugIcon.setSize("40px");
         electricCar.setGraphic(new Label("Electric car", plugIcon));
         electricCar.setMinSize(500,100);
 
+        // makes the joined a group toggle
         JFXToggleNode joinedGroup = new JFXToggleNode();
         FontAwesomeIconView groupIcon = new FontAwesomeIconView(FontAwesomeIcon.GROUP);
         groupIcon.setSize("40px");
         joinedGroup.setGraphic(new Label("Joined environment group", groupIcon));
         joinedGroup.setMinSize(500,100);
 
+        // makes the add action button
         JFXButton addOTE = new JFXButton("Add the one time event");
         addOTE.setPrefSize(500, 100);
         addOTE.setOnAction(e -> {
             if (solarPanels.isSelected()) {
                 OneTimeEvent.addSolarPanelAction();
-                System.out.println("Test");
             }
             if (electricCar.isSelected()) {
                 OneTimeEvent.addElectricCarAction();
