@@ -316,28 +316,41 @@ public class Application extends javafx.application.Application {
      * @return your world screen
      */
     private static GridPane yourWorldScreen() {
+        int points = 10000;
+        int level = ApplicationMethods.getLevel(points);
+        String planetURL = "file:src/planets/BadPlanet.gif";
+        if(33 <= level && level < 66){
+            planetURL = "file:src/planets/notAsGoodPlanet.gif";
+        } else if (level >= 66 ){
+            planetURL = "file:src/planets/goodPlanet.gif";
+        }
+
+
+
         // make the planet
-        Image image = new Image("file:src/planets/notAsGoodPlanet.gif");
+        Image image = new Image(planetURL);
         ImageView imageView = new ImageView();
         imageView.setImage(image);
 
         // makes the level bar
-        ProgressBar levelBar = new ProgressBar(0.5);
+        ProgressBar levelBar = new ProgressBar(ApplicationMethods.getLevelProgress(points));
         levelBar.setPrefSize(400, 10);
         
         // makes the level text
-        Label levelStatus = new Label("Lv. INSERT HERE LEVEL");
+        Label levelStatus = new Label("Lv. " + level);
         levelStatus.setId("levelStatus");
-        
+
         
         // make the total points text
-        Label totalPoints = new Label(" points");
+        Label totalPoints = new Label(points + " points");
         totalPoints.setId("levelStatus");
         totalPoints.setAlignment(Pos.CENTER_RIGHT);
-        
+
+        HBox pointsAndStatus = new HBox(250);
+        pointsAndStatus.getChildren().addAll(levelStatus, totalPoints);
         // makes a container for the level attributes
         VBox levelContainer = new VBox();
-        levelContainer.getChildren().addAll(levelStatus, levelBar);
+        levelContainer.getChildren().addAll(pointsAndStatus, levelBar);
         
         // makes the page and adds the nodes
         GridPane yourWorldPage = new GridPane();
