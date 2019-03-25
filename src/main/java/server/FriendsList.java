@@ -9,6 +9,10 @@ public class FriendsList {
         this.list = list;
     }
     
+    public FriendsList(){
+        list = new ArrayList<>();
+    }
+    
     public ArrayList<CompareFriends> getList() {
         return list;
     }

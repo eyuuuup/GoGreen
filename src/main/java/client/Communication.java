@@ -244,14 +244,7 @@ public class Communication {
      */
     public static ArrayList<CompareFriends> getLeaderboard() {
         RestTemplate reuquest = new RestTemplate();
-        return (ArrayList<CompareFriends>) reuquest.getForObject(hostURL + "/getLeaderboard", ArrayList.class);
-    }
-    
-    public static void main(String[] args){
-        ArrayList<CompareFriends> result = getLeaderboard();
-        for (CompareFriends cf : result){
-            System.out.println(cf.getUsername() + ":"+cf.getScore());
-        }
+        return reuquest.getForObject(hostURL + "/getLeaderboard", FriendsList.class).getList();
     }
     
     

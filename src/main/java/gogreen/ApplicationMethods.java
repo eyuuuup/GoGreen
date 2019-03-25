@@ -82,6 +82,16 @@ class ApplicationMethods {
     }
     
     /**
+     * This method decodes the username.
+     * @param username the username
+     * @return the decoded username
+     */
+    private static String decodeUsername(String username) {
+        return new String(Base64.getDecoder().decode(username));
+        
+    }
+    
+    /**
      * Checks whether a given name is according to the rules.
      * @param testName the name to test
      * @throws NullPointerException     if null

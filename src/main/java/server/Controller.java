@@ -142,7 +142,7 @@ public class Controller {
      */
     @RequestMapping(value = {"/getLeaderboard"}, method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public static ArrayList<CompareFriends> getLeaderboard() {
+    public static FriendsList getLeaderboard() {
         return Database.getLeaderboard();
     }
     
