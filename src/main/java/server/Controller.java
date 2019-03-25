@@ -116,13 +116,13 @@ public class Controller {
      */
     @RequestMapping(value = {"/showFriends"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public static ArrayList<CompareFriends> showFriends(@Valid @RequestBody String token) {
+    public static FriendsList showFriends(@Valid @RequestBody String token) {
         return Database.showFriends(token);
     }
 
     @RequestMapping(value = {"/showFollowers"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public static ArrayList<CompareFriends> showFollowers(@Valid @RequestBody String token) {
+    public static FriendsList showFollowers(@Valid @RequestBody String token) {
         return Database.showFollowers(token);
     }
     

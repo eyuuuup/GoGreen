@@ -211,7 +211,7 @@ public class Communication {
      * @return an arraylist ofCompareFriends
      */
     public static ArrayList<CompareFriends> getFriends() {
-        return (ArrayList<CompareFriends>) postToken("/showFriends", ArrayList.class);
+        return ((FriendsList)postToken("/showFriends", FriendsList.class)).getList();
     }
 
     /**
@@ -221,7 +221,7 @@ public class Communication {
      * @return an arraylist of "CompareFriends"
      */
     public static ArrayList<CompareFriends> getFollowers() {
-        return (ArrayList<CompareFriends>) postToken("/showFollowers", ArrayList.class);
+        return ((FriendsList)postToken("/showFollowers", FriendsList.class)).getList();
     }
     
     /**
