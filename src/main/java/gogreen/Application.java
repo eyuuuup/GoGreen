@@ -465,6 +465,7 @@ public class Application extends javafx.application.Application {
      * @return the transport screen
      */
     private static GridPane transportScreen() {
+
         // make the text field
         TextField distance = new TextField();
         distance.setPromptText("Distance");
@@ -486,11 +487,10 @@ public class Application extends javafx.application.Application {
                 int distanceInt = Integer.parseInt(distance.getText());
                 Transport.addCycleAction();
             } catch (Exception exeption){
+
                 // throw error
                 errorMessage.setText("Please only use numbers");
             }
-
-
         });
         
         //button for the public transport action
@@ -529,6 +529,7 @@ public class Application extends javafx.application.Application {
             Transport.addPlaneAction();
         });
 
+        // make the kilometer label and the distance container
         Label km = new Label("km");
         km.setId("title");
 
@@ -609,13 +610,13 @@ public class Application extends javafx.application.Application {
      * makes the energy screen.
      * @return the energy screen
      */
-    static GridPane energyScreen() {
+    private static GridPane energyScreen() {
         
         // makes the water time button
         JFXButton waterTime = new JFXButton();
         MaterialDesignIconView waterIcon = new MaterialDesignIconView(MaterialDesignIcon.WATER);
         waterIcon.setSize("50px");
-        waterTime.setGraphic(new Label("Water time", waterIcon));
+        waterTime.setGraphic(new Label("Add shower time", waterIcon));
         waterTime.setPrefSize(500, 100);
 
         // make the water time slider
@@ -624,41 +625,41 @@ public class Application extends javafx.application.Application {
 
         // make error label
         Label errorWater = new Label("");
+        errorWater.setId("error");
 
         VBox waterContainer = new VBox(10);
         waterContainer.setAlignment(Pos.CENTER);
-        waterContainer.getChildren().addAll(waterTimeSlider, errorWater);
+        waterContainer.getChildren().addAll(errorWater, waterTimeSlider);
 
         // when pressed it will send an action
         waterTime.setOnAction(e -> {
             int value = (int) Math.round(waterTimeSlider.getValue());
-            if(value != 0){
+            if (value != 0) {
+                errorWater.setText("");
                 Energy.addReduceWater();
             } else {
                 errorWater.setText("Please fill in the minutes you showered");
             }
-
-
         });
 
         // makes the energy button
-        JFXButton energyTime = new JFXButton();
+        JFXButton temperature = new JFXButton();
         MaterialDesignIconView energyIcon = new MaterialDesignIconView(MaterialDesignIcon.FLASH);
         energyIcon.setSize("50px");
-        energyTime.setGraphic(new Label("Energy time", energyIcon));
-        energyTime.setPrefSize(500, 100);
+        temperature.setGraphic(new Label("Add house temperature", energyIcon));
+        temperature.setPrefSize(500, 100);
 
         // make the water time slider
         JFXSlider temperatureSlider = new JFXSlider(15,30,15);
         temperatureSlider.setMaxWidth(400);
 
+        // make the temperature container
         VBox temperatureContainer = new VBox(10);
         temperatureContainer.setAlignment(Pos.CENTER);
         temperatureContainer.getChildren().addAll(temperatureSlider);
 
-
         // when pressed it will send an action
-        energyTime.setOnAction(e -> {
+        temperature.setOnAction(e -> {
             int value = (int) Math.round(temperatureSlider.getValue());
             System.out.println(value);
             Energy.addReduceEnergyAction();
@@ -666,13 +667,12 @@ public class Application extends javafx.application.Application {
         
         // makes the page and adds the nodes
         GridPane energyPage = new GridPane();
-        energyPage.setVgap(10);
-        energyPage.add(waterTime, 0, 0);
-        energyPage.add(waterContainer, 0,1);
-        energyPage.add(energyTime, 0, 2);
-        energyPage.add(temperatureContainer,0,3);
-        energyPage.setAlignment(Pos.CENTER);
-        
+        energyPage.setVgap(30);
+        energyPage.add(waterContainer, 0,0);
+        energyPage.add(waterTime, 0, 1);
+        energyPage.add(temperatureContainer,0,2);
+        energyPage.add(temperature, 0, 3);
+
         // returns the page
         return energyPage;
     }
