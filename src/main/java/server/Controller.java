@@ -135,7 +135,7 @@ public class Controller {
      * @param username
      * @return boolean is username exists or not
      */
-    @RequestMapping(value={"/searchUser"}, method=RequestMethod.POST,
+    @RequestMapping(value={"/checkUser"}, method=RequestMethod.POST,
             produces=MediaType.APPLICATION_JSON_VALUE)
     public static boolean checkUser(@Valid @RequestBody String username)
     {

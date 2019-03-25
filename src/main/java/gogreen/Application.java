@@ -1,5 +1,6 @@
 package gogreen;
 
+import client.CompareFriends;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXToggleNode;
@@ -807,9 +808,50 @@ public class Application extends javafx.application.Application {
      * @return the friends screen
      */
     private static VBox friendsScreen() {
-        // makes an array list for testing purposes
-        ArrayList<String> friends = new ArrayList<>(Arrays.asList("Rachel", "Monica", "Phoebe", "Joey", "Ross", "Chandler" ,"more friends", "more friends", "more friends", "more friends",
-                "more friends", "more friends", "more friends"));
+
+        GridPane friendsList = followingList();
+
+        // makes the scroll pane
+        ScrollPane followingList = new ScrollPane();
+        followingList.setPrefSize(500, 400);
+        followingList.setContent(friendsList);
+
+        // makes the search field
+        TextField searchField = new TextField();
+        searchField.setPromptText("search");
+        searchField.setPrefWidth(300);
+        searchField.setAlignment(Pos.CENTER);
+
+        // makes the search button
+        JFXButton searchButton = new JFXButton("Search");
+        searchButton.setId("smallButton");
+        searchButton.setOnAction(e -> {
+
+            System.out.println(client.Communication.checkUsername(searchField.getText()));
+
+            if (client.Communication.checkUsername(searchField.getText())) {
+                client.Communication.addFriend(searchField.getText());
+                followingList.setContent(followingList);
+            }
+        });
+
+        // puts the search field and search button together
+        HBox searchBar = new HBox(10);
+        searchBar.setAlignment(Pos.CENTER);
+        searchBar.getChildren().addAll(searchField, searchButton);
+
+        // makes the friends page
+        VBox friendsPage = new VBox(5);
+        friendsPage.getChildren().addAll(followingList, searchBar);
+
+        // returns the friendspage
+        return friendsPage;
+    }
+
+    private static GridPane followingList(){
+
+        // getting the friends
+        ArrayList<CompareFriends> friends = client.Communication.getFriends();
 
         // makes the title
         Label amountOfFriends = new Label("");
@@ -823,45 +865,19 @@ public class Application extends javafx.application.Application {
 
         // fills the friendlist with your friends
         if (!friends.isEmpty()) {
-            amountOfFriends.setText(friends.size() + " friends:");
+            amountOfFriends.setText("You follow : " + friends.size() + "people" );
 
             int pos = 1;
-            for (String friend : friends) {
-                friendsList.add(new Label(friend), 0, pos++);
+            for (CompareFriends friend : friends) {
+                friendsList.add(new Label(friend.getUsername()), 0, pos++);
             }
         } else {
-            amountOfFriends.setText("You have no friends");
+            amountOfFriends.setText("You don't follow people");
         }
 
-        // makes the scroll pane
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setPrefSize(500, 400);
-        scrollPane.setContent(friendsList);
 
-        // makes the search field
-        TextField searchField = new TextField();
-        searchField.setPromptText("search");
-        searchField.setPrefWidth(300);
-        searchField.setAlignment(Pos.CENTER);
 
-        // makes the search button
-        JFXButton searchButton = new JFXButton("Search");
-        searchButton.setId("smallButton");
-        searchButton.setOnAction(e -> {
-            System.out.println(searchField.getText());
-        });
-
-        // puts the search field and search button together
-        HBox searchBar = new HBox(10);
-        searchBar.setAlignment(Pos.CENTER);
-        searchBar.getChildren().addAll(searchField, searchButton);
-
-        // makes the friends page
-        VBox friendsPage = new VBox(5);
-        friendsPage.getChildren().addAll(amountOfFriends, scrollPane, searchBar);
-
-        // returns the friendspage
-        return friendsPage;
+        return friendsList;
     }
 
     /**
@@ -870,59 +886,35 @@ public class Application extends javafx.application.Application {
      */
     private static VBox friendRequestScreen() {
         // makes an arraylist for testing purposes
-        ArrayList<String> friends = new ArrayList<>(Arrays.asList("Rachel", "Monica", "Phoebe", "Joey", "Ross", "Chandler"));
+        ArrayList<CompareFriends> friends = client.Communication.getFollowers();
 
         // makes the title
-        Label nrRequest = new Label(friends.size() + " friend requests:");
+        Label nrRequest = new Label(friends.size() + " followers:");
         nrRequest.setId("title");
 
         // make the username, accept button and decline button containers
         VBox requests = new VBox(5);
         VBox acceptButton = new VBox(10);
-        VBox declineButton = new VBox(10);
+
 
         // puts all the friendrequests and buttons in the container
-        for (String request: friends) {
+        for (CompareFriends followers: friends) {
             // make the username label and the buttons
-            Label user = new Label(request);
-            JFXButton accept = new JFXButton("Accept");
-            accept.setId("smallButton");
-            JFXButton decline = new JFXButton("Decline");
-            decline.setId("smallButton");
+            Label user = new Label(followers.getUsername());
+            JFXButton followBack = new JFXButton("follow back");
+            followBack.setId("smallButton");
+
 
             // if we accept we remove the request and add the person
-            accept.setOnAction(e -> {
-                System.out.println("Accepted: " + request);
-
+            followBack.setOnAction(e -> {
                 requests.getChildren().remove(user);
-                acceptButton.getChildren().remove(accept);
-                declineButton.getChildren().remove(decline);
-
-                friends.remove(request);
-                nrRequest.setText(friends.size() + " friend requests:");
+                acceptButton.getChildren().remove(followBack);
             });
-
-            // if we decline we remove the request
-            decline.setOnAction(e -> {
-                System.out.println("Declined: " + request);
-
-                requests.getChildren().remove(user);
-                acceptButton.getChildren().remove(accept);
-                declineButton.getChildren().remove(decline);
-
-                friends.remove(request);
-                nrRequest.setText(friends.size() + " friend requests:");
-            });
-
-            // and the username and buttons in their containers
-            requests.getChildren().add(user);
-            acceptButton.getChildren().add(accept);
-            declineButton.getChildren().add(decline);
         }
 
         // make one container for the username and buttons
         HBox container = new HBox(10);
-        container.getChildren().addAll(requests, acceptButton, declineButton);
+        container.getChildren().addAll(requests, acceptButton);
 
         // make the scroll pane
         ScrollPane scrollPane = new ScrollPane();

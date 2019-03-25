@@ -181,7 +181,7 @@ public class Communication {
      * Sends request to the server to retrieve this user's total score.
      * @return integer containing total score
      */
-    public static int getMyTotalScore() {
+    public static int getMyTotalScore () {
         if (!isLoggedIn()) {
             return -1;
         }
