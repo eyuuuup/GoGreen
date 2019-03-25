@@ -456,14 +456,15 @@ public class Database {
         try {
             Connection con = DriverManager.getConnection();
             PreparedStatement state = con.prepareStatement(
-                    "SELECT date_time "
-                            + "FROM events "
-                            + "ORDER BY date_time DESC LIMIT 1");
+                    "SELECT date_time FROM events JOIN user_data ON " +
+                            "events.username = user_data.username " +
+                            "WHERE user_data.token = ? ORDER BY date_time DESC LIMIT 1");
+            state.setString(1, token);
             ResultSet rs = state.executeQuery();
 
             int time = 0;
             while (rs.next()) {
-                time  = rs.getInt(1);
+                time = rs.getInt(1);
 
             }
             con.close();
