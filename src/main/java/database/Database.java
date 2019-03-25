@@ -1,12 +1,7 @@
 package database;
 
 import org.joda.time.Instant;
-import server.Action;
-import server.ActionHistory;
-import server.CompareFriends;
-import server.Friends;
-import server.TokenResponse;
-import server.User;
+import server.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -418,7 +413,7 @@ public class Database {
         }
     }
 
-    public static ArrayList getLeaderboard() {
+    public static FriendsList getLeaderboard() {
         System.out.println("getLeaderboard called");
         try {
             Connection con = DriverManager.getConnection();
@@ -435,7 +430,11 @@ public class Database {
                 result.add(new CompareFriends(username, score));
             }
             con.close();
-            return result;
+
+            FriendsList friendList = new FriendsList(result);
+
+            return friendList;
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return new ArrayList();
