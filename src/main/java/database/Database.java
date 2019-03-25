@@ -358,7 +358,7 @@ public class Database {
      * @param token A String of the username.
      * @return the String of all friends of a user.
      */
-    public static ArrayList showFriends(String token) {
+    public static FriendsList showFriends(String token) {
         System.out.println("showFriends called");
         try {
             Connection con = DriverManager.getConnection();
@@ -375,10 +375,10 @@ public class Database {
                 result.add(friend);
             }
             con.close();
-            return result;
+            return new FriendsList(result);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return new ArrayList();
+            return null;
         }
     }
 
@@ -387,7 +387,7 @@ public class Database {
      * @param token token
      * @return followers
      */
-    public static ArrayList showFollowers(String token) {
+    public static FriendsList showFollowers(String token) {
         System.out.println("showFollowers called");
         try {
             Connection con = DriverManager.getConnection();
@@ -406,10 +406,11 @@ public class Database {
                 result.add(new CompareFriends(username, score));
             }
             con.close();
-            return result;
+
+            return new FriendsList(result);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return new ArrayList();
+            return null;
         }
     }
 
