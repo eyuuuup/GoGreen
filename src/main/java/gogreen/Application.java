@@ -465,7 +465,14 @@ public class Application extends javafx.application.Application {
      * @return the transport screen
      */
     private static GridPane transportScreen() {
-        
+        // make the text field
+        TextField distance = new TextField();
+        distance.setPromptText("Distance");
+
+        // make the error label
+        Label errorMessage = new Label("");
+        errorMessage.setId("error");
+
         //button for the cycle action
         JFXButton cycle = new JFXButton();
         FontAwesomeIconView bikeIcon = new FontAwesomeIconView(FontAwesomeIcon.BICYCLE);
@@ -475,7 +482,15 @@ public class Application extends javafx.application.Application {
 
         // when you press the button you add a action
         cycle.setOnAction(e -> {
-            Transport.addCycleAction();
+            try{
+                int distanceInt = Integer.parseInt(distance.getText());
+                Transport.addCycleAction();
+            } catch (Exception exeption){
+                // throw error
+                errorMessage.setText("Please only use numbers");
+            }
+
+
         });
         
         //button for the public transport action
@@ -514,14 +529,13 @@ public class Application extends javafx.application.Application {
             Transport.addPlaneAction();
         });
 
-        // make the text field
-        TextField distance = new TextField();
-        distance.setPromptText("distance");
-
         Label km = new Label("km");
+        km.setId("title");
 
         HBox distanceContainer = new HBox(10);
-        distanceContainer.getChildren().addAll(distance,km);
+        distanceContainer.setAlignment(Pos.CENTER);
+        distanceContainer.getChildren().addAll(distance, km, errorMessage);
+
 
         // make the transport page
         GridPane transportPage = new GridPane();
