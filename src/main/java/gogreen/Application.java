@@ -17,7 +17,12 @@ import javafx.geometry.Pos;
 
 import javafx.scene.Scene;
 
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TextField;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,12 +34,10 @@ import javafx.scene.layout.VBox;
 
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Application extends javafx.application.Application {
     //the stage this application uses
@@ -316,17 +319,17 @@ public class Application extends javafx.application.Application {
     private static GridPane yourWorldScreen() {
         int points = client.Communication.getMyTotalScore();
         int level = ApplicationMethods.getLevel(points);
-        String planetURL = "file:src/planets/levelTwoWorld.gif";
-        if(33 <= level && level < 66){
-            planetURL = "file:src/planets/notAsGoodPlanet.gif";
-        } else if (level >= 66 ){
-            planetURL = "file:src/planets/goodPlanet.gif";
+        String planetLink = "file:src/planets/levelTwoWorld.gif";
+        if (33 <= level && level < 66) {
+            planetLink = "file:src/planets/notAsGoodPlanet.gif";
+        } else if (level >= 66 ) {
+            planetLink = "file:src/planets/goodPlanet.gif";
         }
 
 
 
         // make the planet
-        Image image = new Image(planetURL);
+        Image image = new Image(planetLink);
         ImageView imageView = new ImageView();
         imageView.setImage(image);
 
@@ -483,11 +486,11 @@ public class Application extends javafx.application.Application {
 
         // when you press the button you add a action
         cycle.setOnAction(e -> {
-            try{
+            try {
                 int distanceInt = Integer.parseInt(distance.getText());
+                errorMessage.setText("");
                 Transport.addCycleAction();
-            } catch (Exception exeption){
-
+            } catch (NumberFormatException exception) {
                 // throw error
                 errorMessage.setText("Please only use numbers");
             }
@@ -786,12 +789,12 @@ public class Application extends javafx.application.Application {
 
         // make the friends tab
         Tab friends = new Tab();
-        friends.setText("Friends");
+        friends.setText("Following");
         friends.setContent(friendsScreen());
 
         // make the friends request tab
         Tab request = new Tab();
-        request.setText("Friend requests");
+        request.setText("Followers");
         request.setContent(friendRequestScreen());
 
         // add all the tabs to the navigation bar
@@ -833,11 +836,13 @@ public class Application extends javafx.application.Application {
         // place all the people in the leaderboard
         int pos = 1;
         for (CompareFriends users : topTen) {
-
+            String username = ApplicationMethods.decodeUsername(users.getUsername());
+            int score = users.getScore();
+            int level = ApplicationMethods.getLevel(score);
             leaderboard.add(new Label(pos + "."), 0, pos);
-            leaderboard.add(new Label(ApplicationMethods.decodeUsername(users.getUsername())), 1, pos);
-            leaderboard.add(new Label(String.valueOf(users.getScore())), 2, pos);
-            leaderboard.add(new Label(String.valueOf(ApplicationMethods.getLevel(users.getScore()))), 3, pos);
+            leaderboard.add(new Label(username), 1, pos);
+            leaderboard.add(new Label(String.valueOf(score)), 2, pos);
+            leaderboard.add(new Label(String.valueOf(level)), 3, pos);
             pos++;
         }
 
@@ -903,11 +908,7 @@ public class Application extends javafx.application.Application {
         return friendsPage;
     }
 
-    private static GridPane followingList(){
-
-        // getting the friends
-        ArrayList<CompareFriends> friends = client.Communication.getFriends();
-
+    private static GridPane followingList() {
         // makes the friendlist
         GridPane friendsList = new GridPane();
         friendsList.setVgap(5);
@@ -915,13 +916,19 @@ public class Application extends javafx.application.Application {
         friendsList.setAlignment(Pos.CENTER);
         friendsList.setId("friends");
 
+        // getting the friends
+        ArrayList<CompareFriends> friends = client.Communication.getFriends();
+
         // fills the friendlist with your friends
         if (!friends.isEmpty()) {
             int pos = 1;
             for (CompareFriends friend : friends) {
-                friendsList.add(new Label(ApplicationMethods.decodeUsername(friend.getUsername())), 0, pos);
-                friendsList.add(new Label(friend.getScore() + " points"),1,pos);
-                friendsList.add(new Label("Level " + ApplicationMethods.getLevel(friend.getScore())), 2, pos);
+                String username = ApplicationMethods.decodeUsername(friend.getUsername());
+                int score = friend.getScore();
+                int level = ApplicationMethods.getLevel(score);
+                friendsList.add(new Label(username), 0, pos);
+                friendsList.add(new Label(score + " points"),1,pos);
+                friendsList.add(new Label("Level " + level), 2, pos);
                 pos++;
             }
         }
@@ -949,11 +956,14 @@ public class Application extends javafx.application.Application {
         int pos = 1;
         // puts all the friendrequests and buttons in the container
         for (CompareFriends followers: friends) {
+            String username = ApplicationMethods.decodeUsername(followers.getUsername());
+            int score = followers.getScore();
+            int level = ApplicationMethods.getLevel(score);
             // make the username label and the buttons
-            Label user = new Label(ApplicationMethods.decodeUsername(followers.getUsername()));
+            Label user = new Label(username);
             followersContainer.add(user, 0,pos);
-            followersContainer.add(new Label(followers.getScore() + " points"), 1, pos);
-            followersContainer.add(new Label("Level " + ApplicationMethods.getLevel(followers.getScore())), 2, pos);
+            followersContainer.add(new Label(score + " points"), 1, pos);
+            followersContainer.add(new Label("Level " + level), 2, pos);
             pos++;
         }
 
