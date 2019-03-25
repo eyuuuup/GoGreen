@@ -1,6 +1,7 @@
 package gogreen;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXToggleNode;
 
@@ -15,12 +16,7 @@ import javafx.geometry.Pos;
 
 import javafx.scene.Scene;
 
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -30,6 +26,7 @@ import javafx.scene.layout.VBox;
 
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -494,7 +491,16 @@ public class Application extends javafx.application.Application {
         plane.setOnAction(e -> {
             Transport.addPlaneAction();
         });
-        
+
+        // make the text field
+        TextField distance = new TextField();
+        distance.setPromptText("distance");
+
+        Label km = new Label("km");
+
+        HBox distanceContainer = new HBox(10);
+        distanceContainer.getChildren().addAll(distance,km);
+
         // make the transport page
         GridPane transportPage = new GridPane();
         transportPage.setVgap(10);
@@ -502,6 +508,7 @@ public class Application extends javafx.application.Application {
         transportPage.add(publicTransport, 0, 1);
         transportPage.add(car, 0, 2);
         transportPage.add(plane, 0,3 );
+        transportPage.add(distanceContainer ,0,4);
         transportPage.setAlignment(Pos.CENTER);
         
         // return the page
