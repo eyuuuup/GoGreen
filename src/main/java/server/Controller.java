@@ -125,15 +125,26 @@ public class Controller {
     public static ArrayList<CompareFriends> showFollowers(@Valid @RequestBody String token) {
         return Database.showFollowers(token);
     }
-
+    
     /**
      * check if username searched for following exists or not.
      * @param username username
      * @return boolean is username exists or not
      */
     @RequestMapping(value = {"/searchUser"}, method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+                    produces = MediaType.APPLICATION_JSON_VALUE)
     public static boolean checkUser(@Valid @RequestBody String username) {
         return Database.checkUsername(username);
     }
+    
+    /**
+     *
+     */
+    @RequestMapping(value = {"/getLeaderboard"}, method = RequestMethod.GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public static ArrayList<CompareFriends> getLeaderboard() {
+        return Database.getLeaderboard();
+    }
+    
+    
 }

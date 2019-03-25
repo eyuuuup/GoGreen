@@ -223,7 +223,7 @@ public class Communication {
     public static ArrayList<CompareFriends> getFollowers() {
         return (ArrayList<CompareFriends>) postToken("/showFollowers", ArrayList.class);
     }
-
+    
     /**
      * This method checks if the searched username exists or not.
      *
@@ -238,4 +238,21 @@ public class Communication {
         RestTemplate reuquest = new RestTemplate();
         return reuquest.postForObject(hostURL + "/checkUser", message, boolean.class);
     }
+    
+    /**
+     *
+     */
+    public static ArrayList<CompareFriends> getLeaderboard() {
+        RestTemplate reuquest = new RestTemplate();
+        return (ArrayList<CompareFriends>) reuquest.getForObject(hostURL + "/getLeaderboard", ArrayList.class);
+    }
+    
+    public static void main(String[] args){
+        ArrayList<CompareFriends> result = getLeaderboard();
+        for (CompareFriends cf : result){
+            System.out.println(cf.getUsername() + ":"+cf.getScore());
+        }
+    }
+    
+    
 }
