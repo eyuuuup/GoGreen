@@ -355,8 +355,8 @@ public class Database {
     
     /**
      * This method shows the friends of a user.
-     * @param token A String of the username.
-     * @return the String of all friends of a user.
+     * @param token A String of the token.
+     * @return the FriendsList object of all friends of a user.
      */
     public static FriendsList showFriends(String token) {
         System.out.println("showFriends called");
@@ -384,8 +384,8 @@ public class Database {
 
     /**
      * This methods shows the followers.
-     * @param token token
-     * @return followers
+     * @param token A String of the token.
+     * @return FriendsList object with the followers.
      */
     public static FriendsList showFollowers(String token) {
         System.out.println("showFollowers called");
@@ -414,6 +414,10 @@ public class Database {
         }
     }
 
+    /**
+     * This methods gets the leaderboard.
+     * @return FriendsList object with the top users.
+     */
     public static FriendsList getLeaderboard() {
         System.out.println("getLeaderboard called");
         try {
@@ -439,6 +443,37 @@ public class Database {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return null;
+        }
+    }
+
+    /**
+     * This methods gets the leaderboard.
+     * @param  token A String of the token of the user.
+     * @return int with the time.
+     */
+    public static int getLastMeal(String token) {
+        System.out.println("getLastMeal called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state = con.prepareStatement(
+                    "SELECT date_time "
+                            + "FROM events "
+                            + "ORDER BY date_time DESC LIMIT 1");
+            ResultSet rs = state.executeQuery();
+
+            int time = 0;
+            while (rs.next()) {
+                time  = rs.getInt(1);
+
+            }
+            con.close();
+
+
+            return time;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return 0;
         }
     }
 
