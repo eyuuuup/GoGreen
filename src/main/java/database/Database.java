@@ -65,7 +65,22 @@ public class Database {
                 actionId = rs.getInt(1);
                 parentCategory = rs.getInt(2);
             }
-            
+
+            if(parentCategory==1)
+            {
+                long lastInput=getLastMeal(action.getUser());
+
+                long present= Instant.now().getMillis();
+                long diff=12*60 * 60 * 1000;
+                long temp=1000;
+                System.out.println(present+"present"+lastInput+"last");
+                if((present-lastInput>=diff)||(present-lastInput<=temp))
+                {}
+                else
+                {return false;}
+            }
+
+
             PreparedStatement state1 =
                     con.prepareStatement("INSERT INTO events (action_id, date_time, "
                             + "points, parent_category, username)"
@@ -451,7 +466,7 @@ public class Database {
      * @param  token A String of the token of the user.
      * @return int with the time.
      */
-    public static int getLastMeal(String token) {
+    public static long getLastMeal(String token) {
         System.out.println("getLastMeal called");
         try {
             Connection con = DriverManager.getConnection();
@@ -462,9 +477,9 @@ public class Database {
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
 
-            int time = 0;
+            long time = 0;
             while (rs.next()) {
-                time = rs.getInt(1);
+                time = rs.getLong(1);
 
             }
             con.close();
