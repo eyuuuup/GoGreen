@@ -4,10 +4,9 @@ public class Friends {
     private String token;
     private String username;
 
-    public Friends(String token, String username)
-    {
-        this.token=token;
-        this.username=username;
+    public Friends(String token, String username) {
+        this.token = token;
+        this.username = username;
     }
 
     public String getToken() {

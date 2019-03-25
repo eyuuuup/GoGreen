@@ -757,9 +757,6 @@ public class Application extends javafx.application.Application {
      * @return the leaderboard screen
      */
     private static VBox leaderboardScreen() {
-        //array for testing purposes
-        String[] placeholder = {"Marit 10000 10", "Gerrie 9000 9", "Harold 8000 8", "RobbieJetje 7000 7", "GeertjeWilders 6000 6", "MarkieRutje 5000 5", "LavendelSnuifer 4000 4", "JesseKlavertje4 3000 3", "theFBI 2000 2", "Trump 1000 0"};
-
         // make the leaderboard title
         Label header = new Label("Leaderboard");
         header.setId("title");
@@ -778,6 +775,12 @@ public class Application extends javafx.application.Application {
         leaderboard.add(new Label("Points"), 2, 0);
         leaderboard.add(new Label("Level"), 3, 0);
 
+        //array for testing purposes
+        String[] placeholder = {"Marit 10000 10",
+                                "Gerrie 9000 9", "Harold 8000 8",
+                                "RobbieJetje 7000 7", "GeertjeWilders 6000 6",
+                                "MarkieRutje 5000 5", "LavendelSnuifer 4000 4",
+                                "JesseKlavertje4 3000 3", "theFBI 2000 2", "Trump 1000 0"};
         // place all the people in the leaderboard
         int pos = 1;
         for (String users : placeholder) {
@@ -811,6 +814,7 @@ public class Application extends javafx.application.Application {
 
         GridPane friendsList = followingList();
 
+
         // makes the scroll pane
         ScrollPane followingList = new ScrollPane();
         followingList.setPrefSize(500, 400);
@@ -826,11 +830,11 @@ public class Application extends javafx.application.Application {
         JFXButton searchButton = new JFXButton("Search");
         searchButton.setId("smallButton");
         searchButton.setOnAction(e -> {
+            String user = ApplicationMethods.encodeUsername(searchField.getText());
+            System.out.println(client.Communication.checkUsername(user));
 
-            System.out.println(client.Communication.checkUsername(searchField.getText()));
-
-            if (client.Communication.checkUsername(searchField.getText())) {
-                client.Communication.addFriend(searchField.getText());
+            if (client.Communication.checkUsername(user)) {
+                client.Communication.addFriend(user);
                 followingList.setContent(followingList);
             }
         });
@@ -869,7 +873,7 @@ public class Application extends javafx.application.Application {
 
             int pos = 1;
             for (CompareFriends friend : friends) {
-                friendsList.add(new Label(friend.getUsername()), 0, pos++);
+                friendsList.add(new Label(ApplicationMethods.decodeUsername(friend.getUsername())), 0, pos++);
             }
         } else {
             amountOfFriends.setText("You don't follow people");
