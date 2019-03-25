@@ -388,7 +388,7 @@ public class Database {
     }
 
     /**
-     * show the followers.
+     * This methods shows the followers.
      * @param token token
      * @return followers
      */
@@ -418,5 +418,30 @@ public class Database {
         }
     }
 
-    
+    public static ArrayList getLeaderboard() {
+        System.out.println("getLeaderboard called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state = con.prepareStatement(
+                    "SELECT username, total_score "
+                            + "FROM total_score "
+                            + "ORDER BY total_score DESC LIMIT 10");
+            ResultSet rs = state.executeQuery();
+
+            ArrayList<CompareFriends> result = new ArrayList<>();
+            while (rs.next()) {
+                String username = rs.getString(1);
+                int    score    = rs.getInt(2);
+                result.add(new CompareFriends(username, score));
+            }
+            con.close();
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return new ArrayList();
+        }
+    }
+
+
+
 }
