@@ -1,5 +1,6 @@
 package gogreen;
 
+import client.CompareFriends;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTabPane;
@@ -18,6 +19,8 @@ import javafx.scene.Scene;
 
 import javafx.scene.control.*;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -311,27 +314,46 @@ public class Application extends javafx.application.Application {
      * @return your world screen
      */
     private static GridPane yourWorldScreen() {
+        int points = client.Communication.getMyTotalScore();
+        int level = ApplicationMethods.getLevel(points);
+        String planetURL = "file:src/planets/levelTwoWorld.gif";
+        if(33 <= level && level < 66){
+            planetURL = "file:src/planets/notAsGoodPlanet.gif";
+        } else if (level >= 66 ){
+            planetURL = "file:src/planets/goodPlanet.gif";
+        }
+
+
+
+        // make the planet
+        Image image = new Image(planetURL);
+        ImageView imageView = new ImageView();
+        imageView.setImage(image);
+
         // makes the level bar
-        ProgressBar levelBar = new ProgressBar(0.5);
+        ProgressBar levelBar = new ProgressBar(ApplicationMethods.getLevelProgress(points));
         levelBar.setPrefSize(400, 10);
         
         // makes the level text
-        Label levelStatus = new Label("Lv. INSERT HERE LEVEL");
+        Label levelStatus = new Label("Lv. " + level);
         levelStatus.setId("levelStatus");
-        
+
         
         // make the total points text
-        Label totalPoints = new Label(" points");
+        Label totalPoints = new Label(points + " points");
         totalPoints.setId("levelStatus");
         totalPoints.setAlignment(Pos.CENTER_RIGHT);
-        
+
+        HBox pointsAndStatus = new HBox(250);
+        pointsAndStatus.getChildren().addAll(levelStatus, totalPoints);
         // makes a container for the level attributes
         VBox levelContainer = new VBox();
-        levelContainer.getChildren().addAll(levelStatus, levelBar);
+        levelContainer.getChildren().addAll(pointsAndStatus, levelBar);
         
         // makes the page and adds the nodes
         GridPane yourWorldPage = new GridPane();
-        yourWorldPage.add(levelContainer, 0,0);
+        yourWorldPage.add(imageView,0,0);
+        yourWorldPage.add(levelContainer, 0,1);
         yourWorldPage.setAlignment(Pos.BOTTOM_CENTER);
         
         // returns the page
@@ -742,6 +764,7 @@ public class Application extends javafx.application.Application {
      * @return the leaderboard screen
      */
     private static VBox leaderboardScreen() {
+        
         // make the leaderboard title
         Label header = new Label("Leaderboard");
         header.setId("title");
@@ -760,20 +783,16 @@ public class Application extends javafx.application.Application {
         leaderboard.add(new Label("Points"), 2, 0);
         leaderboard.add(new Label("Level"), 3, 0);
 
-        //array for testing purposes
-        String[] placeholder = {"Marit 10000 10",
-                                "Gerrie 9000 9", "Harold 8000 8",
-                                "RobbieJetje 7000 7", "GeertjeWilders 6000 6",
-                                "MarkieRutje 5000 5", "LavendelSnuifer 4000 4",
-                                "JesseKlavertje4 3000 3", "theFBI 2000 2", "Trump 1000 0"};
+        // get the top ten
+        ArrayList<CompareFriends> topTen = client.Communication.getLeaderboard();
         // place all the people in the leaderboard
         int pos = 1;
-        for (String users : placeholder) {
-            String[] parts = users.split("\\s");
+        for (CompareFriends users : topTen) {
+
             leaderboard.add(new Label(pos + "."), 0, pos);
-            leaderboard.add(new Label(parts[0]), 1, pos);
-            leaderboard.add(new Label(parts[1]), 2, pos);
-            leaderboard.add(new Label(parts[2]), 3, pos);
+            leaderboard.add(new Label(ApplicationMethods.decodeUsername(users.getUsername())), 1, pos);
+            leaderboard.add(new Label(String.valueOf(users.getScore())), 2, pos);
+            leaderboard.add(new Label(String.valueOf(ApplicationMethods.getLevel(users.getScore()))), 3, pos);
             pos++;
         }
 
@@ -796,38 +815,16 @@ public class Application extends javafx.application.Application {
      * @return the friends screen
      */
     private static VBox friendsScreen() {
-        // makes the title
-        Label amountOfFriends = new Label("");
-        amountOfFriends.setId("title");
 
-        // makes the friendlist
-        GridPane friendsList = new GridPane();
-        friendsList.setVgap(5);
-        friendsList.setAlignment(Pos.CENTER);
-        friendsList.setId("friends");
+        Label title = new Label("You follow:");
+        title.setId("title");
 
-        // makes an array list for testing purposes
-        ArrayList<String> friends = new ArrayList<>(Arrays.asList("Rachel",
-                "Monica", "Phoebe", "Joey", "Ross", "Chandler" ,
-                "more friends", "more friends", "more friends",
-                "more friends", "more friends", "more friends",
-                "more friends"));
-        // fills the friendlist with your friends
-        if (!friends.isEmpty()) {
-            amountOfFriends.setText(friends.size() + " friends:");
-
-            int pos = 1;
-            for (String friend : friends) {
-                friendsList.add(new Label(friend), 0, pos++);
-            }
-        } else {
-            amountOfFriends.setText("You have no friends");
-        }
+        GridPane friendsList = followingList();
 
         // makes the scroll pane
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setPrefSize(500, 400);
-        scrollPane.setContent(friendsList);
+        ScrollPane followingList = new ScrollPane();
+        followingList.setPrefSize(500, 400);
+        followingList.setContent(friendsList);
 
         // makes the search field
         TextField searchField = new TextField();
@@ -839,7 +836,13 @@ public class Application extends javafx.application.Application {
         JFXButton searchButton = new JFXButton("Search");
         searchButton.setId("smallButton");
         searchButton.setOnAction(e -> {
-            System.out.println(searchField.getText());
+            String user = ApplicationMethods.encodeUsername(searchField.getText());
+            System.out.println(client.Communication.checkUsername(user));
+
+            if (client.Communication.checkUsername(user)) {
+                client.Communication.addFriend(user);
+                followingList.setContent(followingList());
+            }
         });
 
         // puts the search field and search button together
@@ -849,10 +852,36 @@ public class Application extends javafx.application.Application {
 
         // makes the friends page
         VBox friendsPage = new VBox(5);
-        friendsPage.getChildren().addAll(amountOfFriends, scrollPane, searchBar);
+        friendsPage.getChildren().addAll(title, followingList, searchBar);
 
         // returns the friendspage
         return friendsPage;
+    }
+
+    private static GridPane followingList(){
+
+        // getting the friends
+        ArrayList<CompareFriends> friends = client.Communication.getFriends();
+
+        // makes the friendlist
+        GridPane friendsList = new GridPane();
+        friendsList.setVgap(5);
+        friendsList.setHgap(30);
+        friendsList.setAlignment(Pos.CENTER);
+        friendsList.setId("friends");
+
+        // fills the friendlist with your friends
+        if (!friends.isEmpty()) {
+            int pos = 1;
+            for (CompareFriends friend : friends) {
+                friendsList.add(new Label(ApplicationMethods.decodeUsername(friend.getUsername())), 0, pos);
+                friendsList.add(new Label(friend.getScore() + " points"),1,pos);
+                friendsList.add(new Label("Level " + ApplicationMethods.getLevel(friend.getScore())), 2, pos);
+                pos++;
+            }
+        }
+
+        return friendsList;
     }
 
     /**
@@ -860,61 +889,32 @@ public class Application extends javafx.application.Application {
      * @return the friend request screen
      */
     private static VBox friendRequestScreen() {
-        // makes an arraylist for testing purposes
-        ArrayList<String> friends = new ArrayList<>(Arrays.asList(
-                "Rachel", "Monica", "Phoebe", "Joey", "Ross", "Chandler"));
+
+
+        ArrayList<CompareFriends> friends = client.Communication.getFollowers();
 
         // makes the title
-        Label nrRequest = new Label(friends.size() + " friend requests:");
+        Label nrRequest = new Label(friends.size() + " followers:");
         nrRequest.setId("title");
 
-        // make the username, accept button and decline button containers
-        VBox requests = new VBox(5);
-        VBox acceptButton = new VBox(10);
-        VBox declineButton = new VBox(10);
+        // make the gridpane for the people who follow you
+        GridPane followersContainer = new GridPane();
+        followersContainer.setHgap(30);
 
+        int pos = 1;
         // puts all the friendrequests and buttons in the container
-        for (String request: friends) {
+        for (CompareFriends followers: friends) {
             // make the username label and the buttons
-            Label user = new Label(request);
-            JFXButton accept = new JFXButton("Accept");
-            accept.setId("smallButton");
-            JFXButton decline = new JFXButton("Decline");
-            decline.setId("smallButton");
-
-            // if we accept we remove the request and add the person
-            accept.setOnAction(e -> {
-                System.out.println("Accepted: " + request);
-
-                requests.getChildren().remove(user);
-                acceptButton.getChildren().remove(accept);
-                declineButton.getChildren().remove(decline);
-
-                friends.remove(request);
-                nrRequest.setText(friends.size() + " friend requests:");
-            });
-
-            // if we decline we remove the request
-            decline.setOnAction(e -> {
-                System.out.println("Declined: " + request);
-
-                requests.getChildren().remove(user);
-                acceptButton.getChildren().remove(accept);
-                declineButton.getChildren().remove(decline);
-
-                friends.remove(request);
-                nrRequest.setText(friends.size() + " friend requests:");
-            });
-
-            // and the username and buttons in their containers
-            requests.getChildren().add(user);
-            acceptButton.getChildren().add(accept);
-            declineButton.getChildren().add(decline);
+            Label user = new Label(ApplicationMethods.decodeUsername(followers.getUsername()));
+            followersContainer.add(user, 0,pos);
+            followersContainer.add(new Label(followers.getScore() + " points"), 1, pos);
+            followersContainer.add(new Label("Level " + ApplicationMethods.getLevel(followers.getScore())), 2, pos);
+            pos++;
         }
 
         // make one container for the username and buttons
         HBox container = new HBox(10);
-        container.getChildren().addAll(requests, acceptButton, declineButton);
+        container.getChildren().addAll(followersContainer);
 
         // make the scroll pane
         ScrollPane scrollPane = new ScrollPane();
