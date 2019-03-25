@@ -1,35 +1,49 @@
 package gogreen;
 
-import java.io.BufferedReader;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class Api {
+    private static String site = "http://impact.brighterplanet.com/";
+    private static String key = "&key=5a927d96eca397b6659a3c361ce32254";
     /**
      * testing with the API.
      * @param args args
-     * @throws IOException e
      */
-    public static void main(String[] args) throws IOException {
-        //String url = "https://apis.berkeley.edu/coolclimate/footprint-defaults?input_location_mode=2&input_location=Rotterdam, Nederland&input_income=1&input_size=1&app_id=8dd1d937&app_key=889f860286d08fbfc33b7e2317049eb6";
-        String url = "http://impact.brighterplanet.com/automobiles.json?annual_distance=100&timeframe=2019-01-01%2F2020-01-01";
-        URL request = new URL(url);
-        HttpURLConnection connection = (HttpURLConnection) request.openConnection();
-        connection.setRequestMethod("GET");
-        getBody(connection);
+    public static void main(String[] args) {
+        System.out.println(CarbonAmount("automobile_trips.json?distance=200") + "kg for driving 100 km");
+        System.out.println(CarbonAmount("flights.json?distance=100") + "kg for flying 100 km");
+        System.out.println(CarbonAmount("bus_trips.json?distance=100") + "kg for bus traveling 100 km");
+        System.out.println(CarbonAmount("diets.json?size=4") + "kg for eating 4 thingies");
+        System.out.println(CarbonAmount("electricity_uses.json?energy=1200") + "kg for using 1200 MJ of energy");
     }
 
-    static void getBody(HttpURLConnection connection) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
+    /**
+     * this class calculates the amount of CO2 for a given input.
+     * @param parameters parameters
+     * @return kg of CO2
+     */
+    static int CarbonAmount(String parameters) {
+        HttpClient client = HttpClientBuilder.create().build();
+        HttpGet request = new HttpGet(
+                site + "" + parameters + "" + key);
+
+        try {
+            HttpResponse response = client.execute(request);
+            HttpEntity entity = response.getEntity();
+            JSONObject responseJson = new JSONObject(EntityUtils.toString(entity));
+            String carbonString = responseJson.getJSONObject("decisions").getJSONObject("carbon").get("description").toString();
+            return (int) Double.parseDouble(carbonString.replace(" kg", ""));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        in.close();
-        String string = response.toString();
-        string = string.substring(string.lastIndexOf("value"), string.lastIndexOf("units"));
+        return -1;
     }
 }
