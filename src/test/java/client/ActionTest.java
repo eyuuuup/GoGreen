@@ -2,15 +2,27 @@ package client;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ActionTest {
     private Action ACTION = new Action("User", "Action", 100);
+    
     @Test
     public void constructor(){
         Action action = new Action("user", "action", 10);
         assertEquals(action.getUser(), "user");
         assertEquals(action.getAction(), "action");
+        assertEquals(action.getValue(), 10);
+    }
+    
+    @Test
+    public void constructorEmpty() {
+        Action action = new Action();
+        action.setUser("A");
+        assertEquals(action.getUser(), "A");
+        action.setAction("A");
+        assertEquals(action.getAction(), "A");
+        action.setValue(10);
         assertEquals(action.getValue(), 10);
     }
 

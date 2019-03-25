@@ -1,21 +1,48 @@
 package database;
 
-import server.Action;
-import server.TokenResponse;
-import server.User;
+import org.joda.time.Instant;
+import server.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
 
 /**
  * Database is a class that will be used in communication with the server.
  */
 public class Database {
-
+    
+    /**
+     * This method gets the username from the database.
+     * @param token A String with the token.
+     * @return the username.
+     */
+    public static String getUsername(String token) {
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state =
+                    con.prepareStatement("SELECT username "
+                            + "FROM user_data WHERE token = ?");
+            state.setString(1, token);
+            ResultSet rs = state.executeQuery();
+            
+            String userName = "";
+            while (rs.next()) {
+                userName = rs.getString(1);
+                System.out.println("username: " + userName);
+                
+            }
+            con.close();
+            return userName;
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return "no username found";
+        }
+    }
+    
     /**
      * This method saves the Action object in the database.
      * @param action An object of the class Action.
@@ -30,30 +57,31 @@ public class Database {
                             + "FROM actions WHERE actions.action_name = ?");
             state.setString(1, action.getAction());
             ResultSet rs = state.executeQuery();
-
+            
             int actionId       = 0;
             int parentCategory = 0;
-
+            
             while (rs.next()) {
                 actionId = rs.getInt(1);
                 parentCategory = rs.getInt(2);
-                System.out.println("parentcategpry: " + parentCategory);
-                System.out.println("actionId: " + actionId);
             }
-
+            
             PreparedStatement state1 =
                     con.prepareStatement("INSERT INTO events (action_id, date_time, "
-                            + "points, token, parent_category)"
+                            + "points, parent_category, username)"
                             + "VALUES (?, ?, ?, ?, ?);");
             state1.setInt(1, actionId);
-            state1.setString(
-                    2,
-                    new SimpleDateFormat("yyyyMMdd_HHmmss")
-                            .format(Calendar.getInstance().getTime()));
+
+            Long outputDate = Instant.now().getMillis();
+
+            state1.setLong(2, outputDate);
             state1.setInt(3, action.getValue());
-            state1.setString(4, action.getUser());
-            state1.setInt(5, parentCategory);
+            state1.setInt(4, parentCategory);
+            state1.setString(5, getUsername(action.getUser()));
             state1.executeUpdate();
+            
+            updateTotalScores(action.getUser(), action.getValue());
+            
             System.out.println("INSERT success");
             con.close();
             return true;
@@ -62,43 +90,41 @@ public class Database {
             return false;
         }
     }
-
+    
     /**
      * This method gets the history of a user.
      * @param token the token from a user.
      * @return the history in a String.
      */
-    public static String retract(String token) {
+    public static ArrayList<ActionHistory> retract(String token) {
         try {
             Connection con = DriverManager.getConnection();
             System.out.println("retract called");
             PreparedStatement state =
                     con.prepareStatement("select action_name, date_time, events.parent_category "
-                           + "FROM actions, events WHERE actions.action_id = events.action_id \n"
-                           + "AND events.parent_category = 1 AND events.token = ? "
-                           + "ORDER BY date_time DESC LIMIT 3");
-            state.setString(1, token);
+                            + "FROM actions, events WHERE actions.action_id = events.action_id \n"
+                            + "AND events.username = ? "
+                            + "ORDER BY date_time DESC LIMIT 3");
+            state.setString(1, getUsername(token));
             ResultSet rs = state.executeQuery();
-
-            StringBuilder result = new StringBuilder();
+            
+            ArrayList<ActionHistory> result = new ArrayList<>();
             while (rs.next()) {
-
-                result.append(rs.getString(1) + " ");
-                result.append(rs.getString(2) + "\n");
+                String action = rs.getString(1);
+                long   date   = rs.getLong(2);
+                result.add(new ActionHistory(action, date));
             }
-
-
+            
             System.out.println("retract success");
             con.close();
-            System.out.println(result.toString() + "fffff");
-            return result.toString();
-
+            return result;
+            
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-            return "broke";
+            return new ArrayList<>();
         }
     }
-
+    
     /**
      * This method updates the total score of a user.
      * @param token the token from a user.
@@ -108,25 +134,16 @@ public class Database {
         try {
             Connection con = DriverManager.getConnection();
             System.out.println("updateTotalScores called");
-
-
-            PreparedStatement state =
-                    con.prepareStatement("SELECT total_score "
-                            + "FROM total_score WHERE total_score.token = ?");
-            state.setString(1, token);
-            ResultSet rs = state.executeQuery();
-
-            int currentTotalScore = 0;
-            while (rs.next()) {
-                currentTotalScore = rs.getInt(1);
-                System.out.println("currentTotalScore: " + currentTotalScore);
-            }
-
+            
+            
+            int currentTotalScore = getTotalScore(token);
+            
             currentTotalScore = currentTotalScore + score;
             PreparedStatement state1 =
-                    con.prepareStatement("UPDATE total_score SET total_score = ? WHERE token = ?");
+                    con.prepareStatement("UPDATE total_score "
+                            + "SET total_score = ? WHERE username = ?");
             state1.setInt(1, currentTotalScore);
-            state1.setString(2, token);
+            state1.setString(2, getUsername(token));
             state1.executeUpdate();
             System.out.println("UPDATE success");
             con.close();
@@ -134,15 +151,56 @@ public class Database {
             System.out.println(ex.getMessage());
         }
     }
+    
+    /**
+     * This method queries the database to get the total score of a user.
+     * @param token A String with the token of the user.
+     * @return the total score of a user.
+     */
+    public static int getTotalScore(String token) {
+        return getTotalScoreByUser(getUsername(token));
+    }
 
     /**
+     * Get the total score for a given user.
+     * @param username the username
+     * @return the total score
+     */
+    public static int getTotalScoreByUser(String username) {
+        try {
+            Connection con = DriverManager.getConnection();
+            System.out.println("getTotalScore called");
+            
+            
+            PreparedStatement state =
+                    con.prepareStatement("SELECT total_score "
+                            + "FROM total_score WHERE total_score.username = ?");
+            state.setString(1, username);
+            ResultSet rs = state.executeQuery();
+            
+            int currentTotalScore = 0;
+            while (rs.next()) {
+                currentTotalScore = rs.getInt(1);
+                System.out.println("currentTotalScore: " + currentTotalScore);
+            }
+            
+            
+            System.out.println("UPDATE success");
+            con.close();
+            return currentTotalScore;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return 0;
+        }
+    }
+    
+    /**
      * This method queries the database with a token to look if the user exists.
-     *
      * @param token A string that contains the token.
      * @return if the query succeeded.
      */
     public static boolean silentLoginCheck(String token) {
-
+        
         try {
             Connection con = DriverManager.getConnection();
             System.out.println("silentLogicCheck called");
@@ -150,30 +208,24 @@ public class Database {
                     con.prepareStatement("SELECT * FROM user_data WHERE user_data.token = ?");
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
-
+            
             while (rs.next()) {
-
-                System.out.println("token: " + rs.getString(1));
-                String tokenResult = rs.getString(1);
-                if (tokenResult.equals(token)) {
-                    System.out.println("Token exists");
-                    return true;
-                }
+                con.close();
+                System.out.println("token found");
+                return true;
             }
+            System.out.println("token not found");
             con.close();
             return false;
-
-
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return false;
         }
-
+        
     }
-
+    
     /**
      * This method registers a new user in the database.
-     *
      * @param user  An User object.
      * @param token A String with the token.
      */
@@ -191,32 +243,31 @@ public class Database {
             state.setString(3, user.getPassword());
             state.setString(4, tempMail);
             state.executeUpdate();
-
+            
             PreparedStatement state1 =
                     con.prepareStatement("INSERT INTO "
-                            + "total_score (total_score, token)"
+                            + "total_score (total_score, username)"
                             + "VALUES (?, ?);");
-
+            
             state1.setInt(1, 0);
-            state1.setString(2, token);
+            state1.setString(2, getUsername(token));
             state1.executeUpdate();
-
+            
             System.out.println("INSERT success");
             con.close();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-
+            
         }
     }
-
+    
     /**
      * This method checks if the username exists in the database.
-     *
      * @param username A string with the username.
      * @return if the users exists or not.
      */
     public static boolean checkUsername(String username) {
-
+        
         try {
             Connection con = DriverManager.getConnection();
             System.out.println("checkUsername called");
@@ -224,35 +275,34 @@ public class Database {
                     con.prepareStatement("SELECT * "
                             + "FROM user_data WHERE user_data.username =  ? ");
             state.setString(1, username);
-
+            
             ResultSet rs = state.executeQuery();
-
-
+            
+            
             String result = "";
             while (rs.next()) {
                 result = rs.getString(2);
                 System.out.println("Username: " + rs.getString(2));
-
+                
             }
             con.close();
             return result.equals(username);
-
+            
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
-
+    
     /**
      * This method checks if the user has a token in the database.
-     *
      * @param user A user Object.
      * @return A TokenResponse object
      */
     public static TokenResponse checkLogin(User user) {
         System.out.println("checkLogin called");
         if (checkUsername(user.getName())) {
-
+            
             try {
                 Connection con = DriverManager.getConnection();
                 PreparedStatement state =
@@ -260,15 +310,15 @@ public class Database {
                                 + "FROM user_data WHERE user_data.username =  ? ");
                 state.setString(1, user.getName());
                 ResultSet rs = state.executeQuery();
-
+                
                 String token = "";
                 while (rs.next()) {
                     token = rs.getString(1);
                 }
-
+                
                 con.close();
                 return new TokenResponse(token, true);
-
+                
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
                 return new TokenResponse("null", false);
@@ -276,59 +326,122 @@ public class Database {
         } else {
             return new TokenResponse("null", false);
         }
-
+        
     }
-
+    
     /**
      * This method adds User B as a friend of User A.
-     * @param usernameA A String of the username.
-     * @param usernameB A String of the username.
+     * @param friend A Friend object.
      * @return if the query succeeded.
      */
-    public static boolean addFriend(String usernameA, String usernameB) {
+    public static boolean addFriend(Friends friend) {
         System.out.println("addFriend called");
         try {
             Connection con = DriverManager.getConnection();
             PreparedStatement state =
                     con.prepareStatement("INSERT INTO friends (user_a, user_b) VALUES"
                             + "(?, ?) ");
-            state.setString(1,usernameA);
-            state.setString(2,usernameB);
+            state.setString(1, getUsername(friend.getToken()));
+            state.setString(2, friend.getUsername());
             state.executeUpdate();
             con.close();
             return true;
-
+            
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
-
+    
     /**
      * This method shows the friends of a user.
-     * @param username A String of the username.
+     * @param token A String of the username.
      * @return the String of all friends of a user.
      */
-    public static String showFriends(String username) {
+    public static FriendsList showFriends(String token) {
         System.out.println("showFriends called");
         try {
             Connection con = DriverManager.getConnection();
             PreparedStatement state =
                     con.prepareStatement("SELECT user_b FROM friends WHERE user_a = ?");
-            state.setString(1, username);
+            state.setString(1, getUsername(token));
             ResultSet rs = state.executeQuery();
-
-            StringBuilder result = new StringBuilder();
+            
+            ArrayList<CompareFriends> result = new ArrayList<>();
             while (rs.next()) {
-                result.append(rs.getString(1));
-                result.append("\n");
+                String         usernameFriend = rs.getString(1);
+                int            score          = getTotalScoreByUser(usernameFriend);
+                CompareFriends friend         = new CompareFriends(usernameFriend, score);
+                result.add(friend);
             }
             con.close();
-            return result.toString();
+            return new FriendsList(result);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return "no friends";
+            return null;
         }
     }
+
+    /**
+     * This methods shows the followers.
+     * @param token token
+     * @return followers
+     */
+    public static FriendsList showFollowers(String token) {
+        System.out.println("showFollowers called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state = con.prepareStatement(
+                    "SELECT friends.user_a, total_score.total_score "
+                            + "FROM friends "
+                            + "JOIN total_score ON friends.user_a=total_score.username "
+                            + "WHERE user_b = ?");
+            state.setString(1, getUsername(token));
+            ResultSet rs = state.executeQuery();
+            
+            ArrayList<CompareFriends> result = new ArrayList<>();
+            while (rs.next()) {
+                String username = rs.getString(1);
+                int    score    = rs.getInt(2);
+                result.add(new CompareFriends(username, score));
+            }
+            con.close();
+
+            return new FriendsList(result);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public static FriendsList getLeaderboard() {
+        System.out.println("getLeaderboard called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state = con.prepareStatement(
+                    "SELECT username, total_score "
+                            + "FROM total_score "
+                            + "ORDER BY total_score DESC LIMIT 10");
+            ResultSet rs = state.executeQuery();
+
+            ArrayList<CompareFriends> result = new ArrayList<>();
+            while (rs.next()) {
+                String username = rs.getString(1);
+                int    score    = rs.getInt(2);
+                result.add(new CompareFriends(username, score));
+            }
+            con.close();
+
+            FriendsList friendList = new FriendsList(result);
+
+            return friendList;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+
 
 }
