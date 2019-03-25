@@ -139,6 +139,7 @@ public class Controller {
             produces=MediaType.APPLICATION_JSON_VALUE)
     public static boolean checkUser(@Valid @RequestBody String username)
     {
+
         return Database.checkUsername(username);
     }
 }
