@@ -119,6 +119,12 @@
     -fx-background-radius: 5em;
 }
 
+#friendtitle{
+    -fx-text-fill: #9ACD32;
+    -fx-font-weight: bold;
+    -fx-font-size: 32;
+}
+
 
 #friends{
     -fx-background-color: #249677;

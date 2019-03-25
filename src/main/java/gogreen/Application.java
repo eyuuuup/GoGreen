@@ -814,7 +814,6 @@ public class Application extends javafx.application.Application {
 
         GridPane friendsList = followingList();
 
-
         // makes the scroll pane
         ScrollPane followingList = new ScrollPane();
         followingList.setPrefSize(500, 400);
@@ -835,7 +834,7 @@ public class Application extends javafx.application.Application {
 
             if (client.Communication.checkUsername(user)) {
                 client.Communication.addFriend(user);
-                followingList.setContent(followingList);
+                followingList.setContent(followingList());
             }
         });
 
@@ -847,6 +846,7 @@ public class Application extends javafx.application.Application {
         // makes the friends page
         VBox friendsPage = new VBox(5);
         friendsPage.getChildren().addAll(followingList, searchBar);
+        friendsPage.setAlignment(Pos.CENTER);
 
         // returns the friendspage
         return friendsPage;
@@ -859,7 +859,7 @@ public class Application extends javafx.application.Application {
 
         // makes the title
         Label amountOfFriends = new Label("");
-        amountOfFriends.setId("title");
+        amountOfFriends.setId("friendtitle");
 
         // makes the friendlist
         GridPane friendsList = new GridPane();
@@ -867,9 +867,10 @@ public class Application extends javafx.application.Application {
         friendsList.setAlignment(Pos.CENTER);
         friendsList.setId("friends");
 
+        friendsList.add(amountOfFriends, 0, 0);
         // fills the friendlist with your friends
         if (!friends.isEmpty()) {
-            amountOfFriends.setText("You follow : " + friends.size() + "people" );
+            amountOfFriends.setText("You follow : " + friends.size() + " people" );
 
             int pos = 1;
             for (CompareFriends friend : friends) {
