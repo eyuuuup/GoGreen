@@ -757,6 +757,7 @@ public class Application extends javafx.application.Application {
      * @return the leaderboard screen
      */
     private static VBox leaderboardScreen() {
+        
         // make the leaderboard title
         Label header = new Label("Leaderboard");
         header.setId("title");
@@ -775,20 +776,16 @@ public class Application extends javafx.application.Application {
         leaderboard.add(new Label("Points"), 2, 0);
         leaderboard.add(new Label("Level"), 3, 0);
 
-        //array for testing purposes
-        String[] placeholder = {"Marit 10000 10",
-                                "Gerrie 9000 9", "Harold 8000 8",
-                                "RobbieJetje 7000 7", "GeertjeWilders 6000 6",
-                                "MarkieRutje 5000 5", "LavendelSnuifer 4000 4",
-                                "JesseKlavertje4 3000 3", "theFBI 2000 2", "Trump 1000 0"};
+        // get the top ten
+        ArrayList<CompareFriends> topTen = client.Communication.getLeaderboard();
         // place all the people in the leaderboard
         int pos = 1;
-        for (String users : placeholder) {
-            String[] parts = users.split("\\s");
+        for (CompareFriends users : topTen) {
+
             leaderboard.add(new Label(pos + "."), 0, pos);
-            leaderboard.add(new Label(parts[0]), 1, pos);
-            leaderboard.add(new Label(parts[1]), 2, pos);
-            leaderboard.add(new Label(parts[2]), 3, pos);
+            leaderboard.add(new Label(ApplicationMethods.decodeUsername(users.getUsername())), 1, pos);
+            leaderboard.add(new Label(String.valueOf(users.getScore())), 2, pos);
+            leaderboard.add(new Label(String.valueOf(ApplicationMethods.getLevel(users.getScore()))), 3, pos);
             pos++;
         }
 
@@ -811,6 +808,9 @@ public class Application extends javafx.application.Application {
      * @return the friends screen
      */
     private static VBox friendsScreen() {
+
+        Label title = new Label("You follow:");
+        title.setId("title");
 
         GridPane friendsList = followingList();
 
@@ -845,8 +845,7 @@ public class Application extends javafx.application.Application {
 
         // makes the friends page
         VBox friendsPage = new VBox(5);
-        friendsPage.getChildren().addAll(followingList, searchBar);
-        friendsPage.setAlignment(Pos.CENTER);
+        friendsPage.getChildren().addAll(title, followingList, searchBar);
 
         // returns the friendspage
         return friendsPage;
@@ -857,30 +856,23 @@ public class Application extends javafx.application.Application {
         // getting the friends
         ArrayList<CompareFriends> friends = client.Communication.getFriends();
 
-        // makes the title
-        Label amountOfFriends = new Label("");
-        amountOfFriends.setId("friendtitle");
-
         // makes the friendlist
         GridPane friendsList = new GridPane();
         friendsList.setVgap(5);
+        friendsList.setHgap(30);
         friendsList.setAlignment(Pos.CENTER);
         friendsList.setId("friends");
 
-        friendsList.add(amountOfFriends, 0, 0);
         // fills the friendlist with your friends
         if (!friends.isEmpty()) {
-            amountOfFriends.setText("You follow : " + friends.size() + " people" );
-
             int pos = 1;
             for (CompareFriends friend : friends) {
-                friendsList.add(new Label(ApplicationMethods.decodeUsername(friend.getUsername())), 0, pos++);
+                friendsList.add(new Label(ApplicationMethods.decodeUsername(friend.getUsername())), 0, pos);
+                friendsList.add(new Label(friend.getScore() + " points"),1,pos);
+                friendsList.add(new Label("Level " + ApplicationMethods.getLevel(friend.getScore())), 2, pos);
+                pos++;
             }
-        } else {
-            amountOfFriends.setText("You don't follow people");
         }
-
-
 
         return friendsList;
     }
@@ -890,36 +882,32 @@ public class Application extends javafx.application.Application {
      * @return the friend request screen
      */
     private static VBox friendRequestScreen() {
-        // makes an arraylist for testing purposes
+
+
         ArrayList<CompareFriends> friends = client.Communication.getFollowers();
 
         // makes the title
         Label nrRequest = new Label(friends.size() + " followers:");
         nrRequest.setId("title");
 
-        // make the username, accept button and decline button containers
-        VBox requests = new VBox(5);
-        VBox acceptButton = new VBox(10);
+        // make the gridpane for the people who follow you
+        GridPane followersContainer = new GridPane();
+        followersContainer.setHgap(30);
 
-
+        int pos = 1;
         // puts all the friendrequests and buttons in the container
         for (CompareFriends followers: friends) {
             // make the username label and the buttons
-            Label user = new Label(followers.getUsername());
-            JFXButton followBack = new JFXButton("follow back");
-            followBack.setId("smallButton");
-
-
-            // if we accept we remove the request and add the person
-            followBack.setOnAction(e -> {
-                requests.getChildren().remove(user);
-                acceptButton.getChildren().remove(followBack);
-            });
+            Label user = new Label(ApplicationMethods.decodeUsername(followers.getUsername()));
+            followersContainer.add(user, 0,pos);
+            followersContainer.add(new Label(followers.getScore() + " points"), 1, pos);
+            followersContainer.add(new Label("Level " + ApplicationMethods.getLevel(followers.getScore())), 2, pos);
+            pos++;
         }
 
         // make one container for the username and buttons
         HBox container = new HBox(10);
-        container.getChildren().addAll(requests, acceptButton);
+        container.getChildren().addAll(followersContainer);
 
         // make the scroll pane
         ScrollPane scrollPane = new ScrollPane();
