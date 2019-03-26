@@ -246,11 +246,23 @@ public class Communication {
         return reuquest.getForObject(hostURL + "/getLeaderboard", FriendsList.class).getList();
     }
 
-
+    /**
+     * To be implemented: checks whether user has an electric car.
+     * @return iff user has electric car
+     */
     public static boolean hasElectricCar() {
-        return true;
+        return false;
     }
 
-    public static void addAction(String cycle, int i, int i1, int i2) {
+    /**
+     * to be implemented: adding an action to the database.
+     * @param actionName the name of the action
+     * @param points the points for the action
+     * @param carbonReduced the carbon reduced in the action
+     * @param carbonProduced the carbon produced in the action
+     */
+    public static void addAction(
+            String actionName, int points, int carbonReduced, int carbonProduced) {
+        addAction(actionName, points);
     }
 }

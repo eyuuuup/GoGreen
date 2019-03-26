@@ -38,7 +38,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.rmi.ConnectIOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Application extends javafx.application.Application {
     //the stage this application uses
@@ -56,6 +55,8 @@ public class Application extends javafx.application.Application {
      */
     @Override
     public void start(Stage stage) {
+        Transport.onLoad();
+
         this.stage = stage;
         stage.setTitle("GoGreen");
 
@@ -580,8 +581,12 @@ public class Application extends javafx.application.Application {
         
         // when you press the send button, it will look what is selected and add those actions
         send.setOnAction(e -> {
-            FoodCategory.addAction(veggie.isSelected(), locally.isSelected(), bio.isSelected());
-            
+            try {
+                Food.addAction(veggie.isSelected(), locally.isSelected(), bio.isSelected());
+            } catch (ConnectIOException e1) {
+                e1.printStackTrace();
+            }
+
             // then sets it to false to select it again
             veggie.setSelected(false);
             locally.setSelected(false);

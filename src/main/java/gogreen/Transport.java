@@ -14,12 +14,17 @@ final class Transport {
 
     private Transport() {}
 
+    /**
+     * This method is called when the application starts.
+     * It checks whether the user has an electric car.
+     */
     static void onLoad() {
         hasElectricCar = Communication.hasElectricCar();
     }
 
     /**
      * This methods returns points for a Cycle action.
+     * Next to this the method calculates the CO2 reduction using Brighter planet.
      */
     static void addCycleAction(int distance) throws ConnectIOException {
         int carbon = Api.CarbonAmount("automobile_trips.json?distance=" + distance);
@@ -28,6 +33,8 @@ final class Transport {
 
     /**
      * This methods returns points for a Car action.
+     * Next to this the method calculates the CO2 reduction using Brighter planet.
+     * iff an user has an electric car, his CO2 production is set to 0.
      */
     static void addCarAction(int distance) throws ConnectIOException {
         int carbon = Api.CarbonAmount("automobile_trips.json?distance=" + distance);
@@ -40,6 +47,7 @@ final class Transport {
 
     /**
      * This methods returns points for a Plane action.
+     * Next to this the method calculates the CO2 reduction using Brighter planet.
      */
     static void addPlaneAction(int distance) throws ConnectIOException {
         int carbonPlane = Api.CarbonAmount("flights.json?distance=" + distance);
@@ -50,6 +58,7 @@ final class Transport {
 
     /**
      * This methods returns points for a Public Transport action.
+     * Next to this the method calculates the CO2 reduction using Brighter planet.
      */
     static void addPublicTransportAction(int distance) throws ConnectIOException {
         int carbonPublicTransport = Api.CarbonAmount("bus_trips.json?distance=" + distance);
