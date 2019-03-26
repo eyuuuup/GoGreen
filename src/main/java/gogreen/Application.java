@@ -320,15 +320,15 @@ public class Application extends javafx.application.Application {
         int level = ApplicationMethods.getLevel(points);
 
         // make the your world images
-        String planetURL = "file:src/planets/levelOneWorld.gif";
-        if(33 <= level && level < 66){
-            planetURL = "file:src/planets/levelTwoWorld.gif";
-        } else if (level >= 66 ){
-            planetURL = "file:src/planets/levelThreeWorld.gif";
+        String planetLink = "file:src/planets/levelOneWorld.gif";
+        if (33 <= level && level < 66) {
+            planetLink = "file:src/planets/levelTwoWorld.gif";
+        } else if (level >= 66 ) {
+            planetLink = "file:src/planets/levelThreeWorld.gif";
         }
 
         // make the your world view
-        Image image = new Image(planetURL);
+        Image image = new Image(planetLink);
         ImageView yourWorldView = new ImageView();
         yourWorldView.setImage(image);
 
