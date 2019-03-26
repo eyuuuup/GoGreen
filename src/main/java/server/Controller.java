@@ -19,6 +19,7 @@ public class Controller {
 
     /**
      * This is the login method which connects the server and client.
+     *
      * @param user username, password
      * @return TokenResponse token, bool
      */
@@ -33,6 +34,7 @@ public class Controller {
      * Register as new user.
      * checks if username already taken or not and generates new token.
      * if true user is added else false username already exists.
+     *
      * @param user username, password
      * @return TokenResponse token,
      */
@@ -53,6 +55,7 @@ public class Controller {
 
     /**
      * don'trequire to enter password.
+     *
      * @param token string
      * @return whether token exists
      */
@@ -66,6 +69,7 @@ public class Controller {
 
     /**
      * add action to the database.
+     *
      * @param action action
      * @return boolean if action added or not
      */
@@ -76,6 +80,7 @@ public class Controller {
 
     /**
      * For the history.
+     *
      * @param token token
      * @return String last three actions
      */
@@ -87,6 +92,7 @@ public class Controller {
 
     /**
      * returns the total score.
+     *
      * @param token token
      * @return int returns the total score
      */
@@ -100,6 +106,7 @@ public class Controller {
 
     /**
      * adds a friend.
+     *
      * @param friend the friend
      * @return boolean
      */
@@ -111,6 +118,7 @@ public class Controller {
 
     /**
      * shows the friends.
+     *
      * @param token token
      * @return ArrayList of CompareFriends
      */
@@ -125,26 +133,40 @@ public class Controller {
     public static FriendsList showFollowers(@Valid @RequestBody String token) {
         return Database.showFollowers(token);
     }
-    
+
     /**
      * check if username searched for following exists or not.
+     *
      * @param username username
      * @return boolean is username exists or not
      */
     @RequestMapping(value = {"/searchUser"}, method = RequestMethod.POST,
-                    produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public static boolean checkUser(@Valid @RequestBody String username) {
         return Database.checkUsername(username);
     }
-    
+
     /**
+     * for implementing the leaderboard and getting top ten users.
      *
+     * @return returns a list of top ten users
      */
     @RequestMapping(value = {"/getLeaderboard"}, method = RequestMethod.GET,
-                    produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public static FriendsList getLeaderboard() {
         return Database.getLeaderboard();
     }
-    
-    
+
+    /**
+     * username of the present user.
+     *
+     * @param token token of the user
+     * @return username String
+     */
+    @RequestMapping(value = {"/getUser"}, method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public static String getUser(@Valid @RequestBody String token) {
+        return Database.getUsername(token);
+    }
+
 }

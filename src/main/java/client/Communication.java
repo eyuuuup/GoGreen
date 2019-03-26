@@ -211,7 +211,7 @@ public class Communication {
      * @return an arraylist ofCompareFriends
      */
     public static ArrayList<CompareFriends> getFriends() {
-        return ((FriendsList)postToken("/showFriends", FriendsList.class)).getList();
+        return ((FriendsList) postToken("/showFriends", FriendsList.class)).getList();
     }
 
     /**
@@ -221,9 +221,9 @@ public class Communication {
      * @return an arraylist of "CompareFriends"
      */
     public static ArrayList<CompareFriends> getFollowers() {
-        return ((FriendsList)postToken("/showFollowers", FriendsList.class)).getList();
+        return ((FriendsList) postToken("/showFollowers", FriendsList.class)).getList();
     }
-    
+
     /**
      * This method checks if the searched username exists or not.
      *
@@ -238,14 +238,28 @@ public class Communication {
         RestTemplate reuquest = new RestTemplate();
         return reuquest.postForObject(hostURL + "/checkUser", message, boolean.class);
     }
-    
+
     /**
+     * This method is to get the list of top ten users for the leaderboard.
      *
+     * @return an object containing a list of users
      */
     public static ArrayList<CompareFriends> getLeaderboard() {
         RestTemplate reuquest = new RestTemplate();
         return reuquest.getForObject(hostURL + "/getLeaderboard", FriendsList.class).getList();
     }
-    
-    
+
+    /**
+     * This method is to get the username for the user.
+     *
+     * @return encrypted username as string
+     */
+    public static String getUser() {
+
+        HttpEntity<String> message = new HttpEntity<>(token);
+        RestTemplate request = new RestTemplate();
+        return request.postForObject(hostURL + "/getUser", message, String.class);
+    }
+
+
 }
