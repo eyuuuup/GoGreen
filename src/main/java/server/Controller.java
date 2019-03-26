@@ -138,7 +138,8 @@ public class Controller {
     }
     
     /**
-     *
+     * for implementing the leaderboard and getting top ten users.
+     * @return returns a list of top ten users
      */
     @RequestMapping (value = {"/getLeaderboard"}, method = RequestMethod.GET,
                      produces = MediaType.APPLICATION_JSON_VALUE)
@@ -146,5 +147,15 @@ public class Controller {
         return Database.getLeaderboard();
     }
     
+    /**
+     * username of the present user.
+     * @param token token of the user
+     * @return username String
+     */
+    @RequestMapping (value = {"/getUser"}, method = RequestMethod.GET,
+                     produces = MediaType.APPLICATION_JSON_VALUE)
+    public static User getUser(@Valid @RequestBody String token) {
+        return Database.getUser(token);
+    }
     
 }
