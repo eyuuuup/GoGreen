@@ -119,21 +119,21 @@ public class ControllerTest {
         assertTrue(Controller.addFriend(fr));
     }
     
-    @Test
-    public void showFriends() {
-        ArrayList<CompareFriends> list = new ArrayList<>();
-        list.add(new CompareFriends("testName", 3600));
-        PowerMockito.when(Database.showFriends(anyString())).thenReturn(list);
-        
-        assertEquals(list, Controller.showFriends("testToken"));
-    }
+//    @Test
+//    public void showFriends() {
+//        ArrayList<CompareFriends> list = new ArrayList<>();
+//        list.add(new CompareFriends("testName", 3600));
+//        PowerMockito.when(Database.showFriends(anyString())).thenReturn(list);
+//
+//        assertEquals(list, Controller.showFriends("testToken"));
+//    }
     
-    @Test
-    public void showFollowers() {
-        ArrayList<CompareFriends> list = new ArrayList<>();
-        list.add(new CompareFriends("testName", 3600));
-        PowerMockito.when(Database.showFollowers(anyString())).thenReturn(list);
-        
-        assertEquals(list, Controller.showFollowers("testToken"));
-    }
+//    @Test
+//    public void showFollowers() {
+//        ArrayList<CompareFriends> list = new ArrayList<>();
+//        list.add(new CompareFriends("testName", 3600));
+//        PowerMockito.when(Database.showFollowers(anyString())).thenReturn(list);
+//
+//        assertEquals(list, Controller.showFollowers("testToken"));
+//    }
 }
