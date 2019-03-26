@@ -511,7 +511,12 @@ public class Application extends javafx.application.Application {
         // when you press the button you add an action
         publicTransport.setOnAction(e -> {
             try {
-                Transport.addPublicTransportAction(0);
+                int distanceInt = Integer.parseInt(distance.getText());
+                errorMessage.setText("");
+                Transport.addPublicTransportAction(distanceInt);
+            } catch (NumberFormatException exception) {
+                // throw error
+                errorMessage.setText("Please only use numbers");
             } catch (ConnectIOException e1) {
                 e1.printStackTrace();
             }
@@ -527,7 +532,12 @@ public class Application extends javafx.application.Application {
         // when you press the button you will add an action
         car.setOnAction(e -> {
             try {
-                Transport.addCarAction(0);
+                int distanceInt = Integer.parseInt(distance.getText());
+                errorMessage.setText("");
+                Transport.addCarAction(distanceInt);
+            } catch (NumberFormatException exception) {
+                // throw error
+                errorMessage.setText("Please only use numbers");
             } catch (ConnectIOException e1) {
                 e1.printStackTrace();
             }
@@ -543,7 +553,12 @@ public class Application extends javafx.application.Application {
         // when you press a button you will add an action
         plane.setOnAction(e -> {
             try {
-                Transport.addPlaneAction(0);
+                int distanceInt = Integer.parseInt(distance.getText());
+                errorMessage.setText("");
+                Transport.addPlaneAction(distanceInt);
+            } catch (NumberFormatException exception) {
+                // throw error
+                errorMessage.setText("Please only use numbers");
             } catch (ConnectIOException e1) {
                 e1.printStackTrace();
             }
