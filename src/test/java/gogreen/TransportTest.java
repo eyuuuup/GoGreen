@@ -30,8 +30,6 @@ public class TransportTest {
         Api.CarbonAmount("automobile_trips.json?distance=10");
         PowerMockito.verifyStatic();
         Communication.addAction("Cycle", 160, -100, 0);
-        PowerMockito.verifyStatic();
-        Communication.addAction("Cycle", 160);
     }
 
     @Test
@@ -40,8 +38,6 @@ public class TransportTest {
         Transport.addCarAction(10);
         PowerMockito.verifyStatic();
         Api.CarbonAmount("automobile_trips.json?distance=10");
-        PowerMockito.verifyStatic();
-        Communication.addAction("Car", 80);
         PowerMockito.verifyStatic();
         Communication.addAction("Car", 80, 0, 100);
     }
@@ -53,8 +49,6 @@ public class TransportTest {
         PowerMockito.verifyStatic();
         Api.CarbonAmount("automobile_trips.json?distance=10");
         PowerMockito.verifyStatic();
-        Communication.addAction("Car", 80);
-        PowerMockito.verifyStatic();
         Communication.addAction("Car", 80, 100, 0);
     }
 
@@ -65,8 +59,6 @@ public class TransportTest {
         Api.CarbonAmount("flights.json?distance=16");
         PowerMockito.verifyStatic();
         Api.CarbonAmount("automobile_trips.json?distance=16");
-        PowerMockito.verifyStatic();
-        Communication.addAction("Plane", 1);
         PowerMockito.verifyStatic();
         Communication.addAction("Plane", 1, 0, 100);
     }
@@ -80,7 +72,5 @@ public class TransportTest {
         Api.CarbonAmount("automobile_trips.json?distance=10");
         PowerMockito.verifyStatic();
         Communication.addAction("PublicTransport", 40, 0, 100);
-        PowerMockito.verifyStatic();
-        Communication.addAction("PublicTransport", 40);
     }
 }

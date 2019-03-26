@@ -23,7 +23,6 @@ final class Transport {
      */
     static void addCycleAction(int distance) throws ConnectIOException {
         int carbon = Api.CarbonAmount("automobile_trips.json?distance=" + distance);
-        Communication.addAction("Cycle", distance * 16);
         Communication.addAction("Cycle", distance * 16, carbon * -1, 0);
     }
 
@@ -32,7 +31,6 @@ final class Transport {
      */
     static void addCarAction(int distance) throws ConnectIOException {
         int carbon = Api.CarbonAmount("automobile_trips.json?distance=" + distance);
-        Communication.addAction("Car", distance * 8);
         if (hasElectricCar) {
             Communication.addAction("Car", distance * 8, carbon, 0);
         } else {
@@ -48,7 +46,6 @@ final class Transport {
         int carbonCar = Api.CarbonAmount("automobile_trips.json?distance=" + distance);
         int carbonReduced = carbonCar - carbonPlane;
         Communication.addAction("Plane", distance / 16, carbonReduced, carbonPlane);
-        Communication.addAction("Plane", distance / 16);
     }
 
     /**
@@ -60,6 +57,5 @@ final class Transport {
         int carbonReduced = carbonCar - carbonPublicTransport;
         Communication.addAction("PublicTransport", distance * 4, carbonReduced,
                 carbonPublicTransport);
-        Communication.addAction("PublicTransport", distance * 4);
     }
 }
