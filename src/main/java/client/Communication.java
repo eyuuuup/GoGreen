@@ -188,7 +188,19 @@ public class Communication {
     }
 
     // ========== SOCIAL HANDLERS ==============================================
-
+    
+    /**
+     * This method checks if the searched username exists or not.
+     *
+     * @param username username
+     * @return if username exists
+     */
+    public static boolean checkUsername(String username) {
+        HttpEntity<String> message = new HttpEntity<>(username);
+        RestTemplate reuquest = new RestTemplate();
+        return reuquest.postForObject(hostURL + "/checkUser", message, boolean.class);
+    }
+    
     /**
      * This method adds a friend by it's username.
      * Friend is someone who you follow.
@@ -225,27 +237,10 @@ public class Communication {
     }
     
     /**
-     * This method checks if the searched username exists or not.
-     *
-     * @param username username
-     * @return if username exists
-     */
-    public static boolean checkUsername(String username) {
-        if (!isLoggedIn()) {
-            return false;
-        }
-        HttpEntity<String> message = new HttpEntity<>(username);
-        RestTemplate reuquest = new RestTemplate();
-        return reuquest.postForObject(hostURL + "/checkUser", message, boolean.class);
-    }
-    
-    /**
      *
      */
     public static ArrayList<CompareFriends> getLeaderboard() {
         RestTemplate reuquest = new RestTemplate();
         return reuquest.getForObject(hostURL + "/getLeaderboard", FriendsList.class).getList();
     }
-    
-    
 }

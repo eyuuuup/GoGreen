@@ -155,6 +155,19 @@ public class CommunicationTest {
     // ========== SOCIAL HANDLERS ==============================================
     
     @Test
+    public void checkUsername() throws Exception {
+        String       request  = "testUser";
+        RestTemplate template = PowerMockito.mock(RestTemplate.class);
+        boolean      response = true;
+        PowerMockito.when(template.postForObject(anyString(), anyString(), eq(boolean.class))).thenReturn(response);
+        PowerMockito.whenNew(RestTemplate.class).withAnyArguments().thenReturn(template);
+        
+        boolean answer = Communication.checkUsername(request);
+        
+        assertEquals(response, answer);
+    }
+    
+    @Test
     public void addFriend() throws Exception {
         RestTemplate template = PowerMockito.mock(RestTemplate.class);
         PowerMockito.when(template.postForObject(anyString(), anyObject(), eq(boolean.class))).thenReturn(true);
@@ -165,27 +178,37 @@ public class CommunicationTest {
     
     @Test
     public void getFriends() throws Exception {
-        RestTemplate              template = PowerMockito.mock(RestTemplate.class);
-        ArrayList<CompareFriends> response = new ArrayList<>();
-        response.add(new CompareFriends("testUsername", 150));
-        PowerMockito.when(template.postForObject(anyString(), anyObject(), eq(ArrayList.class))).thenReturn(response);
+        RestTemplate template = PowerMockito.mock(RestTemplate.class);
+        FriendsList  response = new FriendsList();
+        PowerMockito.when(template.postForObject(anyString(), anyObject(), eq(FriendsList.class))).thenReturn(response);
         PowerMockito.whenNew(RestTemplate.class).withAnyArguments().thenReturn(template);
         
         ArrayList answer = Communication.getFriends();
         
-        assertEquals(response, answer);
+        assertEquals(response.getList(), answer);
     }
     
     @Test
     public void getFollowers() throws Exception {
-        RestTemplate              template = PowerMockito.mock(RestTemplate.class);
-        ArrayList<CompareFriends> response = new ArrayList<>();
-        response.add(new CompareFriends("testUsername", 150));
-        PowerMockito.when(template.postForObject(anyString(), anyObject(), eq(ArrayList.class))).thenReturn(response);
+        RestTemplate template = PowerMockito.mock(RestTemplate.class);
+        FriendsList  response = new FriendsList();
+        PowerMockito.when(template.postForObject(anyString(), anyObject(), eq(FriendsList.class))).thenReturn(response);
         PowerMockito.whenNew(RestTemplate.class).withAnyArguments().thenReturn(template);
         
         ArrayList answer = Communication.getFollowers();
         
-        assertEquals(response, answer);
+        assertEquals(response.getList(), answer);
+    }
+    
+    @Test
+    public void getLeaderboard() throws Exception {
+        RestTemplate template = PowerMockito.mock(RestTemplate.class);
+        FriendsList  response = new FriendsList();
+        PowerMockito.when(template.getForObject(anyString(), eq(FriendsList.class))).thenReturn(response);
+        PowerMockito.whenNew(RestTemplate.class).withAnyArguments().thenReturn(template);
+    
+        ArrayList answer = Communication.getLeaderboard();
+    
+        assertEquals(response.getList(), answer);
     }
 }
