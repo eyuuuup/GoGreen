@@ -18,7 +18,7 @@ public class UserTest {
     @Test
     public void changeName() {
         User User = new User ("user", "password");
-        User.changeName("User");
+        User.setName("User");
         assertEquals(User.getName(), "User");
     }
 
@@ -29,7 +29,7 @@ public class UserTest {
     @Test
     public void changePassword() {
         User User = new User("user", "password");
-        User.changePassword("Password");
+        User.setPassword("Password");
         assertEquals(User.getPassword(), "Password");
     }
 }

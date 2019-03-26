@@ -111,6 +111,15 @@ public class ControllerTest {
     // ========== SOCIAL HANDLERS ==============================================
     
     @Test
+    public void checkUser() {
+        String username = "testFriend";
+        
+        PowerMockito.when(Database.checkUsername(username)).thenReturn(true);
+        
+        assertTrue(Controller.checkUser(username));
+    }
+    
+    @Test
     public void addFriend() {
         Friends fr = new Friends("testToken", "testFriend");
         
@@ -118,22 +127,29 @@ public class ControllerTest {
         
         assertTrue(Controller.addFriend(fr));
     }
-//
-//    @Test
-//    public void showFriends() {
-//        ArrayList<CompareFriends> list = new ArrayList<>();
-//        list.add(new CompareFriends("testName", 3600));
-//        PowerMockito.when(Database.showFriends(anyString())).thenReturn(list);
-//
-//        assertEquals(list, Controller.showFriends("testToken"));
-//    }
-//
-//    @Test
-//    public void showFollowers() {
-//        ArrayList<CompareFriends> list = new ArrayList<>();
-//        list.add(new CompareFriends("testName", 3600));
-//        PowerMockito.when(Database.showFollowers(anyString())).thenReturn(list);
-//
-//        assertEquals(list, Controller.showFollowers("testToken"));
-//    }
+    
+    @Test
+    public void showFriends() {
+        FriendsList fl = new FriendsList();
+        PowerMockito.when(Database.showFriends(anyString())).thenReturn(fl);
+        
+        assertEquals(fl, Controller.showFriends("testToken"));
+    }
+    
+    @Test
+    public void showFollowers() {
+        FriendsList fl = new FriendsList();
+        PowerMockito.when(Database.showFollowers(anyString())).thenReturn(fl);
+        
+        assertEquals(fl, Controller.showFollowers("testToken"));
+    }
+    
+    @Test
+    public void getLeaderboard() {
+        FriendsList fl = new FriendsList();
+        PowerMockito.when(Database.getLeaderboard()).thenReturn(fl);
+        
+        assertEquals(fl, Controller.getLeaderboard());
+    }
+    
 }
