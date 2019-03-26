@@ -212,7 +212,8 @@ public class Communication {
      * @return an arraylist ofCompareFriends
      */
     public static ArrayList<CompareFriends> getFriends() {
-        return ((FriendsList)postToken("/showFriends", FriendsList.class)).getList();    }
+        return ((FriendsList)postToken("/showFriends", FriendsList.class)).getList();
+    }
 
     /**
      * This method retrieves the user's list of followers from the server.
@@ -221,7 +222,8 @@ public class Communication {
      * @return an arraylist of "CompareFriends"
      */
     public static ArrayList<CompareFriends> getFollowers() {
-        return ((FriendsList)postToken("/showFollowers", FriendsList.class)).getList();    }
+        return ((FriendsList)postToken("/showFollowers", FriendsList.class)).getList();
+    }
     
     /**
      * This method checks if the searched username exists or not.
@@ -239,7 +241,7 @@ public class Communication {
     }
     
     /**
-     *
+     * Compares friends.
      */
     public static ArrayList<CompareFriends> getLeaderboard() {
         RestTemplate reuquest = new RestTemplate();
@@ -264,5 +266,13 @@ public class Communication {
     public static void addAction(
             String actionName, int points, int carbonReduced, int carbonProduced) {
         addAction(actionName, points);
+    }
+
+    /**
+     * To be implemented: checks whether user has solar panels.
+     * @return iff user has solar panels
+     */
+    public static boolean hasSolarPanels() {
+        return false;
     }
 }

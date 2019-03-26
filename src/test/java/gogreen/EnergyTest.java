@@ -18,22 +18,15 @@ public class EnergyTest {
 
     @Test
     public void addReduceEnergyAction() {
-        Energy.addReduceEnergyAction();
+        Energy.addReduceEnergyAction(0);
         PowerMockito.verifyStatic();
         Communication.addAction("ReduceEnergy", 100);
     }
 
     @Test
     public void addReduceWater() {
-        Energy.addReduceWater();
+        Energy.addReduceWater(0);
         PowerMockito.verifyStatic();
         Communication.addAction("ReduceWater", 100);
-    }
-
-    @Test
-    public void addReduceElectricity() {
-        Energy.addReduceElectricity();
-        PowerMockito.verifyStatic();
-        Communication.addAction("ReduceElectricity", 100);
     }
 }

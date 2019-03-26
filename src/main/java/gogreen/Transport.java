@@ -23,6 +23,14 @@ final class Transport {
     }
 
     /**
+     * Sets the boolean hasElectricCar to electricCar.
+     * @param electricCar has electric Car
+     */
+    static void setHasElectricCar(boolean electricCar) {
+        hasElectricCar = electricCar;
+    }
+
+    /**
      * This methods returns points for a Cycle action.
      * Next to this the method calculates the CO2 reduction using Brighter planet.
      */

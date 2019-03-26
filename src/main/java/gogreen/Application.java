@@ -660,7 +660,7 @@ public class Application extends javafx.application.Application {
             int value = (int) Math.round(waterTimeSlider.getValue());
             if (value != 0) {
                 errorWater.setText("");
-                Energy.addReduceWater();
+                Energy.addReduceWater(value);
             } else {
                 errorWater.setText("Please fill in the minutes you showered");
             }
@@ -686,7 +686,7 @@ public class Application extends javafx.application.Application {
         temperature.setOnAction(e -> {
             int value = (int) Math.round(temperatureSlider.getValue());
             System.out.println(value);
-            Energy.addReduceEnergyAction();
+            Energy.addReduceEnergyAction(value);
         });
         
         // makes the page and adds the nodes
