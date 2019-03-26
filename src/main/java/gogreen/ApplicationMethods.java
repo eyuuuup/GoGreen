@@ -49,7 +49,7 @@ class ApplicationMethods {
             throw new IllegalArgumentException("Passwords not equal!");
         }
         
-        if (password.length() <= 1) {
+        if (password.length() <= 2) {
             throw new IllegalArgumentException("Password too short");
         }
         
@@ -77,8 +77,18 @@ class ApplicationMethods {
      * @param username the username
      * @return the encoded username
      */
-    private static String encodeUsername(String username) {
+    public static String encodeUsername(String username) {
         return Base64.getEncoder().encodeToString(username.getBytes(StandardCharsets.UTF_8));
+    }
+    
+    /**
+     * This method decodes the username.
+     * @param username the username
+     * @return the decoded username
+     */
+    public static String decodeUsername(String username) {
+        return new String(Base64.getDecoder().decode(username));
+        
     }
     
     /**
@@ -133,30 +143,32 @@ class ApplicationMethods {
         }
     }
     
-    /**
-     * makes a string of the recent activities.
-     * @param recentActivities recent activities
-     * @return a String of the recent activities
-     */
-    static String recentActivitiesToString(String recentActivities) {
-        //        if (recentActivities != null) {
-        //            System.out.println("rA: " + recentActivities);
-        //            String[] split = recentActivities.split("\\s|_");
-        //            String output = split[0] + "\t\t\t\t" + split[1] + "\t\t" + split[2] + "\n"
-        //                    + split[3] + "\t\t\t\t" + split[4] + "\t\t" + split[5] + "\n"
-        //                    + split[6] + "\t\t\t\t" + split[7] + "\t\t" + split[8];
-        //            System.out.println(output);
-        //            return output;
-        //        }
-        return "none";
-    }
+    //    /**
+    //     * makes a string of the recent activities.
+    //     * @param recentActivities recent activities
+    //     * @return a String of the recent activities
+    //     */
+    //    static String recentActivitiesToString(String recentActivities) {
+    //                if (recentActivities != null) {
+    //                    System.out.println("rA: " + recentActivities);
+    //                    String[] split = recentActivities.split("\\s|_");
+    //                    String output = split[0] + "\t\t\t\t" +
+    //                    split[1] + "\t\t" + split[2] + "\n"
+    //                            + split[3] + "\t\t\t\t" + split[4] + "\t\t" + split[5] + "\n"
+    //                            + split[6] + "\t\t\t\t" + split[7] + "\t\t" + split[8];
+    //                    System.out.println(output);
+    //                    return output;
+    //                }
+    //        return "none";
+    //    }
     
     static int getLevel(int points) {
-        return (int) (Math.floor(Math.pow(points / 250, 0.75)));
+        return (int) (Math.floor((-1 + Math.sqrt(1 + 8 * (points / 50 + 10))) / 2) - 3);
     }
     
     static int getLevelInv(int lvl) {
-        return (int) Math.floor(250 * Math.pow(lvl, 1 / 0.75));
+        lvl = (int) Math.floor(lvl) - 1;
+        return 50 * lvl * (9 + lvl) / 2;
     }
     
     static double getLevelProgress(int points) {

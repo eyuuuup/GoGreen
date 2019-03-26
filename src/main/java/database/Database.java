@@ -140,7 +140,8 @@ public class Database {
             
             currentTotalScore = currentTotalScore + score;
             PreparedStatement state1 =
-                    con.prepareStatement("UPDATE total_score SET total_score = ? WHERE username = ?");
+                    con.prepareStatement("UPDATE total_score "
+                            + "SET total_score = ? WHERE username = ?");
             state1.setInt(1, currentTotalScore);
             state1.setString(2, getUsername(token));
             state1.executeUpdate();
@@ -159,7 +160,12 @@ public class Database {
     public static int getTotalScore(String token) {
         return getTotalScoreByUser(getUsername(token));
     }
-    
+
+    /**
+     * Get the total score for a given user.
+     * @param username the username
+     * @return the total score
+     */
     public static int getTotalScoreByUser(String username) {
         try {
             Connection con = DriverManager.getConnection();
@@ -352,7 +358,7 @@ public class Database {
      * @param token A String of the username.
      * @return the String of all friends of a user.
      */
-    public static ArrayList showFriends(String token) {
+    public static FriendsList showFriends(String token) {
         System.out.println("showFriends called");
         try {
             Connection con = DriverManager.getConnection();
@@ -369,22 +375,27 @@ public class Database {
                 result.add(friend);
             }
             con.close();
-            return result;
+            return new FriendsList(result);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return new ArrayList();
+            return null;
         }
     }
-    
-    public static ArrayList showFollowers(String token) {
+
+    /**
+     * This methods shows the followers.
+     * @param token token
+     * @return followers
+     */
+    public static FriendsList showFollowers(String token) {
         System.out.println("showFollowers called");
         try {
             Connection con = DriverManager.getConnection();
             PreparedStatement state = con.prepareStatement(
-                    "SELECT friends.user_a, total_score.total_score " +
-                            "FROM friends " +
-                            "JOIN total_score ON friends.user_a=total_score.username " +
-                            "WHERE user_b = ?");
+                    "SELECT friends.user_a, total_score.total_score "
+                            + "FROM friends "
+                            + "JOIN total_score ON friends.user_a=total_score.username "
+                            + "WHERE user_b = ?");
             state.setString(1, getUsername(token));
             ResultSet rs = state.executeQuery();
             
@@ -395,12 +406,42 @@ public class Database {
                 result.add(new CompareFriends(username, score));
             }
             con.close();
-            return result;
+
+            return new FriendsList(result);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return new ArrayList();
+            return null;
         }
     }
 
-    
+    public static FriendsList getLeaderboard() {
+        System.out.println("getLeaderboard called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state = con.prepareStatement(
+                    "SELECT username, total_score "
+                            + "FROM total_score "
+                            + "ORDER BY total_score DESC LIMIT 10");
+            ResultSet rs = state.executeQuery();
+
+            ArrayList<CompareFriends> result = new ArrayList<>();
+            while (rs.next()) {
+                String username = rs.getString(1);
+                int    score    = rs.getInt(2);
+                result.add(new CompareFriends(username, score));
+            }
+            con.close();
+
+            FriendsList friendList = new FriendsList(result);
+
+            return friendList;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+
+
 }

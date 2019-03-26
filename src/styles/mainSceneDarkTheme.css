@@ -111,7 +111,19 @@
     -fx-background-color: #263238;
 }
 
+#friendtitle{
+    -fx-text-fill: #e5e5e5;
+    -fx-font-weight: bold;
+    -fx-font-size: 32;
+}
+
 
 #smallButton{
     -fx-font-size: 14;
+}
+
+#error{
+    -fx-text-fill: #e5e5e5;
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
 }
