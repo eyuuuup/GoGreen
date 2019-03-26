@@ -36,6 +36,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.rmi.ConnectIOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -478,7 +479,11 @@ public class Application extends javafx.application.Application {
 
         // when you press the button you add a action
         cycle.setOnAction(e -> {
-            Transport.addCycleAction();
+            try {
+                Transport.addCycleAction(10);
+            } catch (ConnectIOException e1) {
+                e1.printStackTrace();
+            }
         });
         
         //button for the public transport action
@@ -490,7 +495,11 @@ public class Application extends javafx.application.Application {
 
         // when you press the button you add an action
         publicTransport.setOnAction(e -> {
-            Transport.addPublicTransportAction();
+            try {
+                Transport.addPublicTransportAction(0);
+            } catch (ConnectIOException e1) {
+                e1.printStackTrace();
+            }
         });
         
         //button for the car action
@@ -502,7 +511,11 @@ public class Application extends javafx.application.Application {
 
         // when you press the button you will add an action
         car.setOnAction(e -> {
-            Transport.addCarAction();
+            try {
+                Transport.addCarAction(0);
+            } catch (ConnectIOException e1) {
+                e1.printStackTrace();
+            }
         });
         
         //button for the plane action
@@ -514,7 +527,11 @@ public class Application extends javafx.application.Application {
 
         // when you press a button you will add an action
         plane.setOnAction(e -> {
-            Transport.addPlaneAction();
+            try {
+                Transport.addPlaneAction(0);
+            } catch (ConnectIOException e1) {
+                e1.printStackTrace();
+            }
         });
         
         // make the transport page

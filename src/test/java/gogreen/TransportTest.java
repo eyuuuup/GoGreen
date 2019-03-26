@@ -7,40 +7,80 @@ import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
+
+import java.rmi.ConnectIOException;
+
+import static org.mockito.Matchers.anyString;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Communication.class)
+@PrepareForTest({Communication.class, Api.class})
 public class TransportTest {
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         PowerMockito.mockStatic(Communication.class);
+        PowerMockito.mockStatic(Api.class);
+        PowerMockito.when(Api.class, "CarbonAmount", anyString()).thenReturn(100);
     }
 
     @Test
-    public void addCycleAction() {
-        Transport.addCycleAction();
+    public void addCycleAction() throws ConnectIOException {
+        Transport.addCycleAction(10);
         PowerMockito.verifyStatic();
-        Communication.addAction("Cycle", 100);
+        Api.CarbonAmount("automobile_trips.json?distance=10");
+        PowerMockito.verifyStatic();
+        Communication.addAction("Cycle", 160, -100, 0);
+        PowerMockito.verifyStatic();
+        Communication.addAction("Cycle", 160);
     }
 
     @Test
-    public void addCarAction() {
-        Transport.addCarAction();
+    public void addCarAction() throws ConnectIOException {
+        Whitebox.setInternalState(Transport.class, "hasElectricCar", false);
+        Transport.addCarAction(10);
         PowerMockito.verifyStatic();
-        Communication.addAction("Car", 25);
+        Api.CarbonAmount("automobile_trips.json?distance=10");
+        PowerMockito.verifyStatic();
+        Communication.addAction("Car", 80);
+        PowerMockito.verifyStatic();
+        Communication.addAction("Car", 80, 0, 100);
     }
 
     @Test
-    public void addPlaneAction() {
-        Transport.addPlaneAction();
+    public void addCarActionElectricCar() throws ConnectIOException {
+        Whitebox.setInternalState(Transport.class, "hasElectricCar", true);
+        Transport.addCarAction(10);
         PowerMockito.verifyStatic();
-        Communication.addAction("Plane", 0);
+        Api.CarbonAmount("automobile_trips.json?distance=10");
+        PowerMockito.verifyStatic();
+        Communication.addAction("Car", 80);
+        PowerMockito.verifyStatic();
+        Communication.addAction("Car", 80, 100, 0);
     }
 
     @Test
-    public void addPublicTransportAction() {
-        Transport.addPublicTransportAction();
+    public void addPlaneAction() throws ConnectIOException {
+        Transport.addPlaneAction(16);
         PowerMockito.verifyStatic();
-        Communication.addAction("PublicTransport", 75);
+        Api.CarbonAmount("flights.json?distance=16");
+        PowerMockito.verifyStatic();
+        Api.CarbonAmount("automobile_trips.json?distance=16");
+        PowerMockito.verifyStatic();
+        Communication.addAction("Plane", 1);
+        PowerMockito.verifyStatic();
+        Communication.addAction("Plane", 1, 0, 100);
+    }
+
+    @Test
+    public void addPublicTransportAction() throws ConnectIOException {
+        Transport.addPublicTransportAction(10);
+        PowerMockito.verifyStatic();
+        Api.CarbonAmount("bus_trips.json?distance=10");
+        PowerMockito.verifyStatic();
+        Api.CarbonAmount("automobile_trips.json?distance=10");
+        PowerMockito.verifyStatic();
+        Communication.addAction("PublicTransport", 40, 0, 100);
+        PowerMockito.verifyStatic();
+        Communication.addAction("PublicTransport", 40);
     }
 }

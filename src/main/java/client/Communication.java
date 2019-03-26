@@ -245,6 +245,12 @@ public class Communication {
         RestTemplate reuquest = new RestTemplate();
         return reuquest.getForObject(hostURL + "/getLeaderboard", FriendsList.class).getList();
     }
-    
-    
+
+
+    public static boolean hasElectricCar() {
+        return true;
+    }
+
+    public static void addAction(String cycle, int i, int i1, int i2) {
+    }
 }
