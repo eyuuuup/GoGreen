@@ -289,7 +289,7 @@ public class Application extends javafx.application.Application {
         
         // makes the home navigation bar
         JFXTabPane homeNavigation = new JFXTabPane();
-        homeNavigation.setPrefSize(500,500);
+        homeNavigation.setPrefSize(500,575);
 
         // makes the your world tab
         Tab homeTab = new Tab();
@@ -319,19 +319,20 @@ public class Application extends javafx.application.Application {
     private static GridPane yourWorldScreen() {
         int points = client.Communication.getMyTotalScore();
         int level = ApplicationMethods.getLevel(points);
-        String planetLink = "file:src/planets/levelTwoWorld.gif";
+
+        // make the your world images
+        String planetLink = "file:src/planets/levelOneWorld.gif";
         if (33 <= level && level < 66) {
-            planetLink = "file:src/planets/notAsGoodPlanet.gif";
+            planetLink = "file:src/planets/levelTwoWorld.gif";
         } else if (level >= 66 ) {
-            planetLink = "file:src/planets/goodPlanet.gif";
+            planetLink = "file:src/planets/levelThreeWorld.gif";
         }
 
 
-
-        // make the planet
+        // make the your world view
         Image image = new Image(planetLink);
-        ImageView imageView = new ImageView();
-        imageView.setImage(image);
+        ImageView yourWorldView = new ImageView();
+        yourWorldView.setImage(image);
 
         // makes the level bar
         ProgressBar levelBar = new ProgressBar(ApplicationMethods.getLevelProgress(points));
@@ -341,7 +342,6 @@ public class Application extends javafx.application.Application {
         Label levelStatus = new Label("Lv. " + level);
         levelStatus.setId("levelStatus");
 
-        
         // make the total points text
         Label totalPoints = new Label(points + " points");
         totalPoints.setId("levelStatus");
@@ -349,14 +349,18 @@ public class Application extends javafx.application.Application {
 
         HBox pointsAndStatus = new HBox(250);
         pointsAndStatus.getChildren().addAll(levelStatus, totalPoints);
+        pointsAndStatus.setAlignment(Pos.CENTER);
+
         // makes a container for the level attributes
         VBox levelContainer = new VBox();
-        levelContainer.getChildren().addAll(pointsAndStatus, levelBar);
+        levelContainer.getChildren().addAll(levelBar, pointsAndStatus);
+        levelContainer.setAlignment(Pos.CENTER);
         
         // makes the page and adds the nodes
         GridPane yourWorldPage = new GridPane();
-        yourWorldPage.add(imageView,0,0);
-        yourWorldPage.add(levelContainer, 0,1);
+        yourWorldPage.setVgap(250);
+        yourWorldPage.add(levelContainer, 0,0);
+        yourWorldPage.add(yourWorldView,0,1);
         yourWorldPage.setAlignment(Pos.BOTTOM_CENTER);
         
         // returns the page
