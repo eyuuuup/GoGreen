@@ -77,8 +77,18 @@ class ApplicationMethods {
      * @param username the username
      * @return the encoded username
      */
-    private static String encodeUsername(String username) {
+    public static String encodeUsername(String username) {
         return Base64.getEncoder().encodeToString(username.getBytes(StandardCharsets.UTF_8));
+    }
+    
+    /**
+     * This method decodes the username.
+     * @param username the username
+     * @return the decoded username
+     */
+    public static String decodeUsername(String username) {
+        return new String(Base64.getDecoder().decode(username));
+        
     }
     
     /**
