@@ -68,8 +68,8 @@ public class Database {
             
             PreparedStatement state1 =
                     con.prepareStatement("INSERT INTO events (action_id, date_time, "
-                            + "points, parent_category, username)"
-                            + "VALUES (?, ?, ?, ?, ?);");
+                            + "points, parent_category, username, carbonReduced, carbonProduced)"
+                            + "VALUES (?, ?, ?, ?, ?,?,?);");
             state1.setInt(1, actionId);
 
             Long outputDate = Instant.now().getMillis();
@@ -78,6 +78,8 @@ public class Database {
             state1.setInt(3, action.getValue());
             state1.setInt(4, parentCategory);
             state1.setString(5, getUsername(action.getUser()));
+            state1.setInt(6, action.getCarbonReduced());
+            state1.setInt(7, action.getCarbonProduced());
             state1.executeUpdate();
             
             updateTotalScores(action.getUser(), action.getValue());
@@ -440,6 +442,30 @@ public class Database {
             System.out.println(e.getMessage());
             return null;
         }
+    }
+
+    public static boolean checkOneTimeEvent(String username, int id){
+        System.out.println("checkOneTimeEvent called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state = con.prepareStatement(
+                    "SELECT action_id "
+                            + "FROM events "
+                            + "WHERE user_name = ?");
+            ResultSet rs = state.executeQuery();
+            con.close();
+            if(!rs.next()){
+                return false;
+            }else{
+                return true;
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+
     }
 
 
