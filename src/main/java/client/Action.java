@@ -4,17 +4,20 @@ public class Action {
     private String user;
     private String action;
     private int    value;
-
+    private int carbonReduced;
+    private int carbonProduced;
     /**
      * Constructs and initialises a new instance of Action.
      * @param user the username
      * @param action the action name
      * @param value the amount of points
      */
-    public Action(String user, String action, int value) {
+    public Action(String user, String action, int value, int carbonReduced, int carbonProduced) {
         this.user = user;
         this.action = action;
         this.value = value;
+        this.carbonReduced = carbonReduced;
+        this.carbonProduced = carbonProduced;
     }
 
     public Action(){}
@@ -41,5 +44,21 @@ public class Action {
 
     public void setValue(int value) {
         this.value = value;
+    }
+
+    public int getCarbonReduced() {
+        return carbonReduced;
+    }
+
+    public void setCarbonReduced(int carbonReduced) {
+        this.carbonReduced = carbonReduced;
+    }
+
+    public int getCarbonProduced() {
+        return carbonProduced;
+    }
+
+    public void setCarbonProduced(int carbonProduced) {
+        this.carbonProduced = carbonProduced;
     }
 }

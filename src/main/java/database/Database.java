@@ -185,9 +185,7 @@ public class Database {
                 currentTotalScore = rs.getInt(1);
                 System.out.println("currentTotalScore: " + currentTotalScore);
             }
-            
-            
-            System.out.println("UPDATE success");
+
             con.close();
             return currentTotalScore;
         } catch (SQLException ex) {
@@ -211,7 +209,7 @@ public class Database {
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
             
-            while (rs.next()) {
+            if (rs.next()) {
                 con.close();
                 System.out.println("token found");
                 return true;
@@ -456,11 +454,7 @@ public class Database {
             state.setInt(2, id);
             ResultSet rs = state.executeQuery();
             con.close();
-            if(!rs.next()){
-                return false;
-            }else{
-                return true;
-            }
+            return rs.next();
 
 
         } catch (SQLException e) {
@@ -469,6 +463,48 @@ public class Database {
         }
 
     }
+
+    public static void addChallenge(String usernameA, String usernameB, int goal){
+        System.out.println("addChallenge called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state = con.prepareStatement(
+                    "INSERT INTO "
+                            + "challenges (goal, time_added, user_a, user_b)"
+                            + "VALUES (?, ?, ?, ?);");
+            state.setInt(1, goal);
+            state.setLong(2, Instant.now().getMillis());
+            state.setString(3, usernameA);
+            state.setString(4, usernameB);
+            state.executeUpdate();
+            con.close();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    public static void updateChallenge(String usernameA, String usernameB){
+        System.out.println("updateChallenge called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state = con.prepareStatement(
+                    "UPDATE challenges "
+                            + "SET score_a = ?, score_b = ? WHERE user_a = ? AND user_b = ?");
+            state.setInt(1, getTotalScoreByUser(usernameA));
+            state.setInt(2, getTotalScoreByUser(usernameB));
+            state.setString(3, usernameA);
+            state.setString(4, usernameB);
+            state.executeUpdate();
+            con.close();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
 
 
 
