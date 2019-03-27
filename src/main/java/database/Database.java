@@ -119,8 +119,8 @@ public class Database {
             
             PreparedStatement state1 =
                     con.prepareStatement("INSERT INTO events (action_id, date_time, "
-                            + "points, parent_category, username)"
-                            + "VALUES (?, ?, ?, ?, ?);");
+                            + "points, parent_category, username, carbon_reduced, carbon_produced)"
+                            + "VALUES (?, ?, ?, ?, ?,?,?);");
             state1.setInt(1, actionId);
             
             Long outputDate = Instant.now().getMillis();
@@ -129,6 +129,8 @@ public class Database {
             state1.setInt(3, action.getValue());
             state1.setInt(4, parentCategory);
             state1.setString(5, getUsername(action.getUser()));
+            state1.setInt(6, action.getCarbonReduced());
+            state1.setInt(7, action.getCarbonProduced());
             state1.executeUpdate();
             
             updateTotalScores(action.getUser(), action.getValue());
@@ -186,7 +188,6 @@ public class Database {
             Connection con = DriverManager.getConnection();
             System.out.println("updateTotalScores called");
             
-            
             int currentTotalScore = getTotalScore(token);
             
             currentTotalScore = currentTotalScore + score;
@@ -235,8 +236,6 @@ public class Database {
                 System.out.println("currentTotalScore: " + currentTotalScore);
             }
             
-            
-            System.out.println("UPDATE success");
             con.close();
             return currentTotalScore;
         } catch (SQLException ex) {
@@ -260,7 +259,7 @@ public class Database {
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
             
-            while (rs.next()) {
+            if (rs.next()) {
                 con.close();
                 System.out.println("token found");
                 return true;
@@ -467,7 +466,8 @@ public class Database {
     
     /**
      * This methods gets the leaderboard.
-     * @return FriendsList object with the top users.
+     * @return A FriendsList object with the leaderboard inside.
+     * >>>>>>> 85d585bdfe873e647abd2963f2cf20c369a29f1a
      */
     public static FriendsList getLeaderboard() {
         System.out.println("getLeaderboard called");
@@ -529,5 +529,66 @@ public class Database {
         }
     }
     
+    /**
+     * (Experimental)
+     * This methods checks if the user completed a One Time Event.
+     * @param username username of the user.
+     * @param id       the id of the One Time Event.
+     * @return a boolean.
+     */
+    public static boolean checkOneTimeEvent(String username, int id) {
+        System.out.println("checkOneTimeEvent called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state = con.prepareStatement(
+                    "SELECT action_id "
+                            + "FROM events "
+                            + "WHERE user_name = ? AND action_id = ?");
+            state.setString(1, username);
+            state.setInt(2, id);
+            ResultSet rs = state.executeQuery();
+            con.close();
+            return rs.next();
+            
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+    
+    /**
+     * This methods adds a challenge.
+     * @param usernameA username of a user.
+     * @param usernameB username of a user.
+     * @param goal      amount of points to win.
+     */
+    public static void addChallenge(String usernameA, String usernameB, int goal) {
+        System.out.println("addChallenge called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state = con.prepareStatement(
+                    "INSERT INTO "
+                            + "challenges (goal, time_added, user_a, user_b, score_a, score_b)"
+                            + "VALUES (?, ?, ?, ?, ( "
+                            + "SELECT total_score FROM total_score WHERE username = ? "
+                            + "), ( "
+                            + "SELECT total_score FROM total_score WHERE username = ? "
+                            + "));");
+            
+            state.setInt(1, goal);
+            state.setLong(2, Instant.now().getMillis());
+            state.setString(3, usernameA);
+            state.setString(4, usernameB);
+            state.setString(5, usernameA);
+            state.setString(6, usernameB);
+            state.executeUpdate();
+            
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+    }
     
 }

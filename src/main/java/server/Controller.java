@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.UUID;
 
 @RestController
@@ -81,7 +80,7 @@ public class Controller {
      */
     @RequestMapping (value = {"/retract"}, method = RequestMethod.POST,
                      produces = MediaType.APPLICATION_JSON_VALUE)
-    public static ArrayList<ActionHistory> forDemo(@Valid @RequestBody String token) {
+    public static ActionList forDemo(@Valid @RequestBody String token) {
         return Database.retract(token);
     }
     
@@ -108,6 +107,18 @@ public class Controller {
     public static boolean checkUser(@Valid @RequestBody String username) {
         return Database.checkUsername(username);
     }
+    
+    /**
+     * username of the present user.
+     * @param token token of the user
+     * @return username String
+     */
+    @RequestMapping (value = {"/getUser"}, method = RequestMethod.GET,
+                     produces = MediaType.APPLICATION_JSON_VALUE)
+    public static User getUser(@Valid @RequestBody String token) {
+        return Database.getUser(token);
+    }
+    
     
     /**
      * adds a friend.
@@ -146,16 +157,4 @@ public class Controller {
     public static FriendsList getLeaderboard() {
         return Database.getLeaderboard();
     }
-    
-    /**
-     * username of the present user.
-     * @param token token of the user
-     * @return username String
-     */
-    @RequestMapping (value = {"/getUser"}, method = RequestMethod.GET,
-                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public static User getUser(@Valid @RequestBody String token) {
-        return Database.getUser(token);
-    }
-    
 }

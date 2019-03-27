@@ -1,5 +1,6 @@
 package gogreen;
 
+import client.Communication;
 import client.CompareFriends;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSlider;
@@ -37,6 +38,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.rmi.ConnectIOException;
 import java.util.ArrayList;
 
 public class Application extends javafx.application.Application {
@@ -55,6 +57,8 @@ public class Application extends javafx.application.Application {
      */
     @Override
     public void start(Stage stage) {
+        ApplicationMethods.onLoad();
+
         this.stage = stage;
         stage.setTitle("GoGreen");
 
@@ -493,10 +497,12 @@ public class Application extends javafx.application.Application {
             try {
                 int distanceInt = Integer.parseInt(distance.getText());
                 errorMessage.setText("");
-                Transport.addCycleAction();
+                Transport.addCycleAction(distanceInt);
             } catch (NumberFormatException exception) {
                 // throw error
                 errorMessage.setText("Please only use numbers");
+            } catch (ConnectIOException e1) {
+                e1.printStackTrace();
             }
         });
         
@@ -509,7 +515,16 @@ public class Application extends javafx.application.Application {
 
         // when you press the button you add an action
         publicTransport.setOnAction(e -> {
-            Transport.addPublicTransportAction();
+            try {
+                int distanceInt = Integer.parseInt(distance.getText());
+                errorMessage.setText("");
+                Transport.addPublicTransportAction(distanceInt);
+            } catch (NumberFormatException exception) {
+                // throw error
+                errorMessage.setText("Please only use numbers");
+            } catch (ConnectIOException e1) {
+                e1.printStackTrace();
+            }
         });
         
         //button for the car action
@@ -521,7 +536,16 @@ public class Application extends javafx.application.Application {
 
         // when you press the button you will add an action
         car.setOnAction(e -> {
-            Transport.addCarAction();
+            try {
+                int distanceInt = Integer.parseInt(distance.getText());
+                errorMessage.setText("");
+                Transport.addCarAction(distanceInt);
+            } catch (NumberFormatException exception) {
+                // throw error
+                errorMessage.setText("Please only use numbers");
+            } catch (ConnectIOException e1) {
+                e1.printStackTrace();
+            }
         });
         
         //button for the plane action
@@ -533,7 +557,16 @@ public class Application extends javafx.application.Application {
 
         // when you press a button you will add an action
         plane.setOnAction(e -> {
-            Transport.addPlaneAction();
+            try {
+                int distanceInt = Integer.parseInt(distance.getText());
+                errorMessage.setText("");
+                Transport.addPlaneAction(distanceInt);
+            } catch (NumberFormatException exception) {
+                // throw error
+                errorMessage.setText("Please only use numbers");
+            } catch (ConnectIOException e1) {
+                e1.printStackTrace();
+            }
         });
 
         // make the kilometer label and the distance container
@@ -592,8 +625,12 @@ public class Application extends javafx.application.Application {
         
         // when you press the send button, it will look what is selected and add those actions
         send.setOnAction(e -> {
-            FoodCategory.addAction(veggie.isSelected(), locally.isSelected(), bio.isSelected());
-            
+            try {
+                Food.addAction(veggie.isSelected(), locally.isSelected(), bio.isSelected());
+            } catch (ConnectIOException e1) {
+                e1.printStackTrace();
+            }
+
             // then sets it to false to select it again
             veggie.setSelected(false);
             locally.setSelected(false);
@@ -643,7 +680,11 @@ public class Application extends javafx.application.Application {
             int value = (int) Math.round(waterTimeSlider.getValue());
             if (value != 0) {
                 errorWater.setText("");
-                Energy.addReduceWater();
+                try {
+                    Energy.addReduceWater(value);
+                } catch (ConnectIOException e1) {
+                    e1.printStackTrace();
+                }
             } else {
                 errorWater.setText("Please fill in the minutes you showered");
             }
@@ -669,7 +710,11 @@ public class Application extends javafx.application.Application {
         temperature.setOnAction(e -> {
             int value = (int) Math.round(temperatureSlider.getValue());
             System.out.println(value);
-            Energy.addReduceEnergyAction();
+            try {
+                Energy.addReduceEnergyAction(value);
+            } catch (ConnectIOException e1) {
+                e1.printStackTrace();
+            }
         });
         
         // makes the page and adds the nodes

@@ -4,12 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-
+import java.io.*;
 import java.util.ArrayList;
 
 @SpringBootApplication
@@ -155,10 +150,26 @@ public class Communication {
      * @return boolean correctly sent to server
      */
     public static boolean addAction(String actionName, int points) {
-        Action                    action  = new Action(token, actionName, points);
-        HttpEntity<client.Action> message = new HttpEntity<>(action);
+        Action             action  = new Action(token, actionName, points);
+        HttpEntity<Action> message = new HttpEntity<>(action);
+        RestTemplate       request = new RestTemplate();
         
-        RestTemplate request = new RestTemplate();
+        return request.postForObject(hostURL + "/addAction", message, boolean.class);
+    }
+    
+    /**
+     * to be implemented:
+     * adding an action to the database.
+     * @param actionName     the name of the action
+     * @param points         the points for the action
+     * @param carbonReduced  the carbon reduced in the action
+     * @param carbonProduced the carbon produced in the action
+     */
+    public static boolean addAction(String actionName, int points, int carbonReduced, int carbonProduced) {
+        Action             action  = new Action(token, actionName, points, carbonReduced, carbonProduced);
+        HttpEntity<Action> message = new HttpEntity<>(action);
+        RestTemplate       request = new RestTemplate();
+        
         return request.postForObject(hostURL + "/addAction", message, boolean.class);
     }
     
@@ -166,8 +177,8 @@ public class Communication {
      * Sends request to the server to retrieve last three actions for current user.
      * @return string containing last three actions
      */
-    public static ArrayList<ActionHistory> getLastThreeActions() {
-        return (ArrayList<ActionHistory>) postToken("/retract", ArrayList.class);
+    public static ArrayList<Action> getLastThreeActions() {
+        return ((ActionList) postToken("/retract", ActionList.class)).getList();
     }
     
     
@@ -175,7 +186,7 @@ public class Communication {
      * Sends request to the server to retrieve this user's total score.
      * @return integer containing total score
      */
-
+    
     public static int getMyTotalScore() {
         return (int) postToken("/getTotalScore", Integer.class);
     }
@@ -241,5 +252,4 @@ public class Communication {
     public static User getUser() {
         return (User) postToken("/getUser", User.class);
     }
-    
 }

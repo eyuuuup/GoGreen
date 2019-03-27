@@ -8,8 +8,6 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.ArrayList;
-
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 
@@ -78,7 +76,7 @@ public class ControllerTest {
     
     @Test
     public void addAction() {
-        Action action = new Action("user", "action", 10);
+        Action action = new Action("user", "action", 10, 50, 50);
         PowerMockito.when(Database.addAction(action)).thenReturn(true);
         
         boolean bool = Controller.addAction(action);
@@ -90,11 +88,10 @@ public class ControllerTest {
     
     @Test
     public void forDemo() {
-        ArrayList<ActionHistory> list = new ArrayList<>();
-        list.add(new ActionHistory("testName", 3600));
+        ActionList list = new ActionList();
         PowerMockito.when(Database.retract(anyString())).thenReturn(list);
         
-        ArrayList response = Controller.forDemo("testToken");
+        ActionList response = Controller.forDemo("testToken");
         PowerMockito.verifyStatic();
         assertEquals(list, response);
     }

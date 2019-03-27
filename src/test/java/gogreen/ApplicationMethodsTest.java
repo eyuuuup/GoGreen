@@ -15,8 +15,7 @@ import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
 import static org.powermock.api.mockito.PowerMockito.when;
@@ -99,14 +98,14 @@ public class ApplicationMethodsTest {
     }
     
     @Test
-    public void encodeUsername() {
+    public void encodeUsernameManual() {
         String decoded = "testUsername123";
         String encoded = "dGVzdFVzZXJuYW1lMTIz";
         assertEquals(encoded, ApplicationMethods.encodeUsername(decoded));
     }
     
     @Test
-    public void decodeUsername() {
+    public void decodeUsernameManual() {
         String decoded = "testUsername123";
         String encoded = "dGVzdFVzZXJuYW1lMTIz";
         assertEquals(decoded, ApplicationMethods.decodeUsername(encoded));
@@ -191,5 +190,17 @@ public class ApplicationMethodsTest {
         assertEquals(0.5, ApplicationMethods.getLevelProgress(125), 0.01);
         assertEquals(1, ApplicationMethods.getLevelProgress(249), 0.01);
         assertEquals(0, ApplicationMethods.getLevelProgress(250), 0.01);
+    }
+
+    @Test
+    public void decodeUsername() {
+        String name = ApplicationMethods.encodeUsername("username");
+        assertEquals("username", ApplicationMethods.decodeUsername(name));
+    }
+
+    @Test
+    public void decodeUsernameWrong() {
+        String name = ApplicationMethods.encodeUsername("username");
+        assertNotEquals("user", ApplicationMethods.decodeUsername(name));
     }
 }
