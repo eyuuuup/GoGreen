@@ -840,9 +840,14 @@ public class Application extends javafx.application.Application {
         Tab overview = new Tab();
         overview.setText("Overview");
         overview.setContent(overviewScreen());
+
+        // make the history tab
+        Tab history = new Tab();
+        history.setText("History");
+        history.setContent(historyScreen());
         
         // add all the tabs to the navigation bar
-        statsNavigation.getTabs().addAll(overview);
+        statsNavigation.getTabs().addAll(overview, history);
         
         // make the stats page
         Pane statsPage = new Pane();
@@ -855,28 +860,68 @@ public class Application extends javafx.application.Application {
      * make the overview screen.
      * @return the overview screen
      */
-    private static VBox overviewScreen() {
+    private static GridPane overviewScreen() {
+        int amountSaved = 1234;
+
+        Label amountSavedLabel = new Label(String.valueOf(amountSaved));
+        amountSavedLabel.setId("amountSavedNr");
+
+        Label amountSavedText = new Label("kg CO\u2082 saved");
+        amountSavedText.setId("amountSavedText");
+
+        double reference = amountSaved * 0.02 ;
+
+        Label referenceIntro = new Label("That is ");
+        referenceIntro.setId("referenceText");
+
+        Label referenceLabel = new Label(String.valueOf(reference));
+        referenceLabel.setId("referenceNr");
+
+        Label referenceText = new Label("Marit(s)");
+        referenceText.setId("referenceText");
+
+        VBox amountSavedContainer = new VBox();
+        amountSavedContainer.getChildren().addAll(amountSavedLabel, amountSavedText);
+        amountSavedContainer.setAlignment(Pos.TOP_CENTER);
+
+        VBox referenceContainer = new VBox(2);
+        referenceContainer.getChildren().addAll(referenceIntro, referenceLabel, referenceText);
+        referenceContainer.setAlignment(Pos.BOTTOM_LEFT);
+
+
+
+        // make the overview page
+        GridPane overviewPage = new GridPane();
+        overviewPage.setHgap(30);
+        overviewPage.setAlignment(Pos.TOP_CENTER);
+        overviewPage.add(amountSavedContainer, 0,0);
+        overviewPage.add(referenceContainer,1,0);
+
         
+        // return the page
+        return overviewPage;
+    }
+
+    private static VBox historyScreen() {
+
         // make the refresh button
         JFXButton refresh = new JFXButton("refresh");
-        
+
         // make the recent activites text
         Label history = new Label("Recent Activities: \t\t date: \t\t\t time: \n "
                 + client.Communication.getLastThreeActions());
         history.setId("history");
-        
+
         // if the refresh button is pressed, we display the last three recent activities
         refresh.setOnAction(e -> {
             history.setText("Recent Activities: \t\t date: \t\t\t time: \n "
                     + client.Communication.getLastThreeActions());
         });
-        
-        // make the overview page
-        VBox overviewPage = new VBox();
-        overviewPage.getChildren().addAll(history, refresh);
-        
-        // return the page
-        return overviewPage;
+
+        VBox historyPage = new VBox();
+        historyPage.getChildren().addAll(history, refresh);
+
+        return historyPage;
     }
     
     /**
