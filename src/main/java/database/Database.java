@@ -149,32 +149,38 @@ public class Database {
      * @param token the token from a user.
      * @return the history in a String.
      */
-    public static ArrayList<ActionHistory> retract(String token) {
+    public static ActionList retract(String token) {
         try {
             Connection con = DriverManager.getConnection();
             System.out.println("retract called");
             PreparedStatement state =
-                    con.prepareStatement("select action_name, date_time, events.parent_category "
-                            + "FROM actions, events WHERE actions.action_id = events.action_id \n"
-                            + "AND events.username = ? "
+                    con.prepareStatement("SELECT actions.action_name, events.points, events.carbon_reduced, events.carbon_produced, events.date_time "
+                            + "FROM events JOIN actions ON events.action_id = actions.action_id "
+                            + "WHERE events.username = ? "
                             + "ORDER BY date_time DESC LIMIT 3");
             state.setString(1, getUsername(token));
             ResultSet rs = state.executeQuery();
             
-            ArrayList<ActionHistory> result = new ArrayList<>();
+            ArrayList<Action> list = new ArrayList<>();
             while (rs.next()) {
-                String action = rs.getString(1);
-                long   date   = rs.getLong(2);
-                result.add(new ActionHistory(action, date));
+                Action action = new Action();
+                
+                action.setAction(rs.getString(1));
+                action.setValue(rs.getInt(2));
+                action.setCarbonProduced(rs.getInt(3));
+                action.setCarbonReduced(rs.getInt(4));
+                action.setDate(rs.getLong(5));
+                
+                list.add(action);
             }
             
             System.out.println("retract success");
             con.close();
-            return result;
+            return new ActionList(list);
             
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-            return new ArrayList<>();
+            return null;
         }
     }
     
@@ -210,7 +216,29 @@ public class Database {
      * @return the total score of a user.
      */
     public static int getTotalScore(String token) {
-        return getTotalScoreByUser(getUsername(token));
+        try {
+            Connection con = DriverManager.getConnection();
+            System.out.println("getTotalScore called");
+            
+            PreparedStatement state =
+                    con.prepareStatement("SELECT total_score "
+                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
+                            + "WHERE user_data.token = ?");
+            state.setString(1, token);
+            ResultSet rs = state.executeQuery();
+        
+            int currentTotalScore = 0;
+            while (rs.next()) {
+                currentTotalScore = rs.getInt(1);
+                System.out.println("currentTotalScore: " + currentTotalScore);
+            }
+        
+            con.close();
+            return currentTotalScore;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return 0;
+        }
     }
     
     /**
