@@ -35,7 +35,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -457,13 +456,13 @@ public class Application extends javafx.application.Application {
         extraTab.setContent(extraScreen());
 
         // make the one time events tab
-        Tab oneTimeEventTab = new Tab();
-        oneTimeEventTab.setText("One Time Event");
-        oneTimeEventTab.setContent(oteScreen());
+        Tab oteTab = new Tab();
+        oteTab.setText("One Time Event");
+        oteTab.setContent(oteScreen());
         
         // add all the tabs to the navigation bar
-        categoryNavigation.getTabs().addAll(transportTab, foodTab, energyTab, extraTab, oneTimeEventTab);
-        
+        categoryNavigation.getTabs().addAll(transportTab, foodTab, energyTab, extraTab, oteTab);
+
         // make the category page
         Pane categoryPage = new Pane();
         categoryPage.getChildren().addAll(categoryNavigation);
@@ -732,10 +731,10 @@ public class Application extends javafx.application.Application {
     }
 
     /**
-     * makes the one time events screen
+     * makes the one time events screen.
      * @return the one time events page
      */
-    private static GridPane oteScreen(){
+    private static GridPane oteScreen() {
 
         // makes the solar panel toggle
         JFXToggleNode solarPanels = new JFXToggleNode();
@@ -759,9 +758,9 @@ public class Application extends javafx.application.Application {
         joinedGroup.setMinSize(500,100);
 
         // makes the add action button
-        JFXButton addOTE = new JFXButton("Add the one time event");
-        addOTE.setPrefSize(500, 100);
-        addOTE.setOnAction(e -> {
+        JFXButton addOte = new JFXButton("Add the one time event");
+        addOte.setPrefSize(500, 100);
+        addOte.setOnAction(e -> {
             if (solarPanels.isSelected()) {
                 OneTimeEvent.addSolarPanelAction();
             }
@@ -779,7 +778,7 @@ public class Application extends javafx.application.Application {
         otePage.add(solarPanels,0,0);
         otePage.add(electricCar,0,1);
         otePage.add(joinedGroup,0,2);
-        otePage.add(addOTE, 0, 3);
+        otePage.add(addOte, 0, 3);
         return otePage;
     }
     
