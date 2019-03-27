@@ -1,5 +1,7 @@
 package client;
 
+import gogreen.Energy;
+import gogreen.Transport;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
@@ -212,7 +214,8 @@ public class Communication {
      * @return an arraylist ofCompareFriends
      */
     public static ArrayList<CompareFriends> getFriends() {
-        return ((FriendsList)postToken("/showFriends", FriendsList.class)).getList();    }
+        return ((FriendsList)postToken("/showFriends", FriendsList.class)).getList();
+    }
 
     /**
      * This method retrieves the user's list of followers from the server.
@@ -221,7 +224,8 @@ public class Communication {
      * @return an arraylist of "CompareFriends"
      */
     public static ArrayList<CompareFriends> getFollowers() {
-        return ((FriendsList)postToken("/showFollowers", FriendsList.class)).getList();    }
+        return ((FriendsList)postToken("/showFollowers", FriendsList.class)).getList();
+    }
     
     /**
      * This method checks if the searched username exists or not.
@@ -239,12 +243,34 @@ public class Communication {
     }
     
     /**
-     *
+     * Compares friends.
      */
     public static ArrayList<CompareFriends> getLeaderboard() {
         RestTemplate reuquest = new RestTemplate();
         return reuquest.getForObject(hostURL + "/getLeaderboard", FriendsList.class).getList();
     }
-    
-    
+
+    /**
+     * to be implemented:
+     * adding an action to the database.
+     * @param actionName the name of the action
+     * @param points the points for the action
+     * @param carbonReduced the carbon reduced in the action
+     * @param carbonProduced the carbon produced in the action
+     */
+    public static void addAction(
+            String actionName, int points, int carbonReduced, int carbonProduced) {
+        //to be implemented: send to database with carbonReduced and carbonProduced
+        addAction(actionName, points);
+    }
+
+    /**
+     * To be implemented:
+     * checks whether user has solar panels and or an electric car in the database.
+     */
+    public static void onLoad() {
+        // to be implemented: fetch data from the database
+        Transport.setHasElectricCar(false);
+        Energy.setHasSolarPanels(false);
+    }
 }
