@@ -170,6 +170,7 @@ public class Communication {
      * Sends request to the server to retrieve this user's total score.
      * @return integer containing total score
      */
+
     public static int getMyTotalScore() {
         return (int) postToken("/getTotalScore", Integer.class);
     }
