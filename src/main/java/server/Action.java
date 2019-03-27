@@ -14,8 +14,11 @@ public class Action {
      * @param user the user
      * @param action the action
      * @param value the value
+     * @param carbonProduced carbon produced
+     * @param carbonReduced carbon saced
      */
     public Action(String user, String action, int value, int carbonReduced, int carbonProduced) {
+
         this.user = user;
         this.action = action;
         this.value = value;
@@ -47,19 +50,32 @@ public class Action {
         return value;
     }
 
-
+    /**
+     * getter for carbonReduced.
+     * @return carbonReduced
+     */
     public int getCarbonReduced() {
         return carbonReduced;
     }
 
+    /**
+     * setter for carbonReduced.
+     */
     public void setCarbonReduced(int carbonReduced) {
         this.carbonReduced = carbonReduced;
     }
 
+    /**
+     * getter for Value.
+     * @return carbonProduced
+     */
     public int getCarbonProduced() {
         return carbonProduced;
     }
 
+    /**
+     * setter for Value.
+     */
     public void setCarbonProduced(int carbonProduced) {
         this.carbonProduced = carbonProduced;
     }

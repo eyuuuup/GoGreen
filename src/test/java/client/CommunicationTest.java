@@ -9,7 +9,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -127,7 +126,7 @@ public class CommunicationTest {
         PowerMockito.when(template.postForObject(anyString(), anyObject(), eq(boolean.class))).thenReturn(true);
         PowerMockito.whenNew(RestTemplate.class).withAnyArguments().thenReturn(template);
         
-        assertTrue(Communication.addAction("testAction", 100));
+        assertTrue(Communication.addAction("testAction", 100, 50, 50));
     }
     
     @Test

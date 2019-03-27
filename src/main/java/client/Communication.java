@@ -162,13 +162,13 @@ public class Communication {
      * @param points     the value of points to send
      * @return boolean correctly sent to server
      */
-//    public static boolean addAction(String actionName, int points) {
-//        Action action = new Action(token, actionName, points);
-//        HttpEntity<client.Action> message = new HttpEntity<>(action);
-//
-//        RestTemplate request = new RestTemplate();
-//        return request.postForObject(hostURL + "/addAction", message, boolean.class);
-//    }
+    //    public static boolean addAction(String actionName, int points) {
+    //        Action action = new Action(token, actionName, points);
+    //        HttpEntity<client.Action> message = new HttpEntity<>(action);
+    //
+    //        RestTemplate request = new RestTemplate();
+    //        return request.postForObject(hostURL + "/addAction", message, boolean.class);
+    //    }
 
     /**
      * Sends request to the server to retrieve last three actions for current user.
@@ -263,7 +263,7 @@ public class Communication {
         Action action = new Action(token, actionName, points, carbonReduced, carbonProduced);
         HttpEntity<client.Action> message = new HttpEntity<>(action);
         RestTemplate request = new RestTemplate();
-         return request.postForObject(hostURL + "/addAction", message, boolean.class);
+        return request.postForObject(hostURL + "/addAction", message, boolean.class);
     }
 
     /**

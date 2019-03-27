@@ -1,7 +1,13 @@
 package database;
 
 import org.joda.time.Instant;
-import server.*;
+import server.User;
+import server.Action;
+import server.CompareFriends;
+import server.TokenResponse;
+import server.ActionHistory;
+import server.Friends;
+import server.FriendsList;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -68,7 +74,7 @@ public class Database {
             
             PreparedStatement state1 =
                     con.prepareStatement("INSERT INTO events (action_id, date_time, "
-                            + "points, parent_category, username, carbonReduced, carbonProduced)"
+                            + "points, parent_category, username, carbon_reduced, carbon_produced)"
                             + "VALUES (?, ?, ?, ?, ?,?,?);");
             state1.setInt(1, actionId);
 
@@ -414,6 +420,10 @@ public class Database {
         }
     }
 
+    /**
+     * This methods gets the leaderboard.
+     * @return A FriendsList object with the leaderboard inside.
+     */
     public static FriendsList getLeaderboard() {
         System.out.println("getLeaderboard called");
         try {
@@ -442,7 +452,14 @@ public class Database {
         }
     }
 
-    public static boolean checkOneTimeEvent(String username, int id){
+    /**
+     * (Experimental)
+     * This methods checks if the user completed a One Time Event.
+     * @param username username of the user.
+     * @param id the id of the One Time Event.
+     * @return a boolean.
+     */
+    public static boolean checkOneTimeEvent(String username, int id) {
         System.out.println("checkOneTimeEvent called");
         try {
             Connection con = DriverManager.getConnection();
@@ -464,7 +481,14 @@ public class Database {
 
     }
 
-    public static void addChallenge(String usernameA, String usernameB, int goal){
+    /**
+     * (Experimental)
+     * This methods adds a challenge.
+     * @param usernameA username of a user.
+     * @param usernameB username of a user.
+     * @param goal amount of points to win.
+     */
+    public static void addChallenge(String usernameA, String usernameB, int goal) {
         System.out.println("addChallenge called");
         try {
             Connection con = DriverManager.getConnection();
@@ -485,7 +509,13 @@ public class Database {
 
     }
 
-    public static void updateChallenge(String usernameA, String usernameB){
+    /**
+     * (Experimental)
+     * This methods adds a challenge.
+     * @param usernameA username of a user.
+     * @param usernameB username of a user.
+     */
+    public static void updateChallenge(String usernameA, String usernameB) {
         System.out.println("updateChallenge called");
         try {
             Connection con = DriverManager.getConnection();
@@ -504,8 +534,5 @@ public class Database {
         }
 
     }
-
-
-
 
 }

@@ -78,7 +78,7 @@ public class ControllerTest {
     
     @Test
     public void addAction() {
-        Action action = new Action("user", "action", 10);
+        Action action = new Action("user", "action", 10,50,50);
         PowerMockito.when(Database.addAction(action)).thenReturn(true);
         
         boolean bool = Controller.addAction(action);

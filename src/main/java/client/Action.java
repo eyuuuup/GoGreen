@@ -3,7 +3,7 @@ package client;
 public class Action {
     private String user;
     private String action;
-    private int    value;
+    private int value;
     private int carbonReduced;
     private int carbonProduced;
     /**
@@ -11,8 +11,11 @@ public class Action {
      * @param user the username
      * @param action the action name
      * @param value the amount of points
+     * @param carbonReduced amount of carbon saved
+     * @param carbonProduced amount of carbon produced
      */
     public Action(String user, String action, int value, int carbonReduced, int carbonProduced) {
+
         this.user = user;
         this.action = action;
         this.value = value;
