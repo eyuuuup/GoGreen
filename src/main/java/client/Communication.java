@@ -1,5 +1,7 @@
 package client;
 
+import gogreen.Energy;
+import gogreen.Transport;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
@@ -249,15 +251,8 @@ public class Communication {
     }
 
     /**
-     * To be implemented: checks whether user has an electric car.
-     * @return iff user has electric car
-     */
-    public static boolean hasElectricCar() {
-        return false;
-    }
-
-    /**
-     * to be implemented: adding an action to the database.
+     * to be implemented:
+     * adding an action to the database.
      * @param actionName the name of the action
      * @param points the points for the action
      * @param carbonReduced the carbon reduced in the action
@@ -265,14 +260,17 @@ public class Communication {
      */
     public static void addAction(
             String actionName, int points, int carbonReduced, int carbonProduced) {
+        //to be implemented: send to database with carbonReduced and carbonProduced
         addAction(actionName, points);
     }
 
     /**
-     * To be implemented: checks whether user has solar panels.
-     * @return iff user has solar panels
+     * To be implemented:
+     * checks whether user has solar panels and or an electric car in the database.
      */
-    public static boolean hasSolarPanels() {
-        return false;
+    public static void onLoad() {
+        // to be implemented: fetch data from the database
+        Transport.setHasElectricCar(false);
+        Energy.setHasSolarPanels(false);
     }
 }

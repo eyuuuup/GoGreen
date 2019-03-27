@@ -11,30 +11,18 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.rmi.ConnectIOException;
 
-public class Api {
+class Api {
     private static final String site = "http://impact.brighterplanet.com/";
     private static final String key = "&key=5a927d96eca397b6659a3c361ce32254";
 
     private Api() {}
 
     /**
-     * testing with the API.
-     * @param args args
-     */
-    public static void main(String[] args) throws ConnectIOException {
-        System.out.println(CarbonAmount("automobile_trips.json?distance=200") + "kg for driving 100 km");
-        System.out.println(CarbonAmount("flights.json?distance=100") + "kg for flying 100 km");
-        System.out.println(CarbonAmount("bus_trips.json?distance=100") + "kg for bus traveling 100 km");
-        System.out.println(CarbonAmount("diets.json?size=4") + "kg for eating 4 thingies");
-        System.out.println(CarbonAmount("electricity_uses.json?energy=1200") + "kg for using 1200 MJ of energy");
-    }
-
-    /**
      * this class calculates the amount of CO2 for a given input.
      * @param parameters parameters
      * @return kg of CO2
      */
-    static int CarbonAmount(String parameters) throws ConnectIOException {
+    static int carbonAmount(String parameters) throws ConnectIOException {
         HttpClient client = HttpClientBuilder.create().build();
         HttpGet request = new HttpGet(
                 site + "" + parameters + "" + key);
@@ -43,7 +31,8 @@ public class Api {
             HttpResponse response = client.execute(request);
             HttpEntity entity = response.getEntity();
             JSONObject responseJson = new JSONObject(EntityUtils.toString(entity));
-            String carbonString = responseJson.getJSONObject("decisions").getJSONObject("carbon").get("description").toString();
+            String carbonString = responseJson.getJSONObject("decisions")
+                    .getJSONObject("carbon").get("description").toString();
             return (int) Double.parseDouble(carbonString.replace(" kg", ""));
         } catch (IOException e) {
             e.printStackTrace();

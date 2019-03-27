@@ -1,5 +1,6 @@
 package gogreen;
 
+import client.Communication;
 import client.CompareFriends;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSlider;
@@ -56,7 +57,7 @@ public class Application extends javafx.application.Application {
      */
     @Override
     public void start(Stage stage) {
-        Transport.onLoad();
+        Communication.onLoad();
 
         this.stage = stage;
         stage.setTitle("GoGreen");
@@ -675,7 +676,11 @@ public class Application extends javafx.application.Application {
             int value = (int) Math.round(waterTimeSlider.getValue());
             if (value != 0) {
                 errorWater.setText("");
-                Energy.addReduceWater(value);
+                try {
+                    Energy.addReduceWater(value);
+                } catch (ConnectIOException e1) {
+                    e1.printStackTrace();
+                }
             } else {
                 errorWater.setText("Please fill in the minutes you showered");
             }
@@ -701,7 +706,11 @@ public class Application extends javafx.application.Application {
         temperature.setOnAction(e -> {
             int value = (int) Math.round(temperatureSlider.getValue());
             System.out.println(value);
-            Energy.addReduceEnergyAction(value);
+            try {
+                Energy.addReduceEnergyAction(value);
+            } catch (ConnectIOException e1) {
+                e1.printStackTrace();
+            }
         });
         
         // makes the page and adds the nodes

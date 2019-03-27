@@ -19,14 +19,14 @@ public class FoodTest {
     public void setUp() throws Exception {
         PowerMockito.mockStatic(Communication.class);
         PowerMockito.mockStatic(Api.class);
-        PowerMockito.when(Api.class, "CarbonAmount", anyString()).thenReturn(100);
+        PowerMockito.when(Api.class, "carbonAmount", anyString()).thenReturn(100);
     }
 
     @Test
     public void addActionAllTrue() throws ConnectIOException {
         Food.addAction(true, true, true);
         PowerMockito.verifyStatic();
-        Api.CarbonAmount("diets.json?size=1");
+        Api.carbonAmount("diets.json?size=1");
         PowerMockito.verifyStatic();
         Communication.addAction("Meat", 50, 100, 0);
         PowerMockito.verifyStatic();
@@ -39,7 +39,7 @@ public class FoodTest {
     public void addActionAllFalse() throws ConnectIOException{
         Food.addAction(false, false, false);
         PowerMockito.verifyStatic();
-        Api.CarbonAmount("diets.json?size=1");
+        Api.carbonAmount("diets.json?size=1");
         PowerMockito.verifyStatic();
         PowerMockito.verifyNoMoreInteractions();
     }
@@ -48,7 +48,7 @@ public class FoodTest {
     public void addActionOnlyMeatTrue() throws ConnectIOException{
         Food.addAction(true, false, false);
         PowerMockito.verifyStatic();
-        Api.CarbonAmount("diets.json?size=1");
+        Api.carbonAmount("diets.json?size=1");
         PowerMockito.verifyStatic();
         Communication.addAction("Meat", 50, 100, 0);
         PowerMockito.verifyNoMoreInteractions();
@@ -58,7 +58,7 @@ public class FoodTest {
     public void addActionOnlyBioTrue() throws ConnectIOException{
         Food.addAction(false, false, true);
         PowerMockito.verifyStatic();
-        Api.CarbonAmount("diets.json?size=1");
+        Api.carbonAmount("diets.json?size=1");
         PowerMockito.verifyStatic();
         Communication.addAction("Biological", 50, 100, 0);
         PowerMockito.verifyNoMoreInteractions();
@@ -68,7 +68,7 @@ public class FoodTest {
     public void addActionMeatAndBioTrue() throws ConnectIOException{
         Food.addAction(true, false, true);
         PowerMockito.verifyStatic();
-        Api.CarbonAmount("diets.json?size=1");
+        Api.carbonAmount("diets.json?size=1");
         PowerMockito.verifyStatic();
         Communication.addAction("Meat", 50, 100, 0);
         PowerMockito.verifyStatic();
@@ -80,7 +80,7 @@ public class FoodTest {
     public void addActionLocalAndBioTrue() throws ConnectIOException{
         Food.addAction(false, true, true);
         PowerMockito.verifyStatic();
-        Api.CarbonAmount("diets.json?size=1");
+        Api.carbonAmount("diets.json?size=1");
         PowerMockito.verifyStatic();
         Communication.addAction("Local", 50, 100, 0);
         PowerMockito.verifyStatic();

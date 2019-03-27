@@ -9,7 +9,7 @@ public class FriendsList {
         this.list = list;
     }
     
-    public FriendsList(){
+    public FriendsList() {
         list = new ArrayList<>();
     }
     

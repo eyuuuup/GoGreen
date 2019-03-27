@@ -20,8 +20,9 @@ public class Food {
      * @param locally locally produced
      * @param bio biological
      */
-    public static void addAction(boolean veggie, boolean locally, boolean bio) throws ConnectIOException {
-        int carbonReduced = Api.CarbonAmount("diets.json?size=1");
+    public static void addAction(boolean veggie, boolean locally, boolean bio)
+            throws ConnectIOException {
+        int carbonReduced = Api.carbonAmount("diets.json?size=1");
         if (veggie) {
             Communication.addAction("Meat", 50, carbonReduced, 0);
         }

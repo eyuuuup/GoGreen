@@ -132,15 +132,14 @@ public class Controller {
      * @return boolean is username exists or not
      */
 
-    @RequestMapping(value={"/checkUser"}, method=RequestMethod.POST,
-            produces=MediaType.APPLICATION_JSON_VALUE)
-    public static boolean checkUser(@Valid @RequestBody String username)
-    {
+    @RequestMapping(value = {"/checkUser"}, method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public static boolean checkUser(@Valid @RequestBody String username) {
         return Database.checkUsername(username);
     }
     
     /**
-     *
+     * get leaderboard.
      */
     @RequestMapping(value = {"/getLeaderboard"}, method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)

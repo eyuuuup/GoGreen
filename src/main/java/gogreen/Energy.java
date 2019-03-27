@@ -2,39 +2,51 @@ package gogreen;
 
 import client.Communication;
 
+import java.rmi.ConnectIOException;
+
 /**
  * Represent the Energy Category.
  * @author Gyum cho
  */
-final class Energy {
+public final class Energy {
     private static boolean hasSolarPanels = false;
 
     private Energy() {}
-
-    public static void onload() {
-        hasSolarPanels = Communication.hasSolarPanels();
-    }
 
     /**
      * sets boolean hasSolarPanels to solarPanels.
      * @param solarPanels has solar panels
      */
-    static void setHasSolarPanels(boolean solarPanels) {
+    public static void setHasSolarPanels(boolean solarPanels) {
         hasSolarPanels = solarPanels;
     }
 
     /**
-     * Method for reduce energy use.
+     * Method for reduced energy usage due to a lower house temperature.
      */
-    static void addReduceEnergyAction(int houseTemperature) {
-        Communication.addAction("ReduceEnergy", 100);
+    static void addReduceEnergyAction(int houseTemperature) throws ConnectIOException {
+        int temperatureDiff = 23 - houseTemperature;
+        int megaJoules = temperatureDiff * 100;
+        int carbon = Api.carbonAmount("electricity_uses.json?energy=" + megaJoules);
+        if (hasSolarPanels) {
+            Communication.addAction("ReduceEnergy", 100 * temperatureDiff, carbon, 0);
+        } else {
+            Communication.addAction("ReduceEnergy", 100 * temperatureDiff, 0, carbon);
+        }
     }
 
     /**
      * Method for less shower time.
      */
-    static void addReduceWater(int showerTime) {
-        Communication.addAction("ReduceWater", 100);
+    static void addReduceWater(int showerTime) throws ConnectIOException {
+        int timeDiff = 20 - showerTime;
+        int megaJoules = showerTime * 100;
+        int carbon = Api.carbonAmount("electricity_uses.json?energy=" + megaJoules);
+        if (hasSolarPanels) {
+            Communication.addAction("ReduceWater", 100 * timeDiff, carbon, 0);
+        } else {
+            Communication.addAction("ReduceWater", 100 * timeDiff, 0, carbon);
+        }
     }
 }
 
