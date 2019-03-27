@@ -451,7 +451,9 @@ public class Database {
             PreparedStatement state = con.prepareStatement(
                     "SELECT action_id "
                             + "FROM events "
-                            + "WHERE user_name = ?");
+                            + "WHERE user_name = ? AND action_id = ?");
+            state.setString(1, username);
+            state.setInt(2, id);
             ResultSet rs = state.executeQuery();
             con.close();
             if(!rs.next()){
