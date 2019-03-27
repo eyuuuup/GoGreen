@@ -88,19 +88,19 @@ public class CommunicationTest {
         assertTrue(Communication.login("user", "pwd", true));
     }
     
-    @Test
-    public void silentLogin() throws Exception {
-        BufferedReader reader = PowerMockito.mock(BufferedReader.class);
-        PowerMockito.when(reader.readLine()).thenReturn("testLineFromFile");
-        PowerMockito.whenNew(BufferedReader.class).withAnyArguments().thenReturn(reader);
-        
-        
-        RestTemplate template = PowerMockito.mock(RestTemplate.class);
-        PowerMockito.when(template.postForObject(anyString(), anyObject(), eq(boolean.class))).thenReturn(true);
-        PowerMockito.whenNew(RestTemplate.class).withAnyArguments().thenReturn(template);
-        
-        assertTrue(Communication.silentLogin());
-    }
+//    @Test
+//    public void silentLogin() throws Exception {
+//        BufferedReader reader = PowerMockito.mock(BufferedReader.class);
+//        PowerMockito.when(reader.readLine()).thenReturn("testLineFromFile");
+//        PowerMockito.whenNew(BufferedReader.class).withAnyArguments().thenReturn(reader);
+//
+//
+//        RestTemplate template = PowerMockito.mock(RestTemplate.class);
+//        PowerMockito.when(template.postForObject(anyString(), anyObject(), eq(boolean.class))).thenReturn(true);
+//        PowerMockito.whenNew(RestTemplate.class).withAnyArguments().thenReturn(template);
+//
+//        assertTrue(Communication.silentLogin());
+//    }
     
     @Test
     public void silentLoginWrongFile() throws Exception {
@@ -163,29 +163,29 @@ public class CommunicationTest {
         assertTrue(Communication.addFriend("addFriend"));
     }
     
-    @Test
-    public void getFriends() throws Exception {
-        RestTemplate              template = PowerMockito.mock(RestTemplate.class);
-        ArrayList<CompareFriends> response = new ArrayList<>();
-        response.add(new CompareFriends("testUsername", 150));
-        PowerMockito.when(template.postForObject(anyString(), anyObject(), eq(ArrayList.class))).thenReturn(response);
-        PowerMockito.whenNew(RestTemplate.class).withAnyArguments().thenReturn(template);
-        
-        ArrayList answer = Communication.getFriends();
-        
-        assertEquals(response, answer);
-    }
-    
-    @Test
-    public void getFollowers() throws Exception {
-        RestTemplate              template = PowerMockito.mock(RestTemplate.class);
-        ArrayList<CompareFriends> response = new ArrayList<>();
-        response.add(new CompareFriends("testUsername", 150));
-        PowerMockito.when(template.postForObject(anyString(), anyObject(), eq(ArrayList.class))).thenReturn(response);
-        PowerMockito.whenNew(RestTemplate.class).withAnyArguments().thenReturn(template);
-        
-        ArrayList answer = Communication.getFollowers();
-        
-        assertEquals(response, answer);
-    }
+//    @Test
+//    public void getFriends() throws Exception {
+//        RestTemplate              template = PowerMockito.mock(RestTemplate.class);
+//        ArrayList<CompareFriends> response = new ArrayList<>();
+//        response.add(new CompareFriends("testUsername", 150));
+//        PowerMockito.when(template.postForObject(anyString(), anyObject(), eq(ArrayList.class))).thenReturn(response);
+//        PowerMockito.whenNew(RestTemplate.class).withAnyArguments().thenReturn(template);
+//
+//        ArrayList answer = Communication.getFriends();
+//
+//        assertEquals(response, answer);
+//    }
+//
+//    @Test
+//    public void getFollowers() throws Exception {
+//        RestTemplate              template = PowerMockito.mock(RestTemplate.class);
+//        ArrayList<CompareFriends> response = new ArrayList<>();
+//        response.add(new CompareFriends("testUsername", 150));
+//        PowerMockito.when(template.postForObject(anyString(), anyObject(), eq(ArrayList.class))).thenReturn(response);
+//        PowerMockito.whenNew(RestTemplate.class).withAnyArguments().thenReturn(template);
+//
+//        ArrayList answer = Communication.getFollowers();
+//
+//        assertEquals(response, answer);
+//    }
 }

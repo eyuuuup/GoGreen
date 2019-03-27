@@ -20,20 +20,20 @@ public class OneTimeEventTest {
     public void addSolarPanelAction() {
         OneTimeEvent.addSolarPanelAction();
         PowerMockito.verifyStatic();
-        Communication.addAction("SolarPanel", 1000);
+        Communication.addAction("SolarPanel", 2000, 0, 0);
     }
 
     @Test
     public void addElectricCarAction() {
         OneTimeEvent.addElectricCarAction();
         PowerMockito.verifyStatic();
-        Communication.addAction("ElectricCar", 1000);
+        Communication.addAction("ElectricCar", 3000, 0, 0);
     }
 
     @Test
     public void addEvGroupAction() {
         OneTimeEvent.addEvGroupAction();
         PowerMockito.verifyStatic();
-        Communication.addAction("EvGroup", 1000);
+        Communication.addAction("EvGroup", 1000, 0, 0);
     }
 }

@@ -7,33 +7,51 @@ import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
+
+import java.rmi.ConnectIOException;
+
+import static org.mockito.Matchers.anyString;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Communication.class)
+@PrepareForTest({Communication.class, Api.class})
 public class EnergyTest {
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         PowerMockito.mockStatic(Communication.class);
+        PowerMockito.mockStatic(Api.class);
+        PowerMockito.when(Api.class, "carbonAmount", anyString()).thenReturn(100);
     }
 
     @Test
-    public void addReduceEnergyAction() {
-        Energy.addReduceEnergyAction();
+    public void addReduceEnergyAction() throws ConnectIOException {
+        Whitebox.setInternalState(Energy.class, "hasSolarPanels", false);
+        Energy.addReduceEnergyAction(20);
         PowerMockito.verifyStatic();
-        Communication.addAction("ReduceEnergy", 100);
+        Communication.addAction("ReduceEnergy", 300, 0, 100);
     }
 
     @Test
-    public void addReduceWater() {
-        Energy.addReduceWater();
+    public void addReduceEnergyActionSolarPanels() throws ConnectIOException {
+        Whitebox.setInternalState(Energy.class, "hasSolarPanels", true);
+        Energy.addReduceEnergyAction(20);
         PowerMockito.verifyStatic();
-        Communication.addAction("ReduceWater", 100);
+        Communication.addAction("ReduceEnergy", 300, 100, 0);
     }
 
     @Test
-    public void addReduceElectricity() {
-        Energy.addReduceElectricity();
+    public void addReduceWater() throws ConnectIOException {
+        Whitebox.setInternalState(Energy.class, "hasSolarPanels", false);
+        Energy.addReduceWater(15);
         PowerMockito.verifyStatic();
-        Communication.addAction("ReduceElectricity", 100);
+        Communication.addAction("ReduceWater", 500, 0, 100);
+    }
+
+    @Test
+    public void addReduceWaterSolarPanels() throws ConnectIOException {
+        Whitebox.setInternalState(Energy.class, "hasSolarPanels", true);
+        Energy.addReduceWater(15);
+        PowerMockito.verifyStatic();
+        Communication.addAction("ReduceWater", 500, 100, 0);
     }
 }
