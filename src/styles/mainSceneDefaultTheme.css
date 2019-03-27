@@ -76,6 +76,10 @@
     -fx-font-weight: bold;
     -fx-font-size: 14;
 }
+/* about */
+#aboutText{
+    -fx-font-size: 16;
+}
 
 #history {
     -fx-text-fill: #249677;
