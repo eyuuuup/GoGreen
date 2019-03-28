@@ -110,8 +110,7 @@ public class Database {
                 long diff    = 12 * 60 * 60 * 1000;
                 long temp    = 1000;
                 System.out.println(present + "present" + lastInput + "last");
-                if ((present - lastInput >= diff) || (present - lastInput <= temp)) {
-                } else {
+                if ((present - lastInput < diff) && (present - lastInput > temp)) {
                     return false;
                 }
             }

@@ -117,6 +117,17 @@ public class ControllerTest {
     }
     
     @Test
+    public void getUser() {
+        String username = "testFriend";
+        
+        User user = new User();
+        
+        PowerMockito.when(Database.getUser(username)).thenReturn(user);
+        
+        assertEquals(user, Controller.getUser(username));
+    }
+    
+    @Test
     public void addFriend() {
         Friends fr = new Friends("testToken", "testFriend");
         
