@@ -205,6 +205,14 @@ public class Communication {
     }
     
     /**
+     * This method is to get the information of user for the user.
+     * @return username object containg all information about the user
+     */
+    public static User getUser() {
+        return (User) postToken("/getUser", User.class);
+    }
+    
+    /**
      * This method adds a friend by it's username.
      * Friend is someone who you follow.
      * @param friendUsername username of the frien
@@ -243,13 +251,5 @@ public class Communication {
     public static ArrayList<CompareFriends> getLeaderboard() {
         RestTemplate reuquest = new RestTemplate();
         return reuquest.getForObject(hostURL + "/getLeaderboard", FriendsList.class).getList();
-    }
-    
-    /**
-     * This method is to get the information of user for the user.
-     * @return username object containg all information about the user
-     */
-    public static User getUser() {
-        return (User) postToken("/getUser", User.class);
     }
 }

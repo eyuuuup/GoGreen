@@ -9,6 +9,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -87,19 +88,21 @@ public class CommunicationTest {
         assertTrue(Communication.login("user", "pwd", true));
     }
 
-//    @Test
-//    public void silentLogin() throws Exception {
-//        BufferedReader reader = PowerMockito.mock(BufferedReader.class);
-//        PowerMockito.when(reader.readLine()).thenReturn("testLineFromFile");
-//        PowerMockito.whenNew(BufferedReader.class).withAnyArguments().thenReturn(reader);
-//
-//
-//        RestTemplate template = PowerMockito.mock(RestTemplate.class);
-//        PowerMockito.when(template.postForObject(anyString(), anyObject(), eq(boolean.class))).thenReturn(true);
-//        PowerMockito.whenNew(RestTemplate.class).withAnyArguments().thenReturn(template);
-//
-//        assertTrue(Communication.silentLogin());
-//    }
+    @Test
+    public void silentLogin() throws Exception {
+        FileReader file = PowerMockito.mock(FileReader.class);
+        PowerMockito.whenNew(FileReader.class).withAnyArguments().thenReturn(file);
+        
+        BufferedReader reader = PowerMockito.mock(BufferedReader.class);
+        PowerMockito.when(reader.readLine()).thenReturn("testLineFromFile");
+        PowerMockito.whenNew(BufferedReader.class).withArguments(eq(file)).thenReturn(reader);
+        
+        RestTemplate template = PowerMockito.mock(RestTemplate.class);
+        PowerMockito.when(template.postForObject(anyString(), anyObject(), eq(boolean.class))).thenReturn(true);
+        PowerMockito.whenNew(RestTemplate.class).withAnyArguments().thenReturn(template);
+
+        assertTrue(Communication.silentLogin());
+    }
     
     @Test
     public void silentLoginWrongFile() throws Exception {
@@ -122,6 +125,15 @@ public class CommunicationTest {
     
     @Test
     public void addAction() throws Exception {
+        RestTemplate template = PowerMockito.mock(RestTemplate.class);
+        PowerMockito.when(template.postForObject(anyString(), anyObject(), eq(boolean.class))).thenReturn(true);
+        PowerMockito.whenNew(RestTemplate.class).withAnyArguments().thenReturn(template);
+        
+        assertTrue(Communication.addAction("testAction", 100));
+    }
+    
+    @Test
+    public void addActionAdvanced() throws Exception {
         RestTemplate template = PowerMockito.mock(RestTemplate.class);
         PowerMockito.when(template.postForObject(anyString(), anyObject(), eq(boolean.class))).thenReturn(true);
         PowerMockito.whenNew(RestTemplate.class).withAnyArguments().thenReturn(template);
@@ -164,6 +176,16 @@ public class CommunicationTest {
         boolean answer = Communication.checkUsername(request);
         
         assertEquals(response, answer);
+    }
+    
+    @Test
+    public void getUser() throws Exception {
+        RestTemplate template = PowerMockito.mock(RestTemplate.class);
+        User user = new User();
+        PowerMockito.when(template.postForObject(anyString(), anyObject(), eq(User.class))).thenReturn(user);
+        PowerMockito.whenNew(RestTemplate.class).withAnyArguments().thenReturn(template);
+        
+        assertEquals(user, Communication.getUser());
     }
     
     @Test
