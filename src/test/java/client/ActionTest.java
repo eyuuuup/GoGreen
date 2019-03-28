@@ -15,7 +15,6 @@ public class ActionTest {
         assertEquals(action.getValue(), 10);
         assertEquals(action.getCarbonProduced(), 50);
         assertEquals(action.getCarbonReduced(), 50);
-
     }
     
     @Test
@@ -32,7 +31,36 @@ public class ActionTest {
         action.setCarbonReduced(50);
         assertEquals(action.getCarbonProduced(), 50);
     }
-
+    
+    @Test
+    public void constructorClient() {
+        Action action = new Action("user", "action", 25);
+        assertEquals(action.getUser(), "user");
+        assertEquals(action.getAction(), "action");
+        assertEquals(action.getValue(), 25);
+    }
+    
+    @Test
+    public void constructorClientPlus() {
+        Action action = new Action("user", "action", 25, 100, 250, 15000);
+        assertEquals(action.getUser(), "user");
+        assertEquals(action.getAction(), "action");
+        assertEquals(action.getValue(), 25);
+        assertEquals(action.getCarbonReduced(), 100);
+        assertEquals(action.getCarbonProduced(), 250);
+        assertEquals(action.getDate(), 15000);
+    }
+    
+    @Test
+    public void constructorServer() {
+        Action action = new Action("action", 25, 100, 250, 15000);
+        assertEquals(action.getAction(), "action");
+        assertEquals(action.getValue(), 25);
+        assertEquals(action.getCarbonReduced(), 100);
+        assertEquals(action.getCarbonProduced(), 250);
+        assertEquals(action.getDate(), 15000);
+    }
+    
     @Test
     public void getUser() {
         assertEquals(ACTION.getUser(), "User");
@@ -67,5 +95,12 @@ public class ActionTest {
         Action action = new Action("user", "action", 10,50,50);
         action.setValue(70);
         assertEquals(action.getValue(), 70);
+    }
+    
+    @Test
+    public void setDate(){
+        Action action = new Action();
+        action.setDate(15000);
+        assertEquals(action.getDate(), 15000);
     }
 }
