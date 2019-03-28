@@ -119,7 +119,6 @@ public class Controller {
         return Database.getUser(token);
     }
     
-    
     /**
      * adds a friend.
      * @param friend the friend
