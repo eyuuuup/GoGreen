@@ -411,7 +411,7 @@ public class Database {
      * @param friend A Friend object.
      * @return if the query succeeded.
      */
-    public static boolean addFriend(Friends friend) {
+    public static boolean addFriend(CompareFriends friend) {
         System.out.println("addFriend called");
         try {
             Connection con = DriverManager.getConnection();

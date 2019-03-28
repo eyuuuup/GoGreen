@@ -215,13 +215,13 @@ public class Communication {
     /**
      * This method adds a friend by it's username.
      * Friend is someone who you follow.
-     * @param friendUsername username of the frien
+     * @param friendUsername username of the friend
      * @return whether the friend is added
      */
     public static boolean addFriend(String friendUsername) {
-        Friends friend = new Friends(token, friendUsername);
+        CompareFriends friend = new CompareFriends(token, friendUsername);
         
-        HttpEntity<Friends> message = new HttpEntity<>(friend);
+        HttpEntity<CompareFriends> message = new HttpEntity<>(friend);
         RestTemplate        request = new RestTemplate();
         return request.postForObject(hostURL + "/addFriend", message, boolean.class);
     }

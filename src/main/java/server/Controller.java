@@ -126,7 +126,7 @@ public class Controller {
      */
     @RequestMapping (value = {"/addFriend"}, method = RequestMethod.POST,
                      produces = MediaType.APPLICATION_JSON_VALUE)
-    public static boolean addFriend(@Valid @RequestBody Friends friend) {
+    public static boolean addFriend(@Valid @RequestBody CompareFriends friend) {
         return Database.addFriend(friend);
     }
     
