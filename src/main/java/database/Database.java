@@ -104,7 +104,7 @@ public class Database {
             }
             
             if (parentCategory == 1) {
-                long lastInput = getLastMeal(action.getUser());
+                long lastInput = getLastMeal(action.getToken());
                 
                 long present = Instant.now().getMillis();
                 long diff    = 12 * 60 * 60 * 1000;
@@ -128,12 +128,12 @@ public class Database {
             state1.setLong(2, outputDate);
             state1.setInt(3, action.getValue());
             state1.setInt(4, parentCategory);
-            state1.setString(5, getUsername(action.getUser()));
+            state1.setString(5, getUsername(action.getToken()));
             state1.setInt(6, action.getCarbonReduced());
             state1.setInt(7, action.getCarbonProduced());
             state1.executeUpdate();
             
-            updateTotalScores(action.getUser(), action.getValue());
+            updateTotalScores(action.getToken(), action.getValue());
             
             System.out.println("INSERT success");
             con.close();
@@ -618,5 +618,4 @@ public class Database {
         }
         
     }
-    
 }

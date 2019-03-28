@@ -10,7 +10,7 @@ public class ActionTest {
     @Test
     public void constructor(){
         Action action = new Action("user", "action", 10,50,50);
-        assertEquals(action.getUser(), "user");
+        assertEquals(action.getToken(), "user");
         assertEquals(action.getAction(), "action");
         assertEquals(action.getValue(), 10);
         assertEquals(action.getCarbonProduced(), 50);
@@ -20,8 +20,8 @@ public class ActionTest {
     @Test
     public void constructorEmpty() {
         Action action = new Action();
-        action.setUser("A");
-        assertEquals(action.getUser(), "A");
+        action.setToken("A");
+        assertEquals(action.getToken(), "A");
         action.setAction("A");
         assertEquals(action.getAction(), "A");
         action.setValue(10);
@@ -35,7 +35,7 @@ public class ActionTest {
     @Test
     public void constructorClient() {
         Action action = new Action("user", "action", 25);
-        assertEquals(action.getUser(), "user");
+        assertEquals(action.getToken(), "user");
         assertEquals(action.getAction(), "action");
         assertEquals(action.getValue(), 25);
     }
@@ -43,7 +43,7 @@ public class ActionTest {
     @Test
     public void constructorClientPlus() {
         Action action = new Action("user", "action", 25, 100, 250, 15000);
-        assertEquals(action.getUser(), "user");
+        assertEquals(action.getToken(), "user");
         assertEquals(action.getAction(), "action");
         assertEquals(action.getValue(), 25);
         assertEquals(action.getCarbonReduced(), 100);
@@ -63,14 +63,14 @@ public class ActionTest {
     
     @Test
     public void getUser() {
-        assertEquals(ACTION.getUser(), "User");
+        assertEquals(ACTION.getToken(), "User");
     }
 
     @Test
     public void setUser() {
         Action action = new Action("user", "action", 10,50,50);
-        action.setUser("USER");
-        assertEquals(action.getUser(), "USER");
+        action.setToken("USER");
+        assertEquals(action.getToken(), "USER");
     }
 
     @Test

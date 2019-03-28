@@ -4,7 +4,7 @@ package client;
  * This class adds an Action to the Database.
  */
 public class Action {
-    private String user;
+    private String token;
     private String action;
     private int    value;
     private int    carbonReduced;
@@ -14,31 +14,32 @@ public class Action {
     /**
      * empty constructor
      */
-    public Action(){}
+    public Action() {
+    }
     
     /**
      * Constructs and initialises a new instance of Action.
-     * @param user   the username
+     * @param token  the token
      * @param action the action name
      * @param value  the amount of points
      */
-    public Action(String user, String action, int value) {
-        this.user = user;
+    public Action(String token, String action, int value) {
+        this.token = token;
         this.action = action;
         this.value = value;
     }
     
     /**
      * Create a new action.
-     * @param user           the user
+     * @param token          the token
      * @param action         the action
      * @param value          the value
      * @param carbonProduced carbon produced
      * @param carbonReduced  carbon saced
      */
-    public Action(String user, String action, int value, int carbonReduced, int carbonProduced) {
+    public Action(String token, String action, int value, int carbonReduced, int carbonProduced) {
         
-        this.user = user;
+        this.token = token;
         this.action = action;
         this.value = value;
         this.carbonReduced = carbonReduced;
@@ -47,15 +48,15 @@ public class Action {
     
     /**
      * Create a new action.
-     * @param user           the user
+     * @param token          the token
      * @param action         the action
      * @param value          the value
      * @param carbonProduced carbon produced
      * @param carbonReduced  carbon saced
      * @param date           date added (in miliseconds)
      */
-    public Action(String user, String action, int value, int carbonReduced, int carbonProduced, long date) {
-        this.user = user;
+    public Action(String token, String action, int value, int carbonReduced, int carbonProduced, long date) {
+        this.token = token;
         this.action = action;
         this.value = value;
         this.carbonReduced = carbonReduced;
@@ -80,18 +81,18 @@ public class Action {
     }
     
     /**
-     * getter for User.
-     * @return user
+     * getter for token.
+     * @return token
      */
-    public String getUser() {
-        return user;
+    public String getToken() {
+        return token;
     }
     
     /**
-     * setter for User.
+     * setter for token.
      */
-    public void setUser(String user) {
-        this.user = user;
+    public void setToken(String token) {
+        this.token = token;
     }
     
     /**
