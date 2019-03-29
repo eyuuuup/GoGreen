@@ -16,6 +16,11 @@ public class Action {
      */
     public Action() {
     }
+
+    public Action(int carbonProduced, int carbonReduced){
+        this.carbonProduced=carbonProduced;
+        this.carbonReduced=carbonReduced;
+    }
     
     /**
      * Constructs and initialises a new instance of Action.

@@ -132,7 +132,7 @@ public class Database {
             state1.setInt(7, action.getCarbonProduced());
             state1.executeUpdate();
             
-            updateTotalScores(action.getToken(), action.getValue());
+            updateTotalScores(action.getToken(), action.getValue(), action.getCarbonReduced(), action.getCarbonProduced());
             
             System.out.println("INSERT success");
             con.close();
@@ -188,24 +188,85 @@ public class Database {
      * @param token the token from a user.
      * @param score the score that should be added to the total.
      */
-    public static void updateTotalScores(String token, int score) {
+    public static void updateTotalScores(String token, int score, int carbonReduced, int carbonProduced) {
         try {
             Connection con = DriverManager.getConnection();
             System.out.println("updateTotalScores called");
             
-            int currentTotalScore = getTotalScore(token);
+            int currentTotalScore     = getTotalScore(token);
+            int currentCarbonReduced  = getCarbonReduced(token);
+            int currentCarbonProduced = getCarbonProduced(token);
+            
             
             currentTotalScore = currentTotalScore + score;
+            currentCarbonReduced = currentCarbonReduced + carbonReduced;
+            currentCarbonProduced = currentCarbonProduced + carbonProduced;
+            
+            
             PreparedStatement state1 =
                     con.prepareStatement("UPDATE total_score "
-                            + "SET total_score = ? WHERE username = ?");
+                            + "SET total_score = ?, carbon_reduced = ?, carbon_produced = ? WHERE username = ?");
             state1.setInt(1, currentTotalScore);
-            state1.setString(2, getUsername(token));
+            state1.setString(4, getUsername(token));
+            state1.setInt(2, currentCarbonReduced);
+            state1.setInt(3, currentCarbonProduced);
             state1.executeUpdate();
             System.out.println("UPDATE success");
             con.close();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        }
+    }
+    
+    public static int getCarbonReduced(String token) {
+        try {
+            Connection con = DriverManager.getConnection();
+            System.out.println("getCarbonReduced called");
+            
+            PreparedStatement state =
+                    con.prepareStatement("SELECT carbon_reduced "
+                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
+                            + "WHERE user_data.token = ?");
+            state.setString(1, token);
+            ResultSet rs = state.executeQuery();
+            
+            int currentCarbonReduced = 0;
+            while (rs.next()) {
+                currentCarbonReduced = rs.getInt(1);
+                System.out.println("carbon_reduced: " + currentCarbonReduced);
+            }
+            
+            con.close();
+            return currentCarbonReduced;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return 0;
+        }
+    }
+    
+    public static int getCarbonProduced(String token) {
+        try {
+            Connection con = DriverManager.getConnection();
+            System.out.println("getCarbonProduced called");
+            
+            PreparedStatement state =
+                    con.prepareStatement("SELECT carbon_produced "
+                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
+                            + "WHERE user_data.token = ?");
+            state.setString(1, token);
+            ResultSet rs = state.executeQuery();
+            
+            int currentCarbonProduced = 0;
+            while (rs.next()) {
+                currentCarbonProduced = rs.getInt(1);
+                System.out.println("carbon_reduced: " + currentCarbonProduced);
+            }
+            
+            con.close();
+            return currentCarbonProduced;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return 0;
         }
     }
     
@@ -225,13 +286,13 @@ public class Database {
                             + "WHERE user_data.token = ?");
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
-        
+            
             int currentTotalScore = 0;
             while (rs.next()) {
                 currentTotalScore = rs.getInt(1);
                 System.out.println("currentTotalScore: " + currentTotalScore);
             }
-        
+            
             con.close();
             return currentTotalScore;
         } catch (SQLException ex) {
@@ -615,5 +676,34 @@ public class Database {
             System.out.println(e.getMessage());
         }
         
+    }
+    
+    public static Action getCarbonValues(String token) {
+        System.out.println("get carbon values called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state =
+                    con.prepareStatement("SELECT carbon_produced, carbon_reduced "
+                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
+                            + "WHERE user_data.token = ?");
+            state.setString(1, token);
+            ResultSet rs = state.executeQuery();
+            
+            con.close();
+            
+            if (rs.next()) {
+                Action a = new Action();
+                a.setCarbonProduced(rs.getInt(1));
+                a.setCarbonReduced(rs.getInt(2));
+                System.out.println("carbon_produced: " + a.getCarbonProduced() + "\tcarbon_reduced: " + a.getCarbonReduced());
+                
+                return a;
+            }
+            return null;
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
     }
 }
