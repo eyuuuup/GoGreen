@@ -105,13 +105,13 @@ public class DatabaseTest {
     
     @Test
     public void updateTotalScores() {
-        Database.updateTotalScores("token", 10);
+        Database.updateTotalScores("token", 10,50,50);
     }
     
     @Test
     public void updateTotalScoresError() throws Exception {
         PowerMockito.when(state, "executeUpdate").thenThrow(SQLException.class);
-        Database.updateTotalScores("token", 10);
+        Database.updateTotalScores("token", 10,50,50);
     }
     
     @Test
