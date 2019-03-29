@@ -115,7 +115,8 @@ public class ControllerTest {
         
         assertTrue(Controller.checkUser(username));
     }
-    
+
+
     @Test
     public void getUser() {
         String username = "testFriend";
@@ -162,7 +163,14 @@ public class ControllerTest {
 
     @Test
     public void carbon(){
-        
+        String token ="testUser";
+
+        PowerMockito.when(Database.getCarbonValues(anyString())).thenReturn(new Action(50, 50));
+        Action response= Controller.carbon("testToken");
+        assertEquals(50, response.getCarbonProduced(), 0.01);
+        assertEquals(50, response.getCarbonReduced(), 0.01);
+
     }
+
     
 }
