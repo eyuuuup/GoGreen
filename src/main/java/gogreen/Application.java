@@ -435,25 +435,26 @@ public class Application extends javafx.application.Application {
         return settingsPage;
     }
 
-    private static ScrollPane aboutScreen(){
+    private static ScrollPane aboutScreen() {
 
-        Label aboutText = new Label("Welcome to our App *insert app name* \n" +
-                "One of my favorite quotes is that if you move one grain of sand in the Sahara, you changed the whole Sahara. " +
-                "And that is what we wanted to do. " +
-                "We wanted to change the world, but we realised we couldn't do it alone. " +
-                "So we decided to encourage other people to change the world with us. " +
-                "This is one of the reasons we made this app, the other reason is that we all want a good grade on our school project. \n\n" +
-                "About the content of the app: \n" +
-                "With the app you can track your CO\u2082 reduction, and score points with it." +
-                "You can also have a little competition with friends and send them challenges. \n\n" +
-                "About the team: \n" +
-                "* Eyüp, one of our database guys \n" +
-                "* Elias, our other database guy \n" +
-                "* Shruti, our server girl \n" +
-                "* Marko, our handy man with extra focus on the server \n" +
-                "* Erwin, our client and API guy \n" +
-                "* Marit, our GUI girl \n\n" +
-                "But this app wouldn't be possible without the brighter climate API");
+        Label aboutText = new Label("Welcome to our App *insert app name* \n"
+                + "One of my favorite quotes is that "
+                + "if you move one grain of sand in the Sahara, you changed the whole Sahara. "
+                + "And that is what we wanted to do. "
+                + "We wanted to change the world, but we realised we couldn't do it alone. "
+                + "So we decided to encourage other people to change the world with us. "
+                + "This is one of the reasons we made this app, the other reason is that we all want a good grade on our school project. \n\n"
+                + "About the content of the app: \n"
+                + "With the app you can track your CO\u2082 reduction, and score points with it."
+                + "You can also have a little competition with friends and send them challenges. \n\n"
+                + "About the team: \n"
+                + "* Eyüp, one of our database guys \n"
+                + "* Elias, our other database guy \n"
+                + "* Shruti, our server girl \n"
+                + "* Marko, our handy man with extra focus on the server \n"
+                + "* Erwin, our client and API guy \n"
+                + "* Marit, our GUI girl \n\n"
+                + "But this app wouldn't be possible without the brighter climate API");
         aboutText.setId("aboutText");
 
         // make the your world view
