@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.rmi.ConnectIOException;
 
 class Api {
-    private static final String site = "http://impact.brighterplanet.com/";
+    private static String site = "http://impact.brighterplanet.com/";
     private static final String key = "&key=58e64232-2368-4379-a71c-56c00675b46c";
 
     private Api() {}
@@ -22,7 +22,7 @@ class Api {
      * @param parameters parameters
      * @return kg of CO2
      */
-    static int carbonAmount(String parameters) throws ConnectIOException {
+    static double carbonAmount(String parameters) throws ConnectIOException {
         HttpClient client = HttpClientBuilder.create().build();
         HttpGet request = new HttpGet(
                 site + "" + parameters + "" + key);
@@ -33,9 +33,8 @@ class Api {
             JSONObject responseJson = new JSONObject(EntityUtils.toString(entity));
             String carbonString = responseJson.getJSONObject("decisions")
                     .getJSONObject("carbon").get("description").toString();
-            return (int) Double.parseDouble(carbonString.replace(" kg", ""));
+            return Double.parseDouble(carbonString.replace(" kg", ""));
         } catch (IOException e) {
-            e.printStackTrace();
             throw new ConnectIOException("Failed to calculate carbon footprint");
         }
     }

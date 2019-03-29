@@ -203,4 +203,9 @@ public class ApplicationMethodsTest {
         String name = ApplicationMethods.encodeUsername("username");
         assertNotEquals("user", ApplicationMethods.decodeUsername(name));
     }
+
+    @Test
+    public void onLoad() {
+        ApplicationMethods.onLoad();
+    }
 }

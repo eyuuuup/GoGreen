@@ -49,7 +49,7 @@ public class Communication {
                 out.flush();
                 out.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("No token file found");
             }
         }
         
@@ -114,7 +114,7 @@ public class Communication {
             token = in.readLine();
             in.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("No token file found");
             return false;
         }
         
