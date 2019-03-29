@@ -304,9 +304,14 @@ public class Application extends javafx.application.Application {
         Tab settingsTab = new Tab();
         settingsTab.setText("Settings");
         settingsTab.setContent(settingsScreen());
+
+        // make the about tab
+        Tab aboutTab = new Tab();
+        aboutTab.setText("About");
+        aboutTab.setContent(aboutScreen());
         
         // adds the tabs to the navigation bar
-        homeNavigation.getTabs().addAll(homeTab, settingsTab);
+        homeNavigation.getTabs().addAll(homeTab, settingsTab, aboutTab);
         
         // makes the page and adds the nodes
         Pane homePage = new Pane();
@@ -334,9 +339,9 @@ public class Application extends javafx.application.Application {
 
 
         // make the your world view
-        Image image = new Image(planetLink);
+        Image world = new Image(planetLink);
         ImageView yourWorldView = new ImageView();
-        yourWorldView.setImage(image);
+        yourWorldView.setImage(world);
 
         // makes the level bar
         ProgressBar levelBar = new ProgressBar(ApplicationMethods.getLevelProgress(points));
@@ -428,6 +433,49 @@ public class Application extends javafx.application.Application {
         
         // return the page
         return settingsPage;
+    }
+
+    private static ScrollPane aboutScreen() {
+
+        Label aboutText = new Label("Welcome to our App *insert app name* \n"
+                + "One of my favorite quotes is that "
+                + "if you move one grain of sand in the Sahara, you changed the whole Sahara. "
+                + "And that is what we wanted to do. "
+                + "We wanted to change the world, but we realised we couldn't do it alone. "
+                + "So we decided to encourage other people to change the world with us. "
+                + "This is one of the reasons we made this app, the other reason is that we "
+                + "all want a good grade on our school project. \n\n"
+                + "About the content of the app: \n"
+                + "With the app you can track your CO\u2082 reduction, and score points with it."
+                + "You can also have a little competition with "
+                + "friends and send them challenges. \n\n"
+                + "About the team: \n"
+                + "* Eyüp, one of our database guys \n"
+                + "* Elias, our other database guy \n"
+                + "* Shruti, our server girl \n"
+                + "* Marko, our handy man with extra focus on the server \n"
+                + "* Erwin, our client and API guy \n"
+                + "* Marit, our GUI girl \n\n"
+                + "But this app wouldn't be possible without the brighter climate API");
+        aboutText.setId("aboutText");
+
+        // make the your world view
+        Image apiButton = new Image("file:src/aboutPicture/apiButton.png");
+        ImageView apiButtonView = new ImageView();
+        apiButtonView.setImage(apiButton);
+
+        aboutText.setWrapText(true);
+
+        VBox aboutContainer = new VBox();
+        aboutContainer.setMaxWidth(475);
+        aboutContainer.getChildren().addAll(aboutText, apiButtonView);
+        aboutContainer.setAlignment(Pos.CENTER);
+
+        ScrollPane aboutPage = new ScrollPane();
+        aboutPage.setMaxSize(500,500);
+        aboutPage.setContent(aboutContainer);
+
+        return aboutPage;
     }
     
     /**
@@ -738,7 +786,7 @@ public class Application extends javafx.application.Application {
      * makes the extra screen.
      * @return the extra screen
      */
-    static GridPane extraScreen() {
+    private static GridPane extraScreen() {
         
         // makes the clean surronding button
         JFXButton cleanSurronding = new JFXButton();
@@ -840,9 +888,14 @@ public class Application extends javafx.application.Application {
         Tab overview = new Tab();
         overview.setText("Overview");
         overview.setContent(overviewScreen());
+
+        // make the history tab
+        Tab history = new Tab();
+        history.setText("History");
+        history.setContent(historyScreen());
         
         // add all the tabs to the navigation bar
-        statsNavigation.getTabs().addAll(overview);
+        statsNavigation.getTabs().addAll(overview, history);
         
         // make the stats page
         Pane statsPage = new Pane();
@@ -855,28 +908,72 @@ public class Application extends javafx.application.Application {
      * make the overview screen.
      * @return the overview screen
      */
-    private static VBox overviewScreen() {
-        
+    private static GridPane overviewScreen() {
+        // get the amount saved
+        double amountSaved = Communication.carbon().getCarbonReduced();
+
+        // makes the labels
+        Label amountSavedLabel = new Label(String.valueOf(amountSaved));
+        amountSavedLabel.setId("amountSavedNr");
+
+        Label amountSavedText = new Label("kg CO\u2082 saved");
+        amountSavedText.setId("amountSavedText");
+
+        // calculates the reference
+        double reference = amountSaved * 0.02 ;
+
+        Label referenceIntro = new Label("That is ");
+        referenceIntro.setId("referenceText");
+
+        Label referenceLabel = new Label(String.valueOf(reference));
+        referenceLabel.setId("referenceNr");
+
+        Label referenceText = new Label("Marit(s)");
+        referenceText.setId("referenceText");
+
+        // make the amount saved container
+        VBox amountSavedContainer = new VBox();
+        amountSavedContainer.getChildren().addAll(amountSavedLabel, amountSavedText);
+        amountSavedContainer.setAlignment(Pos.TOP_CENTER);
+
+        // make the reference container
+        VBox referenceContainer = new VBox(2);
+        referenceContainer.getChildren().addAll(referenceIntro, referenceLabel, referenceText);
+        referenceContainer.setAlignment(Pos.BOTTOM_LEFT);
+
+
+
+        // make the overview page
+        GridPane overviewPage = new GridPane();
+        overviewPage.setHgap(30);
+        overviewPage.setAlignment(Pos.TOP_CENTER);
+        overviewPage.add(amountSavedContainer, 0,0);
+        overviewPage.add(referenceContainer,1,0);
+
+        // return the page
+        return overviewPage;
+    }
+
+    private static VBox historyScreen() {
+
         // make the refresh button
         JFXButton refresh = new JFXButton("refresh");
-        
+
         // make the recent activites text
         Label history = new Label("Recent Activities: \t\t date: \t\t\t time: \n "
                 + client.Communication.getLastThreeActions());
         history.setId("history");
-        
+
         // if the refresh button is pressed, we display the last three recent activities
         refresh.setOnAction(e -> {
             history.setText("Recent Activities: \t\t date: \t\t\t time: \n "
                     + client.Communication.getLastThreeActions());
         });
-        
-        // make the overview page
-        VBox overviewPage = new VBox();
-        overviewPage.getChildren().addAll(history, refresh);
-        
-        // return the page
-        return overviewPage;
+
+        VBox historyPage = new VBox();
+        historyPage.getChildren().addAll(history, refresh);
+
+        return historyPage;
     }
     
     /**
