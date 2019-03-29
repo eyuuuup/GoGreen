@@ -56,28 +56,28 @@ public class DatabaseTest {
         Database.getUsername("token");
     }
     
-    @Test
-    public void addAction() throws Exception {
-        server.Action action = Mockito.mock(server.Action.class);
-        
-        int n = 1;
-        PowerMockito.when(resultSet.getInt(1)).thenReturn(n);
-        PowerMockito.when(resultSet.getInt(2)).thenReturn(n);
-        
-        Database.addAction(action);
-    }
-    
-    @Test
-    public void addActionTime() throws Exception {
-        server.Action action = Mockito.mock(server.Action.class);
-        
-        int n = 1;
-        PowerMockito.when(resultSet.getInt(1)).thenReturn(n);
-        PowerMockito.when(resultSet.getInt(2)).thenReturn(n);
-        
-        Database.addAction(action);
-    }
-    
+//    @Test
+//    public void addAction() throws Exception {
+//        server.Action action = Mockito.mock(server.Action.class);
+//
+//        int n = 1;
+//        PowerMockito.when(resultSet.getInt(1)).thenReturn(n);
+//        PowerMockito.when(resultSet.getInt(2)).thenReturn(n);
+//
+//        Database.addAction(action);
+//    }
+//
+//    @Test
+//    public void addActionTime() throws Exception {
+//        server.Action action = Mockito.mock(server.Action.class);
+//
+//        int n = 1;
+//        PowerMockito.when(resultSet.getInt(1)).thenReturn(n);
+//        PowerMockito.when(resultSet.getInt(2)).thenReturn(n);
+//
+//        Database.addAction(action);
+//    }
+//
     @Test
     public void addActionError() throws Exception {
         server.Action action = Mockito.mock(server.Action.class);
