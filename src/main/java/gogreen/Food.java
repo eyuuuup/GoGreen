@@ -22,7 +22,7 @@ public class Food {
      */
     public static void addAction(boolean veggie, boolean locally, boolean bio)
             throws ConnectIOException {
-        int carbonReduced = Api.carbonAmount("diets.json?size=1");
+        double carbonReduced = Api.carbonAmount("diets.json?size=1");
         if (veggie) {
             Communication.addAction("Meat", 50, carbonReduced, 0);
         }

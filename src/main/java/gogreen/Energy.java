@@ -27,8 +27,8 @@ public final class Energy {
     static void addReduceEnergyAction(int houseTemperature) throws ConnectIOException {
         int temperatureDiff = 23 - houseTemperature;
         int megaJoules = temperatureDiff * 100;
-        int carbon = Api.carbonAmount("electricity_uses.json?energy=" + megaJoules);
-        int carbonProduced = Api.carbonAmount("electricity_uses.json?energy=" + houseTemperature * 100);
+        double carbon = Api.carbonAmount("electricity_uses.json?energy=" + megaJoules);
+        double carbonProduced = Api.carbonAmount("electricity_uses.json?energy=" + houseTemperature * 100);
         if (hasSolarPanels) {
             Communication.addAction("ReduceEnergy", 100 * temperatureDiff, carbon, 0);
         } else {
@@ -42,8 +42,8 @@ public final class Energy {
     static void addReduceWater(int showerTime) throws ConnectIOException {
         int timeDiff = 20 - showerTime;
         int megaJoules = showerTime * 100;
-        int carbon = Api.carbonAmount("electricity_uses.json?energy=" + megaJoules);
-        int carbonProduced = Api.carbonAmount("electricity_uses.json?energy=" + showerTime * 100);
+        double carbon = Api.carbonAmount("electricity_uses.json?energy=" + megaJoules);
+        double carbonProduced = Api.carbonAmount("electricity_uses.json?energy=" + showerTime * 100);
         if (hasSolarPanels) {
             Communication.addAction("ReduceWater", 100 * timeDiff, carbon, 0);
         } else {

@@ -553,10 +553,9 @@ public class Application extends javafx.application.Application {
                 Transport.addCycleAction(distanceInt);
                 refresh();
             } catch (NumberFormatException exception) {
-                // throw error
                 errorMessage.setText("Please only use numbers");
-            } catch (ConnectIOException e1) {
-                e1.printStackTrace();
+            } catch (ConnectIOException | IllegalArgumentException exception) {
+                exception.printStackTrace();
             }
         });
         
@@ -577,8 +576,8 @@ public class Application extends javafx.application.Application {
             } catch (NumberFormatException exception) {
                 // throw error
                 errorMessage.setText("Please only use numbers");
-            } catch (ConnectIOException e1) {
-                e1.printStackTrace();
+            } catch (ConnectIOException | IllegalArgumentException exception) {
+                exception.printStackTrace();
             }
         });
         
@@ -599,8 +598,8 @@ public class Application extends javafx.application.Application {
             } catch (NumberFormatException exception) {
                 // throw error
                 errorMessage.setText("Please only use numbers");
-            } catch (ConnectIOException e1) {
-                e1.printStackTrace();
+            } catch (ConnectIOException | IllegalArgumentException exception) {
+                exception.printStackTrace();
             }
         });
         
@@ -621,8 +620,8 @@ public class Application extends javafx.application.Application {
             } catch (NumberFormatException exception) {
                 // throw error
                 errorMessage.setText("Please only use numbers");
-            } catch (ConnectIOException e1) {
-                e1.printStackTrace();
+            } catch (ConnectIOException | IllegalArgumentException exception) {
+                exception.printStackTrace();
             }
         });
 
