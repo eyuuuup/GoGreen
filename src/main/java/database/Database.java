@@ -104,13 +104,13 @@ public class Database {
             }
             
             if (parentCategory == 1) {
-                long lastInput = getLastMeal(action.getToken());
+                long last = getLastMeal(action.getToken());
+                long now  = Instant.now().getMillis();
                 
-                long present = Instant.now().getMillis();
-                long diff    = 12 * 60 * 60 * 1000;
-                long temp    = 1000;
-                System.out.println(present + "present" + lastInput + "last");
-                if ((present - lastInput < diff) && (present - lastInput > temp)) {
+                long max = 12 * 60 * 60 * 1000;
+                long min = 1000;
+                System.out.println("now:" + now + "\tlast:" + last);
+                if ((min < now - last) && (now - last < max)) {
                     return false;
                 }
             }
@@ -622,7 +622,8 @@ public class Database {
         try {
             Connection con = DriverManager.getConnection();
             PreparedStatement state = con.prepareStatement(
-                    "SELECT date_time FROM events JOIN user_data ON "
+                    "SELECT date_time "
+                            + "FROM events JOIN user_data ON "
                             + "events.username = user_data.username "
                             + "WHERE user_data.token = ? ORDER BY date_time DESC LIMIT 1");
             state.setString(1, token);
@@ -631,7 +632,6 @@ public class Database {
             long time = 0;
             while (rs.next()) {
                 time = rs.getLong(1);
-                
             }
             con.close();
             
