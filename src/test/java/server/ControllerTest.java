@@ -129,7 +129,7 @@ public class ControllerTest {
     
     @Test
     public void addFriend() {
-        Friends fr = new Friends("testToken", "testFriend");
+        CompareFriends fr = new CompareFriends("testToken", "testFriend");
         
         PowerMockito.when(Database.addFriend(fr)).thenReturn(true);
         

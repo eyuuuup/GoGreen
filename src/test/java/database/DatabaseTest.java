@@ -8,7 +8,6 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import server.CompareFriends;
-import server.Friends;
 import server.FriendsList;
 import server.User;
 
@@ -227,7 +226,7 @@ public class DatabaseTest {
     
     @Test
     public void addFriend() {
-        Friends friend = Mockito.mock(Friends.class);
+        CompareFriends friend = Mockito.mock(CompareFriends.class);
         assertTrue(Database.addFriend(friend));
     }
     
@@ -236,7 +235,7 @@ public class DatabaseTest {
         PowerMockito.when(resultSet.getString(1)).thenReturn("username");
         PowerMockito.when(state, "setString", 1, "username").thenThrow(SQLException.class);
         
-        Friends friend = Mockito.mock(Friends.class);
+        CompareFriends friend = Mockito.mock(CompareFriends.class);
         assertFalse(Database.addFriend(friend));
     }
     

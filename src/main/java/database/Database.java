@@ -547,7 +547,6 @@ public class Database {
             }
             con.close();
             
-            
             return time;
             
         } catch (SQLException e) {
