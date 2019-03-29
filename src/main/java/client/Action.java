@@ -7,8 +7,8 @@ public class Action {
     private String token;
     private String action;
     private int    value;
-    private double    carbonReduced;
-    private double    carbonProduced;
+    private double carbonReduced;
+    private double carbonProduced;
     private long   date;
     
     /**
@@ -16,10 +16,10 @@ public class Action {
      */
     public Action() {
     }
-
+    
     public Action(double carbonProduced, double carbonReduced) {
-        this.carbonProduced=carbonProduced;
-        this.carbonReduced=carbonReduced;
+        this.carbonProduced = carbonProduced;
+        this.carbonReduced = carbonReduced;
     }
     
     /**
