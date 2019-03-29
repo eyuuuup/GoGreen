@@ -76,6 +76,10 @@
     -fx-font-weight: bold;
     -fx-font-size: 14;
 }
+/* about */
+#aboutText{
+    -fx-font-size: 16;
+}
 
 #history {
     -fx-text-fill: #249677;
@@ -88,6 +92,31 @@
     -fx-font-weight: bold;
     -fx-font-size: 32;
 }
+/* stats */
+#amountSavedNr{
+    -fx-text-fill: #249677;
+    -fx-font-weight: bold;
+    -fx-font-size: 80;
+}
+
+#amountSavedText{
+    -fx-text-fill: #249677;
+    -fx-font-weight: bold;
+    -fx-font-size: 26;
+}
+
+#referenceNr{
+    -fx-text-fill: #249677;
+    -fx-font-weight: bold;
+    -fx-font-size: 48;
+}
+
+#referenceText{
+    -fx-text-fill: #249677;
+    -fx-font-weight: bold;
+    -fx-font-size: 26;
+}
+
 
 /* leaderboard */
 #leaderboard{
@@ -139,3 +168,4 @@
     -fx-font-weight: bold;
     -fx-font-size: 20;
 }
+
