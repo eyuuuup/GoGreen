@@ -10,7 +10,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.rmi.ConnectIOException;
 
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Communication.class, Api.class})
@@ -19,7 +19,9 @@ public class FoodTest {
     public void setUp() throws Exception {
         PowerMockito.mockStatic(Communication.class);
         PowerMockito.mockStatic(Api.class);
-        PowerMockito.when(Api.class, "carbonAmount", anyString()).thenReturn(100);
+        Double d = Double.valueOf(100);
+        PowerMockito.when(Api.class, "carbonAmount", anyString()).thenReturn(d);
+        PowerMockito.when(Communication.addAction(anyString(), anyInt(), anyDouble(), anyDouble())).thenReturn(true);
     }
 
     @Test
@@ -86,5 +88,23 @@ public class FoodTest {
         PowerMockito.verifyStatic();
         Communication.addAction("Biological", 50, 100, 0);
         PowerMockito.verifyNoMoreInteractions();
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void addActionAllError() throws Exception {
+        PowerMockito.when(Communication.addAction("Meat", 50, 100, 0)).thenReturn(false);
+        Food.addAction(true, true, true);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void addActionAllErrorTwo() throws Exception {
+        PowerMockito.when(Communication.addAction("Biological", 50, 100, 0)).thenReturn(false);
+        Food.addAction(true, true, true);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void addActionAllErrorThree() throws Exception {
+        PowerMockito.when(Communication.addAction("Local", 50, 100, 0)).thenReturn(false);
+        Food.addAction(true, true, true);
     }
 }
