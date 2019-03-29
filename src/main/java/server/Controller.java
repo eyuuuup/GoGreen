@@ -51,7 +51,7 @@ public class Controller {
     }
     
     /**
-     * don'trequire to enter password.
+     * This is the method for silentLogin
      * @param token string
      * @return whether token exists
      */
@@ -126,7 +126,7 @@ public class Controller {
      */
     @RequestMapping (value = {"/addFriend"}, method = RequestMethod.POST,
                      produces = MediaType.APPLICATION_JSON_VALUE)
-    public static boolean addFriend(@Valid @RequestBody Friends friend) {
+    public static boolean addFriend(@Valid @RequestBody CompareFriends friend) {
         return Database.addFriend(friend);
     }
     
@@ -156,10 +156,27 @@ public class Controller {
     public static FriendsList getLeaderboard() {
         return Database.getLeaderboard();
     }
-
-    @RequestMapping(value={"/carbon"}, method=RequestMethod.POST,
-                    produces= MediaType.APPLICATION_JSON_VALUE)
-    public static Action carbon(@Valid @RequestBody String token){
-        return new Action( Database.getCarbonProduced(token), Database.getCarbonReduced(token));
+    
+    /**
+     * This method is for getting the onLoadValues
+     * @param token
+     * @return two boolean values for the presence of electricCar or solarCar
+     */
+    @RequestMapping (value = {"/onLoad"}, method = RequestMethod.POST,
+                     produces = MediaType.APPLICATION_JSON_VALUE)
+    public static onLoadValues onLoad(@Valid @RequestBody String token) {
+        return new onLoadValues(true, true);
+    }
+    
+    
+    /**
+     * This method is for getting the total amount of carbon produced and reduced
+     * @param token the token of the user requesting the data
+     * @return
+     */
+    @RequestMapping (value = {"/carbon"}, method = RequestMethod.POST,
+                     produces = MediaType.APPLICATION_JSON_VALUE)
+    public static Action carbon(@Valid @RequestBody String token) {
+        return Database.getCarbonValues(token);
     }
 }

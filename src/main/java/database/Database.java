@@ -193,16 +193,16 @@ public class Database {
             Connection con = DriverManager.getConnection();
             System.out.println("updateTotalScores called");
             
-            int currentTotalScore = getTotalScore(token);
-            int currentCarbonReduced = getCarbonReduced(token);
+            int currentTotalScore     = getTotalScore(token);
+            int currentCarbonReduced  = getCarbonReduced(token);
             int currentCarbonProduced = getCarbonProduced(token);
-
+            
             
             currentTotalScore = currentTotalScore + score;
             currentCarbonReduced = currentCarbonReduced + carbonReduced;
             currentCarbonProduced = currentCarbonProduced + carbonProduced;
-
-
+            
+            
             PreparedStatement state1 =
                     con.prepareStatement("UPDATE total_score "
                             + "SET total_score = ?, carbon_reduced = ?, carbon_produced = ? WHERE username = ?");
@@ -217,25 +217,25 @@ public class Database {
             System.out.println(ex.getMessage());
         }
     }
-
+    
     public static int getCarbonReduced(String token) {
         try {
             Connection con = DriverManager.getConnection();
             System.out.println("getCarbonReduced called");
-
+            
             PreparedStatement state =
                     con.prepareStatement("SELECT carbon_reduced "
                             + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
                             + "WHERE user_data.token = ?");
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
-
+            
             int currentCarbonReduced = 0;
             while (rs.next()) {
                 currentCarbonReduced = rs.getInt(1);
                 System.out.println("carbon_reduced: " + currentCarbonReduced);
             }
-
+            
             con.close();
             return currentCarbonReduced;
         } catch (SQLException ex) {
@@ -243,25 +243,25 @@ public class Database {
             return 0;
         }
     }
-
+    
     public static int getCarbonProduced(String token) {
         try {
             Connection con = DriverManager.getConnection();
             System.out.println("getCarbonProduced called");
-
+            
             PreparedStatement state =
                     con.prepareStatement("SELECT carbon_produced "
                             + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
                             + "WHERE user_data.token = ?");
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
-
+            
             int currentCarbonProduced = 0;
             while (rs.next()) {
                 currentCarbonProduced = rs.getInt(1);
                 System.out.println("carbon_reduced: " + currentCarbonProduced);
             }
-
+            
             con.close();
             return currentCarbonProduced;
         } catch (SQLException ex) {
@@ -286,13 +286,13 @@ public class Database {
                             + "WHERE user_data.token = ?");
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
-        
+            
             int currentTotalScore = 0;
             while (rs.next()) {
                 currentTotalScore = rs.getInt(1);
                 System.out.println("currentTotalScore: " + currentTotalScore);
             }
-        
+            
             con.close();
             return currentTotalScore;
         } catch (SQLException ex) {
@@ -472,7 +472,7 @@ public class Database {
      * @param friend A Friend object.
      * @return if the query succeeded.
      */
-    public static boolean addFriend(Friends friend) {
+    public static boolean addFriend(CompareFriends friend) {
         System.out.println("addFriend called");
         try {
             Connection con = DriverManager.getConnection();
@@ -607,7 +607,6 @@ public class Database {
             }
             con.close();
             
-            
             return time;
             
         } catch (SQLException e) {
@@ -676,5 +675,34 @@ public class Database {
             System.out.println(e.getMessage());
         }
         
+    }
+    
+    public static Action getCarbonValues(String token) {
+        System.out.println("get carbon values called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state =
+                    con.prepareStatement("SELECT carbon_produced, carbon_reduced "
+                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
+                            + "WHERE user_data.token = ?");
+            state.setString(1, token);
+            ResultSet rs = state.executeQuery();
+            
+            con.close();
+            
+            if (rs.next()) {
+                Action a = new Action();
+                a.setCarbonProduced(rs.getInt(1));
+                a.setCarbonReduced(rs.getInt(2));
+                System.out.println("carbon_produced: " + a.getCarbonProduced() + "\tcarbon_reduced: " + a.getCarbonReduced());
+                
+                return a;
+            }
+            return null;
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
     }
 }
