@@ -57,7 +57,7 @@ public class Application extends javafx.application.Application {
      */
     @Override
     public void start(Stage stage) {
-        Communication.onLoad();
+        ApplicationMethods.onLoad();
 
         this.stage = stage;
         stage.setTitle("GoGreen");

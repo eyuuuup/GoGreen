@@ -44,6 +44,43 @@ public class Database {
     }
     
     /**
+     * This methods queries the database for username,
+     * mail and totalscore of user, found by token
+     * @param token
+     * @return username, mail, totalscore of user
+     */
+    public static User getUser(String token) {
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state =
+                    con.prepareStatement("SELECT user_data.username, user_data.mail, total_score.total_score "
+                            + "FROM user_data "
+                            + "JOIN total_score ON user_data.username = total_score.username "
+                            + "WHERE user_data.token = ?");
+            state.setString(1, token);
+            ResultSet rs = state.executeQuery();
+            
+            User user = new User();
+            if (rs.next()) {
+                user.setName(rs.getString(1));
+                System.out.println("username: " + user.getName());
+                user.setEmail(rs.getString(2));
+                System.out.println("email: " + user.getEmail());
+                user.setTotalScore(rs.getInt(3));
+                System.out.println("totalScore: " + user.getTotalScore());
+                con.close();
+                return user;
+            }
+            con.close();
+            return null;
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
+    }
+    
+    /**
      * This method saves the Action object in the database.
      * @param action An object of the class Action.
      * @return if the query succeeded.
@@ -66,21 +103,36 @@ public class Database {
                 parentCategory = rs.getInt(2);
             }
             
+            if (parentCategory == 1) {
+                long lastInput = getLastMeal(action.getToken());
+                
+                long present = Instant.now().getMillis();
+                long diff    = 12 * 60 * 60 * 1000;
+                long temp    = 1000;
+                System.out.println(present + "present" + lastInput + "last");
+                if ((present - lastInput < diff) && (present - lastInput > temp)) {
+                    return false;
+                }
+            }
+            
+            
             PreparedStatement state1 =
                     con.prepareStatement("INSERT INTO events (action_id, date_time, "
-                            + "points, parent_category, username)"
-                            + "VALUES (?, ?, ?, ?, ?);");
+                            + "points, parent_category, username, carbon_reduced, carbon_produced)"
+                            + "VALUES (?, ?, ?, ?, ?,?,?);");
             state1.setInt(1, actionId);
-
+            
             Long outputDate = Instant.now().getMillis();
-
+            
             state1.setLong(2, outputDate);
             state1.setInt(3, action.getValue());
             state1.setInt(4, parentCategory);
-            state1.setString(5, getUsername(action.getUser()));
+            state1.setString(5, getUsername(action.getToken()));
+            state1.setInt(6, action.getCarbonReduced());
+            state1.setInt(7, action.getCarbonProduced());
             state1.executeUpdate();
             
-            updateTotalScores(action.getUser(), action.getValue());
+            updateTotalScores(action.getToken(), action.getValue(), action.getCarbonReduced(), action.getCarbonProduced());
             
             System.out.println("INSERT success");
             con.close();
@@ -96,32 +148,38 @@ public class Database {
      * @param token the token from a user.
      * @return the history in a String.
      */
-    public static ArrayList<ActionHistory> retract(String token) {
+    public static ActionList retract(String token) {
         try {
             Connection con = DriverManager.getConnection();
             System.out.println("retract called");
             PreparedStatement state =
-                    con.prepareStatement("select action_name, date_time, events.parent_category "
-                            + "FROM actions, events WHERE actions.action_id = events.action_id \n"
-                            + "AND events.username = ? "
+                    con.prepareStatement("SELECT actions.action_name, events.points, events.carbon_reduced, events.carbon_produced, events.date_time "
+                            + "FROM events JOIN actions ON events.action_id = actions.action_id "
+                            + "WHERE events.username = ? "
                             + "ORDER BY date_time DESC LIMIT 3");
             state.setString(1, getUsername(token));
             ResultSet rs = state.executeQuery();
             
-            ArrayList<ActionHistory> result = new ArrayList<>();
+            ArrayList<Action> list = new ArrayList<>();
             while (rs.next()) {
-                String action = rs.getString(1);
-                long   date   = rs.getLong(2);
-                result.add(new ActionHistory(action, date));
+                Action action = new Action();
+                
+                action.setAction(rs.getString(1));
+                action.setValue(rs.getInt(2));
+                action.setCarbonProduced(rs.getInt(3));
+                action.setCarbonReduced(rs.getInt(4));
+                action.setDate(rs.getLong(5));
+                
+                list.add(action);
             }
             
             System.out.println("retract success");
             con.close();
-            return result;
+            return new ActionList(list);
             
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-            return new ArrayList<>();
+            return null;
         }
     }
     
@@ -130,25 +188,85 @@ public class Database {
      * @param token the token from a user.
      * @param score the score that should be added to the total.
      */
-    public static void updateTotalScores(String token, int score) {
+    public static void updateTotalScores(String token, int score, int carbonReduced, int carbonProduced) {
         try {
             Connection con = DriverManager.getConnection();
             System.out.println("updateTotalScores called");
             
-            
             int currentTotalScore = getTotalScore(token);
+            int currentCarbonReduced = getCarbonReduced(token);
+            int currentCarbonProduced = getCarbonProduced(token);
+
             
             currentTotalScore = currentTotalScore + score;
+            currentCarbonReduced = currentCarbonReduced + carbonReduced;
+            currentCarbonProduced = currentCarbonProduced + carbonProduced;
+
+
             PreparedStatement state1 =
                     con.prepareStatement("UPDATE total_score "
-                            + "SET total_score = ? WHERE username = ?");
+                            + "SET total_score = ?, carbon_reduced = ?, carbon_produced = ? WHERE username = ?");
             state1.setInt(1, currentTotalScore);
-            state1.setString(2, getUsername(token));
+            state1.setString(4, getUsername(token));
+            state1.setInt(2, currentCarbonReduced);
+            state1.setInt(3, currentCarbonProduced);
             state1.executeUpdate();
             System.out.println("UPDATE success");
             con.close();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        }
+    }
+
+    public static int getCarbonReduced(String token) {
+        try {
+            Connection con = DriverManager.getConnection();
+            System.out.println("getCarbonReduced called");
+
+            PreparedStatement state =
+                    con.prepareStatement("SELECT carbon_reduced "
+                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
+                            + "WHERE user_data.token = ?");
+            state.setString(1, token);
+            ResultSet rs = state.executeQuery();
+
+            int currentCarbonReduced = 0;
+            while (rs.next()) {
+                currentCarbonReduced = rs.getInt(1);
+                System.out.println("carbon_reduced: " + currentCarbonReduced);
+            }
+
+            con.close();
+            return currentCarbonReduced;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return 0;
+        }
+    }
+
+    public static int getCarbonProduced(String token) {
+        try {
+            Connection con = DriverManager.getConnection();
+            System.out.println("getCarbonProduced called");
+
+            PreparedStatement state =
+                    con.prepareStatement("SELECT carbon_produced "
+                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
+                            + "WHERE user_data.token = ?");
+            state.setString(1, token);
+            ResultSet rs = state.executeQuery();
+
+            int currentCarbonProduced = 0;
+            while (rs.next()) {
+                currentCarbonProduced = rs.getInt(1);
+                System.out.println("carbon_reduced: " + currentCarbonProduced);
+            }
+
+            con.close();
+            return currentCarbonProduced;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return 0;
         }
     }
     
@@ -158,9 +276,31 @@ public class Database {
      * @return the total score of a user.
      */
     public static int getTotalScore(String token) {
-        return getTotalScoreByUser(getUsername(token));
+        try {
+            Connection con = DriverManager.getConnection();
+            System.out.println("getTotalScore called");
+            
+            PreparedStatement state =
+                    con.prepareStatement("SELECT total_score "
+                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
+                            + "WHERE user_data.token = ?");
+            state.setString(1, token);
+            ResultSet rs = state.executeQuery();
+        
+            int currentTotalScore = 0;
+            while (rs.next()) {
+                currentTotalScore = rs.getInt(1);
+                System.out.println("currentTotalScore: " + currentTotalScore);
+            }
+        
+            con.close();
+            return currentTotalScore;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return 0;
+        }
     }
-
+    
     /**
      * Get the total score for a given user.
      * @param username the username
@@ -184,8 +324,6 @@ public class Database {
                 System.out.println("currentTotalScore: " + currentTotalScore);
             }
             
-            
-            System.out.println("UPDATE success");
             con.close();
             return currentTotalScore;
         } catch (SQLException ex) {
@@ -209,7 +347,7 @@ public class Database {
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
             
-            while (rs.next()) {
+            if (rs.next()) {
                 con.close();
                 System.out.println("token found");
                 return true;
@@ -355,8 +493,8 @@ public class Database {
     
     /**
      * This method shows the friends of a user.
-     * @param token A String of the username.
-     * @return the String of all friends of a user.
+     * @param token A String of the token.
+     * @return the FriendsList object of all friends of a user.
      */
     public static FriendsList showFriends(String token) {
         System.out.println("showFriends called");
@@ -381,11 +519,11 @@ public class Database {
             return null;
         }
     }
-
+    
     /**
      * This methods shows the followers.
-     * @param token token
-     * @return followers
+     * @param token A String of the token.
+     * @return FriendsList object with the followers.
      */
     public static FriendsList showFollowers(String token) {
         System.out.println("showFollowers called");
@@ -406,14 +544,19 @@ public class Database {
                 result.add(new CompareFriends(username, score));
             }
             con.close();
-
+            
             return new FriendsList(result);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return null;
         }
     }
-
+    
+    /**
+     * This methods gets the leaderboard.
+     * @return A FriendsList object with the leaderboard inside.
+     * >>>>>>> 85d585bdfe873e647abd2963f2cf20c369a29f1a
+     */
     public static FriendsList getLeaderboard() {
         System.out.println("getLeaderboard called");
         try {
@@ -423,7 +566,7 @@ public class Database {
                             + "FROM total_score "
                             + "ORDER BY total_score DESC LIMIT 10");
             ResultSet rs = state.executeQuery();
-
+            
             ArrayList<CompareFriends> result = new ArrayList<>();
             while (rs.next()) {
                 String username = rs.getString(1);
@@ -431,17 +574,108 @@ public class Database {
                 result.add(new CompareFriends(username, score));
             }
             con.close();
-
+            
             FriendsList friendList = new FriendsList(result);
-
+            
             return friendList;
-
+            
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return null;
         }
     }
-
-
-
+    
+    /**
+     * This methods gets the leaderboard.
+     * @param token A String of the token of the user.
+     * @return int with the time.
+     */
+    public static long getLastMeal(String token) {
+        System.out.println("getLastMeal called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state = con.prepareStatement(
+                    "SELECT date_time FROM events JOIN user_data ON "
+                            + "events.username = user_data.username "
+                            + "WHERE user_data.token = ? ORDER BY date_time DESC LIMIT 1");
+            state.setString(1, token);
+            ResultSet rs = state.executeQuery();
+            
+            long time = 0;
+            while (rs.next()) {
+                time = rs.getLong(1);
+                
+            }
+            con.close();
+            
+            
+            return time;
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return 0;
+        }
+    }
+    
+    /**
+     * (Experimental)
+     * This methods checks if the user completed a One Time Event.
+     * @param username username of the user.
+     * @param id       the id of the One Time Event.
+     * @return a boolean.
+     */
+    public static boolean checkOneTimeEvent(String username, int id) {
+        System.out.println("checkOneTimeEvent called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state = con.prepareStatement(
+                    "SELECT action_id "
+                            + "FROM events "
+                            + "WHERE user_name = ? AND action_id = ?");
+            state.setString(1, username);
+            state.setInt(2, id);
+            ResultSet rs = state.executeQuery();
+            con.close();
+            return rs.next();
+            
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+    
+    /**
+     * This methods adds a challenge.
+     * @param usernameA username of a user.
+     * @param usernameB username of a user.
+     * @param goal      amount of points to win.
+     */
+    public static void addChallenge(String usernameA, String usernameB, int goal) {
+        System.out.println("addChallenge called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state = con.prepareStatement(
+                    "INSERT INTO "
+                            + "challenges (goal, time_added, user_a, user_b, score_a, score_b)"
+                            + "VALUES (?, ?, ?, ?, ( "
+                            + "SELECT total_score FROM total_score WHERE username = ? "
+                            + "), ( "
+                            + "SELECT total_score FROM total_score WHERE username = ? "
+                            + "));");
+            
+            state.setInt(1, goal);
+            state.setLong(2, Instant.now().getMillis());
+            state.setString(3, usernameA);
+            state.setString(4, usernameB);
+            state.setString(5, usernameA);
+            state.setString(6, usernameB);
+            state.executeUpdate();
+            
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+    }
 }

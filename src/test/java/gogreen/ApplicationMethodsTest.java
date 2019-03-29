@@ -97,6 +97,20 @@ public class ApplicationMethodsTest {
         ApplicationMethods.register("username", "p", "p", true);
     }
     
+    @Test
+    public void encodeUsernameManual() {
+        String decoded = "testUsername123";
+        String encoded = "dGVzdFVzZXJuYW1lMTIz";
+        assertEquals(encoded, ApplicationMethods.encodeUsername(decoded));
+    }
+    
+    @Test
+    public void decodeUsernameManual() {
+        String decoded = "testUsername123";
+        String encoded = "dGVzdFVzZXJuYW1lMTIz";
+        assertEquals(decoded, ApplicationMethods.decodeUsername(encoded));
+    }
+    
     @Test (expected = NullPointerException.class)
     public void checkNameNull() throws Exception {
         Whitebox.invokeMethod(ApplicationMethods.class, "checkName", null);
