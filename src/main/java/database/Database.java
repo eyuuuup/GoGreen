@@ -555,7 +555,6 @@ public class Database {
     /**
      * This methods gets the leaderboard.
      * @return A FriendsList object with the leaderboard inside.
-     * >>>>>>> 85d585bdfe873e647abd2963f2cf20c369a29f1a
      */
     public static FriendsList getLeaderboard() {
         System.out.println("getLeaderboard called");
@@ -586,7 +585,7 @@ public class Database {
     }
     
     /**
-     * This methods gets the leaderboard.
+     * This methods gets the last meal.
      * @param token A String of the token of the user.
      * @return int with the time.
      */
