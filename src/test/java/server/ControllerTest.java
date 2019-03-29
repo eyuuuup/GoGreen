@@ -8,8 +8,6 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.ArrayList;
-
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 
@@ -78,7 +76,7 @@ public class ControllerTest {
     
     @Test
     public void addAction() {
-        Action action = new Action("user", "action", 10);
+        Action action = new Action("user", "action", 10, 50, 50);
         PowerMockito.when(Database.addAction(action)).thenReturn(true);
         
         boolean bool = Controller.addAction(action);
@@ -90,11 +88,10 @@ public class ControllerTest {
     
     @Test
     public void forDemo() {
-        ArrayList<ActionHistory> list = new ArrayList<>();
-        list.add(new ActionHistory("testName", 3600));
+        ActionList list = new ActionList();
         PowerMockito.when(Database.retract(anyString())).thenReturn(list);
         
-        ArrayList response = Controller.forDemo("testToken");
+        ActionList response = Controller.forDemo("testToken");
         PowerMockito.verifyStatic();
         assertEquals(list, response);
     }
@@ -111,6 +108,26 @@ public class ControllerTest {
     // ========== SOCIAL HANDLERS ==============================================
     
     @Test
+    public void checkUser() {
+        String username = "testFriend";
+        
+        PowerMockito.when(Database.checkUsername(username)).thenReturn(true);
+        
+        assertTrue(Controller.checkUser(username));
+    }
+    
+    @Test
+    public void getUser() {
+        String username = "testFriend";
+        
+        User user = new User();
+        
+        PowerMockito.when(Database.getUser(username)).thenReturn(user);
+        
+        assertEquals(user, Controller.getUser(username));
+    }
+    
+    @Test
     public void addFriend() {
         Friends fr = new Friends("testToken", "testFriend");
         
@@ -119,21 +136,28 @@ public class ControllerTest {
         assertTrue(Controller.addFriend(fr));
     }
     
-//    @Test
-//    public void showFriends() {
-//        ArrayList<CompareFriends> list = new ArrayList<>();
-//        list.add(new CompareFriends("testName", 3600));
-//        PowerMockito.when(Database.showFriends(anyString())).thenReturn(list);
-//
-//        assertEquals(list, Controller.showFriends("testToken"));
-//    }
+    @Test
+    public void showFriends() {
+        FriendsList fl = new FriendsList();
+        PowerMockito.when(Database.showFriends(anyString())).thenReturn(fl);
+        
+        assertEquals(fl, Controller.showFriends("testToken"));
+    }
     
-//    @Test
-//    public void showFollowers() {
-//        ArrayList<CompareFriends> list = new ArrayList<>();
-//        list.add(new CompareFriends("testName", 3600));
-//        PowerMockito.when(Database.showFollowers(anyString())).thenReturn(list);
-//
-//        assertEquals(list, Controller.showFollowers("testToken"));
-//    }
+    @Test
+    public void showFollowers() {
+        FriendsList fl = new FriendsList();
+        PowerMockito.when(Database.showFollowers(anyString())).thenReturn(fl);
+        
+        assertEquals(fl, Controller.showFollowers("testToken"));
+    }
+    
+    @Test
+    public void getLeaderboard() {
+        FriendsList fl = new FriendsList();
+        PowerMockito.when(Database.getLeaderboard()).thenReturn(fl);
+        
+        assertEquals(fl, Controller.getLeaderboard());
+    }
+    
 }

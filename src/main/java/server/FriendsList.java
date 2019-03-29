@@ -2,6 +2,9 @@ package server;
 
 import java.util.ArrayList;
 
+/**
+ * for the list of freinds
+ */
 public class FriendsList {
     ArrayList<CompareFriends> list;
     

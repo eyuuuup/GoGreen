@@ -13,7 +13,7 @@ import java.rmi.ConnectIOException;
 
 class Api {
     private static final String site = "http://impact.brighterplanet.com/";
-    private static final String key = "&key=5a927d96eca397b6659a3c361ce32254";
+    private static final String key = "&key=58e64232-2368-4379-a71c-56c00675b46c";
 
     private Api() {}
 

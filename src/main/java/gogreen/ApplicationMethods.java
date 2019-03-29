@@ -16,6 +16,16 @@ class ApplicationMethods {
     }
     
     /**
+     * To be implemented:
+     * checks whether user has solar panels and or an electric car in the database.
+     */
+    public static void onLoad() {
+        // to be implemented: fetch data from the database
+        Transport.setHasElectricCar(false);
+        Energy.setHasSolarPanels(false);
+    }
+    
+    /**
      * This methods logs in using the given username and password.
      * @param username the username
      * @param password the password
