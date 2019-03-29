@@ -443,10 +443,12 @@ public class Application extends javafx.application.Application {
                 + "And that is what we wanted to do. "
                 + "We wanted to change the world, but we realised we couldn't do it alone. "
                 + "So we decided to encourage other people to change the world with us. "
-                + "This is one of the reasons we made this app, the other reason is that we all want a good grade on our school project. \n\n"
+                + "This is one of the reasons we made this app, the other reason is that we "
+                + "all want a good grade on our school project. \n\n"
                 + "About the content of the app: \n"
                 + "With the app you can track your CO\u2082 reduction, and score points with it."
-                + "You can also have a little competition with friends and send them challenges. \n\n"
+                + "You can also have a little competition with "
+                + "friends and send them challenges. \n\n"
                 + "About the team: \n"
                 + "* Eyüp, one of our database guys \n"
                 + "* Elias, our other database guy \n"
@@ -784,7 +786,7 @@ public class Application extends javafx.application.Application {
      * makes the extra screen.
      * @return the extra screen
      */
-    static GridPane extraScreen() {
+    private static GridPane extraScreen() {
         
         // makes the clean surronding button
         JFXButton cleanSurronding = new JFXButton();
@@ -907,14 +909,17 @@ public class Application extends javafx.application.Application {
      * @return the overview screen
      */
     private static GridPane overviewScreen() {
-        int amountSaved = 1234;
+        // get the amount saved
+        double amountSaved = Communication.carbon().getCarbonReduced();
 
+        // makes the labels
         Label amountSavedLabel = new Label(String.valueOf(amountSaved));
         amountSavedLabel.setId("amountSavedNr");
 
         Label amountSavedText = new Label("kg CO\u2082 saved");
         amountSavedText.setId("amountSavedText");
 
+        // calculates the reference
         double reference = amountSaved * 0.02 ;
 
         Label referenceIntro = new Label("That is ");
@@ -926,10 +931,12 @@ public class Application extends javafx.application.Application {
         Label referenceText = new Label("Marit(s)");
         referenceText.setId("referenceText");
 
+        // make the amount saved container
         VBox amountSavedContainer = new VBox();
         amountSavedContainer.getChildren().addAll(amountSavedLabel, amountSavedText);
         amountSavedContainer.setAlignment(Pos.TOP_CENTER);
 
+        // make the reference container
         VBox referenceContainer = new VBox(2);
         referenceContainer.getChildren().addAll(referenceIntro, referenceLabel, referenceText);
         referenceContainer.setAlignment(Pos.BOTTOM_LEFT);
@@ -943,7 +950,6 @@ public class Application extends javafx.application.Application {
         overviewPage.add(amountSavedContainer, 0,0);
         overviewPage.add(referenceContainer,1,0);
 
-        
         // return the page
         return overviewPage;
     }
