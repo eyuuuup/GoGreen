@@ -252,4 +252,10 @@ public class Communication {
         RestTemplate reuquest = new RestTemplate();
         return reuquest.getForObject(hostURL + "/getLeaderboard", FriendsList.class).getList();
     }
+
+    public static Action carbon(){
+        HttpEntity<String> message=new HttpEntity<>(token);
+        RestTemplate request = new RestTemplate();
+        return request.postForObject(hostURL+ "/carbon", message, Action.class);
+    }
 }

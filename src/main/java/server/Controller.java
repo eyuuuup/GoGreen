@@ -156,4 +156,10 @@ public class Controller {
     public static FriendsList getLeaderboard() {
         return Database.getLeaderboard();
     }
+
+    @RequestMapping(value={"/carbon"}, method=RequestMethod.POST,
+                    produces= MediaType.APPLICATION_JSON_VALUE)
+    public static Action carbon(@Valid @RequestBody String token){
+        return new Action( Database.getCarbonProduced(token), Database.getCarbonReduced(token));
+    }
 }
