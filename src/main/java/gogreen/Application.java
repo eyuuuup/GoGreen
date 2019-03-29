@@ -504,10 +504,9 @@ public class Application extends javafx.application.Application {
                 errorMessage.setText("");
                 Transport.addCycleAction(distanceInt);
             } catch (NumberFormatException exception) {
-                // throw error
                 errorMessage.setText("Please only use numbers");
-            } catch (ConnectIOException e1) {
-                e1.printStackTrace();
+            } catch (ConnectIOException | IllegalArgumentException exception) {
+                exception.printStackTrace();
             }
         });
         
@@ -527,8 +526,8 @@ public class Application extends javafx.application.Application {
             } catch (NumberFormatException exception) {
                 // throw error
                 errorMessage.setText("Please only use numbers");
-            } catch (ConnectIOException e1) {
-                e1.printStackTrace();
+            } catch (ConnectIOException | IllegalArgumentException exception) {
+                exception.printStackTrace();
             }
         });
         
@@ -548,8 +547,8 @@ public class Application extends javafx.application.Application {
             } catch (NumberFormatException exception) {
                 // throw error
                 errorMessage.setText("Please only use numbers");
-            } catch (ConnectIOException e1) {
-                e1.printStackTrace();
+            } catch (ConnectIOException | IllegalArgumentException exception) {
+                exception.printStackTrace();
             }
         });
         
@@ -569,8 +568,8 @@ public class Application extends javafx.application.Application {
             } catch (NumberFormatException exception) {
                 // throw error
                 errorMessage.setText("Please only use numbers");
-            } catch (ConnectIOException e1) {
-                e1.printStackTrace();
+            } catch (ConnectIOException | IllegalArgumentException exception) {
+                exception.printStackTrace();
             }
         });
 

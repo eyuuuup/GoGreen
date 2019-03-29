@@ -73,4 +73,19 @@ public class TransportTest {
         PowerMockito.verifyStatic();
         Communication.addAction("PublicTransport", 40, 0, 100);
     }
+
+    @Test
+    public void checkDistance() {
+        Transport.checkDistance(100, 0, 200);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void checkDistanceToLong() {
+        Transport.checkDistance(100, 0, 50);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void checkDistanceToShort() {
+        Transport.checkDistance(100, 150, 200);
+    }
 }

@@ -7,8 +7,8 @@ public class Action {
     private String token;
     private String action;
     private int    value;
-    private int    carbonReduced;
-    private int    carbonProduced;
+    private double    carbonReduced;
+    private double    carbonProduced;
     private long   date;
     
     /**
@@ -17,7 +17,7 @@ public class Action {
     public Action() {
     }
 
-    public Action(int carbonProduced, int carbonReduced){
+    public Action(double carbonProduced, double carbonReduced) {
         this.carbonProduced=carbonProduced;
         this.carbonReduced=carbonReduced;
     }
@@ -42,7 +42,7 @@ public class Action {
      * @param carbonProduced carbon produced
      * @param carbonReduced  carbon saced
      */
-    public Action(String token, String action, int value, int carbonReduced, int carbonProduced) {
+    public Action(String token, String action, int value, double carbonReduced, double carbonProduced) {
         
         this.token = token;
         this.action = action;
@@ -134,14 +134,14 @@ public class Action {
      * getter for carbonReduced.
      * @return carbonReduced
      */
-    public int getCarbonReduced() {
+    public double getCarbonReduced() {
         return carbonReduced;
     }
     
     /**
      * setter for carbonReduced.
      */
-    public void setCarbonReduced(int carbonReduced) {
+    public void setCarbonReduced(double carbonReduced) {
         this.carbonReduced = carbonReduced;
     }
     
@@ -149,14 +149,14 @@ public class Action {
      * getter for Value.
      * @return carbonProduced
      */
-    public int getCarbonProduced() {
+    public double getCarbonProduced() {
         return carbonProduced;
     }
     
     /**
      * setter for Value.
      */
-    public void setCarbonProduced(int carbonProduced) {
+    public void setCarbonProduced(double carbonProduced) {
         this.carbonProduced = carbonProduced;
     }
     

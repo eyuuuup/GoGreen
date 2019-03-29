@@ -165,7 +165,7 @@ public class Communication {
      * @param carbonReduced  the carbon reduced in the action
      * @param carbonProduced the carbon produced in the action
      */
-    public static boolean addAction(String actionName, int points, int carbonReduced, int carbonProduced) {
+    public static boolean addAction(String actionName, int points, double carbonReduced, double carbonProduced) {
         Action             action  = new Action(token, actionName, points, carbonReduced, carbonProduced);
         HttpEntity<Action> message = new HttpEntity<>(action);
         RestTemplate       request = new RestTemplate();
