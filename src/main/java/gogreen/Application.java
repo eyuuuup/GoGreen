@@ -551,6 +551,7 @@ public class Application extends javafx.application.Application {
                 int distanceInt = Integer.parseInt(distance.getText());
                 errorMessage.setText("");
                 Transport.addCycleAction(distanceInt);
+                refresh();
             } catch (NumberFormatException exception) {
                 // throw error
                 errorMessage.setText("Please only use numbers");
@@ -572,6 +573,7 @@ public class Application extends javafx.application.Application {
                 int distanceInt = Integer.parseInt(distance.getText());
                 errorMessage.setText("");
                 Transport.addPublicTransportAction(distanceInt);
+                refresh();
             } catch (NumberFormatException exception) {
                 // throw error
                 errorMessage.setText("Please only use numbers");
@@ -593,6 +595,7 @@ public class Application extends javafx.application.Application {
                 int distanceInt = Integer.parseInt(distance.getText());
                 errorMessage.setText("");
                 Transport.addCarAction(distanceInt);
+                refresh();
             } catch (NumberFormatException exception) {
                 // throw error
                 errorMessage.setText("Please only use numbers");
@@ -614,6 +617,7 @@ public class Application extends javafx.application.Application {
                 int distanceInt = Integer.parseInt(distance.getText());
                 errorMessage.setText("");
                 Transport.addPlaneAction(distanceInt);
+                refresh();
             } catch (NumberFormatException exception) {
                 // throw error
                 errorMessage.setText("Please only use numbers");
@@ -680,6 +684,7 @@ public class Application extends javafx.application.Application {
         send.setOnAction(e -> {
             try {
                 Food.addAction(veggie.isSelected(), locally.isSelected(), bio.isSelected());
+                refresh();
             } catch (ConnectIOException e1) {
                 e1.printStackTrace();
             }
@@ -735,6 +740,7 @@ public class Application extends javafx.application.Application {
                 errorWater.setText("");
                 try {
                     Energy.addReduceWater(value);
+                    refresh();
                 } catch (ConnectIOException e1) {
                     e1.printStackTrace();
                 }
@@ -765,6 +771,7 @@ public class Application extends javafx.application.Application {
             System.out.println(value);
             try {
                 Energy.addReduceEnergyAction(value);
+                refresh();
             } catch (ConnectIOException e1) {
                 e1.printStackTrace();
             }
@@ -798,6 +805,7 @@ public class Application extends javafx.application.Application {
         // when pressed it will send the action
         cleanSurronding.setOnAction(e -> {
             Extra.addCleanSurroundingAction();
+            refresh();
         });
         
         // makes the recycle button
@@ -810,6 +818,7 @@ public class Application extends javafx.application.Application {
         // when pressed it will send the action
         recycle.setOnAction(e -> {
             Extra.addRecycleAction();
+            refresh();
         });
         
         // makes the page and adds the nodes
@@ -856,12 +865,15 @@ public class Application extends javafx.application.Application {
         addOte.setOnAction(e -> {
             if (solarPanels.isSelected()) {
                 OneTimeEvent.addSolarPanelAction();
+                refresh();
             }
             if (electricCar.isSelected()) {
                 OneTimeEvent.addElectricCarAction();
+                refresh();
             }
             if (joinedGroup.isSelected()) {
                 OneTimeEvent.addEvGroupAction();
+                refresh();
             }
         });
 
@@ -1214,5 +1226,9 @@ public class Application extends javafx.application.Application {
     private static void show(Scene scene) {
         stage.setScene(scene);
         stage.show();
+    }
+    
+    private static void refresh() {
+        mainScreen();
     }
 }
