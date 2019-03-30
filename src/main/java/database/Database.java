@@ -222,57 +222,57 @@ public class Database {
         }
     }
 
-    public static double getCarbonReduced(String token) {
-        try {
-            Connection con = DriverManager.getConnection();
-            System.out.println("getCarbonReduced called");
-
-            PreparedStatement state =
-                    con.prepareStatement("SELECT carbon_reduced "
-                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
-                            + "WHERE user_data.token = ?");
-            state.setString(1, token);
-            ResultSet rs = state.executeQuery();
-
-            double currentCarbonReduced = 0;
-            while (rs.next()) {
-                currentCarbonReduced = rs.getDouble(1);
-                System.out.println("carbon_reduced: " + currentCarbonReduced);
-            }
-
-            con.close();
-            return currentCarbonReduced;
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            return 0;
-        }
-    }
-
-    public static double getCarbonProduced(String token) {
-        try {
-            Connection con = DriverManager.getConnection();
-            System.out.println("getCarbonProduced called");
-
-            PreparedStatement state =
-                    con.prepareStatement("SELECT carbon_produced "
-                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
-                            + "WHERE user_data.token = ?");
-            state.setString(1, token);
-            ResultSet rs = state.executeQuery();
-
-            double currentCarbonProduced = 0;
-            while (rs.next()) {
-                currentCarbonProduced = rs.getDouble(1);
-                System.out.println("carbon_reduced: " + currentCarbonProduced);
-            }
-
-            con.close();
-            return currentCarbonProduced;
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            return 0;
-        }
-    }
+//    public static double getCarbonReduced(String token) {
+//        try {
+//            Connection con = DriverManager.getConnection();
+//            System.out.println("getCarbonReduced called");
+//
+//            PreparedStatement state =
+//                    con.prepareStatement("SELECT carbon_reduced "
+//                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
+//                            + "WHERE user_data.token = ?");
+//            state.setString(1, token);
+//            ResultSet rs = state.executeQuery();
+//
+//            double currentCarbonReduced = 0;
+//            while (rs.next()) {
+//                currentCarbonReduced = rs.getDouble(1);
+//                System.out.println("carbon_reduced: " + currentCarbonReduced);
+//            }
+//
+//            con.close();
+//            return currentCarbonReduced;
+//        } catch (SQLException ex) {
+//            System.out.println(ex.getMessage());
+//            return 0;
+//        }
+//    }
+//
+//    public static double getCarbonProduced(String token) {
+//        try {
+//            Connection con = DriverManager.getConnection();
+//            System.out.println("getCarbonProduced called");
+//
+//            PreparedStatement state =
+//                    con.prepareStatement("SELECT carbon_produced "
+//                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
+//                            + "WHERE user_data.token = ?");
+//            state.setString(1, token);
+//            ResultSet rs = state.executeQuery();
+//
+//            double currentCarbonProduced = 0;
+//            while (rs.next()) {
+//                currentCarbonProduced = rs.getDouble(1);
+//                System.out.println("carbon_reduced: " + currentCarbonProduced);
+//            }
+//
+//            con.close();
+//            return currentCarbonProduced;
+//        } catch (SQLException ex) {
+//            System.out.println(ex.getMessage());
+//            return 0;
+//        }
+//    }
 
     public static Action getCarbonValues(String token) {
         System.out.println("get carbon values called");

@@ -171,14 +171,23 @@ public class ControllerTest {
         assertEquals(50, response.getCarbonReduced(), 0.01);
 
     }
-//
-//    @Test
-//    public void onLoadValues(){
-//        String token="user";
-//
-//        onLoadValues ol=new onLoadValues();
-//        PowerMockito.when(Database.getUsername(anyString()))
-//    }
 
+    @Test
+    public void onLoadValues(){
+        String token="user";
+
+        onLoadValues ol=new onLoadValues();
+        PowerMockito.when(Database.checkOneTimeEvent(token,6)).thenReturn(true);
+    }
+//    @Test
+//    public void getUser() {
+//        String username = "testFriend";
+//
+//        User user = new User();
+//
+//        PowerMockito.when(Database.getUser(username)).thenReturn(user);
+//
+//        assertEquals(user, Controller.getUser(username));
+//    }
     
 }
