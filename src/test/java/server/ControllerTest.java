@@ -24,6 +24,10 @@ public class ControllerTest {
     // ========== USER AUTHENTICATION ==========================================
 
     @Test
+    public void controller(){
+        Controller c= new Controller();
+    }
+    @Test
     public void login() {
         PowerMockito.when(Database.checkLogin(USER)).thenReturn(new TokenResponse("token", true));
         TokenResponse tokenResponse = Controller.login(USER);
