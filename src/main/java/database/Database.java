@@ -1,7 +1,12 @@
 package database;
 
 import org.joda.time.Instant;
-import server.*;
+import server.Action;
+import server.ActionList;
+import server.CompareFriends;
+import server.FriendsList;
+import server.TokenResponse;
+import server.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -45,15 +50,16 @@ public class Database {
     
     /**
      * This methods queries the database for username,
-     * mail and totalscore of user, found by token
-     * @param token
+     * mail and totalscore of user, found by token.
+     * @param token token
      * @return username, mail, totalscore of user
      */
     public static User getUser(String token) {
         try {
             Connection con = DriverManager.getConnection();
             PreparedStatement state =
-                    con.prepareStatement("SELECT user_data.username, user_data.mail, total_score.total_score "
+                    con.prepareStatement("SELECT user_data.username, "
+                            + "user_data.mail, total_score.total_score "
                             + "FROM user_data "
                             + "JOIN total_score ON user_data.username = total_score.username "
                             + "WHERE user_data.token = ?");
@@ -132,7 +138,8 @@ public class Database {
             state1.setInt(7, action.getCarbonProduced());
             state1.executeUpdate();
             
-            updateTotalScores(action.getToken(), action.getValue(), action.getCarbonReduced(), action.getCarbonProduced());
+            updateTotalScores(action.getToken(), action.getValue(),
+                    action.getCarbonReduced(), action.getCarbonProduced());
             
             System.out.println("INSERT success");
             con.close();
@@ -153,7 +160,8 @@ public class Database {
             Connection con = DriverManager.getConnection();
             System.out.println("retract called");
             PreparedStatement state =
-                    con.prepareStatement("SELECT actions.action_name, events.points, events.carbon_reduced, events.carbon_produced, events.date_time "
+                    con.prepareStatement("SELECT actions.action_name, events.points, "
+                            + "events.carbon_reduced, events.carbon_produced, events.date_time "
                             + "FROM events JOIN actions ON events.action_id = actions.action_id "
                             + "WHERE events.username = ? "
                             + "ORDER BY date_time DESC LIMIT 3");
@@ -188,24 +196,24 @@ public class Database {
      * @param token the token from a user.
      * @param score the score that should be added to the total.
      */
-    public static void updateTotalScores(String token, int score, int carbonReduced, int carbonProduced) {
+    public static void updateTotalScores(String token, int score,
+                                         int carbonReduced, int carbonProduced) {
         try {
-            Connection con = DriverManager.getConnection();
             System.out.println("updateTotalScores called");
             
             int currentTotalScore     = getTotalScore(token);
             int currentCarbonReduced  = getCarbonReduced(token);
             int currentCarbonProduced = getCarbonProduced(token);
-            
-            
+
             currentTotalScore = currentTotalScore + score;
             currentCarbonReduced = currentCarbonReduced + carbonReduced;
             currentCarbonProduced = currentCarbonProduced + carbonProduced;
-            
-            
+
+            Connection con = DriverManager.getConnection();
             PreparedStatement state1 =
                     con.prepareStatement("UPDATE total_score "
-                            + "SET total_score = ?, carbon_reduced = ?, carbon_produced = ? WHERE username = ?");
+                            + "SET total_score = ?, carbon_reduced = ?, "
+                            + "carbon_produced = ? WHERE username = ?");
             state1.setInt(1, currentTotalScore);
             state1.setString(4, getUsername(token));
             state1.setInt(2, currentCarbonReduced);
@@ -217,7 +225,12 @@ public class Database {
             System.out.println(ex.getMessage());
         }
     }
-    
+
+    /**
+     * returns the carbon reduction.
+     * @param token token
+     * @return carbon reduction
+     */
     public static int getCarbonReduced(String token) {
         try {
             Connection con = DriverManager.getConnection();
@@ -225,7 +238,8 @@ public class Database {
             
             PreparedStatement state =
                     con.prepareStatement("SELECT carbon_reduced "
-                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
+                            + "FROM total_score JOIN user_data ON "
+                            + "total_score.username = user_data.username "
                             + "WHERE user_data.token = ?");
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
@@ -243,7 +257,12 @@ public class Database {
             return 0;
         }
     }
-    
+
+    /**
+     * get carbon produced.
+     * @param token token
+     * @return carbon produced
+     */
     public static int getCarbonProduced(String token) {
         try {
             Connection con = DriverManager.getConnection();
@@ -251,7 +270,8 @@ public class Database {
             
             PreparedStatement state =
                     con.prepareStatement("SELECT carbon_produced "
-                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
+                            + "FROM total_score JOIN user_data ON "
+                            + "total_score.username = user_data.username "
                             + "WHERE user_data.token = ?");
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
@@ -282,7 +302,8 @@ public class Database {
             
             PreparedStatement state =
                     con.prepareStatement("SELECT total_score "
-                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
+                            + "FROM total_score JOIN user_data ON "
+                            + "total_score.username = user_data.username "
                             + "WHERE user_data.token = ?");
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
@@ -676,14 +697,20 @@ public class Database {
         }
         
     }
-    
+
+    /**
+     * get carbon values.
+     * @param token token
+     * @return carbon values
+     */
     public static Action getCarbonValues(String token) {
         System.out.println("get carbon values called");
         try {
             Connection con = DriverManager.getConnection();
             PreparedStatement state =
                     con.prepareStatement("SELECT carbon_produced, carbon_reduced "
-                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
+                            + "FROM total_score JOIN user_data ON "
+                            + "total_score.username = user_data.username "
                             + "WHERE user_data.token = ?");
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
@@ -691,12 +718,13 @@ public class Database {
             con.close();
             
             if (rs.next()) {
-                Action a = new Action();
-                a.setCarbonProduced(rs.getInt(1));
-                a.setCarbonReduced(rs.getInt(2));
-                System.out.println("carbon_produced: " + a.getCarbonProduced() + "\tcarbon_reduced: " + a.getCarbonReduced());
+                Action action = new Action();
+                action.setCarbonProduced(rs.getInt(1));
+                action.setCarbonReduced(rs.getInt(2));
+                System.out.println("carbon_produced: " + action.getCarbonProduced()
+                        + "\tcarbon_reduced: " + action.getCarbonReduced());
                 
-                return a;
+                return action;
             }
             return null;
             

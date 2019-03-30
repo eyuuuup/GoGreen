@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.UUID;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping ("/")
@@ -51,7 +51,7 @@ public class Controller {
     }
     
     /**
-     * This is the method for silentLogin
+     * This is the method for silentLogin.
      * @param token string
      * @return whether token exists
      */
@@ -158,21 +158,21 @@ public class Controller {
     }
     
     /**
-     * This method is for getting the onLoadValues
-     * @param token
+     * This method is for getting the onLoadValues.
+     * @param token token
      * @return two boolean values for the presence of electricCar or solarCar
      */
     @RequestMapping (value = {"/onLoad"}, method = RequestMethod.POST,
                      produces = MediaType.APPLICATION_JSON_VALUE)
-    public static onLoadValues onLoad(@Valid @RequestBody String token) {
-        return new onLoadValues(true, true);
+    public static OnLoadValues onLoad(@Valid @RequestBody String token) {
+        return new OnLoadValues(true, true);
     }
     
     
     /**
-     * This method is for getting the total amount of carbon produced and reduced
+     * This method is for getting the total amount of carbon produced and reduced.
      * @param token the token of the user requesting the data
-     * @return
+     * @return token
      */
     @RequestMapping (value = {"/carbon"}, method = RequestMethod.POST,
                      produces = MediaType.APPLICATION_JSON_VALUE)
