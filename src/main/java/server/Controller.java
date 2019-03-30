@@ -165,6 +165,8 @@ public class Controller {
     @RequestMapping (value = {"/onLoad"}, method = RequestMethod.POST,
                      produces = MediaType.APPLICATION_JSON_VALUE)
     public static onLoadValues onLoad(@Valid @RequestBody String token) {
+
+        Database
         return new onLoadValues(true, true);
     }
     

@@ -166,13 +166,19 @@ public class ControllerTest {
         String token ="testUser";
 
         PowerMockito.when(Database.getCarbonValues(anyString())).thenReturn(new Action(50, 50));
-        Action response= Controller.carbon("testToken");
+        Action response= Controller.carbon("testUser");
         assertEquals(50, response.getCarbonProduced(), 0.01);
         assertEquals(50, response.getCarbonReduced(), 0.01);
 
     }
 
-    
+    @Test
+    public void onLoadValues(){
+        String token="user";
+
+        onLoadValues ol=new onLoadValues();
+        PowerMockito.when(Database.get)
+    }
 
     
 }
