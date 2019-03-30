@@ -670,7 +670,7 @@ public class Database {
     public static boolean checkOneTimeEvent(String token, int id) {
         System.out.println("checkOneTimeEvent called");
         try {
-            String username = getUsername(token);
+            String username=getUsername(token);
             Connection con = DriverManager.getConnection();
             PreparedStatement state = con.prepareStatement(
                     "SELECT action_id "
@@ -687,6 +687,13 @@ public class Database {
             System.out.println(e.getMessage());
             return false;
         }
+    }
+
+    public static onLoadValues oneTimeEvent(String token){
+
+        //CHECK THE ACTION IDS AND REPLACE WITH ONE METHOD
+        return new onLoadValues(Database.checkOneTimeEvent(token, 6), Database.checkOneTimeEvent(token, 7));
+
     }
 
     /**

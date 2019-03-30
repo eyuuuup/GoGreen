@@ -177,17 +177,9 @@ public class ControllerTest {
         String token="user";
 
         onLoadValues ol=new onLoadValues();
-        PowerMockito.when(Database.checkOneTimeEvent(token,6)).thenReturn(true);
+        PowerMockito.when(Database.oneTimeEvent(token)).thenReturn(ol);
+
+        assertEquals(ol, Controller.onLoad(token));
     }
-//    @Test
-//    public void getUser() {
-//        String username = "testFriend";
-//
-//        User user = new User();
-//
-//        PowerMockito.when(Database.getUser(username)).thenReturn(user);
-//
-//        assertEquals(user, Controller.getUser(username));
-//    }
     
 }
