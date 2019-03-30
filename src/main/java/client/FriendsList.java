@@ -3,7 +3,7 @@ package client;
 import java.util.ArrayList;
 
 /**
- * for the list of freinds
+ * for the list of friends.
  */
 public class FriendsList {
     ArrayList<CompareFriends> list;

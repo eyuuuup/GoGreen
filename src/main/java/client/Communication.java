@@ -4,7 +4,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 @SpringBootApplication
@@ -165,8 +169,10 @@ public class Communication {
      * @param carbonReduced  the carbon reduced in the action
      * @param carbonProduced the carbon produced in the action
      */
-    public static boolean addAction(String actionName, int points, double carbonReduced, double carbonProduced) {
-        Action             action  = new Action(token, actionName, points, carbonReduced, carbonProduced);
+    public static boolean addAction(String actionName, int points,
+                                    double carbonReduced, double carbonProduced) {
+        Action             action  = new Action(token, actionName,
+                points, carbonReduced, carbonProduced);
         HttpEntity<Action> message = new HttpEntity<>(action);
         RestTemplate       request = new RestTemplate();
         
@@ -249,14 +255,18 @@ public class Communication {
      * @return an object containing a list of users
      */
     public static ArrayList<CompareFriends> getLeaderboard() {
-        RestTemplate reuquest = new RestTemplate();
-        return reuquest.getForObject(hostURL + "/getLeaderboard", FriendsList.class).getList();
+        RestTemplate request = new RestTemplate();
+        return request.getForObject(hostURL + "/getLeaderboard", FriendsList.class).getList();
     }
 
-    public static Action carbon(){
-        HttpEntity<String> message=new HttpEntity<>(token);
+    /**
+     * action carbon.
+     * @return carbon
+     */
+    public static Action carbon() {
+        HttpEntity<String> message = new HttpEntity<>(token);
         RestTemplate request = new RestTemplate();
-        return request.postForObject(hostURL+ "/carbon", message, Action.class);
+        return request.postForObject(hostURL + "/carbon", message, Action.class);
     }
 
     public static onLoadValues onLoad(){

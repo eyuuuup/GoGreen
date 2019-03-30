@@ -1,17 +1,17 @@
-package client;
+package server;
 
-public class onLoadValues {
+public class OnLoadValues {
 
     private boolean electricCar;
     private boolean solarCar;
 
-    public onLoadValues(boolean electricCar, boolean solarCar) {
+    public OnLoadValues(boolean electricCar, boolean solarCar) {
         this.electricCar = electricCar;
         this.solarCar = solarCar;
     }
 
-    public onLoadValues() {
-    }
+    public OnLoadValues()
+    {}
 
     public boolean isElectricCar() {
         return electricCar;
