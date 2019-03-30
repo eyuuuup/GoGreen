@@ -166,8 +166,8 @@ public class Controller {
                      produces = MediaType.APPLICATION_JSON_VALUE)
     public static onLoadValues onLoad(@Valid @RequestBody String token) {
 
-        Database
-        return new onLoadValues(true, true);
+        return new onLoadValues(Database.checkOneTimeEvent(token, 6),//checkthe id for Solar Car and Electric Car
+        Database.checkOneTimeEvent(token, 7));
     }
     
     
