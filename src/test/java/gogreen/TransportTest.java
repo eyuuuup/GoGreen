@@ -20,7 +20,8 @@ public class TransportTest {
     public void setUp() throws Exception {
         PowerMockito.mockStatic(Communication.class);
         PowerMockito.mockStatic(Api.class);
-        PowerMockito.when(Api.class, "carbonAmount", anyString()).thenReturn(100);
+        Double d = Double.valueOf(100);
+        PowerMockito.when(Api.class, "carbonAmount", anyString()).thenReturn(d);
     }
 
     @Test
