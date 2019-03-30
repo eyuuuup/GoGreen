@@ -5,14 +5,13 @@ public class onLoadValues {
     private boolean electricCar;
     private boolean solarCar;
 
-    public onLoadValues(boolean electricCar, boolean solarCar)
-    {
-        this.electricCar=electricCar;
-        this.solarCar=solarCar;
+    public onLoadValues(boolean electricCar, boolean solarCar) {
+        this.electricCar = electricCar;
+        this.solarCar = solarCar;
     }
 
-    public onLoadValues()
-    {}
+    public onLoadValues() {
+    }
 
     public boolean isElectricCar() {
         return electricCar;
