@@ -10,8 +10,9 @@ public class Encryptee {
 
     /**
      * Constructs a new Encyptee.
+     *
      * @param message message
-     * @param token token
+     * @param token   token
      */
     public Encryptee(byte[] message, String token) {
         this.message = message;
@@ -20,6 +21,7 @@ public class Encryptee {
 
     /**
      * getter for th message.
+     *
      * @return message
      */
     public byte[] getMessage() {
@@ -28,6 +30,7 @@ public class Encryptee {
 
     /**
      * setter for the message.
+     *
      * @param message message
      */
     public void setMessage(byte[] message) {
@@ -36,6 +39,7 @@ public class Encryptee {
 
     /**
      * getter for the token.
+     *
      * @return token
      */
     public String getToken() {
@@ -44,6 +48,7 @@ public class Encryptee {
 
     /**
      * setter for the token.
+     *
      * @param token token
      */
     public void setToken(String token) {
