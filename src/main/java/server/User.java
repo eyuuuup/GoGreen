@@ -9,19 +9,34 @@ public class User {
     private String password;
     private String email;
     private int    totalScore;
-    
+
+    /**
+     * Constructor for user.
+     * @param name name
+     * @param password password
+     * @param email email
+     * @param totalScore totalScore
+     */
     public User(String name, String password, String email, int totalScore) {
         this.name = name;
         this.password = password;
         this.email = email;
         this.totalScore = totalScore;
     }
-    
+
+    /**
+     * Constructor for User.
+     * @param name name
+     * @param password password
+     */
     public User(String name, String password) {
         this.name = name;
         this.password = password;
     }
-    
+
+    /**
+     * empty User constructor.
+     */
     public User() {
     }
     

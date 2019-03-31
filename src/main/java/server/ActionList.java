@@ -3,29 +3,29 @@ package server;
 import java.util.ArrayList;
 
 /**
- * This class is for the list of actions
+ * This class is for the list of actions.
  */
 public class ActionList {
 
     ArrayList<Action> list;
 
     /**
-     * Constructs and initializes new instance of the class
-     * @param list
+     * Constructs and initializes new instance of the class.
+     * @param list list
      */
     public ActionList(ArrayList<Action> list) {
         this.list = list;
     }
 
     /**
-     * Empty constructor
+     * Empty constructor.
      */
     public ActionList() {
         this.list = new ArrayList<>();
     }
 
     /**
-     * Getter for the list
+     * Getter for the list.
      * @return
      */
     public ArrayList<Action> getList() {
@@ -33,8 +33,8 @@ public class ActionList {
     }
 
     /**
-     * Setter for the list
-     * @param list
+     * Setter for the list.
+     * @param list list
      */
     public void setList(ArrayList<Action> list) {
         this.list = list;

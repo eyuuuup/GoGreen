@@ -22,17 +22,24 @@ public class Food {
      */
     public static void addAction(boolean veggie, boolean locally, boolean bio)
             throws ConnectIOException {
+        String exception = "you have reached the daily limit of food actions";
         double carbonReduced = Api.carbonAmount("diets.json?size=1");
         if (veggie) {
-            Communication.addAction("Meat", 50, carbonReduced, 0);
+            if (!Communication.addAction("Meat", 50, carbonReduced, 0)) {
+                throw new IllegalArgumentException(exception);
+            }
         }
 
         if (locally) {
-            Communication.addAction("Local", 50, carbonReduced, 0);
+            if (!Communication.addAction("Local", 50, carbonReduced, 0)) {
+                throw new IllegalArgumentException(exception);
+            }
         }
 
         if (bio) {
-            Communication.addAction("Biological", 50, carbonReduced, 0);
+            if (!Communication.addAction("Biological", 50, carbonReduced, 0)) {
+                throw new IllegalArgumentException(exception);
+            }
         }
     }
 }

@@ -3,7 +3,7 @@ package client;
 import java.util.ArrayList;
 
 /**
- * for the list of actionsHistory
+ * for the list of actionsHistory.
  */
 public class ActionList {
 
