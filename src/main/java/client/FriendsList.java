@@ -11,7 +11,7 @@ public class FriendsList {
     /**
      * Constructor.
      *
-     * @param list
+     * @param list list of CompareFriends
      */
     public FriendsList(ArrayList<CompareFriends> list) {
         this.list = list;
@@ -27,7 +27,7 @@ public class FriendsList {
     /**
      * Getter for list of friend objects.
      *
-     * @return
+     * @return  a list of friends
      */
     public ArrayList<CompareFriends> getList() {
         return list;
@@ -36,7 +36,7 @@ public class FriendsList {
     /**
      * Setter for the list of friends.
      *
-     * @param list
+     * @param list list of Compare friends
      */
     public void setList(ArrayList<CompareFriends> list) {
         this.list = list;

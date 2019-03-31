@@ -16,8 +16,8 @@ public class TokenResponse {
     /**
      * Constructor.
      *
-     * @param token
-     * @param legit
+     * @param token String token of user
+     * @param legit if token is correct or not
      */
     public TokenResponse(String token, boolean legit) {
         this.token = token;
@@ -36,7 +36,7 @@ public class TokenResponse {
     /**
      * Setter for token.
      *
-     * @param token
+     * @param token String token of the user
      */
     public void setToken(String token) {
         this.token = token;

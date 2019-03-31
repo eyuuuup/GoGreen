@@ -287,7 +287,7 @@ public class Communication {
     }
 
     /**
-     * This method is to get the values needed on the loading of the application
+     * This method is to get the values needed on the loading of the application.
      *
      * @return an instance of onLoadValue class
      */

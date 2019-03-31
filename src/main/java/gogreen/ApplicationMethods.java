@@ -1,6 +1,5 @@
 package gogreen;
 
-import client.Communication;
 import com.google.common.hash.Hashing;
 
 import java.io.File;

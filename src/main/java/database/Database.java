@@ -46,9 +46,9 @@ public class Database {
 
     /**
      * This methods queries the database for username,
-     * mail and totalscore of user, found by token
+     * mail and totalscore of user, found by token.
      *
-     * @param token
+     * @param token String, token of the user
      * @return username, mail, totalscore of user
      */
     public static User getUser(String token) {
@@ -257,26 +257,34 @@ public class Database {
 //        }
 //    }
 
+    /**
+     * This method is for getting carbon reduced and produced.
+     *
+     * @param token String token of the user
+     * @return ACtion object wth carbon values
+     */
+
     public static Action getCarbonValues(String token) {
         System.out.println("get carbon values called");
         try {
             Connection con = DriverManager.getConnection();
             PreparedStatement state =
                     con.prepareStatement("SELECT carbon_produced, carbon_reduced "
-                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
-                            + "WHERE user_data.token = ?");
+                            + "FROM total_score JOIN user_data ON total_score.username "
+                            + "= user_data.username " + "WHERE user_data.token = ?");
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
 
             con.close();
 
             if (rs.next()) {
-                Action a = new Action();
-                a.setCarbonProduced(rs.getDouble(1));
-                a.setCarbonReduced(rs.getDouble(2));
-                System.out.println("carbon_produced: " + a.getCarbonProduced() + "\tcarbon_reduced: " + a.getCarbonReduced());
+                Action action = new Action();
+                action.setCarbonProduced(rs.getDouble(1));
+                action.setCarbonReduced(rs.getDouble(2));
+                System.out.println("carbon_produced: " + action.getCarbonProduced()
+                        + "\tcarbon_reduced: " + action.getCarbonReduced());
 
-                return a;
+                return action;
             }
             return null;
 
@@ -292,7 +300,8 @@ public class Database {
      * @param token the token from a user.
      * @param score the score that should be added to the total.
      */
-    public static void updateTotalScores(String token, int score, double carbonReduced, double carbonProduced) {
+    public static void updateTotalScores(String token, int score,
+                                         double carbonReduced, double carbonProduced) {
         try {
             System.out.println("updateTotalScores called");
             int currentTotalScore = getTotalScore(token);
@@ -708,10 +717,16 @@ public class Database {
         }
     }
 
+    /**
+     * This method is for getting one time values.
+     * @param token string token for user
+     * @return On load values
+     */
     public static OnLoadValues oneTimeEvent(String token) {
 
         //CHECK THE ACTION IDS AND REPLACE WITH ONE METHOD
-        return new OnLoadValues(Database.checkOneTimeEvent(token, 6), Database.checkOneTimeEvent(token, 7));
+        return new OnLoadValues(Database.checkOneTimeEvent(token, 6),
+                Database.checkOneTimeEvent(token, 7));
 
     }
 
