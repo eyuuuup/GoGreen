@@ -17,6 +17,11 @@ public class Action {
     public Action() {
     }
     
+    /**
+     * constructor containing only carbon values
+     * @param carbonProduced kilograms of carbon produced
+     * @param carbonReduced  kilograms of carbon produced
+     */
     public Action(double carbonProduced, double carbonReduced) {
         this.carbonProduced = carbonProduced;
         this.carbonReduced = carbonReduced;
