@@ -31,6 +31,13 @@ public class ActionTest {
         action.setCarbonReduced(50);
         assertEquals(action.getCarbonProduced(), 50, 0);
     }
+    
+    @Test
+    public void constructorCarbon() {
+        Action action = new Action(50.0, 100.0);
+        assertEquals(50, action.getCarbonProduced(), 0);
+        assertEquals(100, action.getCarbonReduced(), 0);
+    }
 
     @Test
     public void constructorForCarbon(){
