@@ -1,112 +1,82 @@
-//package server;
-//
-//import org.junit.Test;
-//
-//import static org.junit.Assert.assertEquals;
-//
-//public class ActionTest {
-//    private Action ACTION = new Action("User", "Action", 100,50,50);
-//
-////    @Test
-////    public void constructor(){
-////        Action action = new Action("user", "action", 10,50,50);
-////        assertEquals(action.getToken(), "user");
-////        assertEquals(action.getAction(), "action");
-////        assertEquals(action.getValue(), 10);
-////        assertEquals(action.getCarbonProduced(),50 , 0.01);
-////        assertEquals(action.getCarbonReduced(), 50, 0.01);
-////    }
-////
-////    @Test
-////    public void constructorEmpty() {
-////        Action action = new Action();
-////        action.setToken("A");
-////        assertEquals(action.getToken(), "A");
-////        action.setAction("A");
-////        assertEquals(action.getAction(), "A");
-////        action.setValue(10);
-////        assertEquals(action.getValue(), 10);
-////        action.setCarbonProduced(50);
-//////        assertEquals(action.getCarbonProduced(), 50, 0.01);
-////        action.setCarbonReduced(50);
-////        assertEquals(action.getCarbonReduced(), 50, 0.01);
-////    }
-//
-//    @Test
-//    public void constructorClient() {
-//        Action action = new Action("user", "action", 25);
-//        assertEquals(action.getToken(), "user");
-//        assertEquals(action.getAction(), "action");
-//        assertEquals(action.getValue(), 25);
-//    }
-//
-////    @Test
-////    public void constructorClientPlus() {
-////        Action action = new Action("user", "action", 25, 100, 250, 15000);
-////        assertEquals(action.getToken(), "user");
-////        assertEquals(action.getAction(), "action");
-////        assertEquals(action.getValue(), 25);
-////        assertEquals(action.getCarbonReduced(), 100, 0.01);
-////        assertEquals(action.getCarbonProduced(), 250, 0.01);
-////        assertEquals(action.getDate(), 15000);
-////    }
-////
-////    @Test
-////    public void constructorServer() {
-////        Action action = new Action("action", 25, 100, 250, 15000);
-////        assertEquals(action.getAction(), "action");
-////        assertEquals(action.getValue(), 25);
-////        assertEquals(100, action.getCarbonReduced(), 0.01);
-////        assertEquals(250, action.getCarbonProduced(), 0.01);
-////        assertEquals(15000, action.getDate());
-////    }
-//
-//    @Test
-//    public void getUser() {
-//        assertEquals(ACTION.getToken(), "User");
-//    }
-//
-//    @Test
-//    public void setUser() {
-//        Action action = new Action("user", "action", 10,50,50);
-//        action.setToken("USER");
-//        assertEquals(action.getToken(), "USER");
-//    }
-//
-//    @Test
-//    public void getAction() {
-//        assertEquals(ACTION.getAction(), "Action");
-//    }
-//
-//    @Test void setCarbonReduced(){
-//        Action action= new Action("user", "token", 10, 50, 50);
-//        action.setCarbonReduced(70);
-//        assertEquals(70, action.getCarbonReduced(), 0.01);
-//    }
-//
-//    @Test
-//    public void setAction() {
-//        Action action = new Action("user", "action", 10,50,50);
-//        action.setAction("ACTION");
-//        assertEquals(action.getAction(), "ACTION");
-//    }
-//
-//    @Test
-//    public void getValue() {
-//        assertEquals(ACTION.getValue(), 100);
-//    }
-//
-//    @Test
-//    public void setValue() {
-//        Action action = new Action("user", "action", 10,50,50);
-//        action.setValue(70);
-//        assertEquals(action.getValue(), 70);
-//    }
-//
-//    @Test
-//    public void setDate(){
-//        Action action = new Action();
-//        action.setDate(15000);
-//        assertEquals(action.getDate(), 15000);
-//    }
-//}
+package server;
+
+import client.Action;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+
+public class ActionTest {
+    private Action ACTION = new Action("User", "Action", 100,50,50);
+
+    @Test
+    public void constructor(){
+        Action act= new Action("user", "action", 10, 50,50);
+        assertEquals("user", act.getToken());
+        assertEquals("action", act.getAction());
+        assertEquals(10,act.getValue());
+        assertEquals(50, act.getCarbonProduced(), 0);
+        assertEquals(50, act.getCarbonReduced(),0);
+    }
+
+    @Test
+    public void constructorEmpty(){
+        Action act= new Action();
+        act.setToken("A");
+        assertEquals("A", act.getToken());
+        act.setAction("action");
+        assertEquals("action", act.getAction());
+        act.setValue(10);
+        assertEquals(10, act.getValue());
+        act.setCarbonProduced(50);
+        assertEquals(50, act.getCarbonProduced(), 0);
+
+    }
+
+    @Test
+    public void getToken() {
+    }
+
+    @Test
+    public void setToken() {
+    }
+
+    @Test
+    public void getAction() {
+    }
+
+    @Test
+    public void setAction() {
+    }
+
+    @Test
+    public void getValue() {
+    }
+
+    @Test
+    public void setValue() {
+    }
+
+    @Test
+    public void getCarbonReduced() {
+    }
+
+    @Test
+    public void setCarbonReduced() {
+    }
+
+    @Test
+    public void getCarbonProduced() {
+    }
+
+    @Test
+    public void setCarbonProduced() {
+    }
+
+    @Test
+    public void getDate() {
+    }
+
+    @Test
+    public void setDate() {
+    }
+}
