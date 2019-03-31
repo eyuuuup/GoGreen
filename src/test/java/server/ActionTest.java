@@ -13,8 +13,8 @@ public class ActionTest {
         assertEquals(action.getToken(), "user");
         assertEquals(action.getAction(), "action");
         assertEquals(action.getValue(), 10);
-        assertEquals(action.getCarbonProduced(), 50);
-        assertEquals(action.getCarbonReduced(), 50);
+        assertEquals(action.getCarbonProduced(), 50, 0);
+        assertEquals(action.getCarbonReduced(), 50, 0);
     }
     
     @Test
@@ -27,9 +27,16 @@ public class ActionTest {
         action.setValue(10);
         assertEquals(action.getValue(), 10);
         action.setCarbonProduced(50);
-        assertEquals(action.getCarbonProduced(), 50);
+        assertEquals(action.getCarbonProduced(), 50, 0);
         action.setCarbonReduced(50);
-        assertEquals(action.getCarbonProduced(), 50);
+        assertEquals(action.getCarbonProduced(), 50, 0);
+    }
+    
+    @Test
+    public void constructorCarbon() {
+        Action action = new Action(50.0, 100.0);
+        assertEquals(50, action.getCarbonProduced(), 0);
+        assertEquals(100, action.getCarbonReduced(), 0);
     }
     
     @Test
@@ -46,8 +53,8 @@ public class ActionTest {
         assertEquals(action.getToken(), "user");
         assertEquals(action.getAction(), "action");
         assertEquals(action.getValue(), 25);
-        assertEquals(action.getCarbonReduced(), 100);
-        assertEquals(action.getCarbonProduced(), 250);
+        assertEquals(action.getCarbonReduced(), 100, 0);
+        assertEquals(action.getCarbonProduced(), 250, 0);
         assertEquals(action.getDate(), 15000);
     }
     
@@ -56,8 +63,8 @@ public class ActionTest {
         Action action = new Action("action", 25, 100, 250, 15000);
         assertEquals(action.getAction(), "action");
         assertEquals(action.getValue(), 25);
-        assertEquals(action.getCarbonReduced(), 100);
-        assertEquals(action.getCarbonProduced(), 250);
+        assertEquals(action.getCarbonReduced(), 100, 0);
+        assertEquals(action.getCarbonProduced(), 250, 0);
         assertEquals(action.getDate(), 15000);
     }
     
