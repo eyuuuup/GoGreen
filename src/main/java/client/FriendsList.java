@@ -3,13 +3,14 @@ package client;
 import java.util.ArrayList;
 
 /**
- *This class if for returning the list of friend objects.
+ * This class if for returning the list of friend objects.
  */
 public class FriendsList {
     ArrayList<CompareFriends> list;
 
     /**
      * Constructor.
+     *
      * @param list
      */
     public FriendsList(ArrayList<CompareFriends> list) {
@@ -25,6 +26,7 @@ public class FriendsList {
 
     /**
      * Getter for list of friend objects.
+     *
      * @return
      */
     public ArrayList<CompareFriends> getList() {

@@ -10,6 +10,7 @@ public class OnLoadValues {
 
     /**
      * Constructor.
+     *
      * @param electricCar
      * @param solarCar
      */
@@ -26,6 +27,7 @@ public class OnLoadValues {
 
     /**
      * Getter for electric car.
+     *
      * @return if present or not
      */
     public boolean isElectricCar() {
@@ -34,6 +36,7 @@ public class OnLoadValues {
 
     /**
      * setter for solarcCar.
+     *
      * @return if presernt or not
      */
     public boolean isSolarCar() {
@@ -42,6 +45,7 @@ public class OnLoadValues {
 
     /**
      * Settter for electricCar.
+     *
      * @param electricCar
      */
     public void setElectricCar(boolean electricCar) {
@@ -50,6 +54,7 @@ public class OnLoadValues {
 
     /**
      * Setter for SolarCar.
+     *
      * @param solarCar
      */
     public void setSolarCar(boolean solarCar) {
