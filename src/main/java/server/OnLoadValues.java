@@ -39,7 +39,7 @@ public class OnLoadValues {
 
 
     /**
-     * setter for solarcCar.
+     * Setter for solarcCar.
      *
      * @return if presernt or not
      */
@@ -49,7 +49,7 @@ public class OnLoadValues {
 
 
     /**
-     * Settter for electricCar.
+     * Setter for electricCar.
      *
      * @param electricCar
      */

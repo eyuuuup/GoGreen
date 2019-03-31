@@ -55,7 +55,7 @@ public class CommunicationTest {
         
         assertTrue(Whitebox.invokeMethod(Communication.class, "submit", new Object[]{"user", "pwd", true, "/url"}));
     }
-    
+
     @Test
     public void postToken() throws Exception {
         RestTemplate template = PowerMockito.mock(RestTemplate.class);
