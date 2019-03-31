@@ -1,5 +1,6 @@
 package database;
 
+import org.joda.time.Instant;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +22,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyObject;
 
 @RunWith (PowerMockRunner.class)
-@PrepareForTest ({DriverManager.class, Connection.class})
+@PrepareForTest ({Database.class, DriverManager.class, Connection.class})
 public class DatabaseTest {
     private Connection        connection;
     private PreparedStatement state;
@@ -57,25 +58,35 @@ public class DatabaseTest {
     }
     
     @Test
-    public void addAction() throws Exception {
+    public void addActionTimeNow() throws Exception {
         server.Action action = Mockito.mock(server.Action.class);
         
-        int n = 1;
+        //add action
+        int n = 1;  //food category
         PowerMockito.when(resultSet.getInt(1)).thenReturn(n);
         PowerMockito.when(resultSet.getInt(2)).thenReturn(n);
         
-        Database.addAction(action);
+        //time
+        PowerMockito.stub(PowerMockito.method(Database.class, "getLastMeal")).toReturn(Instant.now().getMillis());
+        
+        //update total scores
+        PowerMockito.stub(PowerMockito.method(Database.class, "updateTotalScores")).toReturn(true);
+        
+        assertTrue(Database.addAction(action));
     }
     
     @Test
-    public void addActionTime() throws Exception {
+    public void addActionTimeOut() throws Exception {
         server.Action action = Mockito.mock(server.Action.class);
         
         int n = 1;
         PowerMockito.when(resultSet.getInt(1)).thenReturn(n);
         PowerMockito.when(resultSet.getInt(2)).thenReturn(n);
         
-        Database.addAction(action);
+        //time
+        PowerMockito.stub(PowerMockito.method(Database.class, "getLastMeal")).toReturn(Instant.now().getMillis() - 1000);
+        
+        assertFalse(Database.addAction(action));
     }
     
     @Test
@@ -83,7 +94,7 @@ public class DatabaseTest {
         server.Action action = Mockito.mock(server.Action.class);
         PowerMockito.when(resultSet.getInt(1)).thenThrow(SQLException.class);
         
-        Database.addAction(action);
+        assertFalse(Database.addAction(action));
     }
     
     @Test
@@ -104,13 +115,13 @@ public class DatabaseTest {
     
     @Test
     public void updateTotalScores() {
-        Database.updateTotalScores("token", 10,50,50);
+        Database.updateTotalScores("token", 10, 50, 50);
     }
     
     @Test
     public void updateTotalScoresError() throws Exception {
         PowerMockito.when(state, "executeUpdate").thenThrow(SQLException.class);
-        Database.updateTotalScores("token", 10,50,50);
+        Database.updateTotalScores("token", 10, 50, 50);
     }
     
     @Test
