@@ -180,7 +180,7 @@ public class ControllerTest {
     public void onLoadValues() {
         String token = "user";
 
-        onLoadValues ol = new onLoadValues();
+        OnLoadValues ol = new OnLoadValues();
         PowerMockito.when(Database.oneTimeEvent(token)).thenReturn(ol);
 
         assertEquals(ol, Controller.onLoad(token));

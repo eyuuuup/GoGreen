@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 
 public class onLoadValuesTest {
 
-    onLoadValues obj= new onLoadValues(true, false);
+    OnLoadValues obj= new OnLoadValues(true, false);
 
     @Test
     public void isElectricCar() {

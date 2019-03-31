@@ -6,19 +6,10 @@ package client;
 public class Action {
     private String token;
     private String action;
-<<<<<<< HEAD
-    private int    value;
-    private double carbonReduced;
-    private double carbonProduced;
-    private long   date;
-    
-=======
     private int value;
     private double carbonReduced;
     private double carbonProduced;
     private long date;
-
->>>>>>> 15522df726578239e8fee2906275da8e6a92e925
     /**
      * empty constructor.
      */

@@ -6,31 +6,19 @@ package server;
 public class Action {
     private String token;
     private String action;
-<<<<<<< HEAD
     private int    value;
     private double carbonReduced;
     private double carbonProduced;
     private long   date;
     
-=======
-    private int value;
-    private int carbonReduced;
-    private int carbonProduced;
-    private long date;
 
->>>>>>> 15522df726578239e8fee2906275da8e6a92e925
     /**
      * empty constructor.
      */
     public Action() {
     }
-<<<<<<< HEAD
-    
-    public Action(double carbonProduced, double carbonReduced) {
-=======
 
-    public Action(int carbonProduced, int carbonReduced) {
->>>>>>> 15522df726578239e8fee2906275da8e6a92e925
+    public Action(double carbonProduced, double carbonReduced) {
         this.carbonProduced = carbonProduced;
         this.carbonReduced = carbonReduced;
     }
@@ -57,12 +45,7 @@ public class Action {
      * @param carbonProduced carbon produced
      * @param carbonReduced  carbon saced
      */
-<<<<<<< HEAD
     public Action(String token, String action, int value, double carbonReduced, double carbonProduced) {
-=======
-    public Action(String token, String action, int value, int carbonReduced, int carbonProduced) {
-
->>>>>>> 15522df726578239e8fee2906275da8e6a92e925
         this.token = token;
         this.action = action;
         this.value = value;
@@ -80,12 +63,7 @@ public class Action {
      * @param carbonReduced  carbon saced
      * @param date           date added (in miliseconds)
      */
-<<<<<<< HEAD
     public Action(String token, String action, int value, double carbonReduced, double carbonProduced, long date) {
-=======
-    public Action(String token, String action, int value,
-                  int carbonReduced, int carbonProduced, long date) {
->>>>>>> 15522df726578239e8fee2906275da8e6a92e925
         this.token = token;
         this.action = action;
         this.value = value;

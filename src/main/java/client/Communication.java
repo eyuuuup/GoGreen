@@ -269,9 +269,9 @@ public class Communication {
         return request.postForObject(hostURL + "/carbon", message, Action.class);
     }
 
-    public static onLoadValues onLoad(){
+    public static OnLoadValues onLoad(){
         HttpEntity<String> message= new HttpEntity<>(token);
         RestTemplate request = new RestTemplate();
-        return request.postForObject(hostURL+"/onLoad", message, onLoadValues.class);
+        return request.postForObject(hostURL+"/onLoad", message, OnLoadValues.class);
     }
 }
