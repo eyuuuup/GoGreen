@@ -395,42 +395,6 @@ public class Database {
         }
     }
     
-    
-    /**
-     * get carbon values.
-     * @param token token
-     * @return carbon values
-     */
-    public static Action getCarbonValues(String token) {
-        System.out.println("get carbon values called");
-        try {
-            Connection con = DriverManager.getConnection();
-            PreparedStatement state =
-                    con.prepareStatement("SELECT carbon_produced, carbon_reduced "
-                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
-                            + "WHERE user_data.token = ?");
-            state.setString(1, token);
-            ResultSet rs = state.executeQuery();
-            
-            con.close();
-            
-            if (rs.next()) {
-                Action action = new Action();
-                action.setCarbonProduced(rs.getDouble(1));
-                action.setCarbonReduced(rs.getDouble(2));
-                System.out.println("carbon_produced: " + action.getCarbonProduced()
-                        + "\tcarbon_reduced: " + action.getCarbonReduced());
-                
-                return action;
-            }
-            return null;
-            
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            return null;
-        }
-    }
-    
     /**
      * This method queries the database to get the total score of a user.
      *
