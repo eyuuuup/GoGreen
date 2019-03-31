@@ -6,7 +6,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ActionTest {
     private Action ACTION = new Action("User", "Action", 100,50,50);
-    
+
     @Test
     public void constructor(){
         Action action = new Action("user", "action", 10,50,50);
@@ -16,7 +16,7 @@ public class ActionTest {
         assertEquals(action.getCarbonProduced(), 50, 0);
         assertEquals(action.getCarbonReduced(), 50, 0);
     }
-    
+
     @Test
     public void constructorEmpty() {
         Action action = new Action();
@@ -103,4 +103,25 @@ public class ActionTest {
         action.setDate(15000);
         assertEquals(action.getDate(), 15000);
     }
+
+    @Test
+    public void getCarbonReduced() { assertEquals(50, ACTION.getCarbonReduced(), 0);
+    }
+
+    @Test
+    public void setCarbonReduced(){
+        ACTION.setCarbonReduced(60);
+        assertEquals(60, ACTION.getCarbonReduced(),0);
+    }
+
+    @Test
+    public void getCarbonProduced(){ assertEquals(50, ACTION.getCarbonProduced(), 0);
+    }
+
+    @Test
+    public void setCarbonProduced() {
+        ACTION.setCarbonProduced(60);
+        assertEquals(60, ACTION.getCarbonProduced(),0);
+    }
+
 }
