@@ -10,12 +10,13 @@ public class Action {
     private double carbonReduced;
     private double carbonProduced;
     private long date;
+
     /**
      * empty constructor.
      */
     public Action() {
     }
-    
+
     public Action(double carbonProduced, double carbonReduced) {
         this.carbonProduced = carbonProduced;
         this.carbonReduced = carbonReduced;

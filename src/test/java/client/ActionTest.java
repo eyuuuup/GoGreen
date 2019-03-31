@@ -18,6 +18,13 @@ public class ActionTest {
     }
 
     @Test
+    public void constructorForCarbon(){
+        Action action=new Action(50.3,50);
+        assertEquals(50.3, action.getCarbonProduced(),0);
+        assertEquals(50, action.getCarbonReduced(), 0);
+    }
+
+    @Test
     public void constructorEmpty() {
         Action action = new Action();
         action.setToken("A");

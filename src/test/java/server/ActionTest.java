@@ -1,6 +1,5 @@
 package server;
 
-import client.Action;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -32,6 +31,14 @@ public class ActionTest {
         action.setCarbonReduced(50);
         assertEquals(action.getCarbonProduced(), 50, 0);
     }
+
+    @Test
+    public void constructorForCarbon(){
+        Action action=new Action(50.3,50);
+        assertEquals(50.3, action.getCarbonProduced(),0);
+        assertEquals(50, action.getCarbonReduced(), 0);
+    }
+
 
     @Test
     public void constructorClient() {
@@ -88,7 +95,7 @@ public class ActionTest {
 
     @Test
     public void getValue() {
-        assertEquals(ACTION.getValue(), 100);
+        assertEquals(100, ACTION.getValue());
     }
 
     @Test
@@ -100,7 +107,7 @@ public class ActionTest {
 
     @Test
     public void setDate(){
-        Action action = new Action();
+        Action action = new Action("action", 10, 50, 50, 7000);
         action.setDate(15000);
         assertEquals(action.getDate(), 15000);
     }
