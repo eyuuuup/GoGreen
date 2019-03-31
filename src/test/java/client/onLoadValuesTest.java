@@ -16,7 +16,7 @@ public class onLoadValuesTest {
         assertEquals(true, object.isElectricCar());
         assertEquals(false, object.isSolarCar());
     }
-
+ 
     @Test
     public void isElectricCar() {
         assertEquals(true, obj.isElectricCar());
