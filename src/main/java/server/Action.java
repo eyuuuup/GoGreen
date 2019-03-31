@@ -45,7 +45,8 @@ public class Action {
      * @param carbonProduced carbon produced
      * @param carbonReduced  carbon saced
      */
-    public Action(String token, String action, int value, double carbonReduced, double carbonProduced) {
+    public Action(String token, String action, int value,
+                  double carbonReduced, double carbonProduced) {
         this.token = token;
         this.action = action;
         this.value = value;
@@ -63,7 +64,8 @@ public class Action {
      * @param carbonReduced  carbon saced
      * @param date           date added (in miliseconds)
      */
-    public Action(String token, String action, int value, double carbonReduced, double carbonProduced, long date) {
+    public Action(String token, String action, int value,
+                  double carbonReduced, double carbonProduced, long date) {
         this.token = token;
         this.action = action;
         this.value = value;
@@ -81,7 +83,8 @@ public class Action {
      * @param carbonReduced  carbon saced
      * @param date           date added (in miliseconds)
      */
-    public Action(String action, int value, double carbonReduced, double carbonProduced, long date) {
+    public Action(String action, int value, double carbonReduced,
+                  double carbonProduced, long date) {
         this.action = action;
         this.value = value;
         this.carbonReduced = carbonReduced;

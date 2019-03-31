@@ -23,7 +23,7 @@ class ApplicationMethods {
         // to be implemented: fetch data from the database
         Transport.setHasElectricCar(false);
         Energy.setHasSolarPanels(false);
-//        Communication.onLoad(); //Returns an object of class onLoadValues but action ids aren't set properly on server
+//        Communication.onLoad(); Returns an object of class onLoadValues but action ids aren't set properly on server
     }
 
     /**

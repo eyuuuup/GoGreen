@@ -1,9 +1,19 @@
 package server;
 
+
+/**
+ * This class is for sending user's token.
+ */
 public class TokenResponse {
     private String token;
     private boolean legit;
 
+    /**
+     * Constructor.
+     *
+     * @param token String token of user
+     * @param legit if token is correct or not
+     */
     public TokenResponse(String token, boolean legit) {
         this.token = token;
         this.legit = legit;
@@ -13,7 +23,7 @@ public class TokenResponse {
     /**
      * Getter for token.
      *
-     * @return
+     * @return String token of user
      */
     public String getToken() {
         return token;
@@ -23,7 +33,7 @@ public class TokenResponse {
     /**
      * Setter for token.
      *
-     * @param token
+     * @param token String token of user
      */
     public void setToken(String token) {
         this.token = token;

@@ -11,8 +11,8 @@ public class OnLoadValues {
     /**
      * Constructor.
      *
-     * @param electricCar
-     * @param solarCar
+     * @param electricCar presence of electricCar
+     * @param solarCar presence of solarCar
      */
 
     public OnLoadValues(boolean electricCar, boolean solarCar) {
@@ -51,7 +51,7 @@ public class OnLoadValues {
     /**
      * Setter for electricCar.
      *
-     * @param electricCar
+     * @param electricCar if electricCar present or not
      */
     public void setElectricCar(boolean electricCar) {
         this.electricCar = electricCar;
@@ -61,7 +61,7 @@ public class OnLoadValues {
     /**
      * Setter for SolarCar.
      *
-     * @param solarCar
+     * @param solarCar if solarCar present or not
      */
     public void setSolarCar(boolean solarCar) {
         this.solarCar = solarCar;

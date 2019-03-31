@@ -53,12 +53,7 @@ public class Controller {
     }
 
     /**
-     * <<<<<<< HEAD
-     * This is the method for silentLogin
-     * <p>
-     * =======
      * This is the method for silentLogin.
-     * >>>>>>> 15522df726578239e8fee2906275da8e6a92e925
      *
      * @param token string
      * @return whether token exists
@@ -174,7 +169,7 @@ public class Controller {
     }
 
     /**
-     * This method is for getting the onLoadValues
+     * This method is for getting the onLoadValues.
      *
      * @param token
      * @return two boolean values for the presence of electricCar or solarCar
@@ -187,12 +182,7 @@ public class Controller {
     }
 
     /**
-     * <<<<<<< HEAD
-     * This method is for getting the total amount of carbon produced and reduced
-     * <p>
-     * =======
      * This method is for getting the total amount of carbon produced and reduced.
-     * >>>>>>> 15522df726578239e8fee2906275da8e6a92e925
      *
      * @param token the token of the user requesting the data
      * @return token
