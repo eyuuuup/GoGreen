@@ -4,6 +4,7 @@ import client.Communication;
 import client.CompareFriends;
 import com.jfoenix.controls.*;
 
+import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
@@ -24,6 +25,7 @@ import javafx.scene.control.TextField;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -700,28 +702,37 @@ public class Application extends javafx.application.Application {
      * @return the energy screen
      */
     private static GridPane energyScreen() {
-        
-        // makes the water time button
-        JFXButton waterTime = new JFXButton();
-        MaterialDesignIconView waterIcon = new MaterialDesignIconView(MaterialDesignIcon.WATER);
-        waterIcon.setSize("50px");
-        waterTime.setGraphic(new Label("Add shower time", waterIcon));
-        waterTime.setId("actionButton");
+        // makes the water time box
+        Label waterTimeText = new Label("Add shower time");
+
+        JFXHamburger waterTimeButton = new JFXHamburger();
+        HamburgerBasicCloseTransition waterButtonTask = new HamburgerBasicCloseTransition(waterTimeButton);
+        waterButtonTask.setRate(-1);
+
+
+        HBox waterTime = new HBox(100);
+        waterTime.getChildren().addAll(waterTimeText, waterTimeButton);
+
+
 
         // make the water time slider
         JFXSlider waterTimeSlider = new JFXSlider(0,60,0);
 
-
-        // make error label
-        Label errorWater = new Label("");
+        // make instruction and error label
+        Label errorWater = new Label("Slide to the amount you showered");
         errorWater.setId("error");
 
+        // make the water container
         VBox waterContainer = new VBox(10);
         waterContainer.setId("commonContainer");
-        waterContainer.getChildren().addAll(errorWater, waterTimeSlider);
+        waterContainer.getChildren().addAll(waterTime);
 
-        // when pressed it will send an action
-        waterTime.setOnAction(e -> {
+        // makes the add button
+        JFXButton addWater = new JFXButton("add shower time");
+        addWater.setId("smallButton");
+
+        // if the add button is pressed, checks the conditions and sends the action
+        addWater.setOnAction(e -> {
             int value = (int) Math.round(waterTimeSlider.getValue());
             if (value != 0) {
                 errorWater.setText("");
@@ -731,9 +742,17 @@ public class Application extends javafx.application.Application {
                 } catch (ConnectIOException e1) {
                     e1.printStackTrace();
                 }
-            } else {
+        } else {
                 errorWater.setText("Please fill in the minutes you showered");
             }
+        });
+
+        // when pressed the input box will appear
+        waterTimeButton.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+            waterButtonTask.setRate(waterButtonTask.getRate() * -1);
+            waterButtonTask.play();
+            
+            waterContainer.getChildren().addAll(errorWater, waterTimeSlider, addWater);
         });
 
         // makes the energy button
@@ -746,13 +765,19 @@ public class Application extends javafx.application.Application {
         // make the water time slider
         JFXSlider temperatureSlider = new JFXSlider(15,30,15);
 
+        Label temperatureInfo = new Label("Slide to add your house temperature");
+        temperatureInfo.setId("error");
+
         // make the temperature container
         VBox temperatureContainer = new VBox(10);
         temperatureContainer.setId("commonContainer");
-        temperatureContainer.getChildren().addAll(temperatureSlider);
+        temperatureContainer.getChildren().addAll(temperature);
+
+        JFXButton addTemperature = new JFXButton("add house temperature");
+        addTemperature.setId("smallButton");
 
         // when pressed it will send an action
-        temperature.setOnAction(e -> {
+        addTemperature.setOnAction(e -> {
             int value = (int) Math.round(temperatureSlider.getValue());
             System.out.println(value);
             try {
@@ -762,13 +787,16 @@ public class Application extends javafx.application.Application {
                 e1.printStackTrace();
             }
         });
-        
+
+        // when the temperature button is pressed, the box will appear
+        temperature.setOnAction(e -> {
+            temperatureContainer.getChildren().addAll(temperatureInfo, temperatureSlider, addTemperature);
+        });
+
         // makes the page and adds the nodes
         GridPane energyPage = new GridPane();
-        energyPage.add(waterContainer, 0,0);
-        energyPage.add(waterTime, 0, 1);
-        energyPage.add(temperatureContainer,0,2);
-        energyPage.add(temperature, 0, 3);
+        energyPage.add(waterContainer, 0, 0);
+        energyPage.add(temperatureContainer, 0, 1);
         energyPage.setId("energyPage");
 
         // returns the page
