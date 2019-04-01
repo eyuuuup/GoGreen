@@ -26,13 +26,15 @@ public final class Energy {
      */
     static void addReduceEnergyAction(int houseTemperature) throws ConnectIOException {
         int temperatureDiff = 23 - houseTemperature;
-        int megaJoules = temperatureDiff * 100;
-        double carbon = Api.carbonAmount("electricity_uses.json?energy=" + megaJoules);
-        double carbonProduced = Api.carbonAmount("electricity_uses.json?energy=" + houseTemperature * 100);
+        //average area of house * average  Specific heat capacity of house * energy used in normal day(1min)
+        int megaJoulesReduce = (int)(temperatureDiff * -18.24);
+        int megaJoulesProduce = (int)(houseTemperature * 18.24);
+        double carbonReduced = Api.carbonAmount("electricity_uses.json?energy=" + megaJoulesReduce);
+        double carbonProduced = Api.carbonAmount("electricity_uses.json?energy=" + megaJoulesProduce);
         if (hasSolarPanels) {
-            Communication.addAction("ReduceEnergy", 100 * temperatureDiff, carbon, 0);
+            Communication.addAction("ReduceEnergy", (int)(100 * temperatureDiff), carbonProduced, 0);
         } else {
-            Communication.addAction("ReduceEnergy", 100 * temperatureDiff, 0, carbonProduced);
+            Communication.addAction("ReduceEnergy", (int)(100 *temperatureDiff), carbonReduced, carbonProduced);
         }
     }
 
@@ -41,13 +43,15 @@ public final class Energy {
      */
     static void addReduceWater(int showerTime) throws ConnectIOException {
         int timeDiff = 20 - showerTime;
-        int megaJoules = showerTime * 100;
-        double carbon = Api.carbonAmount("electricity_uses.json?energy=" + megaJoules);
-        double carbonProduced = Api.carbonAmount("electricity_uses.json?energy=" + showerTime * 100);
+        //normal time spent of shower * normal water use during shower (1min) * normal energy contain by water(1KG)
+        int megaJoulesReduce = (int)(timeDiff * -18.4);
+        int megaJoulesProduce = (int)(showerTime * 18.4);
+        double carbonReduced = Api.carbonAmount("electricity_uses.json?energy=" + timeDiff * megaJoulesReduce);
+        double carbonProduced = Api.carbonAmount("electricity_uses.json?energy=" + megaJoulesProduce);
         if (hasSolarPanels) {
-            Communication.addAction("ReduceWater", 100 * timeDiff, carbon, 0);
+            Communication.addAction("ReduceWater", (int)(100 * timeDiff), carbonProduced, 0);
         } else {
-            Communication.addAction("ReduceWater", 100 * timeDiff, 0, carbonProduced);
+            Communication.addAction("ReduceWater", (int)(100 * timeDiff), carbonReduced, carbonProduced);
         }
     }
 }
