@@ -688,49 +688,6 @@ public class Database {
     }
 
     /**
-     * (Experimental)
-     * This methods checks if the user completed a One Time Event.
-     *
-     * @param token username of the user.
-     * @param id    the id of the One Time Event.
-     * @return a boolean.
-     */
-    public static boolean checkOneTimeEvent(String token, int id) {
-        System.out.println("checkOneTimeEvent called");
-        try {
-            String username = getUsername(token);
-            Connection con = DriverManager.getConnection();
-            PreparedStatement state = con.prepareStatement(
-                    "SELECT action_id "
-                            + "FROM events "
-                            + "WHERE user_name = ? AND action_id = ?");
-            state.setString(1, username);
-            state.setInt(2, id);
-            ResultSet rs = state.executeQuery();
-            con.close();
-            return rs.next();
-
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * This method is for getting one time values.
-     * @param token string token for user
-     * @return On load values
-     */
-    public static OnLoadValues oneTimeEvent(String token) {
-
-        //CHECK THE ACTION IDS AND REPLACE WITH ONE METHOD
-        return new OnLoadValues(Database.checkOneTimeEvent(token, 6),
-                Database.checkOneTimeEvent(token, 7));
-
-    }
-
-    /**
      * This methods adds a challenge.
      *
      * @param usernameA username of a user.
