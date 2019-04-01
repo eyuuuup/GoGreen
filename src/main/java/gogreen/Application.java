@@ -77,7 +77,7 @@ public class Application extends javafx.application.Application {
      * This method displays the Login screen.
      */
     private static void loginScene() {
-        Scene loginScene = new Scene(loginScreen(), 500, 500);
+        Scene loginScene = new Scene(loginScreen(),1000,600);
         loginScene.getStylesheets().add(new File(theme).toURI().toString());
         show(loginScene);
     }
@@ -86,7 +86,7 @@ public class Application extends javafx.application.Application {
      * This method displays the register screen.
      */
     private static void registerScene() {
-        Scene registerScene = new Scene(registerScreen(), 500, 500);
+        Scene registerScene = new Scene(registerScreen(), 1000, 600);
         registerScene.getStylesheets().add(new File(theme).toURI().toString());
         show(registerScene);
     }
@@ -147,8 +147,7 @@ public class Application extends javafx.application.Application {
         
         //create the page
         GridPane loginPage = new GridPane();
-        loginPage.setVgap(5);
-        loginPage.setHgap(10);
+        loginPage.setId("loginPage");
         loginPage.add(loginText, 0, 0);
         loginPage.add(username, 0, 1);
         loginPage.add(rememberUser, 1, 1);
@@ -156,7 +155,6 @@ public class Application extends javafx.application.Application {
         loginPage.add(showPassword, 1, 2);
         loginPage.add(login, 0, 3);
         loginPage.add(register, 1, 3);
-        loginPage.setAlignment(Pos.CENTER);
         
         //and return it
         return loginPage;
@@ -167,6 +165,7 @@ public class Application extends javafx.application.Application {
      * @return the body
      */
     private static GridPane registerScreen() {
+
         //textfield for the username
         TextField username = new TextField();
         username.setPromptText("username");
@@ -227,8 +226,7 @@ public class Application extends javafx.application.Application {
         
         //creates the gridpane with all the nodes in it
         GridPane registerPage = new GridPane();
-        registerPage.setVgap(5);
-        registerPage.setHgap(10);
+        registerPage.setId("loginPage");
         registerPage.add(registerText, 0, 0);
         registerPage.add(username, 0, 1);
         registerPage.add(new StackPane(password, visiblePassword), 0, 2);
@@ -237,9 +235,7 @@ public class Application extends javafx.application.Application {
         registerPage.add(showPassword, 1, 3);
         registerPage.add(register, 0, 4);
         registerPage.add(back, 1, 4);
-        
-        registerPage.setAlignment(Pos.CENTER);
-        
+
         //and returns it
         return registerPage;
     }
@@ -250,7 +246,7 @@ public class Application extends javafx.application.Application {
     static void mainScreen() {
         //make the navigation tab pane
         JFXTabPane navigation = new JFXTabPane();
-        navigation.setPrefSize(500, 700);
+        navigation.setId("mainNavigation");
 
         //  make the home tab
         Tab homeTab = new Tab();
@@ -280,7 +276,7 @@ public class Application extends javafx.application.Application {
         body.getChildren().addAll(navigation);
         
         //and displayed
-        Scene mainScene = new Scene(body, 500, 600);
+        Scene mainScene = new Scene(body, 1000, 600);
         mainScene.getStylesheets().add(new File(theme).toURI().toString());
         show(mainScene);
     }
@@ -293,6 +289,7 @@ public class Application extends javafx.application.Application {
         
         // makes the home navigation bar
         JFXTabPane homeNavigation = new JFXTabPane();
+        homeNavigation.setId("secondNavigation");
         homeNavigation.setPrefSize(500,575);
 
         // makes the your world tab
@@ -345,7 +342,6 @@ public class Application extends javafx.application.Application {
 
         // makes the level bar
         ProgressBar levelBar = new ProgressBar(ApplicationMethods.getLevelProgress(points));
-        levelBar.setPrefSize(400, 10);
         
         // makes the level text
         Label levelStatus = new Label("Lv. " + level);
@@ -354,23 +350,22 @@ public class Application extends javafx.application.Application {
         // make the total points text
         Label totalPoints = new Label(points + " points");
         totalPoints.setId("levelStatus");
-        totalPoints.setAlignment(Pos.CENTER_RIGHT);
 
         HBox pointsAndStatus = new HBox(250);
+        pointsAndStatus.setId("commonContainer");
         pointsAndStatus.getChildren().addAll(levelStatus, totalPoints);
-        pointsAndStatus.setAlignment(Pos.CENTER);
 
         // makes a container for the level attributes
         VBox levelContainer = new VBox();
+        levelContainer.setId("commonContainer");
         levelContainer.getChildren().addAll(levelBar, pointsAndStatus);
-        levelContainer.setAlignment(Pos.CENTER);
+
         
         // makes the page and adds the nodes
         GridPane yourWorldPage = new GridPane();
-        yourWorldPage.setVgap(250);
+        yourWorldPage.setId("yourWorldPage");
         yourWorldPage.add(levelContainer, 0,0);
         yourWorldPage.add(yourWorldView,0,1);
-        yourWorldPage.setAlignment(Pos.BOTTOM_CENTER);
         
         // returns the page
         return yourWorldPage;
@@ -389,9 +384,9 @@ public class Application extends javafx.application.Application {
         MaterialDesignIconView darkThemeIcon =
                 new MaterialDesignIconView(MaterialDesignIcon.THEME_LIGHT_DARK);
         darkThemeIcon.setSize("50px");
-        darkTheme.setPrefSize(500, 100);
         darkTheme.setGraphic(new Label(status + " dark theme", darkThemeIcon));
-        
+        darkTheme.setId("settingButtons");
+
         // if the dark mode is enabled, we will have the disable button
         if (theme.equals("src/styles/mainSceneDarkTheme.css")) {
             darkTheme.setSelected(true);
@@ -415,7 +410,7 @@ public class Application extends javafx.application.Application {
         MaterialDesignIconView logoutIcon = new MaterialDesignIconView(MaterialDesignIcon.LOGOUT);
         logoutIcon.setSize("50px");
         logoutButton.setGraphic(new Label("Log out", logoutIcon));
-        logoutButton.setPrefSize(500, 100);
+        logoutButton.setId("settingButtons");
         
         // if we press the button we log out
         logoutButton.setOnAction(e -> {
@@ -428,9 +423,9 @@ public class Application extends javafx.application.Application {
         
         // make the page and add the nodes
         VBox settingsPage = new VBox(10);
+        settingsPage.setId("settingPage");
         settingsPage.getChildren().addAll(darkTheme, logoutButton);
-        settingsPage.setAlignment(Pos.CENTER);
-        
+
         // return the page
         return settingsPage;
     }
@@ -464,15 +459,12 @@ public class Application extends javafx.application.Application {
         ImageView apiButtonView = new ImageView();
         apiButtonView.setImage(apiButton);
 
-        aboutText.setWrapText(true);
-
         VBox aboutContainer = new VBox();
-        aboutContainer.setMaxWidth(475);
+        aboutContainer.setId("longTextContainer");
         aboutContainer.getChildren().addAll(aboutText, apiButtonView);
-        aboutContainer.setAlignment(Pos.CENTER);
 
         ScrollPane aboutPage = new ScrollPane();
-        aboutPage.setMaxSize(500,500);
+        aboutPage.setId("aboutPage");
         aboutPage.setContent(aboutContainer);
 
         return aboutPage;
@@ -485,7 +477,7 @@ public class Application extends javafx.application.Application {
     private static Pane categoryScreen() {
         // make the category navigation bar
         JFXTabPane categoryNavigation = new JFXTabPane();
-        categoryNavigation.setPrefSize(500, 600);
+        categoryNavigation.setId("secondNavigation");
 
         // make the transport tab
         Tab transportTab = new Tab();
@@ -521,7 +513,6 @@ public class Application extends javafx.application.Application {
         
         // return the page
         return categoryPage;
-        
     }
     
     /**
@@ -543,7 +534,8 @@ public class Application extends javafx.application.Application {
         FontAwesomeIconView bikeIcon = new FontAwesomeIconView(FontAwesomeIcon.BICYCLE);
         bikeIcon.setSize("50px");
         cycle.setGraphic(bikeIcon);
-        cycle.setPrefSize(500,100);
+        cycle.setId("actionButton");
+
 
         // when you press the button you add a action
         cycle.setOnAction(e -> {
@@ -564,7 +556,7 @@ public class Application extends javafx.application.Application {
         MaterialDesignIconView subwayIcon = new MaterialDesignIconView(MaterialDesignIcon.SUBWAY);
         subwayIcon.setSize("50px");
         publicTransport.setGraphic(subwayIcon);
-        publicTransport.setPrefSize(500,100);
+        publicTransport.setId("actionButton");
 
         // when you press the button you add an action
         publicTransport.setOnAction(e -> {
@@ -586,7 +578,7 @@ public class Application extends javafx.application.Application {
         FontAwesomeIconView carIcon = new FontAwesomeIconView(FontAwesomeIcon.AUTOMOBILE);
         carIcon.setSize("50px");
         car.setGraphic(carIcon);
-        car.setPrefSize(500,100);
+        car.setId("actionButton");
 
         // when you press the button you will add an action
         car.setOnAction(e -> {
@@ -608,7 +600,7 @@ public class Application extends javafx.application.Application {
         FontAwesomeIconView planeIcon = new FontAwesomeIconView(FontAwesomeIcon.PLANE);
         planeIcon.setSize("50px");
         plane.setGraphic(planeIcon);
-        plane.setPrefSize(500,100);
+        plane.setId("actionButton");
 
         // when you press a button you will add an action
         plane.setOnAction(e -> {
@@ -630,19 +622,18 @@ public class Application extends javafx.application.Application {
         km.setId("title");
 
         HBox distanceContainer = new HBox(10);
-        distanceContainer.setAlignment(Pos.CENTER);
+        distanceContainer.setId("commonContainer");
         distanceContainer.getChildren().addAll(distance, km, errorMessage);
 
 
         // make the transport page
         GridPane transportPage = new GridPane();
-        transportPage.setVgap(10);
         transportPage.add(cycle, 0 ,0);
         transportPage.add(publicTransport, 0, 1);
         transportPage.add(car, 0, 2);
         transportPage.add(plane, 0,3 );
         transportPage.add(distanceContainer ,0,4);
-        transportPage.setAlignment(Pos.CENTER);
+        transportPage.setId("transportPage");
         
         // return the page
         return transportPage;
@@ -659,25 +650,25 @@ public class Application extends javafx.application.Application {
         MaterialDesignIconView cowIcon = new MaterialDesignIconView(MaterialDesignIcon.COW);
         veggie.setGraphic(new Label("Meat", cowIcon));
         cowIcon.setSize("50px");
-        veggie.setMinSize(500,100);
+        veggie.setId("actionButton");
 
         // makes the locally toggle
         JFXToggleNode locally = new JFXToggleNode();
         FontAwesomeIconView locallyIcon = new FontAwesomeIconView(FontAwesomeIcon.MAP_MARKER);
         locallyIcon.setSize("50px");
         locally.setGraphic(new Label("Locally", locallyIcon));
-        locally.setMinSize(500,100);
+        locally.setId("actionButton");
 
         // makes the bio toggle
         JFXToggleNode bio = new JFXToggleNode();
         FontAwesomeIconView leafIcon = new FontAwesomeIconView(FontAwesomeIcon.LEAF);
         leafIcon.setSize("50px");
         bio.setGraphic(new Label("Bio", leafIcon));
-        bio.setMinSize(500,100);
+        bio.setId("actionButton");
 
         //makes send button
         JFXButton send = new JFXButton("Add action");
-        send.setMinSize(500, 100);
+        send.setId("actionButton");
         
         // when you press the send button, it will look what is selected and add those actions
         send.setOnAction(e -> {
@@ -700,8 +691,7 @@ public class Application extends javafx.application.Application {
         foodPage.add(locally, 0, 1);
         foodPage.add(bio, 0, 2);
         foodPage.add(send, 0, 3);
-        foodPage.setVgap(10);
-        foodPage.setAlignment(Pos.CENTER);
+        foodPage.setId("foodPage");
         
         // return the body
         return foodPage;
@@ -718,18 +708,18 @@ public class Application extends javafx.application.Application {
         MaterialDesignIconView waterIcon = new MaterialDesignIconView(MaterialDesignIcon.WATER);
         waterIcon.setSize("50px");
         waterTime.setGraphic(new Label("Add shower time", waterIcon));
-        waterTime.setPrefSize(500, 100);
+        waterTime.setId("actionButton");
 
         // make the water time slider
         JFXSlider waterTimeSlider = new JFXSlider(0,60,0);
-        waterTimeSlider.setMaxWidth(400);
+
 
         // make error label
         Label errorWater = new Label("");
         errorWater.setId("error");
 
         VBox waterContainer = new VBox(10);
-        waterContainer.setAlignment(Pos.CENTER);
+        waterContainer.setId("commonContainer");
         waterContainer.getChildren().addAll(errorWater, waterTimeSlider);
 
         // when pressed it will send an action
@@ -753,15 +743,14 @@ public class Application extends javafx.application.Application {
         MaterialDesignIconView energyIcon = new MaterialDesignIconView(MaterialDesignIcon.FLASH);
         energyIcon.setSize("50px");
         temperature.setGraphic(new Label("Add house temperature", energyIcon));
-        temperature.setPrefSize(500, 100);
+        temperature.setId("actionButton");
 
         // make the water time slider
         JFXSlider temperatureSlider = new JFXSlider(15,30,15);
-        temperatureSlider.setMaxWidth(400);
 
         // make the temperature container
         VBox temperatureContainer = new VBox(10);
-        temperatureContainer.setAlignment(Pos.CENTER);
+        temperatureContainer.setId("commonContainer");
         temperatureContainer.getChildren().addAll(temperatureSlider);
 
         // when pressed it will send an action
@@ -778,11 +767,11 @@ public class Application extends javafx.application.Application {
         
         // makes the page and adds the nodes
         GridPane energyPage = new GridPane();
-        energyPage.setVgap(30);
         energyPage.add(waterContainer, 0,0);
         energyPage.add(waterTime, 0, 1);
         energyPage.add(temperatureContainer,0,2);
         energyPage.add(temperature, 0, 3);
+        energyPage.setId("energyPage");
 
         // returns the page
         return energyPage;
@@ -799,7 +788,7 @@ public class Application extends javafx.application.Application {
         OctIconView trashIcon = new OctIconView(OctIcon.TRASHCAN);
         trashIcon.setSize("50px");
         cleanSurronding.setGraphic(new Label("Clean surronding", trashIcon));
-        cleanSurronding.setPrefSize(500, 100);
+        cleanSurronding.setId("actionButton");
         
         // when pressed it will send the action
         cleanSurronding.setOnAction(e -> {
@@ -812,7 +801,7 @@ public class Application extends javafx.application.Application {
         MaterialDesignIconView recycleIcon = new MaterialDesignIconView(MaterialDesignIcon.RECYCLE);
         recycleIcon.setSize("50px");
         recycle.setGraphic(new Label("Recycle", recycleIcon));
-        recycle.setPrefSize(500, 100);
+        recycle.setId("actionButton");
         
         // when pressed it will send the action
         recycle.setOnAction(e -> {
@@ -822,10 +811,9 @@ public class Application extends javafx.application.Application {
         
         // makes the page and adds the nodes
         GridPane extraPage = new GridPane();
-        extraPage.setVgap(10);
         extraPage.add(cleanSurronding, 0,0 );
         extraPage.add(recycle,0,1);
-        extraPage.setAlignment(Pos.CENTER);
+        extraPage.setId("extraPage");
         
         // returns the page
         return extraPage;
@@ -842,25 +830,25 @@ public class Application extends javafx.application.Application {
         FontAwesomeIconView sunIcon = new FontAwesomeIconView(FontAwesomeIcon.SUN_ALT);
         sunIcon.setSize("40px");
         solarPanels.setGraphic(new Label("Solar Panels", sunIcon));
-        solarPanels.setMinSize(500,100);
+        solarPanels.setId("actionButton");
 
         // makes the electric car toggle
         JFXToggleNode electricCar = new JFXToggleNode();
         FontAwesomeIconView plugIcon = new FontAwesomeIconView(FontAwesomeIcon.PLUG);
         plugIcon.setSize("40px");
         electricCar.setGraphic(new Label("Electric car", plugIcon));
-        electricCar.setMinSize(500,100);
+        electricCar.setId("actionButton");
 
         // makes the joined a group toggle
         JFXToggleNode joinedGroup = new JFXToggleNode();
         FontAwesomeIconView groupIcon = new FontAwesomeIconView(FontAwesomeIcon.GROUP);
         groupIcon.setSize("40px");
         joinedGroup.setGraphic(new Label("Joined environment group", groupIcon));
-        joinedGroup.setMinSize(500,100);
+        joinedGroup.setId("actionButton");
 
         // makes the add action button
         JFXButton addOte = new JFXButton("Add the one time event");
-        addOte.setPrefSize(500, 100);
+        addOte.setId("actionButton");
         addOte.setOnAction(e -> {
             if (solarPanels.isSelected()) {
                 OneTimeEvent.addSolarPanelAction();
@@ -877,12 +865,11 @@ public class Application extends javafx.application.Application {
         });
 
         GridPane otePage = new GridPane();
-        otePage.setVgap(10);
-        otePage.setAlignment(Pos.CENTER);
         otePage.add(solarPanels,0,0);
         otePage.add(electricCar,0,1);
         otePage.add(joinedGroup,0,2);
         otePage.add(addOte, 0, 3);
+        otePage.setId("otePage");
         return otePage;
     }
     
@@ -893,7 +880,7 @@ public class Application extends javafx.application.Application {
     private static Pane statsScreen() {
         // make the stats navigation bar
         JFXTabPane statsNavigation = new JFXTabPane();
-        statsNavigation.setPrefSize(500,600);
+        statsNavigation.setId("secondNavigation");
 
         // make the overview tab
         Tab overview = new Tab();
@@ -945,21 +932,17 @@ public class Application extends javafx.application.Application {
         // make the amount saved container
         VBox amountSavedContainer = new VBox();
         amountSavedContainer.getChildren().addAll(amountSavedLabel, amountSavedText);
-        amountSavedContainer.setAlignment(Pos.TOP_CENTER);
+
 
         // make the reference container
         VBox referenceContainer = new VBox(2);
         referenceContainer.getChildren().addAll(referenceIntro, referenceLabel, referenceText);
-        referenceContainer.setAlignment(Pos.BOTTOM_LEFT);
-
-
 
         // make the overview page
         GridPane overviewPage = new GridPane();
-        overviewPage.setHgap(30);
-        overviewPage.setAlignment(Pos.TOP_CENTER);
         overviewPage.add(amountSavedContainer, 0,0);
         overviewPage.add(referenceContainer,1,0);
+        overviewPage.setId("overviewPage");
 
         // return the page
         return overviewPage;
@@ -989,7 +972,7 @@ public class Application extends javafx.application.Application {
     private static Pane competitionScreen() {
         // make the competition navigation bar
         JFXTabPane competitionNavigation = new JFXTabPane();
-        competitionNavigation.setPrefSize(500,600);
+        competitionNavigation.setId("secondNavigation");
 
         // make the leaderboard tab
         Tab leaderboard = new Tab();
@@ -1028,11 +1011,7 @@ public class Application extends javafx.application.Application {
 
         // make the leaderboard
         GridPane leaderboard = new GridPane();
-        leaderboard.setVgap(5);
-        leaderboard.setHgap(10);
         leaderboard.setId("leaderboard");
-        leaderboard.setAlignment(Pos.CENTER);
-        leaderboard.setPrefWidth(500);
 
         // make the header
         leaderboard.add(new Label("Pos"), 0, 0);
@@ -1042,6 +1021,7 @@ public class Application extends javafx.application.Application {
 
         // get the top ten
         ArrayList<CompareFriends> topTen = client.Communication.getLeaderboard();
+
         // place all the people in the leaderboard
         int pos = 1;
         for (CompareFriends users : topTen) {
@@ -1120,10 +1100,7 @@ public class Application extends javafx.application.Application {
     private static GridPane followingList() {
         // makes the friendlist
         GridPane friendsList = new GridPane();
-        friendsList.setVgap(5);
-        friendsList.setHgap(30);
-        friendsList.setAlignment(Pos.CENTER);
-        friendsList.setId("friends");
+        friendsList.setId("friendsList");
 
         // getting the friends
         ArrayList<CompareFriends> friends = client.Communication.getFriends();
@@ -1160,7 +1137,7 @@ public class Application extends javafx.application.Application {
 
         // make the gridpane for the people who follow you
         GridPane followersContainer = new GridPane();
-        followersContainer.setHgap(30);
+        followersContainer.setId("followersContainer");
 
         int pos = 1;
         // puts all the friendrequests and buttons in the container
@@ -1181,13 +1158,13 @@ public class Application extends javafx.application.Application {
         container.getChildren().addAll(followersContainer);
 
         // make the scroll pane
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setPrefSize(500, 400);
-        scrollPane.setContent(container);
+        ScrollPane followersList = new ScrollPane();
+        followersList.setId("followersList");
+        followersList.setContent(container);
 
         // make the request page
         VBox requestPage = new VBox();
-        requestPage.getChildren().addAll(nrRequest, scrollPane);
+        requestPage.getChildren().addAll(nrRequest, followersList);
 
         // return the request page
         return requestPage;
