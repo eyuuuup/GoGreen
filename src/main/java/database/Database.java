@@ -694,25 +694,39 @@ public class Database {
      * @param usernameB username of a user.
      * @param goal      amount of points to win.
      */
-    public static void addChallenge(String usernameA, String usernameB, int goal) {
+    public static boolean addChallenge(String usernameA, String usernameB, int goal) {
         System.out.println("addChallenge called");
         try {
             Connection con = DriverManager.getConnection();
             PreparedStatement state = con.prepareStatement(
                     "INSERT INTO "
-                            + "challenges (goal, time_added, user_a, user_b, score_a, score_b)"
-                            + "VALUES (?, ?, ?, ?, ( "
-                            + "SELECT total_score FROM total_score WHERE username = ? "
-                            + "), ( "
-                            + "SELECT total_score FROM total_score WHERE username = ? "
-                            + "));");
-
+                            + "challenges (goal, user_a, user_b)"
+                            + "VALUES (?, ?, ?)");
             state.setInt(1, goal);
-            state.setLong(2, Instant.now().getMillis());
-            state.setString(3, usernameA);
-            state.setString(4, usernameB);
-            state.setString(5, usernameA);
-            state.setString(6, usernameB);
+            state.setString(2, usernameA);
+            state.setString(3, usernameB);
+            state.executeUpdate();
+
+            con.close();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public static void updateChallenge(String username) {
+        System.out.println("updateChallenge called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state = con.prepareStatement(
+                    "UPDATE "
+                            + "challenges SET score_a = (SELECT total_score FROM total_score WHERE username = ?), " +
+                            "score_b =(SELECT total_score FROM total_score WHERE username = ?) WHERE user_a = ?");
+
+            state.setString(1,username);
+            state.setString(2,username);
+            state.setString(3,username);
             state.executeUpdate();
 
             con.close();
@@ -721,8 +735,8 @@ public class Database {
         }
     }
 
-    public static ArrayList<Challenge> showChallenge(String username){
-        System.out.println("showCallenge called");
+    public static ArrayList<Challenge> retrieveChallenge(String username){
+        System.out.println("retrieveChallenge called");
         try {
             Connection con = DriverManager.getConnection();
             PreparedStatement state = con.prepareStatement(
