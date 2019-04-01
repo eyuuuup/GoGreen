@@ -721,7 +721,7 @@ public class Database {
         }
     }
 
-    public static Challenge showChallenge(String username){
+    public static ArrayList<Challenge> showChallenge(String username){
         System.out.println("showCallenge called");
         try {
             Connection con = DriverManager.getConnection();
@@ -730,19 +730,22 @@ public class Database {
 
             state.setString(1, username);
             ResultSet rs = state.executeQuery();
-            Challenge result = new Challenge();
+            ArrayList<Challenge> result = new ArrayList<>();
+
             while (rs.next()){
+                Challenge challenge = new Challenge();
                 String userA = rs.getString(1);
                 String userB = rs.getString(2);
                 int scoreA = rs.getInt(3);
                 int scoreB = rs.getInt(4);
                 int goal = rs.getInt(5);
 
-                result.setUserA(userA);
-                result.setUserB(userB);
-                result.setScoreA(scoreA);
-                result.setScoreB(scoreB);
-                result.setGoal(goal);
+                challenge.setUserA(userA);
+                challenge.setUserB(userB);
+                challenge.setScoreA(scoreA);
+                challenge.setScoreB(scoreB);
+                challenge.setGoal(goal);
+                result.add(challenge);
             }
 
             con.close();
