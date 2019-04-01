@@ -216,9 +216,9 @@ public class Communication {
      * @return if username exists
      */
     public static boolean checkUsername(String username) {
-        HttpEntity<String> message = new HttpEntity<>(username);
-        RestTemplate request = new RestTemplate();
-        return request.postForObject(hostURL + "/checkUser", message, boolean.class);
+        HttpEntity<String> message  = new HttpEntity<>(username);
+        RestTemplate       reuquest = new RestTemplate();
+        return reuquest.postForObject(hostURL + "/searchUser", message, boolean.class);
     }
 
     /**
