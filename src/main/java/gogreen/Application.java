@@ -449,6 +449,7 @@ public class Application extends javafx.application.Application {
                 + "* Elias, our other database guy \n"
                 + "* Shruti, our server girl \n"
                 + "* Marko, our handy man with extra focus on the server \n"
+                + "* Guym, our client and calculation guy \n"
                 + "* Erwin, our client and API guy \n"
                 + "* Marit, our GUI girl \n\n"
                 + "But this app wouldn't be possible without the brighter climate API");
