@@ -967,22 +967,17 @@ public class Application extends javafx.application.Application {
 
     private static VBox historyScreen() {
 
-        // make the refresh button
-        JFXButton refresh = new JFXButton("refresh");
-
         // make the recent activites text
-        Label history = new Label("Recent Activities: \t\t date: \t\t\t time: \n "
-                + client.Communication.getLastThreeActions());
+        String historyText = "Recent Activities: \t\t date: \t\t\t time: \n ";
+        Label history = new Label("");
+        for (client.Action a : client.Communication.getLastThreeActions()) {
+            historyText += a.getAction() + "\n";
+        }
+        history.setText(historyText);
         history.setId("history");
-
-        // if the refresh button is pressed, we display the last three recent activities
-        refresh.setOnAction(e -> {
-            history.setText("Recent Activities: \t\t date: \t\t\t time: \n "
-                    + client.Communication.getLastThreeActions());
-        });
-
+        
         VBox historyPage = new VBox();
-        historyPage.getChildren().addAll(history, refresh);
+        historyPage.getChildren().addAll(history);
 
         return historyPage;
     }
@@ -1101,12 +1096,12 @@ public class Application extends javafx.application.Application {
         searchButton.setId("smallButton");
         searchButton.setOnAction(e -> {
             String user = ApplicationMethods.encodeUsername(searchField.getText());
-            System.out.println(client.Communication.checkUsername(user));
+            //System.out.println(client.Communication.checkUsername(user));
 
-            if (client.Communication.checkUsername(user)) {
+            //if (client.Communication.checkUsername(user)) {
                 client.Communication.addFriend(user);
                 followingList.setContent(followingList());
-            }
+            //}
         });
 
         // puts the search field and search button together
