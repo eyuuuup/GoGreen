@@ -41,7 +41,12 @@
 }
 
 #otePage{
-    -fx-vgap: 10;
+    -fx-vgap: 5;
+    -fx-alignment: center;
+}
+
+#overviewPage{
+    -fx-hgap: 30;
     -fx-alignment: center;
 }
 
@@ -56,10 +61,18 @@
     -fx-min-width: 500;
 }
 
-#overviewPage{
-    -fx-hgap: 30;
-    -fx-alignment: top;
+.jfx-toggle-button {
+    -jfx-toggle-color: #ff0000;
+    -jfx-untoggle-color: #FAFAFA;
+    -jfx-toggle-line-color: #77C2BB;
+    -jfx-untoggle-line-color: #999999;
+    -jfx-size: 15px;
+    -jfx-disable-visual-focus: false;
+    -fx-text-fill: red;
+    -fx-font-size: 16;
 }
+
+
 
 /* css for the navigation bar */
 

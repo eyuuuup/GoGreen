@@ -2,10 +2,7 @@ package gogreen;
 
 import client.Communication;
 import client.CompareFriends;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXSlider;
-import com.jfoenix.controls.JFXTabPane;
-import com.jfoenix.controls.JFXToggleNode;
+import com.jfoenix.controls.*;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -827,49 +824,40 @@ public class Application extends javafx.application.Application {
     private static GridPane oteScreen() {
 
         // makes the solar panel toggle
-        JFXToggleNode solarPanels = new JFXToggleNode();
-        FontAwesomeIconView sunIcon = new FontAwesomeIconView(FontAwesomeIcon.SUN_ALT);
-        sunIcon.setSize("40px");
-        solarPanels.setGraphic(new Label("Solar Panels", sunIcon));
-        solarPanels.setId("actionButton");
-
-        // makes the electric car toggle
-        JFXToggleNode electricCar = new JFXToggleNode();
-        FontAwesomeIconView plugIcon = new FontAwesomeIconView(FontAwesomeIcon.PLUG);
-        plugIcon.setSize("40px");
-        electricCar.setGraphic(new Label("Electric car", plugIcon));
-        electricCar.setId("actionButton");
-
-        // makes the joined a group toggle
-        JFXToggleNode joinedGroup = new JFXToggleNode();
-        FontAwesomeIconView groupIcon = new FontAwesomeIconView(FontAwesomeIcon.GROUP);
-        groupIcon.setSize("40px");
-        joinedGroup.setGraphic(new Label("Joined environment group", groupIcon));
-        joinedGroup.setId("actionButton");
-
-        // makes the add action button
-        JFXButton addOte = new JFXButton("Add the one time event");
-        addOte.setId("actionButton");
-        addOte.setOnAction(e -> {
-            if (solarPanels.isSelected()) {
+        JFXToggleButton solarPanels = new JFXToggleButton();
+        solarPanels.setText("Solar Panels");
+        solarPanels.setOnAction(e -> {
+            if(solarPanels.isSelected()){
                 OneTimeEvent.addSolarPanelAction();
                 refresh();
             }
+        });
+
+        // makes the electric car toggle
+        JFXToggleButton electricCar = new JFXToggleButton();
+        electricCar.setText("Electric car");
+        electricCar.setOnAction(e -> {
             if (electricCar.isSelected()) {
                 OneTimeEvent.addElectricCarAction();
                 refresh();
             }
+        });
+
+        // makes the joined a group toggle
+        JFXToggleButton joinedGroup = new JFXToggleButton();
+        joinedGroup.setText("Joined environment group");
+        joinedGroup.setOnAction(e -> {
             if (joinedGroup.isSelected()) {
                 OneTimeEvent.addEvGroupAction();
                 refresh();
             }
         });
 
+
         GridPane otePage = new GridPane();
         otePage.add(solarPanels,0,0);
         otePage.add(electricCar,0,1);
         otePage.add(joinedGroup,0,2);
-        otePage.add(addOte, 0, 3);
         otePage.setId("otePage");
         return otePage;
     }
