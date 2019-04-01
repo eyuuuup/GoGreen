@@ -217,8 +217,8 @@ public class Communication {
      */
     public static boolean checkUsername(String username) {
         HttpEntity<String> message = new HttpEntity<>(username);
-        RestTemplate reuquest = new RestTemplate();
-        return reuquest.postForObject(hostURL + "/checkUser", message, boolean.class);
+        RestTemplate request = new RestTemplate();
+        return request.postForObject(hostURL + "/checkUser", message, boolean.class);
     }
 
     /**
