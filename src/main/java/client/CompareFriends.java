@@ -12,8 +12,9 @@ public class CompareFriends {
 
     /**
      * Create a new friend object.
+     *
      * @param username username
-     * @param score score
+     * @param score    score
      */
     public CompareFriends(String username, int score) {
         this.username = username;
@@ -23,7 +24,8 @@ public class CompareFriends {
 
     /**
      * creates a new friend object.
-     * @param token token
+     *
+     * @param token    token
      * @param username username
      */
     public CompareFriends(String token, String username) {
@@ -41,6 +43,7 @@ public class CompareFriends {
 
     /**
      * getter for token of the user.
+     *
      * @return token
      */
     public String getToken() {
@@ -50,6 +53,7 @@ public class CompareFriends {
 
     /**
      * setter for the user's token.
+     *
      * @param token token
      */
     public void setToken(String token) {
@@ -58,6 +62,7 @@ public class CompareFriends {
 
     /**
      * getter for the username of a friend.
+     *
      * @return friend
      */
     public String getUsername() {
@@ -66,6 +71,7 @@ public class CompareFriends {
 
     /**
      * setter for the username of a friend.
+     *
      * @param username username
      */
     public void setUsername(String username) {
@@ -74,6 +80,7 @@ public class CompareFriends {
 
     /**
      * getter for the total score of a friend.
+     *
      * @return score
      */
     public int getScore() {
@@ -82,6 +89,7 @@ public class CompareFriends {
 
     /**
      * setter for the total score of friend.
+     *
      * @param score score
      */
     public void setScore(int score) {

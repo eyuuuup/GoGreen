@@ -16,7 +16,14 @@ public class ActionTest {
         assertEquals(action.getCarbonProduced(), 50, 0);
         assertEquals(action.getCarbonReduced(), 50, 0);
     }
-    
+
+    @Test
+    public void constructorForCarbon(){
+        Action action=new Action(50.3,50);
+        assertEquals(50.3, action.getCarbonProduced(),0);
+        assertEquals(50, action.getCarbonReduced(), 0);
+    }
+
     @Test
     public void constructorEmpty() {
         Action action = new Action();
@@ -110,4 +117,25 @@ public class ActionTest {
         action.setDate(15000);
         assertEquals(action.getDate(), 15000);
     }
+
+    @Test
+    public void getCarbonReduced() { assertEquals(50, ACTION.getCarbonReduced(), 0);
+    }
+
+    @Test
+    public void setCarbonReduced(){
+        ACTION.setCarbonReduced(60);
+        assertEquals(60, ACTION.getCarbonReduced(),0);
+    }
+
+    @Test
+    public void getCarbonProduced(){ assertEquals(50, ACTION.getCarbonProduced(), 0);
+    }
+
+    @Test
+    public void setCarbonProduced() {
+        ACTION.setCarbonProduced(60);
+        assertEquals(60, ACTION.getCarbonProduced(),0);
+    }
+
 }

@@ -85,7 +85,8 @@ public class Action {
      * @param carbonReduced  carbon saced
      * @param date           date added (in miliseconds)
      */
-    public Action(String action, int value, double carbonReduced, double carbonProduced, long date) {
+    public Action(String action, int value, double carbonReduced,
+                  double carbonProduced, long date) {
         this.action = action;
         this.value = value;
         this.carbonReduced = carbonReduced;
