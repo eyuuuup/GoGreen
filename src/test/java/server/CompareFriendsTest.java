@@ -7,7 +7,14 @@ import static org.junit.Assert.assertEquals;
 public class CompareFriendsTest {
     
     private CompareFriends OBJECT = new CompareFriends("ABC", 1230);
-    
+
+    @Test
+    public void constructorToken() {
+        CompareFriends object = new CompareFriends("test", "user");
+        assertEquals(object.getToken(), "test");
+        assertEquals(object.getUsername(), "user");
+    }
+
     @Test
     public void constructor() {
         CompareFriends object = new CompareFriends("abc", 123);
@@ -23,7 +30,20 @@ public class CompareFriendsTest {
         object.setScore(10);
         assertEquals(object.getScore(), 10);
     }
-    
+
+    @Test
+    public void getToken() {
+        assertEquals(OBJECT.getToken(), null);
+    }
+
+    @Test
+    public void setToken() {
+        CompareFriends object = new CompareFriends("abc", "test");
+        object.setToken("def");
+        assertEquals(object.getToken(), "def");
+    }
+
+
     @Test
     public void getUsername() {
         assertEquals(OBJECT.getUsername(), "ABC");

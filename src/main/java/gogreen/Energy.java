@@ -28,7 +28,8 @@ public final class Energy {
         int temperatureDiff = 23 - houseTemperature;
         double megaJoules = temperatureDiff * 18.24;
         double carbon = Api.carbonAmount("electricity_uses.json?energy=" + megaJoules);
-        double carbonProduced = Api.carbonAmount("electricity_uses.json?energy=" + houseTemperature * 100);
+        double carbonProduced = Api.carbonAmount("electricity_uses.json?energy="
+                + houseTemperature * 100);
         if (hasSolarPanels) {
             Communication.addAction("ReduceEnergy", 100 * temperatureDiff, carbon, 0);
         } else {
@@ -43,7 +44,8 @@ public final class Energy {
         int timeDiff = 20 - showerTime;
         double megaJoules = showerTime * 162.4;
         double carbon = Api.carbonAmount("electricity_uses.json?energy=" + megaJoules);
-        double carbonProduced = Api.carbonAmount("electricity_uses.json?energy=" + showerTime * 100);
+        double carbonProduced = Api.carbonAmount("electricity_uses.json?energy="
+                + showerTime * 100);
         if (hasSolarPanels) {
             Communication.addAction("ReduceWater", 100 * timeDiff, carbon, 0);
         } else {

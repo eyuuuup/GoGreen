@@ -1096,12 +1096,12 @@ public class Application extends javafx.application.Application {
         searchButton.setId("smallButton");
         searchButton.setOnAction(e -> {
             String user = ApplicationMethods.encodeUsername(searchField.getText());
-            System.out.println(client.Communication.checkUsername(user));
+            //System.out.println(client.Communication.checkUsername(user));
 
-            if (client.Communication.checkUsername(user)) {
+            //if (client.Communication.checkUsername(user)) {
                 client.Communication.addFriend(user);
                 followingList.setContent(followingList());
-            }
+            //}
         });
 
         // puts the search field and search button together

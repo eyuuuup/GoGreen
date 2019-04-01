@@ -1,7 +1,7 @@
 package client;
 
 /**
- * This class is for getting encrypted token
+ * This class is for getting encrypted token.
  */
 public class Encryptee {
 
@@ -9,10 +9,10 @@ public class Encryptee {
     private String token;
 
     /**
-     * Constructs a new Encyptee
+     * Constructs a new Encyptee.
      *
-     * @param message
-     * @param token
+     * @param message message
+     * @param token   token
      */
     public Encryptee(byte[] message, String token) {
         this.message = message;
@@ -20,36 +20,36 @@ public class Encryptee {
     }
 
     /**
-     * getter for th message
+     * getter for th message.
      *
-     * @return
+     * @return message
      */
     public byte[] getMessage() {
         return message;
     }
 
     /**
-     * setter for the message
+     * setter for the message.
      *
-     * @param message
+     * @param message message
      */
     public void setMessage(byte[] message) {
         this.message = message;
     }
 
     /**
-     * getter for the token
+     * getter for the token.
      *
-     * @return
+     * @return message
      */
     public String getToken() {
         return token;
     }
 
     /**
-     * setter for the token
+     * setter for the token.
      *
-     * @param token
+     * @param token token
      */
     public void setToken(String token) {
         this.token = token;
