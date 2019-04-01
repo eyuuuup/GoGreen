@@ -192,71 +192,6 @@ public class Database {
         }
     }
 
-
-//    /**
-//     * returns the carbon reduction.
-//     * @param token token
-//     * @return carbon reduction
-//     */
-//    public static int getCarbonReduced(String token) {
-//        try {
-//            Connection con = DriverManager.getConnection();
-//            System.out.println("getCarbonReduced called");
-//
-//            PreparedStatement state =
-//                    con.prepareStatement("SELECT carbon_reduced "
-//                            + "FROM total_score JOIN user_data ON "
-//                            + "total_score.username = user_data.username "
-//                            + "WHERE user_data.token = ?");
-//            state.setString(1, token);
-//            ResultSet rs = state.executeQuery();
-//
-//            int currentCarbonReduced = 0;
-//            while (rs.next()) {
-//                currentCarbonReduced = rs.getInt(1);
-//                System.out.println("carbon_reduced: " + currentCarbonReduced);
-//            }
-//
-//            con.close();
-//            return currentCarbonReduced;
-//        } catch (SQLException ex) {
-//            System.out.println(ex.getMessage());
-//            return 0;
-//        }
-//    }
-//
-//    /**
-//     * get carbon produced.
-//     * @param token token
-//     * @return carbon produced
-//     */
-//    public static int getCarbonProduced(String token) {
-//        try {
-//            Connection con = DriverManager.getConnection();
-//            System.out.println("getCarbonProduced called");
-//
-//            PreparedStatement state =
-//                    con.prepareStatement("SELECT carbon_produced "
-//                            + "FROM total_score JOIN user_data ON "
-//                            + "total_score.username = user_data.username "
-//                            + "WHERE user_data.token = ?");
-//            state.setString(1, token);
-//            ResultSet rs = state.executeQuery();
-//
-//            int currentCarbonProduced = 0;
-//            while (rs.next()) {
-//                currentCarbonProduced = rs.getInt(1);
-//                System.out.println("carbon_reduced: " + currentCarbonProduced);
-//            }
-//
-//            con.close();
-//            return currentCarbonProduced;
-//        } catch (SQLException ex) {
-//            System.out.println(ex.getMessage());
-//            return 0;
-//        }
-//    }
-
     /**
      * This method is for getting carbon reduced and produced.
      *
@@ -828,4 +763,37 @@ public class Database {
             System.out.println(e.getMessage());
         }
     }
+
+    public static Challenge showChallenge(String username){
+        System.out.println("showCallenge called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state = con.prepareStatement(
+                    "SELECT user_a, user_b, score_a, score_b, goal FROM challenges WHERE user_a = ?");
+
+            state.setString(1, username);
+            ResultSet rs = state.executeQuery();
+            Challenge result = new Challenge();
+            while (rs.next()){
+                String userA = rs.getString(1);
+                String userB = rs.getString(2);
+                int scoreA = rs.getInt(3);
+                int scoreB = rs.getInt(4);
+                int goal = rs.getInt(5);
+
+                result.setUserA(userA);
+                result.setUserB(userB);
+                result.setScoreA(scoreA);
+                result.setScoreB(scoreB);
+                result.setGoal(goal);
+            }
+
+            con.close();
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
 }
