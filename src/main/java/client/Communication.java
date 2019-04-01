@@ -54,7 +54,7 @@ public class Communication {
                 out.flush();
                 out.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("No token file found");
             }
         }
 
@@ -123,7 +123,7 @@ public class Communication {
             token = in.readLine();
             in.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("No token file found");
             return false;
         }
 
@@ -162,9 +162,28 @@ public class Communication {
      */
     public static boolean addAction(String actionName, int points) {
         Action action = new Action(token, actionName, points);
-        HttpEntity<client.Action> message = new HttpEntity<>(action);
-
+        HttpEntity<Action> message = new HttpEntity<>(action);
         RestTemplate request = new RestTemplate();
+
+        return request.postForObject(hostURL + "/addAction", message, boolean.class);
+    }
+
+    /**
+     * to be implemented:
+     * adding an action to the database.
+     *
+     * @param actionName     the name of the action
+     * @param points         the points for the action
+     * @param carbonReduced  the carbon reduced in the action
+     * @param carbonProduced the carbon produced in the action
+     */
+    public static boolean addAction(String actionName, int points,
+                                    double carbonReduced, double carbonProduced) {
+        Action action = new Action(token, actionName,
+                points, carbonReduced, carbonProduced);
+        HttpEntity<Action> message = new HttpEntity<>(action);
+        RestTemplate request = new RestTemplate();
+
         return request.postForObject(hostURL + "/addAction", message, boolean.class);
     }
 
@@ -173,8 +192,8 @@ public class Communication {
      *
      * @return string containing last three actions
      */
-    public static ArrayList<ActionHistory> getLastThreeActions() {
-        return (ArrayList<ActionHistory>) postToken("/retract", ArrayList.class);
+    public static ArrayList<Action> getLastThreeActions() {
+        return ((ActionList) postToken("/retract", ActionList.class)).getList();
     }
 
 
@@ -183,6 +202,7 @@ public class Communication {
      *
      * @return integer containing total score
      */
+
     public static int getMyTotalScore() {
         return (int) postToken("/getTotalScore", Integer.class);
     }
@@ -190,16 +210,37 @@ public class Communication {
     // ========== SOCIAL HANDLERS ==============================================
 
     /**
+     * This method checks if the searched username exists or not.
+     *
+     * @param username username
+     * @return if username exists
+     */
+    public static boolean checkUsername(String username) {
+        HttpEntity<String> message  = new HttpEntity<>(username);
+        RestTemplate       reuquest = new RestTemplate();
+        return reuquest.postForObject(hostURL + "/searchUser", message, boolean.class);
+    }
+
+    /**
+     * This method is to get the information of user for the user.
+     *
+     * @return username object containg all information about the user
+     */
+    public static User getUser() {
+        return (User) postToken("/getUser", User.class);
+    }
+
+    /**
      * This method adds a friend by it's username.
      * Friend is someone who you follow.
      *
-     * @param friendUsername username of the frien
+     * @param friendUsername username of the friend
      * @return whether the friend is added
      */
     public static boolean addFriend(String friendUsername) {
-        Friends friend = new Friends(token, friendUsername);
+        CompareFriends friend = new CompareFriends(token, friendUsername);
 
-        HttpEntity<Friends> message = new HttpEntity<>(friend);
+        HttpEntity<CompareFriends> message = new HttpEntity<>(friend);
         RestTemplate request = new RestTemplate();
         return request.postForObject(hostURL + "/addFriend", message, boolean.class);
     }
@@ -211,7 +252,7 @@ public class Communication {
      * @return an arraylist ofCompareFriends
      */
     public static ArrayList<CompareFriends> getFriends() {
-        return (ArrayList<CompareFriends>) postToken("/showFriends", ArrayList.class);
+        return ((FriendsList) postToken("/showFriends", FriendsList.class)).getList();
     }
 
     /**
@@ -221,21 +262,38 @@ public class Communication {
      * @return an arraylist of "CompareFriends"
      */
     public static ArrayList<CompareFriends> getFollowers() {
-        return (ArrayList<CompareFriends>) postToken("/showFollowers", ArrayList.class);
+        return ((FriendsList) postToken("/showFollowers", FriendsList.class)).getList();
     }
 
     /**
-     * This method checks if the searched username exists or not.
+     * This method is to get the list of top ten users for the leaderboard.
      *
-     * @param username username
-     * @return if username exists
+     * @return an object containing a list of users
      */
-    public static boolean checkUsername(String username) {
-        if (!isLoggedIn()) {
-            return false;
-        }
-        HttpEntity<String> message = new HttpEntity<>(username);
-        RestTemplate reuquest = new RestTemplate();
-        return reuquest.postForObject(hostURL + "/checkUser", message, boolean.class);
+    public static ArrayList<CompareFriends> getLeaderboard() {
+        RestTemplate request = new RestTemplate();
+        return request.getForObject(hostURL + "/getLeaderboard", FriendsList.class).getList();
+    }
+
+    /**
+     * This method is to get get carbon produced and reduced by the user.
+     *
+     * @return carbon Action object with carbonReduced and carbonProduced values
+     */
+    public static Action carbon() {
+        HttpEntity<String> message = new HttpEntity<>(token);
+        RestTemplate request = new RestTemplate();
+        return request.postForObject(hostURL + "/carbon", message, Action.class);
+    }
+
+    /**
+     * This method is to get the values needed on the loading of the application.
+     *
+     * @return an instance of onLoadValue class
+     */
+    public static OnLoadValues onLoad() {
+        HttpEntity<String> message = new HttpEntity<>(token);
+        RestTemplate request = new RestTemplate();
+        return request.postForObject(hostURL + "/onLoad", message, OnLoadValues.class);
     }
 }

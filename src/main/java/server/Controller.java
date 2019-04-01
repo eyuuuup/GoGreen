@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.UUID;
 import javax.validation.Valid;
 
@@ -19,6 +18,7 @@ public class Controller {
 
     /**
      * This is the login method which connects the server and client.
+     *
      * @param user username, password
      * @return TokenResponse token, bool
      */
@@ -33,6 +33,7 @@ public class Controller {
      * Register as new user.
      * checks if username already taken or not and generates new token.
      * if true user is added else false username already exists.
+     *
      * @param user username, password
      * @return TokenResponse token,
      */
@@ -52,7 +53,8 @@ public class Controller {
     }
 
     /**
-     * don'trequire to enter password.
+     * This is the method for silentLogin.
+     *
      * @param token string
      * @return whether token exists
      */
@@ -66,6 +68,7 @@ public class Controller {
 
     /**
      * add action to the database.
+     *
      * @param action action
      * @return boolean if action added or not
      */
@@ -76,17 +79,19 @@ public class Controller {
 
     /**
      * For the history.
+     *
      * @param token token
      * @return String last three actions
      */
     @RequestMapping(value = {"/retract"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public static ArrayList<ActionHistory> forDemo(@Valid @RequestBody String token) {
+    public static ActionList forDemo(@Valid @RequestBody String token) {
         return Database.retract(token);
     }
 
     /**
      * returns the total score.
+     *
      * @param token token
      * @return int returns the total score
      */
@@ -99,35 +104,8 @@ public class Controller {
     // ========== SOCIAL HANDLERS ==============================================
 
     /**
-     * adds a friend.
-     * @param friend the friend
-     * @return boolean
-     */
-    @RequestMapping(value = {"/addFriend"}, method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public static boolean addFriend(@Valid @RequestBody Friends friend) {
-        return Database.addFriend(friend);
-    }
-
-    /**
-     * shows the friends.
-     * @param token token
-     * @return ArrayList of CompareFriends
-     */
-    @RequestMapping(value = {"/showFriends"}, method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public static ArrayList<CompareFriends> showFriends(@Valid @RequestBody String token) {
-        return Database.showFriends(token);
-    }
-
-    @RequestMapping(value = {"/showFollowers"}, method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public static ArrayList<CompareFriends> showFollowers(@Valid @RequestBody String token) {
-        return Database.showFollowers(token);
-    }
-
-    /**
      * check if username searched for following exists or not.
+     *
      * @param username username
      * @return boolean is username exists or not
      */
@@ -135,5 +113,83 @@ public class Controller {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public static boolean checkUser(@Valid @RequestBody String username) {
         return Database.checkUsername(username);
+    }
+
+    /**
+     * username of the present user.
+     *
+     * @param token token of the user
+     * @return username String
+     */
+    @RequestMapping(value = {"/getUser"}, method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public static User getUser(@Valid @RequestBody String token) {
+        return Database.getUser(token);
+    }
+
+    /**
+     * adds a friend.
+     *
+     * @param friend the friend
+     * @return boolean
+     */
+    @RequestMapping(value = {"/addFriend"}, method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public static boolean addFriend(@Valid @RequestBody CompareFriends friend) {
+        return Database.addFriend(friend);
+    }
+
+    /**
+     * shows the friends.
+     *
+     * @param token token
+     * @return ArrayList of CompareFriends
+     */
+    @RequestMapping(value = {"/showFriends"}, method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public static FriendsList showFriends(@Valid @RequestBody String token) {
+        return Database.showFriends(token);
+    }
+
+    @RequestMapping(value = {"/showFollowers"}, method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public static FriendsList showFollowers(@Valid @RequestBody String token) {
+        return Database.showFollowers(token);
+    }
+
+    /**
+     * for implementing the leaderboard and getting top ten users.
+     *
+     * @return returns a list of top ten users
+     */
+    @RequestMapping(value = {"/getLeaderboard"}, method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public static FriendsList getLeaderboard() {
+        return Database.getLeaderboard();
+    }
+
+    /**
+     * This method is for getting the onLoadValues.
+     *
+     * @param token
+     * @return two boolean values for the presence of electricCar or solarCar
+     */
+    @RequestMapping(value = {"/onLoad"}, method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public static OnLoadValues onLoad(@Valid @RequestBody String token) {
+
+        return Database.oneTimeEvent(token);
+    }
+
+    /**
+     * This method is for getting the total amount of carbon produced and reduced.
+     *
+     * @param token the token of the user requesting the data
+     * @return token
+     */
+    @RequestMapping(value = {"/carbon"}, method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public static Action carbon(@Valid @RequestBody String token) {
+        return Database.getCarbonValues(token);
     }
 }

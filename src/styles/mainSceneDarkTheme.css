@@ -71,12 +71,42 @@
     -fx-font-weight: bold;
     -fx-font-size: 14;
 }
+/* about */
+#aboutText{
+    -fx-font-size: 16;
+}
 
 #history{
     -fx-text-fill: #e5e5e5;
     -fx-font-weight: bold;
     -fx-font-size: 14;
 }
+/* stats */
+#amountSavedNr{
+    -fx-text-fill: #e5e5e5;
+    -fx-font-weight: bold;
+    -fx-font-size: 80;
+}
+
+#amountSavedText{
+    -fx-text-fill: #e5e5e5;
+    -fx-font-weight: bold;
+    -fx-font-size: 26;
+}
+
+#referenceNr{
+    -fx-text-fill: #e5e5e5;
+    -fx-font-weight: bold;
+    -fx-font-size: 48;
+}
+
+#referenceText{
+    -fx-text-fill: #e5e5e5;
+    -fx-font-weight: bold;
+    -fx-font-size: 26;
+}
+
+
 
 /* leaderboard */
 #leaderboard{
@@ -111,7 +141,19 @@
     -fx-background-color: #263238;
 }
 
+#friendtitle{
+    -fx-text-fill: #e5e5e5;
+    -fx-font-weight: bold;
+    -fx-font-size: 32;
+}
+
 
 #smallButton{
     -fx-font-size: 14;
+}
+
+#error{
+    -fx-text-fill: #e5e5e5;
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
 }

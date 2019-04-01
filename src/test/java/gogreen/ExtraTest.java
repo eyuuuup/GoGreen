@@ -20,13 +20,13 @@ public class ExtraTest {
     public void addCleanSurroundingAction() {
         Extra.addCleanSurroundingAction();
         PowerMockito.verifyStatic();
-        Communication.addAction("CleanSurrounding", 100);
+        Communication.addAction("CleanSurrounding", 100, 5, 0);
     }
 
     @Test
     public void addRecycleAction() {
         Extra.addRecycleAction();
         PowerMockito.verifyStatic();
-        Communication.addAction("Recycle", 100);
+        Communication.addAction("Recycle", 50, 1, 0);
     }
 }
