@@ -399,7 +399,7 @@ public class Application extends javafx.application.Application {
 
         // makes a container for the level attributes
         VBox levelContainer = new VBox();
-        levelContainer.setId("commonContainer");
+        levelContainer.setId("levelContainer");
         levelContainer.getChildren().addAll(levelBar, pointsAndStatus);
 
         BorderPane yourWorldPage = new BorderPane();
@@ -409,6 +409,7 @@ public class Application extends javafx.application.Application {
         yourWorldCenter.setId("yourWorldPage");
         yourWorldCenter.add(levelContainer, 0,0);
         yourWorldCenter.add(yourWorldView,0,1);
+        yourWorldCenter.setAlignment(Pos.BOTTOM_CENTER);
 
         yourWorldPage.setCenter(yourWorldCenter);
         yourWorldPage.setLeft(sideBar());
@@ -791,7 +792,7 @@ public class Application extends javafx.application.Application {
         JFXSlider waterTimeSlider = new JFXSlider(0,60,0);
 
         // make instruction and error label
-        Label waterInfo = new Label("Slide to the amount you \nshowered");
+        Label waterInfo = new Label("Slide to the amount you showered");
         waterInfo.setId("error");
 
         // make the water container
@@ -820,7 +821,7 @@ public class Application extends javafx.application.Application {
                     e1.printStackTrace();
                 }
         } else {
-                waterInfo.setText("Please fill in the minutes you showered");
+                waterInfo.setText("Please fill in the minutes you \nshowered");
             }
         });
 
@@ -1199,11 +1200,14 @@ public class Application extends javafx.application.Application {
         title.setId("title");
 
         GridPane friendsList = followingList();
+        friendsList.setId("friendsList");
+
 
         // makes the scroll pane
         ScrollPane followingList = new ScrollPane();
         followingList.setPrefSize(500, 400);
         followingList.setContent(friendsList);
+
 
         // makes the search field
         TextField searchField = new TextField();

@@ -8,8 +8,7 @@
 }
 
 #yourWorldPage{
-    -fx-alignment: center ;
-    -fx-vgap: 300;
+    -fx-vgap: 200;
 }
 
 #settingPage{
@@ -17,9 +16,10 @@
 }
 
 #aboutPage{
-    -fx-max-width: 500;
-    -fx-max-height: 500;
+    -fx-alignment: center;
+    -fx-max-height: 400;
 }
+
 
 #transportPage{
     -fx-vgap: 10;
@@ -116,8 +116,13 @@
     -fx-alignment: center;
 }
 
+#levelContainer{
+    -fx-alignment: center;
+}
+
 #longTextContainer{
     -fx-alignment: center;
+    -fx-text-alignment: center;
     -fx-pref-width: 475;
 }
 
@@ -323,11 +328,13 @@
     -fx-vgap: 5;
     -fx-hgap: 30;
     -fx-alignment: center;
+    -fx-padding: 10;
 }
 
 #followersList{
     -fx-pref-width: 500;
     -fx-pref-height: 400;
+    -fx-padding: 10;
 }
 #smallButton{
     -fx-font-size: 14;
