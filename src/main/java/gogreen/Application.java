@@ -577,6 +577,11 @@ public class Application extends javafx.application.Application {
      */
     private static BorderPane transportScreen() {
 
+        // make the description box
+        TextField transportDescription = new TextField();
+        transportDescription.setPromptText("write a description here!");
+        transportDescription.setId("description");
+
         // make the text field
         TextField distance = new TextField();
         distance.setPromptText("Distance");
@@ -597,6 +602,7 @@ public class Application extends javafx.application.Application {
         cycle.setOnAction(e -> {
             try {
                 int distanceInt = Integer.parseInt(distance.getText());
+                System.out.println(transportDescription.getText());
                 errorMessage.setText("");
                 Transport.addCycleAction(distanceInt);
                 refresh();
@@ -618,6 +624,7 @@ public class Application extends javafx.application.Application {
         publicTransport.setOnAction(e -> {
             try {
                 int distanceInt = Integer.parseInt(distance.getText());
+                System.out.println(transportDescription.getText());
                 errorMessage.setText("");
                 Transport.addPublicTransportAction(distanceInt);
                 refresh();
@@ -640,6 +647,7 @@ public class Application extends javafx.application.Application {
         car.setOnAction(e -> {
             try {
                 int distanceInt = Integer.parseInt(distance.getText());
+                System.out.println(transportDescription.getText());
                 errorMessage.setText("");
                 Transport.addCarAction(distanceInt);
                 refresh();
@@ -662,6 +670,7 @@ public class Application extends javafx.application.Application {
         plane.setOnAction(e -> {
             try {
                 int distanceInt = Integer.parseInt(distance.getText());
+                System.out.println(transportDescription.getText());
                 errorMessage.setText("");
                 Transport.addPlaneAction(distanceInt);
                 refresh();
@@ -682,6 +691,8 @@ public class Application extends javafx.application.Application {
         distanceContainer.getChildren().addAll(distance, km, errorMessage);
 
 
+
+
         BorderPane transportPage = new BorderPane();
         // make the transport page
         GridPane transportCenter = new GridPane();
@@ -689,7 +700,9 @@ public class Application extends javafx.application.Application {
         transportCenter.add(publicTransport, 0, 1);
         transportCenter.add(car, 0, 2);
         transportCenter.add(plane, 0,3 );
-        transportCenter.add(distanceContainer ,0,4);
+        transportCenter.add(transportDescription,0,4);
+        transportCenter.add(distanceContainer ,0,5);
+
         transportCenter.setId("transportPage");
 
         transportPage.setCenter(transportCenter);
@@ -706,6 +719,7 @@ public class Application extends javafx.application.Application {
     private static BorderPane foodScreen() {
         // info label
         Label foodInfo = new Label("please select the characteristics your food has");
+        foodInfo.setId("information");
 
         // makes the veggie checkbox
         JFXCheckBox veggie = new JFXCheckBox("Veggie");
@@ -778,8 +792,12 @@ public class Application extends javafx.application.Application {
 
         // make the water container
         VBox waterContainer = new VBox(10);
-        waterContainer.setId("commonContainer");
+        waterContainer.setId("waterContainer");
         waterContainer.getChildren().addAll(waterTime);
+
+        TextField waterDescription = new TextField();
+        waterDescription.setPromptText("write a description here!");
+        waterDescription.setId("description");
 
         // makes the add button
         JFXButton addWater = new JFXButton("add shower time");
@@ -791,6 +809,7 @@ public class Application extends javafx.application.Application {
             if (value != 0) {
                 waterInfo.setText("");
                 try {
+                    System.out.println(waterDescription.getText());
                     Energy.addReduceWater(value);
                     refresh();
                 } catch (ConnectIOException e1) {
@@ -802,12 +821,12 @@ public class Application extends javafx.application.Application {
         });
 
         // when pressed the input box will appear
-        waterTime.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+        waterTime.setOnAction( e -> {
 
-            if (!waterTime.isSelected()) {
-                waterContainer.getChildren().addAll(waterInfo, waterTimeSlider, addWater);
+            if (waterTime.isSelected()) {
+                waterContainer.getChildren().addAll(waterInfo, waterTimeSlider, waterDescription, addWater);
             } else {
-                waterContainer.getChildren().removeAll(waterInfo, waterTimeSlider, addWater);
+                waterContainer.getChildren().removeAll(waterInfo, waterTimeSlider, waterDescription, addWater);
             }
         });
 
@@ -821,9 +840,13 @@ public class Application extends javafx.application.Application {
         Label temperatureInfo = new Label("Slide to add your house temperature");
         temperatureInfo.setId("error");
 
+        TextField tempratureDescription = new TextField();
+        tempratureDescription.setPromptText("write a description here!");
+        tempratureDescription.setId("description");
+
         // make the temperature container
         VBox temperatureContainer = new VBox(10);
-        temperatureContainer.setId("commonContainer");
+        temperatureContainer.setId("tempratureContainer");
         temperatureContainer.getChildren().addAll(temperature);
 
         JFXButton addTemperature = new JFXButton("add house temperature");
@@ -834,6 +857,7 @@ public class Application extends javafx.application.Application {
             int value = (int) Math.round(temperatureSlider.getValue());
             System.out.println(value);
             try {
+                System.out.println(tempratureDescription.getText());
                 Energy.addReduceEnergyAction(value);
                 refresh();
             } catch (ConnectIOException e1) {
@@ -842,19 +866,18 @@ public class Application extends javafx.application.Application {
         });
 
         // when the temperature button is pressed, the box will appear
-        temperature.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
-            if (!temperature.isSelected()) {
-                temperatureContainer.getChildren().addAll(temperatureInfo, temperatureSlider, addTemperature);
+        temperature.setOnAction( e -> {
+            if (temperature.isSelected()) {
+                temperatureContainer.getChildren().addAll(temperatureInfo, temperatureSlider, tempratureDescription, addTemperature);
             } else {
-                temperatureContainer.getChildren().removeAll(temperatureInfo, temperatureSlider, addTemperature);
+                temperatureContainer.getChildren().removeAll(temperatureInfo, temperatureSlider, tempratureDescription, addTemperature);
             }
         });
 
         BorderPane eneryPage = new BorderPane();
         // makes the page and adds the nodes
-        GridPane energyCenter = new GridPane();
-        energyCenter.add(waterContainer, 0, 0);
-        energyCenter.add(temperatureContainer, 0, 1);
+        HBox energyCenter = new HBox();
+        energyCenter.getChildren().addAll(waterContainer, temperatureContainer);
         energyCenter.setId("energyPage");
 
         eneryPage.setCenter(energyCenter);
@@ -869,7 +892,11 @@ public class Application extends javafx.application.Application {
      * @return the extra screen
      */
     private static BorderPane extraScreen() {
-        
+        // make the description field
+        TextField extraDescription = new TextField();
+        extraDescription.setPromptText("write a description here!");
+        extraDescription.setId("description");
+
         // makes the clean surronding button
         JFXButton cleanSurronding = new JFXButton();
         OctIconView trashIcon = new OctIconView(OctIcon.TRASHCAN);
@@ -879,6 +906,7 @@ public class Application extends javafx.application.Application {
         
         // when pressed it will send the action
         cleanSurronding.setOnAction(e -> {
+            System.out.println(extraDescription.getText());
             Extra.addCleanSurroundingAction();
             refresh();
         });
@@ -892,6 +920,7 @@ public class Application extends javafx.application.Application {
         
         // when pressed it will send the action
         recycle.setOnAction(e -> {
+            System.out.println(extraDescription.getText());
             Extra.addRecycleAction();
             refresh();
         });
@@ -900,8 +929,9 @@ public class Application extends javafx.application.Application {
 
         // makes the page and adds the nodes
         GridPane extraCenter = new GridPane();
-        extraCenter.add(cleanSurronding, 0,0 );
-        extraCenter.add(recycle,0,1);
+        extraCenter.add(extraDescription,0,0);
+        extraCenter.add(cleanSurronding, 0,1 );
+        extraCenter.add(recycle,0,2);
         extraCenter.setId("extraPage");
 
         extraPage.setCenter(extraCenter);
@@ -922,8 +952,8 @@ public class Application extends javafx.application.Application {
         solarPanels.setText("Solar Panels");
         solarPanels.setOnAction(e -> {
             if(solarPanels.isSelected()){
-                OneTimeEvent.addSolarPanelAction();
-                refresh();
+//                OneTimeEvent.addSolarPanelAction();
+//                refresh();
             }
         });
 
@@ -932,8 +962,8 @@ public class Application extends javafx.application.Application {
         electricCar.setText("Electric car");
         electricCar.setOnAction(e -> {
             if (electricCar.isSelected()) {
-                OneTimeEvent.addElectricCarAction();
-                refresh();
+//                OneTimeEvent.addElectricCarAction();
+//                refresh();
             }
         });
 
@@ -942,8 +972,8 @@ public class Application extends javafx.application.Application {
         joinedGroup.setText("Joined environment group");
         joinedGroup.setOnAction(e -> {
             if (joinedGroup.isSelected()) {
-                OneTimeEvent.addEvGroupAction();
-                refresh();
+//                OneTimeEvent.addEvGroupAction();
+//                refresh();
             }
         });
 

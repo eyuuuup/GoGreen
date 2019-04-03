@@ -24,15 +24,18 @@
 #transportPage{
     -fx-vgap: 10;
     -fx-alignment: center;
+
 }
 
 #foodPage{
     -fx-vgap: 10;
     -fx-alignment: center;
+
 }
 
 #energyPage{
-    -fx-vgap: 30;
+    -fx-spacing: 30;
+    -fx-padding: 30;
 }
 
 #extraPage{
@@ -57,19 +60,20 @@
 }
 
 #actionButton{
-    -fx-min-height: 100;
+    -fx-min-height: 70;
     -fx-min-width: 500;
 }
 
 .jfx-toggle-button {
-    -jfx-toggle-color: #ff0000;
-    -jfx-untoggle-color: #FAFAFA;
+    -jfx-toggle-color: #249677;
+    -jfx-untoggle-color: #249677;
     -jfx-toggle-line-color: #77C2BB;
-    -jfx-untoggle-line-color: #999999;
+    -jfx-untoggle-line-color: #dddddd;
     -jfx-size: 15px;
     -jfx-disable-visual-focus: false;
-    -fx-text-fill: red;
+    -fx-text-fill: #249677;
     -fx-font-size: 16;
+    
 }
 
 
@@ -97,6 +101,11 @@
     -fx-pref-width: 1000;
 }
 
+#error{
+    -fx-text-fill: #249677;
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+}
 /* containers */
 #commonContainer {
     -fx-alignment: center;
@@ -110,6 +119,18 @@
 #followersContainer{
     -fx-hgap: 30;
 }
+
+#waterContainer > .jfx-toggle-node{
+    -fx-pref-width: 350;
+    -fx-pref-height: 50;
+}
+
+#tempratureContainer > .jfx-toggle-node{
+    -fx-pref-width: 350;
+    -fx-pref-height: 50;
+}
+
+
 
 
 /* buttons */
@@ -307,15 +328,9 @@
     -fx-font-size: 14;
 }
 
-#error{
-    -fx-text-fill: #249677;
-    -fx-font-weight: bold;
-    -fx-font-size: 20;
-}
-
 #description{
     -fx-pref-height: 20;
-    -fx-pref-width: 90;
+    -fx-max-width: 500;
     -fx-background-color: #9ACD32 , white , white;
     -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
     -fx-alignment: center-left;
@@ -338,4 +353,17 @@
     -fx-font-size: 24;
 }
 
+.text-field {
+    -fx-background-color: #9ACD32 , white , white;
+    -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
+    -fx-alignment: center-left;
+}
 
+#information{
+    -fx-text-fill: #249677;
+    -fx-font-size: 24;
+}
+.jfx-check-box {
+    -jfx-checked-color: #249677;
+    -fx-font-size: 24;
+}
