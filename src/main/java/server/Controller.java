@@ -199,7 +199,7 @@ public class Controller {
         return Database.addChallenge(friend);
     }
 
-    @RequestMapping(value={"/accceptChallenge"}, method=RequestMethod.POST,
+    @RequestMapping(value={"/acceptChallenge"}, method=RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public static boolean acceptChallenge(@Valid @RequestBody String token){ return Database.updateChallenge(token);}
 

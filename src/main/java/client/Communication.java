@@ -303,5 +303,15 @@ public class Communication {
         return request.postForObject(hostURL+"/addChallenger", message, boolean.class);
     }
 
-    
+    public static boolean acceptChallenge(){
+        HttpEntity<String> message= new HttpEntity<>(token);
+        RestTemplate request= new RestTemplate();
+        return request.postForObject(hostURL+"/acceptChallenge", message, boolean.class);
+    }
+
+    public static ChallengesList showChallenges(){
+        HttpEntity<String> message= new HttpEntity<>(token);
+        RestTemplate request = new RestTemplate();
+        return request.postForObject(hostURL+"/showChallenges", message, ChallengesList.class);
+    }
 }
