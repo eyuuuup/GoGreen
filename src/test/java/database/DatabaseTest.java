@@ -360,15 +360,15 @@ public class DatabaseTest {
         assertEquals(0, Database.getLastMeal("testToken"));
     }
     
-    @Test
-    public void addChallenge() throws Exception {
-        PowerMockito.when(state, "executeUpdate").thenReturn(0);
-        Database.addChallenge("a", "b", 1000);
-    }
-    
-    @Test
-    public void addChallengeException() throws Exception {
-        PowerMockito.when(state, "executeUpdate").thenThrow(SQLException.class);
-        Database.addChallenge("a", "b", 1000);
-    }
+//    @Test
+//    public void addChallenge() throws Exception {
+//        PowerMockito.when(state, "executeUpdate").thenReturn(0);
+//        Database.addChallenge("a", "b", 1000);
+//    }
+//
+//    @Test
+//    public void addChallengeException() throws Exception {
+//        PowerMockito.when(state, "executeUpdate").thenThrow(SQLException.class);
+//        Database.addChallenge("a", "b", 1000);
+//    }
 }
