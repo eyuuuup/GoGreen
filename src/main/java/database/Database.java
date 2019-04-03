@@ -688,23 +688,24 @@ public class Database {
     }
 
     /**
-     * This methods adds a challenge.
+     * This method add a challenge
      *
-     * @param usernameA username of a user.
-     * @param usernameB username of a user.
-     * @param goal      amount of points to win.
+     * @param challenge CompareFriend object with token of user A,
+     *                  username of person being challenged, and score as the goal
+     * @return
      */
-    public static boolean addChallenge(String usernameA, String usernameB, int goal) {
+    public static boolean addChallenge(CompareFriends challenge) {
         System.out.println("addChallenge called");
         try {
+
             Connection con = DriverManager.getConnection();
             PreparedStatement state = con.prepareStatement(
                     "INSERT INTO "
                             + "challenges (goal, user_a, user_b)"
                             + "VALUES (?, ?, ?)");
-            state.setInt(1, goal);
-            state.setString(2, usernameA);
-            state.setString(3, usernameB);
+            state.setInt(1, challenge.getScore());
+            state.setString(2, getUsername(challenge.getToken()));
+            state.setString(3, challenge.getUsername());
             state.executeUpdate();
 
             con.close();

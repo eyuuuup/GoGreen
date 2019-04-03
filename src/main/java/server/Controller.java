@@ -168,18 +168,18 @@ public class Controller {
         return Database.getLeaderboard();
     }
 
-    /**
-     * This method is for getting the onLoadValues.
-     *
-     * @param token
-     * @return two boolean values for the presence of electricCar or solarCar
-     */
-    @RequestMapping(value = {"/onLoad"}, method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public static OnLoadValues onLoad(@Valid @RequestBody String token) {
-
-        return Database.oneTimeEvent(token);
-    }
+//    /**
+//     * This method is for getting the onLoadValues.
+//     *
+//     * @param token
+//     * @return two boolean values for the presence of electricCar or solarCar
+//     */
+//    @RequestMapping(value = {"/onLoad"}, method = RequestMethod.POST,
+//            produces = MediaType.APPLICATION_JSON_VALUE)
+//    public static OnLoadValues onLoad(@Valid @RequestBody String token) {
+//
+//        return Database.oneTimeEvent(token);
+//    }
 
     /**
      * This method is for getting the total amount of carbon produced and reduced.
@@ -191,5 +191,11 @@ public class Controller {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public static Action carbon(@Valid @RequestBody String token) {
         return Database.getCarbonValues(token);
+    }
+
+    @RequestMapping(value={"/addChallenger"}, method=RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public static boolean sendCahllenge(@Valid @RequestBody CompareFriends friend){
+        return Database.addChallenge(friend);
     }
 }
