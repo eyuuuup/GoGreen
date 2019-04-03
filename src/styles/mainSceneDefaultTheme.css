@@ -58,10 +58,16 @@
     -fx-min-height: 100;
     -fx-min-width: 500;
 }
+#settingButtons:hover{
+    -fx-background-color: #77C2BB;
+}
 
 #actionButton{
     -fx-min-height: 70;
     -fx-min-width: 500;
+}
+#actionButton:hover{
+    -fx-background-color: #77C2BB;
 }
 
 .jfx-toggle-button {
@@ -77,9 +83,7 @@
     
 }
 
-
-
-/* css for the navigation bar */
+    /* css for the navigation bar */
 
 .jfx-tab-pane .headers-region {
     -fx-background-color: #249677;
