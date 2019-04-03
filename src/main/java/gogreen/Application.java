@@ -265,7 +265,7 @@ public class Application extends javafx.application.Application {
         
         // make the category tab
         Tab categoryTab = new Tab();
-        categoryTab.setText("Category");
+        categoryTab.setText("Add action");
         categoryTab.setContent(categoryScreen());
         
         // make the stats tab
@@ -537,27 +537,27 @@ public class Application extends javafx.application.Application {
 
         // make the transport tab
         Tab transportTab = new Tab();
-        transportTab.setText("Transport");
+        transportTab.setText("Transport action");
         transportTab.setContent(transportScreen());
         
         // make the food tab
         Tab foodTab = new Tab();
-        foodTab.setText("Food");
+        foodTab.setText("Food action");
         foodTab.setContent(foodScreen());
         
         // make the energy tab
         Tab energyTab = new Tab();
-        energyTab.setText("Energy");
+        energyTab.setText("Energy action");
         energyTab.setContent(energyScreen());
         
         // make the extra tab
         Tab extraTab = new Tab();
-        extraTab.setText("Extra");
+        extraTab.setText("Extra action");
         extraTab.setContent(extraScreen());
 
         // make the one time events tab
         Tab oteTab = new Tab();
-        oteTab.setText("One Time Event");
+        oteTab.setText("One Time Event action");
         oteTab.setContent(oteScreen());
         
         // add all the tabs to the navigation bar
