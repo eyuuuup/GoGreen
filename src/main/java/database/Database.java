@@ -745,9 +745,10 @@ public class Database {
             String username=getUsername(token);
             Connection con = DriverManager.getConnection();
             PreparedStatement state = con.prepareStatement(
-                    "SELECT user_a, user_b, score_a, score_b, goal FROM challenges WHERE user_a = ?");
+                    "SELECT user_a, user_b, score_a, score_b, goal FROM challenges WHERE user_a = ? OR user_b = ?");
 
             state.setString(1, username);
+            state.setString(2, username);
             ResultSet rs = state.executeQuery();
             ArrayList<Challenge> result = new ArrayList<>();
 
@@ -772,6 +773,32 @@ public class Database {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return null;
+        }
+    }
+
+    public static boolean initializeChallenge(CompareFriends challenge){
+        System.out.println("initializeChallenge called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state = con.prepareStatement(
+                    "UPDATE challenges " +
+                            "SET score_a = (SELECT total_score FROM total_score WHERE username = ?), " +
+                            "score_b = (SELECT total_score FROM total_score WHERE username = ?), time_added = ? " +
+                            "WHERE user_a = ? OR user_b = ?" );
+
+            String userA = challenge.getUsername();
+            String userB = getUsername(challenge.getToken());
+            state.setString(1, userA);
+            state.setString(2, userB);
+            state.setLong(3, Instant.now().getMillis());
+            state.setString(4, userA);
+            state.setString(5, userB);
+
+            con.close();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
         }
     }
 
