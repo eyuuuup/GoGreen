@@ -205,7 +205,7 @@ public class Controller {
 
     @RequestMapping(value={"/showChallenges"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public  static void showChallenges(@Valid @RequestBody String token){
-         Database.retrieveChallenge(token);
+    public  static ChallengesList showChallenges(@Valid @RequestBody String token){
+         return Database.retrieveChallenge(token);
     }
 }

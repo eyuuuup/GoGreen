@@ -739,7 +739,7 @@ public class Database {
         }
     }
 
-    public static ArrayList<Challenge> retrieveChallenge(String token){
+    public static ChallengesList retrieveChallenge(String token){
         System.out.println("retrieveChallenge called");
         try {
             String username=getUsername(token);
@@ -768,7 +768,7 @@ public class Database {
             }
 
             con.close();
-            return result;
+            return new ChallengesList(result);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return null;

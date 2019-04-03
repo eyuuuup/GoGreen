@@ -296,4 +296,12 @@ public class Communication {
         RestTemplate request = new RestTemplate();
         return request.postForObject(hostURL + "/onLoad", message, OnLoadValues.class);
     }
+
+    public static boolean sendChallenge(CompareFriends challenge){
+        HttpEntity<CompareFriends> message=new HttpEntity<>(challenge);
+        RestTemplate request = new RestTemplate();
+        return request.postForObject(hostURL+"/addChallenger", message, boolean.class);
+    }
+
+    
 }
