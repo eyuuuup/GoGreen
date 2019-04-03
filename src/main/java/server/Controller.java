@@ -144,7 +144,7 @@ public class Controller {
      *
      * @param token token
      * @return ArrayList of CompareFriends
-     */
+//     */
     @RequestMapping(value = {"/showFriends"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public static FriendsList showFriends(@Valid @RequestBody String token) {
@@ -198,4 +198,10 @@ public class Controller {
     public static boolean sendCahllenge(@Valid @RequestBody CompareFriends friend){
         return Database.addChallenge(friend);
     }
+
+    @RequestMapping(value={"/accceptChallenge"}, method=RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public static boolean acceptChallenge(@Valid @RequestBody String token){ return Database.updateChallenge(token);}
+
+//    @RequestMapping(value={"/a"})
 }

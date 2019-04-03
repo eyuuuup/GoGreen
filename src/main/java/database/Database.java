@@ -716,9 +716,10 @@ public class Database {
         }
     }
 
-    public static void updateChallenge(String username) {
+    public static boolean updateChallenge(String token) {
         System.out.println("updateChallenge called");
         try {
+            String username = getUsername(token);
             Connection con = DriverManager.getConnection();
             PreparedStatement state = con.prepareStatement(
                     "UPDATE "
@@ -731,8 +732,10 @@ public class Database {
             state.executeUpdate();
 
             con.close();
+            return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return false;
         }
     }
 
