@@ -36,6 +36,7 @@
 #energyPage{
     -fx-spacing: 30;
     -fx-padding: 30;
+    -fx-alignment: center;
 }
 
 #extraPage{
@@ -97,6 +98,7 @@
 .jfx-tab-pane .tab-selected-line {
     -fx-background-color: #9ACD32;
 }
+
 #mainNavigation{
     -fx-pref-height: 700;
     -fx-pref-width: 1000;
@@ -130,14 +132,12 @@
     -fx-hgap: 30;
 }
 
-#waterContainer > .jfx-toggle-node{
-    -fx-pref-width: 350;
-    -fx-pref-height: 50;
+#waterContainer{
+    -fx-alignment: center;
 }
 
-#tempratureContainer > .jfx-toggle-node{
-    -fx-pref-width: 350;
-    -fx-pref-height: 50;
+#tempratureContainer{
+    -fx-alignment: center;
 }
 
 
@@ -201,12 +201,15 @@
 .progress-bar > .track {
     -fx-background-color: #249677;
     -fx-background-insets: 0, 0 0 1 0, 1 1 2 1;
-    -fx-background-radius: 4, 3, 2; /* 10, 9, 8 */
+    -fx-background-radius: 4, 3, 2;
 }
 
 /* sliders */
 .jfx-slider {
-    -fx-max-width: 400;
+    -fx-max-width: 500;
+    -fx-major-tick-unit: 5;
+    -fx-show-tick-labels: true;
+    -fx-show-tick-marks: true;
 }
 /* Styling the slider track */
 .jfx-slider > .track {

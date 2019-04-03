@@ -4,7 +4,6 @@ import client.Communication;
 import client.CompareFriends;
 import com.jfoenix.controls.*;
 
-import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
@@ -54,6 +53,7 @@ public class Application extends javafx.application.Application {
     public void start(Stage stage) {
         ApplicationMethods.onLoad();
 
+
         this.stage = stage;
         stage.setTitle("GoGreen");
 
@@ -62,6 +62,7 @@ public class Application extends javafx.application.Application {
 
         //the silentLogin will login for the user
         if (client.Communication.silentLogin()) {
+            ApplicationMethods.setPresets();
             mainScreen();
         } else {
             loginScene();
@@ -254,6 +255,7 @@ public class Application extends javafx.application.Application {
      * the main screen
      */
     static void mainScreen() {
+
         //make the navigation tab pane
         JFXTabPane navigation = new JFXTabPane();
         navigation.setId("mainNavigation");
@@ -275,7 +277,7 @@ public class Application extends javafx.application.Application {
         
         // make the leaderboard tab
         Tab leaderboardTab = new Tab();
-        leaderboardTab.setText("Competition");
+        leaderboardTab.setText("Friends & Competition");
         leaderboardTab.setContent(competitionScreen());
 
         // add all the tabs
@@ -296,7 +298,7 @@ public class Application extends javafx.application.Application {
      * @return home screen
      */
     private static Pane homeScreen() {
-        
+
         // makes the home navigation bar
         JFXTabPane homeNavigation = new JFXTabPane();
         homeNavigation.setId("secondNavigation");
@@ -329,18 +331,19 @@ public class Application extends javafx.application.Application {
     }
 
     private static GridPane sideBar() {
+
         Label username = new Label("@Username");
 
-        double savedAmount = Communication.carbon().getCarbonReduced();
+        double savedAmount = ApplicationMethods.getSavedCarbon();
         Label reducedCO2 = new Label(savedAmount + "kg CO\u2082 saved");
 
-        int points = Communication.getMyTotalScore();
+        int points = ApplicationMethods.getPoints();
         Label pointsText = new Label(points + " Points");
 
-        int followers = Communication.getFollowers().size();
+        int followers = ApplicationMethods.getFollowersSize();
         Label followersText = new Label(followers + " Followers");
 
-        int following = Communication.getFriends().size();
+        int following = ApplicationMethods.getFollowingSize();
         Label followingText = new Label(following + " Followed");
 
         Label temp = new Label("room for some medals \nor challenges");
@@ -365,7 +368,7 @@ public class Application extends javafx.application.Application {
      * @return your world screen
      */
     private static BorderPane yourWorldScreen() {
-        int points = client.Communication.getMyTotalScore();
+        int points = ApplicationMethods.getPoints();
         int level = ApplicationMethods.getLevel(points);
 
         // make the your world images
@@ -785,8 +788,9 @@ public class Application extends javafx.application.Application {
      */
     private static BorderPane energyScreen() {
         // makes the water time box
-        JFXToggleNode waterTime = new JFXToggleNode();
-        waterTime.setGraphic(new Label("Add shower time"));
+
+        Label waterTime = new Label("Add shower time");
+        waterTime.setId("information");
 
         // make the water time slider
         JFXSlider waterTimeSlider = new JFXSlider(0,60,0);
@@ -795,11 +799,6 @@ public class Application extends javafx.application.Application {
         Label waterInfo = new Label("Slide to the amount you showered");
         waterInfo.setId("error");
 
-        // make the water container
-        VBox waterContainer = new VBox(10);
-        waterContainer.setId("waterContainer");
-        waterContainer.getChildren().addAll(waterTime);
-
         TextField waterDescription = new TextField();
         waterDescription.setPromptText("write a description here!");
         waterDescription.setId("description");
@@ -807,6 +806,13 @@ public class Application extends javafx.application.Application {
         // makes the add button
         JFXButton addWater = new JFXButton("add shower time");
         addWater.setId("smallButton");
+
+        // make the water container
+        VBox waterContainer = new VBox(10);
+        waterContainer.setId("waterContainer");
+        waterContainer.getChildren().addAll(waterTime, waterInfo, waterTimeSlider, waterDescription, addWater);
+
+
 
         // if the add button is pressed, checks the conditions and sends the action
         addWater.setOnAction(e -> {
@@ -821,23 +827,14 @@ public class Application extends javafx.application.Application {
                     e1.printStackTrace();
                 }
         } else {
-                waterInfo.setText("Please fill in the minutes you \nshowered");
-            }
-        });
-
-        // when pressed the input box will appear
-        waterTime.setOnAction( e -> {
-
-            if (waterTime.isSelected()) {
-                waterContainer.getChildren().addAll(waterInfo, waterTimeSlider, waterDescription, addWater);
-            } else {
-                waterContainer.getChildren().removeAll(waterInfo, waterTimeSlider, waterDescription, addWater);
+                waterInfo.setText("Please fill in the minutes you showered");
             }
         });
 
         // makes the  button
-        JFXToggleNode temperature = new JFXToggleNode();
-        temperature.setGraphic(new Label("Add house temperature"));
+
+        Label temperature = new Label("Add house temperature");
+        temperature.setId("information");
 
         // make the water time slider
         JFXSlider temperatureSlider = new JFXSlider(15,30,15);
@@ -849,13 +846,13 @@ public class Application extends javafx.application.Application {
         tempratureDescription.setPromptText("write a description here!");
         tempratureDescription.setId("description");
 
+        JFXButton addTemperature = new JFXButton("add house temperature");
+        addTemperature.setId("smallButton");
+
         // make the temperature container
         VBox temperatureContainer = new VBox(10);
         temperatureContainer.setId("tempratureContainer");
-        temperatureContainer.getChildren().addAll(temperature);
-
-        JFXButton addTemperature = new JFXButton("add house temperature");
-        addTemperature.setId("smallButton");
+        temperatureContainer.getChildren().addAll(temperature, temperatureInfo, temperatureSlider, tempratureDescription, addTemperature);
 
         // when pressed it will send an action
         addTemperature.setOnAction(e -> {
@@ -870,18 +867,9 @@ public class Application extends javafx.application.Application {
             }
         });
 
-        // when the temperature button is pressed, the box will appear
-        temperature.setOnAction( e -> {
-            if (temperature.isSelected()) {
-                temperatureContainer.getChildren().addAll(temperatureInfo, temperatureSlider, tempratureDescription, addTemperature);
-            } else {
-                temperatureContainer.getChildren().removeAll(temperatureInfo, temperatureSlider, tempratureDescription, addTemperature);
-            }
-        });
-
         BorderPane energyPage = new BorderPane();
         // makes the page and adds the nodes
-        HBox energyCenter = new HBox();
+        VBox energyCenter = new VBox();
         energyCenter.getChildren().addAll(waterContainer, temperatureContainer);
         energyCenter.setId("energyPage");
 
@@ -1034,42 +1022,17 @@ public class Application extends javafx.application.Application {
      */
     private static BorderPane overviewScreen() {
         // get the amount saved
-        double amountSaved = Communication.carbon().getCarbonReduced();
+        double amountSaved = ApplicationMethods.getSavedCarbon();
 
         // makes the labels
-        Label amountSavedLabel = new Label(String.valueOf(amountSaved));
+        Label amountSavedLabel = new Label(amountSaved + " kg CO\u2082 saved");
         amountSavedLabel.setId("amountSavedNr");
-
-        Label amountSavedText = new Label("kg CO\u2082 saved");
-        amountSavedText.setId("amountSavedText");
-
-        // calculates the reference
-        double reference = amountSaved * 0.02 ;
-
-        Label referenceIntro = new Label("That is ");
-        referenceIntro.setId("referenceText");
-
-        Label referenceLabel = new Label(String.valueOf(reference));
-        referenceLabel.setId("referenceNr");
-
-        Label referenceText = new Label("Marit(s)");
-        referenceText.setId("referenceText");
-
-        // make the amount saved container
-        VBox amountSavedContainer = new VBox();
-        amountSavedContainer.getChildren().addAll(amountSavedLabel, amountSavedText);
-
-
-        // make the reference container
-        VBox referenceContainer = new VBox(2);
-        referenceContainer.getChildren().addAll(referenceIntro, referenceLabel, referenceText);
 
         BorderPane overviewPage = new BorderPane();
 
         // make the overview page
         GridPane overviewCenter = new GridPane();
-        overviewCenter.add(amountSavedContainer, 0,0);
-        overviewCenter.add(referenceContainer,1,0);
+        overviewCenter.add(amountSavedLabel, 0,0);
         overviewCenter.setId("overviewPage");
 
         overviewPage.setCenter(overviewCenter);
@@ -1353,6 +1316,7 @@ public class Application extends javafx.application.Application {
     }
     
     private static void refresh() {
+        ApplicationMethods.setPresets();
         mainScreen();
     }
 }
