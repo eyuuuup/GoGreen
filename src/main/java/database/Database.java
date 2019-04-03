@@ -739,9 +739,10 @@ public class Database {
         }
     }
 
-    public static ArrayList<Challenge> retrieveChallenge(String username){
+    public static ArrayList<Challenge> retrieveChallenge(String token){
         System.out.println("retrieveChallenge called");
         try {
+            String username=getUsername(token);
             Connection con = DriverManager.getConnection();
             PreparedStatement state = con.prepareStatement(
                     "SELECT user_a, user_b, score_a, score_b, goal FROM challenges WHERE user_a = ?");

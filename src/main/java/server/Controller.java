@@ -203,5 +203,9 @@ public class Controller {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public static boolean acceptChallenge(@Valid @RequestBody String token){ return Database.updateChallenge(token);}
 
-//    @RequestMapping(value={"/a"})
+    @RequestMapping(value={"/showChallenges"}, method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public  static void showChallenges(@Valid @RequestBody String token){
+         Database.retrieveChallenge(token);
+    }
 }
