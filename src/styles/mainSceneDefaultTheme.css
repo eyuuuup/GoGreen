@@ -333,3 +333,9 @@
     -fx-border-color: #dddddd;
 }
 
+#loginTitles{
+    -fx-text-fill: #249677;
+    -fx-font-size: 24;
+}
+
+

@@ -139,17 +139,24 @@ public class Application extends javafx.application.Application {
         // make the login title
         Label loginText = new Label("Login:");
         loginText.setId("loginText");
-        
+
+        Label usernameTitle = new Label("Username:");
+        usernameTitle.setId("loginTitles");
+        Label passwordTitle = new Label("Password:");
+        passwordTitle.setId("loginTitles");
+
         //create the page
         GridPane loginPage = new GridPane();
         loginPage.setId("loginPage");
         loginPage.add(loginText, 0, 0);
-        loginPage.add(username, 0, 1);
-        loginPage.add(rememberUser, 1, 1);
-        loginPage.add(new StackPane(password, visiblePassword), 0, 2);
-        loginPage.add(showPassword, 1, 2);
-        loginPage.add(login, 0, 3);
-        loginPage.add(register, 1, 3);
+        loginPage.add(usernameTitle,0,1);
+        loginPage.add(username, 1, 1);
+        loginPage.add(rememberUser, 2, 1);
+        loginPage.add(passwordTitle,0,2);
+        loginPage.add(new StackPane(password, visiblePassword), 1, 2);
+        loginPage.add(showPassword, 2, 2);
+        loginPage.add(login, 1, 3);
+        loginPage.add(register, 2, 3);
         
         //and return it
         return loginPage;
@@ -160,6 +167,7 @@ public class Application extends javafx.application.Application {
      * @return the body
      */
     private static GridPane registerScreen() {
+
 
         //textfield for the username
         TextField username = new TextField();
@@ -217,19 +225,26 @@ public class Application extends javafx.application.Application {
         back.setOnAction(e -> {
             loginScene();
         });
-        
+
+        Label usernameTitle = new Label("Username:");
+        usernameTitle.setId("loginTitles");
+        Label passwordTitle = new Label("Password:");
+        passwordTitle.setId("loginTitles");
+
         
         //creates the gridpane with all the nodes in it
         GridPane registerPage = new GridPane();
         registerPage.setId("loginPage");
         registerPage.add(registerText, 0, 0);
-        registerPage.add(username, 0, 1);
-        registerPage.add(new StackPane(password, visiblePassword), 0, 2);
-        registerPage.add(rememberUser, 1, 2);
-        registerPage.add(new StackPane(passwordTwo, visiblePasswordTwo), 0, 3);
-        registerPage.add(showPassword, 1, 3);
-        registerPage.add(register, 0, 4);
-        registerPage.add(back, 1, 4);
+        registerPage.add(usernameTitle,0,1);
+        registerPage.add(username, 1, 1);
+        registerPage.add(passwordTitle,0,2);
+        registerPage.add(new StackPane(password, visiblePassword), 1, 2);
+        registerPage.add(rememberUser, 2, 2);
+        registerPage.add(new StackPane(passwordTwo, visiblePasswordTwo), 1, 3);
+        registerPage.add(showPassword, 2, 3);
+        registerPage.add(register, 1, 4);
+        registerPage.add(back, 2, 4);
 
         //and returns it
         return registerPage;
@@ -328,7 +343,7 @@ public class Application extends javafx.application.Application {
         int following = Communication.getFriends().size();
         Label followingText = new Label(following + " Followed");
 
-        Label temp = new Label("room for some medals");
+        Label temp = new Label("room for some medals \nor challenges");
 
 
         GridPane sideBar = new GridPane();
@@ -343,7 +358,8 @@ public class Application extends javafx.application.Application {
         return sideBar;
 
     }
-    
+
+
     /**
      * makes the your world screen.
      * @return your world screen
@@ -397,7 +413,6 @@ public class Application extends javafx.application.Application {
         yourWorldPage.setCenter(yourWorldCenter);
         yourWorldPage.setLeft(sideBar());
 
-        
         // returns the page
         return yourWorldPage;
     }
@@ -1210,7 +1225,7 @@ public class Application extends javafx.application.Application {
                 pos++;
             }
         }
-        
+
         return friendsList;
     }
 
