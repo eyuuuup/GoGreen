@@ -71,8 +71,9 @@
     -jfx-untoggle-line-color: #dddddd;
     -jfx-size: 15px;
     -jfx-disable-visual-focus: false;
-    -fx-text-fill: #249677;
+    -fx-text-fill: #000000;
     -fx-font-size: 16;
+    -fx-font-weight: bold;
     
 }
 
@@ -366,4 +367,8 @@
 .jfx-check-box {
     -jfx-checked-color: #249677;
     -fx-font-size: 24;
+}
+
+#distance {
+    -fx-pref-width: 450;
 }

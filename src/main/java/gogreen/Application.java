@@ -585,10 +585,11 @@ public class Application extends javafx.application.Application {
         // make the text field
         TextField distance = new TextField();
         distance.setPromptText("Distance");
+        distance.setId("distance");
 
         // make the error label
-        Label errorMessage = new Label("Please fill in your distance");
-        errorMessage.setId("error");
+        Label transportInfo = new Label("Please fill in your distance \nand select your transportation vehicle");
+        transportInfo.setId("information");
 
         //button for the cycle action
         JFXButton cycle = new JFXButton();
@@ -603,13 +604,14 @@ public class Application extends javafx.application.Application {
             try {
                 int distanceInt = Integer.parseInt(distance.getText());
                 System.out.println(transportDescription.getText());
-                errorMessage.setText("");
+                transportInfo.setText("");
                 Transport.addCycleAction(distanceInt);
                 refresh();
             } catch (NumberFormatException exception) {
-                errorMessage.setText("Please only use numbers");
+                transportInfo.setText("Please only use numbers");
             } catch (ConnectIOException | IllegalArgumentException exception) {
                 exception.printStackTrace();
+                transportInfo.setText("Number is too high \nDid you really cycle that far?");
             }
         });
         
@@ -625,14 +627,15 @@ public class Application extends javafx.application.Application {
             try {
                 int distanceInt = Integer.parseInt(distance.getText());
                 System.out.println(transportDescription.getText());
-                errorMessage.setText("");
+                transportInfo.setText("");
                 Transport.addPublicTransportAction(distanceInt);
                 refresh();
             } catch (NumberFormatException exception) {
                 // throw error
-                errorMessage.setText("Please only use numbers");
+                transportInfo.setText("Please only use numbers");
             } catch (ConnectIOException | IllegalArgumentException exception) {
                 exception.printStackTrace();
+                transportInfo.setText("Number is too high \nDid you really used public transport that far?");
             }
         });
         
@@ -648,14 +651,15 @@ public class Application extends javafx.application.Application {
             try {
                 int distanceInt = Integer.parseInt(distance.getText());
                 System.out.println(transportDescription.getText());
-                errorMessage.setText("");
+                transportInfo.setText("");
                 Transport.addCarAction(distanceInt);
                 refresh();
             } catch (NumberFormatException exception) {
                 // throw error
-                errorMessage.setText("Please only use numbers");
+                transportInfo.setText("Please only use numbers");
             } catch (ConnectIOException | IllegalArgumentException exception) {
                 exception.printStackTrace();
+                transportInfo.setText("Number is too high \nDid you really drove your car that far?");
             }
         });
         
@@ -671,37 +675,37 @@ public class Application extends javafx.application.Application {
             try {
                 int distanceInt = Integer.parseInt(distance.getText());
                 System.out.println(transportDescription.getText());
-                errorMessage.setText("");
+                transportInfo.setText("");
                 Transport.addPlaneAction(distanceInt);
                 refresh();
             } catch (NumberFormatException exception) {
                 // throw error
-                errorMessage.setText("Please only use numbers");
+                transportInfo.setText("Please only use numbers");
             } catch (ConnectIOException | IllegalArgumentException exception) {
                 exception.printStackTrace();
+                transportInfo.setText("Number is too high \nYou can't fly around the world multiple times");
             }
         });
 
         // make the kilometer label and the distance container
         Label km = new Label("km");
-        km.setId("title");
+        km.setId("information");
 
         HBox distanceContainer = new HBox(10);
         distanceContainer.setId("commonContainer");
-        distanceContainer.getChildren().addAll(distance, km, errorMessage);
-
-
-
+        distanceContainer.getChildren().addAll(distance, km);
 
         BorderPane transportPage = new BorderPane();
         // make the transport page
         GridPane transportCenter = new GridPane();
-        transportCenter.add(cycle, 0 ,0);
-        transportCenter.add(publicTransport, 0, 1);
-        transportCenter.add(car, 0, 2);
-        transportCenter.add(plane, 0,3 );
-        transportCenter.add(transportDescription,0,4);
-        transportCenter.add(distanceContainer ,0,5);
+        transportCenter.add(transportInfo,0,0);
+        transportCenter.add(distanceContainer ,0,1);
+        transportCenter.add(transportDescription,0,2);
+        transportCenter.add(cycle, 0 ,3);
+        transportCenter.add(publicTransport, 0, 4);
+        transportCenter.add(car, 0, 5);
+        transportCenter.add(plane, 0,6 );
+
 
         transportCenter.setId("transportPage");
 
@@ -787,7 +791,7 @@ public class Application extends javafx.application.Application {
         JFXSlider waterTimeSlider = new JFXSlider(0,60,0);
 
         // make instruction and error label
-        Label waterInfo = new Label("Slide to the amount you showered");
+        Label waterInfo = new Label("Slide to the amount you \nshowered");
         waterInfo.setId("error");
 
         // make the water container
@@ -874,17 +878,17 @@ public class Application extends javafx.application.Application {
             }
         });
 
-        BorderPane eneryPage = new BorderPane();
+        BorderPane energyPage = new BorderPane();
         // makes the page and adds the nodes
         HBox energyCenter = new HBox();
         energyCenter.getChildren().addAll(waterContainer, temperatureContainer);
         energyCenter.setId("energyPage");
 
-        eneryPage.setCenter(energyCenter);
-        eneryPage.setLeft(sideBar());
+        energyPage.setCenter(energyCenter);
+        energyPage.setLeft(sideBar());
 
         // returns the page
-        return eneryPage;
+        return energyPage;
     }
     
     /**
@@ -947,13 +951,15 @@ public class Application extends javafx.application.Application {
      */
     private static BorderPane oteScreen() {
 
+        Label oteInfo = new Label("Select all the things you have or did");
+        oteInfo.setId("information");
         // makes the solar panel toggle
         JFXToggleButton solarPanels = new JFXToggleButton();
         solarPanels.setText("Solar Panels");
         solarPanels.setOnAction(e -> {
-            if(solarPanels.isSelected()){
-//                OneTimeEvent.addSolarPanelAction();
-//                refresh();
+            if (solarPanels.isSelected()) {
+                OneTimeEvent.addSolarPanelAction();
+                refresh();
             }
         });
 
@@ -962,8 +968,8 @@ public class Application extends javafx.application.Application {
         electricCar.setText("Electric car");
         electricCar.setOnAction(e -> {
             if (electricCar.isSelected()) {
-//                OneTimeEvent.addElectricCarAction();
-//                refresh();
+                OneTimeEvent.addElectricCarAction();
+                refresh();
             }
         });
 
@@ -972,17 +978,18 @@ public class Application extends javafx.application.Application {
         joinedGroup.setText("Joined environment group");
         joinedGroup.setOnAction(e -> {
             if (joinedGroup.isSelected()) {
-//                OneTimeEvent.addEvGroupAction();
-//                refresh();
+                OneTimeEvent.addEvGroupAction();
+                refresh();
             }
         });
 
         BorderPane otePage = new BorderPane();
 
         GridPane oteCenter = new GridPane();
-        oteCenter.add(solarPanels,0,0);
-        oteCenter.add(electricCar,0,1);
-        oteCenter.add(joinedGroup,0,2);
+        oteCenter.add(oteInfo,0,0);
+        oteCenter.add(solarPanels,0,1);
+        oteCenter.add(electricCar,0,2);
+        oteCenter.add(joinedGroup,0,3);
         oteCenter.setId("otePage");
 
         otePage.setCenter(oteCenter);
