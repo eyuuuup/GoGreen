@@ -29,7 +29,7 @@ public class EnergyTest {
         Whitebox.setInternalState(Energy.class, "hasSolarPanels", false);
         Energy.addReduceEnergyAction(20);
         PowerMockito.verifyStatic();
-        Communication.addAction("ReduceEnergy", 300, 0, 100);
+        Communication.addAction("ReduceEnergy", 300, 100, 100);
     }
 
     @Test
@@ -45,7 +45,7 @@ public class EnergyTest {
         Whitebox.setInternalState(Energy.class, "hasSolarPanels", false);
         Energy.addReduceWater(15);
         PowerMockito.verifyStatic();
-        Communication.addAction("ReduceWater", 500, 0, 100);
+        Communication.addAction("ReduceWater", 500, 100, 100);
     }
 
     @Test
