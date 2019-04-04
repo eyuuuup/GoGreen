@@ -339,6 +339,12 @@
     -fx-pref-height: 400;
     -fx-padding: 10;
 }
+#historyScrollPane{
+
+    -fx-max-height: 400;
+    -fx-padding: 10;
+}
+
 #smallButton{
     -fx-font-size: 14;
 }
@@ -385,4 +391,9 @@
 
 #distance {
     -fx-pref-width: 450;
+}
+
+#historyList{
+    -fx-vgap: 10;
+    -fx-hgap: 30;
 }

@@ -1045,18 +1045,27 @@ public class Application extends javafx.application.Application {
     private static BorderPane historyScreen() {
 
         // make the recent activites text
-        String historyText = "Recent Activities: \t\t date: \t\t\t time: \n ";
-        Label history = new Label("");
+
+        GridPane historyList = new GridPane();
+        historyList.setId("historyList");
+        historyList.add(new Label("Recent Activity:"),0,0);
+        historyList.add(new Label("Date:"),1,0);
+        historyList.add(new Label("Description"),2,0);
+
+        int pos = 1;
         for (client.Action a : client.Communication.getLastThreeActions()) {
-            historyText += a.getAction() + "\n";
+            historyList.add(new Label(a.getAction()),0,pos);
+            historyList.add(new Label(String.valueOf(a.getDate())),1,pos);
+            historyList.add(new Label("Description"),2,pos);
+          pos++;
         }
-        history.setText(historyText);
-        history.setId("history");
+
 
         BorderPane historyPage = new BorderPane();
+        ScrollPane historyCenter = new ScrollPane();
+        historyCenter.setContent(historyList);
 
-        VBox historyCenter = new VBox();
-        historyCenter.getChildren().addAll(history);
+        historyCenter.setId("historyScrollPane");
 
         historyPage.setCenter(historyCenter);
         historyPage.setLeft(sideBar());
