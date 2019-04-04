@@ -165,7 +165,7 @@ public class Database {
                             + "events.carbon_reduced, events.carbon_produced, events.date_time "
                             + "FROM events JOIN actions ON events.action_id = actions.action_id "
                             + "WHERE events.username = ? "
-                            + "ORDER BY date_time DESC LIMIT 3");
+                            + "ORDER BY date_time DESC LIMIT 10");
             state.setString(1, getUsername(token));
             ResultSet rs = state.executeQuery();
 
@@ -235,7 +235,8 @@ public class Database {
      * @param token the token from a user.
      * @param score the score that should be added to the total.
      */
-    public static void updateTotalScores(String token, int score, double carbonReduced, double carbonProduced) {
+    public static void updateTotalScores(String token, int score,
+                                         double carbonReduced, double carbonProduced) {
         try {
             System.out.println("updateTotalScores called");
             
@@ -688,11 +689,10 @@ public class Database {
     }
 
     /**
-     * This method add a challenge
-     *
+     * This method add a challenge.
      * @param challenge CompareFriend object with token of user A,
-     *                  username of person being challenged, and score as the goal
-     * @return
+     *                  username of person being challenged, and score as the goal.
+     * @return if the query succeeded.
      */
     public static boolean addChallenge(CompareFriends challenge) {
         System.out.println("addChallenge called");
@@ -716,6 +716,11 @@ public class Database {
         }
     }
 
+    /**
+     * This method updates a challenge.
+     * @param token the token of the user that wants to update.
+     * @return if the query succeeded.
+     */
     public static boolean updateChallenge(String token) {
         System.out.println("updateChallenge called");
         try {
@@ -723,8 +728,11 @@ public class Database {
             Connection con = DriverManager.getConnection();
             PreparedStatement state = con.prepareStatement(
                     "UPDATE "
-                            + "challenges SET score_a = (SELECT total_score FROM total_score WHERE username = ?), " +
-                            "score_b =(SELECT total_score FROM total_score WHERE username = ?) WHERE user_a = ?");
+                            + "challenges SET score_a = "
+                            + "(SELECT total_score FROM total_score WHERE username = ?), "
+                            + "score_b = "
+                            + "(SELECT total_score FROM total_score WHERE username = ?) "
+                            + "WHERE user_a = ?");
 
             state.setString(1,username);
             state.setString(2,username);
@@ -739,20 +747,26 @@ public class Database {
         }
     }
 
-    public static ChallengesList retrieveChallenge(String token){
+    /**
+     * This method retrieves a challenge.
+     * @param token the token of the user that wants to retrieve.
+     * @return a list of all the challenges of a user.
+     */
+    public static ChallengesList retrieveChallenge(String token) {
         System.out.println("retrieveChallenge called");
         try {
-            String username=getUsername(token);
+            String username = getUsername(token);
             Connection con = DriverManager.getConnection();
             PreparedStatement state = con.prepareStatement(
-                    "SELECT user_a, user_b, score_a, score_b, goal FROM challenges WHERE user_a = ? OR user_b = ?");
+                    "SELECT user_a, user_b, score_a, score_b, goal FROM challenges "
+                            + "WHERE user_a = ? OR user_b = ?");
 
             state.setString(1, username);
             state.setString(2, username);
             ResultSet rs = state.executeQuery();
             ArrayList<Challenge> result = new ArrayList<>();
 
-            while (rs.next()){
+            while (rs.next()) {
                 Challenge challenge = new Challenge();
                 String userA = rs.getString(1);
                 String userB = rs.getString(2);
@@ -776,15 +790,21 @@ public class Database {
         }
     }
 
-    public static boolean initializeChallenge(CompareFriends challenge){
+    /**
+     * This method updates a challenge when the other user accepts.
+     * @param challenge The CompareFriends object.
+     * @return if the query succeeded.
+     */
+    public static boolean initializeChallenge(CompareFriends challenge) {
         System.out.println("initializeChallenge called");
         try {
             Connection con = DriverManager.getConnection();
             PreparedStatement state = con.prepareStatement(
-                    "UPDATE challenges " +
-                            "SET score_a = (SELECT total_score FROM total_score WHERE username = ?), " +
-                            "score_b = (SELECT total_score FROM total_score WHERE username = ?), time_added = ? " +
-                            "WHERE user_a = ? OR user_b = ?" );
+                    "UPDATE challenges SET score_a = "
+                            + "(SELECT total_score FROM total_score WHERE username = ?), "
+                            + "score_b = "
+                            + "(SELECT total_score FROM total_score WHERE username = ?)"
+                            + ", time_added = ? WHERE user_a = ? OR user_b = ?" );
 
             String userA = challenge.getUsername();
             String userB = getUsername(challenge.getToken());
