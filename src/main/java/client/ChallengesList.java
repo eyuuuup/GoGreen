@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 
 /**
- * This class is for the list of challenges
+ * This class is for the list of challenges.
  */
 public class ChallengesList {
     ArrayList<Challenge> list;
