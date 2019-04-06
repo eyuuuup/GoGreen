@@ -201,7 +201,7 @@ public class Controller {
 
     @RequestMapping(value={"/acceptChallenge"}, method=RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public static boolean acceptChallenge(@Valid @RequestBody String token){ return Database.updateChallenge(token);}
+    public static boolean acceptChallenge(@Valid @RequestBody CompareFriends accept){ return Database.initializeChallenge(accept);}
 
     @RequestMapping(value={"/showChallenges"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
