@@ -1,5 +1,6 @@
 package gogreen;
 
+import client.Communication;
 import com.google.common.hash.Hashing;
 
 import java.io.File;
@@ -12,6 +13,12 @@ import java.util.Scanner;
  * This class includes some useful methods for the GUI.
  */
 class ApplicationMethods {
+
+    private static int points;
+    private static int followingSize;
+    private static int followersSize;
+    private static double savedCarbon;
+
     private ApplicationMethods() {
     }
 
@@ -24,7 +31,7 @@ class ApplicationMethods {
         Transport.setHasElectricCar(false);
         Energy.setHasSolarPanels(false);
 //        Communication.onLoad(); Returns an object of class onLoadValues but action ids aren't set properly on server
-    }
+}
 
     /**
      * This methods logs in using the given username and password.
@@ -39,6 +46,8 @@ class ApplicationMethods {
         String hashedPassword = hashPassword(password);
 
         if (client.Communication.login(encodedUsername, hashedPassword, remember)) {
+
+            setPresets();
             Application.mainScreen();
         } else {
             throw new IllegalAccessException("Login unsuccessful");
@@ -161,25 +170,6 @@ class ApplicationMethods {
         }
     }
 
-    //    /**
-    //     * makes a string of the recent activities.
-    //     * @param recentActivities recent activities
-    //     * @return a String of the recent activities
-    //     */
-    //    static String recentActivitiesToString(String recentActivities) {
-    //                if (recentActivities != null) {
-    //                    System.out.println("rA: " + recentActivities);
-    //                    String[] split = recentActivities.split("\\s|_");
-    //                    String output = split[0] + "\t\t\t\t" +
-    //                    split[1] + "\t\t" + split[2] + "\n"
-    //                            + split[3] + "\t\t\t\t" + split[4] + "\t\t" + split[5] + "\n"
-    //                            + split[6] + "\t\t\t\t" + split[7] + "\t\t" + split[8];
-    //                    System.out.println(output);
-    //                    return output;
-    //                }
-    //        return "none";
-    //    }
-
     static int getLevel(int points) {
         return (int) (Math.floor((-1 + Math.sqrt(1 + 8 * (points / 50 + 10))) / 2) - 3);
     }
@@ -194,5 +184,36 @@ class ApplicationMethods {
         double start = getLevelInv(lvl);
         double end = getLevelInv(lvl + 1);
         return (points - start) / (end - start);
+    }
+
+    static void setPresets() {
+        Application.loadingScreen();
+        try {
+            points = Communication.getMyTotalScore();
+            followingSize = Communication.getFriends().size();
+            followersSize = Communication.getFollowers().size();
+            savedCarbon = Communication.carbon().getCarbonReduced();
+        } catch (NullPointerException e) {
+            points = 0;
+            followingSize = 0;
+            followersSize = 0;
+            savedCarbon = 0;
+        }
+    }
+
+    static int getPoints() {
+        return points;
+    }
+
+    static int getFollowingSize() {
+        return followingSize;
+    }
+
+    static int getFollowersSize() {
+        return followersSize;
+    }
+
+    static double getSavedCarbon() {
+        return savedCarbon;
     }
 }
