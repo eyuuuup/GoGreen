@@ -748,48 +748,70 @@ public class Database {
     }
 
     /**
-     * This method retrieves a challenge.
-     * @param token the token of the user that wants to retrieve.
-     * @return a list of all the challenges of a user.
+     * This method is to give list of ongoing challenges and to be accepted challengesChallengesList
+     * @param token
+     * @return
      */
-//    public static ChallengesList retrieveChallenge(String token) {
-//        System.out.println("retrieveChallenge called");
-//        try {
-//            String username = getUsername(token);
-//            Connection con = DriverManager.getConnection();
-//            PreparedStatement state = con.prepareStatement(
-//                    "SELECT user_a, user_b, score_a, score_b, goal FROM challenges "
-//                            + "WHERE user_a = ? OR user_b = ?");
-//
-//            state.setString(1, username);
-//            state.setString(2, username);
-//            ResultSet rs = state.executeQuery();
-//            ArrayList<Challenge> result = new ArrayList<>();
-//
-//            while (rs.next()) {
-//                Challenge challenge = new Challenge();
-//                String userA = rs.getString(1);
-//                String userB = rs.getString(2);
-//                int scoreA = rs.getInt(3);
-//                int scoreB = rs.getInt(4);
-//                int goal = rs.getInt(5);
-//
-//                challenge.setUserA(userA);
-//                challenge.setUserB(userB);
-//                challenge.setScoreA(scoreA);
-//                challenge.setScoreB(scoreB);
-//                challenge.setGoal(goal);
-//                result.add(challenge);
-//            }
-//
-//            con.close();
-//            return new ChallengesList(result);
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//            return null;
-//        }
-//    }
+    public static ChallengesList retrieveChallenge(String token) {
+        System.out.println("retrieveChallenge called");
+        try {
+            String username = getUsername(token);
+            Connection con = DriverManager.getConnection();
+            //accepted or ongoing challenge challenges
+            PreparedStatement stateA = con.prepareStatement("SELECT user_a, user_b, score_a, score_b, goal FROM challenges "
+                    + "WHERE user_a = ? AND score_a IS NOT NULL");
+            stateA.setString(1, username);
+            ResultSet rs = stateA.executeQuery();
+            ArrayList<Challenge> listA = new ArrayList<>();
 
+            while (rs.next()) {
+                Challenge challenge = new Challenge();
+                String userA = rs.getString(1);
+                String userB = rs.getString(2);
+                int scoreA = rs.getInt(3);
+                int scoreB = rs.getInt(4);
+                int goal = rs.getInt(5);
+
+                challenge.setUserA(userA);
+                challenge.setUserB(userB);
+                challenge.setScoreA(scoreA);
+                challenge.setScoreB(scoreB);
+                challenge.setGoal(goal);
+                listA.add(challenge);
+            }
+
+            //Challenges recieved by a user and not yet accepted
+            PreparedStatement stateB = con.prepareStatement("SELECT user_a, user_b, score_a, score_b, goal FROM challenges "
+                    + "WHERE user_b = ? AND score_b IS NULL");
+
+            stateA.setString(1, username);
+            ResultSet rs2 = stateA.executeQuery();
+            ArrayList<Challenge> listB = new ArrayList<>();
+
+            while (rs.next()) {
+                Challenge challenge = new Challenge();
+                String userA = rs.getString(1);
+                String userB = rs.getString(2);
+                int scoreA = rs.getInt(3);
+                int scoreB = rs.getInt(4);
+                int goal = rs.getInt(5);
+
+                challenge.setUserA(userA);
+                challenge.setUserB(userB);
+                challenge.setScoreA(scoreA);
+                challenge.setScoreB(scoreB);
+                challenge.setGoal(goal);
+                listB.add(challenge);
+            }
+
+            con.close();
+            ChallengesList c= new ChallengesList(listA, listB);
+            return c;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
     /**
      * This method updates a challenge when the other user accepts.
      * @param challenge The CompareFriends object.
@@ -822,42 +844,6 @@ public class Database {
         }
     }
 
-    public static ChallengesList retrieveChallenge(String token) {
-        System.out.println("retrieveChallenge called");
-        try {
-            String username = getUsername(token);
-            Connection con = DriverManager.getConnection();
-            PreparedStatement state = con.prepareStatement(
-                    "SELECT user_a, user_b, score_a, score_b, goal FROM challenges "
-                            + "WHERE user_a = ? OR user_b = ?");
 
-            state.setString(1, username);
-            state.setString(2, username);
-            ResultSet rs = state.executeQuery();
-            ArrayList<Challenge> result = new ArrayList<>();
-
-            while (rs.next()) {
-                Challenge challenge = new Challenge();
-                String userA = rs.getString(1);
-                String userB = rs.getString(2);
-                int scoreA = rs.getInt(3);
-                int scoreB = rs.getInt(4);
-                int goal = rs.getInt(5);
-
-                challenge.setUserA(userA);
-                challenge.setUserB(userB);
-                challenge.setScoreA(scoreA);
-                challenge.setScoreB(scoreB);
-                challenge.setGoal(goal);
-                result.add(challenge);
-            }
-
-            con.close();
-            return new ChallengesList(result);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
-    }
 
 }
