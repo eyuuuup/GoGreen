@@ -46,6 +46,7 @@ class ApplicationMethods {
         String hashedPassword = hashPassword(password);
 
         if (client.Communication.login(encodedUsername, hashedPassword, remember)) {
+
             setPresets();
             Application.mainScreen();
         } else {
@@ -186,6 +187,7 @@ class ApplicationMethods {
     }
 
     static void setPresets() {
+        Application.loadingScreen();
         try {
             points = Communication.getMyTotalScore();
             followingSize = Communication.getFriends().size();

@@ -28,6 +28,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
 import javafx.scene.paint.Paint;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -250,11 +251,17 @@ public class Application extends javafx.application.Application {
         //and returns it
         return registerPage;
     }
-    
+
+    static void loadingScreen(){
+        // WIP
+        System.out.println("Loading...");
+
+    }
     /*
      * the main screen
      */
     static void mainScreen() {
+
 
         //make the navigation tab pane
         JFXTabPane navigation = new JFXTabPane();
@@ -1108,8 +1115,12 @@ public class Application extends javafx.application.Application {
         request.setText("Followers");
         request.setContent(friendRequestScreen());
 
+        Tab challenge = new Tab();
+        challenge.setText("Challenges");
+        challenge.setContent(challengeScreen());
+
         // add all the tabs to the navigation bar
-        competitionNavigation.getTabs().addAll(leaderboard, friends, request);
+        competitionNavigation.getTabs().addAll(leaderboard, challenge, friends, request);
 
         // make the leaderboard page
         Pane competitionPage = new Pane();
@@ -1306,8 +1317,20 @@ public class Application extends javafx.application.Application {
         return requestPage;
     }
 
+    private static BorderPane challengeScreen() {
+        Label challenges = new Label("Needs to be implemented");
+        VBox challengeCenter = new VBox();
+        challengeCenter.getChildren().addAll(challenges);
 
+        BorderPane challengePage = new BorderPane();
 
+        challengePage.setCenter(challengeCenter);
+        challengePage.setLeft(sideBar());
+
+        // return the request page
+        return challengePage;
+
+    }
     /**
      * Toggle visibility between Textfield and PasswordField.
      * @param visible the Textfield
