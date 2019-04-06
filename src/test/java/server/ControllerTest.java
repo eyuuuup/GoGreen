@@ -206,7 +206,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void showChallenges(){
+    public void showChallenges() {
         ChallengesList cl = new ChallengesList();
 
         PowerMockito.when(Database.retrieveChallenge(anyString())).thenReturn(cl);
@@ -215,7 +215,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void updateChallenge(){
+    public void updateChallenge() {
         PowerMockito.when(Database.updateChallenge(anyString())).thenReturn(true);
         assertEquals(Controller.updateChallenge("testToken"), true);
     }

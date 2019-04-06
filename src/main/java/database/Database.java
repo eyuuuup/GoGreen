@@ -136,10 +136,10 @@ public class Database {
             state1.setDouble(7, action.getCarbonProduced());
             state1.executeUpdate();
 
-            
+
             updateTotalScores(action.getToken(), action.getValue(),
                     action.getCarbonReduced(), action.getCarbonProduced());
-            
+
 
             System.out.println("INSERT success");
             con.close();
@@ -239,18 +239,18 @@ public class Database {
                                          double carbonReduced, double carbonProduced) {
         try {
             System.out.println("updateTotalScores called");
-            
-            int    currentTotalScore     = getTotalScore(token);
-            Action action                = Database.getCarbonValues(token);
-            double currentCarbonReduced  = action.getCarbonReduced();
+
+            int currentTotalScore = getTotalScore(token);
+            Action action = Database.getCarbonValues(token);
+            double currentCarbonReduced = action.getCarbonReduced();
             double currentCarbonProduced = action.getCarbonProduced();
-            
+
             currentTotalScore = currentTotalScore + score;
             currentCarbonReduced = currentCarbonReduced + carbonReduced;
             currentCarbonProduced = currentCarbonProduced + carbonProduced;
 
             Connection con = DriverManager.getConnection();
-            
+
             PreparedStatement state1 =
                     con.prepareStatement("UPDATE total_score "
                             + "SET total_score = ?, carbon_reduced = ?, "
@@ -269,6 +269,7 @@ public class Database {
 
     /**
      * returns the carbon reduction.
+     *
      * @param token token
      * @return carbon reduction
      */
@@ -276,7 +277,7 @@ public class Database {
         try {
             Connection con = DriverManager.getConnection();
             System.out.println("getCarbonReduced called");
-            
+
             PreparedStatement state =
                     con.prepareStatement("SELECT carbon_reduced "
                             + "FROM total_score JOIN user_data ON "
@@ -284,13 +285,13 @@ public class Database {
                             + "WHERE user_data.token = ?");
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
-            
+
             double currentCarbonReduced = 0;
             while (rs.next()) {
                 currentCarbonReduced = rs.getDouble(1);
                 System.out.println("carbon_reduced: " + currentCarbonReduced);
             }
-            
+
             con.close();
             return currentCarbonReduced;
         } catch (SQLException ex) {
@@ -298,9 +299,10 @@ public class Database {
             return 0;
         }
     }
-    
+
     /**
      * get carbon produced.
+     *
      * @param token token
      * @return carbon produced
      */
@@ -308,7 +310,7 @@ public class Database {
         try {
             Connection con = DriverManager.getConnection();
             System.out.println("getCarbonProduced called");
-            
+
             PreparedStatement state =
                     con.prepareStatement("SELECT carbon_produced "
                             + "FROM total_score JOIN user_data ON "
@@ -316,13 +318,13 @@ public class Database {
                             + "WHERE user_data.token = ?");
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
-            
+
             double currentCarbonProduced = 0;
             while (rs.next()) {
                 currentCarbonProduced = rs.getDouble(1);
                 System.out.println("carbon_reduced: " + currentCarbonProduced);
             }
-            
+
             con.close();
             return currentCarbonProduced;
         } catch (SQLException ex) {
@@ -330,7 +332,7 @@ public class Database {
             return 0;
         }
     }
-    
+
     /**
      * This method queries the database to get the total score of a user.
      *
@@ -690,6 +692,7 @@ public class Database {
 
     /**
      * This method add a challenge.
+     *
      * @param challenge CompareFriend object with token of user A,
      *                  username of person being challenged, and score as the goal.
      * @return if the query succeeded.
@@ -718,6 +721,7 @@ public class Database {
 
     /**
      * This method updates a challenge.
+     *
      * @param token the token of the user that wants to update.
      * @return if the query succeeded.
      */
@@ -734,9 +738,9 @@ public class Database {
                             + "(SELECT total_score FROM total_score WHERE username = ?) "
                             + "WHERE user_a = ?");
 
-            state.setString(1,username);
-            state.setString(2,username);
-            state.setString(3,username);
+            state.setString(1, username);
+            state.setString(2, username);
+            state.setString(3, username);
             state.executeUpdate();
 
             con.close();
@@ -749,6 +753,7 @@ public class Database {
 
     /**
      * This method is to give list of ongoing challenges and to be accepted challengesChallengesList
+     *
      * @param token
      * @return
      */
@@ -805,15 +810,17 @@ public class Database {
             }
 
             con.close();
-            ChallengesList c= new ChallengesList(listA, listB);
+            ChallengesList c = new ChallengesList(listA, listB);
             return c;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return null;
         }
     }
+
     /**
      * This method updates a challenge when the other user accepts.
+     *
      * @param challenge The CompareFriends object.
      * @return if the query succeeded.
      */
@@ -826,7 +833,7 @@ public class Database {
                             + "(SELECT total_score FROM total_score WHERE username = ?), "
                             + "score_b = "
                             + "(SELECT total_score FROM total_score WHERE username = ?)"
-                            + ", time_added = ? WHERE user_a = ? OR user_b = ?" );
+                            + ", time_added = ? WHERE user_a = ? OR user_b = ?");
 
             String userA = challenge.getUsername();
             String userB = getUsername(challenge.getToken());
@@ -843,7 +850,6 @@ public class Database {
             return false;
         }
     }
-
 
 
 }
