@@ -520,9 +520,15 @@ public class Application extends javafx.application.Application {
 
         BorderPane aboutPage = new BorderPane();
 
-        ScrollPane aboutCenter = new ScrollPane();
-        aboutCenter.setId("aboutPage");
-        aboutCenter.setContent(aboutContainer);
+        Label aboutTitle = new Label("About");
+        aboutTitle.setId("title");
+
+        ScrollPane aboutScroll = new ScrollPane();
+        aboutScroll.setId("aboutPage");
+        aboutScroll.setContent(aboutContainer);
+
+        VBox aboutCenter = new VBox();
+        aboutCenter.getChildren().addAll(aboutTitle,aboutScroll);
 
         aboutPage.setCenter(aboutCenter);
         aboutPage.setLeft(sideBar());
@@ -1045,6 +1051,8 @@ public class Application extends javafx.application.Application {
     private static BorderPane historyScreen() {
 
         // make the recent activites text
+        Label historyTitle = new Label("Recent activities");
+        historyTitle.setId("title");
 
         GridPane historyList = new GridPane();
         historyList.setId("historyList");
@@ -1062,10 +1070,13 @@ public class Application extends javafx.application.Application {
 
 
         BorderPane historyPage = new BorderPane();
-        ScrollPane historyCenter = new ScrollPane();
-        historyCenter.setContent(historyList);
+        ScrollPane historyPane = new ScrollPane();
+        historyPane.setContent(historyList);
 
-        historyCenter.setId("historyScrollPane");
+        historyPane.setId("historyScrollPane");
+
+        VBox historyCenter = new VBox();
+        historyCenter.getChildren().addAll(historyTitle, historyPane);
 
         historyPage.setCenter(historyCenter);
         historyPage.setLeft(sideBar());
