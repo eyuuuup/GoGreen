@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.springframework.test.context.TestExecutionListeners;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
@@ -184,6 +185,11 @@ public class ControllerTest {
 //        PowerMockito.when(Database.oneTimeEvent(token)).thenReturn(ol);
 //
 //        assertEquals(ol, Controller.onLoad(token));
+//    }
+//    @Test
+//    public void addChallenge(){
+//        CompareFriends challenge= new CompareFriends("a", "b");
+//        challenge.setScore(100);
 //    }
 
 }
