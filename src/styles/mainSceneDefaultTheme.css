@@ -362,3 +362,11 @@
     -fx-padding: 10 ;
     -fx-border-color: #dddddd;
 }
+
+/* chart */
+.chart-title {
+    -fx-text-fill: #249677;
+}
+.default-color0.chart-series-line {
+    -fx-stroke: #9ACD32;
+}

@@ -15,6 +15,9 @@ import javafx.geometry.Pos;
 
 import javafx.scene.Scene;
 
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.ProgressBar;
@@ -1039,13 +1042,34 @@ public class Application extends javafx.application.Application {
 
         // makes the labels
         Label amountSavedLabel = new Label(amountSaved + " kg CO\u2082 saved");
-        amountSavedLabel.setId("amountSavedNr");
+        amountSavedLabel.setId("title");
+
+        int[] data = {500,200,600,794,240,1234,645,2345,756,234,243,745,234,863,234,856,235,745,234,644};
+        final NumberAxis xAxis = new NumberAxis();
+        final NumberAxis yAxis = new NumberAxis();
+
+        final LineChart<Number,Number> lineChart =
+                new LineChart<Number,Number>(xAxis,yAxis);
+        lineChart.setTitle("Recent co\u2082 reduction");
+
+
+        XYChart.Series series = new XYChart.Series();
+        lineChart.setLegendVisible(false);
+        int pos = 1;
+        for (int i: data){
+            series.getData().add(new XYChart.Data(pos, i));
+            pos++;
+        }
+        lineChart.getData().add(series);
+        lineChart.setCreateSymbols(false);
+
 
         BorderPane overviewPage = new BorderPane();
 
         // make the overview page
         GridPane overviewCenter = new GridPane();
         overviewCenter.add(amountSavedLabel, 0,0);
+        overviewCenter.add(lineChart,0,1);
         overviewCenter.setId("overviewPage");
 
         overviewPage.setCenter(overviewCenter);

@@ -367,3 +367,18 @@
     -fx-padding: 10 ;
     -fx-border-color: #212222;
 }
+
+/* chart */
+.chart-title {
+    -fx-text-fill: #249677;
+}
+.default-color0.chart-series-line {
+    -fx-stroke: #9ACD32;
+}
+
+.chart-plot-background {
+    -fx-background-color: #5d5d5d;
+}
+.axis{
+    -fx-tick-label-fill: #fafafa;
+}
