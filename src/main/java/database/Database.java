@@ -136,10 +136,10 @@ public class Database {
             state1.setDouble(7, action.getCarbonProduced());
             state1.executeUpdate();
 
-            
+
             updateTotalScores(action.getToken(), action.getValue(),
                     action.getCarbonReduced(), action.getCarbonProduced());
-            
+
 
             System.out.println("INSERT success");
             con.close();
@@ -165,7 +165,7 @@ public class Database {
                             + "events.carbon_reduced, events.carbon_produced, events.date_time "
                             + "FROM events JOIN actions ON events.action_id = actions.action_id "
                             + "WHERE events.username = ? "
-                            + "ORDER BY date_time DESC LIMIT 3");
+                            + "ORDER BY date_time DESC LIMIT 10");
             state.setString(1, getUsername(token));
             ResultSet rs = state.executeQuery();
 
@@ -191,71 +191,6 @@ public class Database {
             return null;
         }
     }
-
-
-//    /**
-//     * returns the carbon reduction.
-//     * @param token token
-//     * @return carbon reduction
-//     */
-//    public static int getCarbonReduced(String token) {
-//        try {
-//            Connection con = DriverManager.getConnection();
-//            System.out.println("getCarbonReduced called");
-//
-//            PreparedStatement state =
-//                    con.prepareStatement("SELECT carbon_reduced "
-//                            + "FROM total_score JOIN user_data ON "
-//                            + "total_score.username = user_data.username "
-//                            + "WHERE user_data.token = ?");
-//            state.setString(1, token);
-//            ResultSet rs = state.executeQuery();
-//
-//            int currentCarbonReduced = 0;
-//            while (rs.next()) {
-//                currentCarbonReduced = rs.getInt(1);
-//                System.out.println("carbon_reduced: " + currentCarbonReduced);
-//            }
-//
-//            con.close();
-//            return currentCarbonReduced;
-//        } catch (SQLException ex) {
-//            System.out.println(ex.getMessage());
-//            return 0;
-//        }
-//    }
-//
-//    /**
-//     * get carbon produced.
-//     * @param token token
-//     * @return carbon produced
-//     */
-//    public static int getCarbonProduced(String token) {
-//        try {
-//            Connection con = DriverManager.getConnection();
-//            System.out.println("getCarbonProduced called");
-//
-//            PreparedStatement state =
-//                    con.prepareStatement("SELECT carbon_produced "
-//                            + "FROM total_score JOIN user_data ON "
-//                            + "total_score.username = user_data.username "
-//                            + "WHERE user_data.token = ?");
-//            state.setString(1, token);
-//            ResultSet rs = state.executeQuery();
-//
-//            int currentCarbonProduced = 0;
-//            while (rs.next()) {
-//                currentCarbonProduced = rs.getInt(1);
-//                System.out.println("carbon_reduced: " + currentCarbonProduced);
-//            }
-//
-//            con.close();
-//            return currentCarbonProduced;
-//        } catch (SQLException ex) {
-//            System.out.println(ex.getMessage());
-//            return 0;
-//        }
-//    }
 
     /**
      * This method is for getting carbon reduced and produced.
@@ -300,21 +235,22 @@ public class Database {
      * @param token the token from a user.
      * @param score the score that should be added to the total.
      */
-    public static void updateTotalScores(String token, int score, double carbonReduced, double carbonProduced) {
+    public static void updateTotalScores(String token, int score,
+                                         double carbonReduced, double carbonProduced) {
         try {
             System.out.println("updateTotalScores called");
-            
-            int    currentTotalScore     = getTotalScore(token);
-            Action action                = Database.getCarbonValues(token);
-            double currentCarbonReduced  = action.getCarbonReduced();
+
+            int currentTotalScore = getTotalScore(token);
+            Action action = Database.getCarbonValues(token);
+            double currentCarbonReduced = action.getCarbonReduced();
             double currentCarbonProduced = action.getCarbonProduced();
-            
+
             currentTotalScore = currentTotalScore + score;
             currentCarbonReduced = currentCarbonReduced + carbonReduced;
             currentCarbonProduced = currentCarbonProduced + carbonProduced;
 
             Connection con = DriverManager.getConnection();
-            
+
             PreparedStatement state1 =
                     con.prepareStatement("UPDATE total_score "
                             + "SET total_score = ?, carbon_reduced = ?, "
@@ -333,6 +269,7 @@ public class Database {
 
     /**
      * returns the carbon reduction.
+     *
      * @param token token
      * @return carbon reduction
      */
@@ -340,7 +277,7 @@ public class Database {
         try {
             Connection con = DriverManager.getConnection();
             System.out.println("getCarbonReduced called");
-            
+
             PreparedStatement state =
                     con.prepareStatement("SELECT carbon_reduced "
                             + "FROM total_score JOIN user_data ON "
@@ -348,13 +285,13 @@ public class Database {
                             + "WHERE user_data.token = ?");
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
-            
+
             double currentCarbonReduced = 0;
             while (rs.next()) {
                 currentCarbonReduced = rs.getDouble(1);
                 System.out.println("carbon_reduced: " + currentCarbonReduced);
             }
-            
+
             con.close();
             return currentCarbonReduced;
         } catch (SQLException ex) {
@@ -362,9 +299,10 @@ public class Database {
             return 0;
         }
     }
-    
+
     /**
      * get carbon produced.
+     *
      * @param token token
      * @return carbon produced
      */
@@ -372,7 +310,7 @@ public class Database {
         try {
             Connection con = DriverManager.getConnection();
             System.out.println("getCarbonProduced called");
-            
+
             PreparedStatement state =
                     con.prepareStatement("SELECT carbon_produced "
                             + "FROM total_score JOIN user_data ON "
@@ -380,13 +318,13 @@ public class Database {
                             + "WHERE user_data.token = ?");
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
-            
+
             double currentCarbonProduced = 0;
             while (rs.next()) {
                 currentCarbonProduced = rs.getDouble(1);
                 System.out.println("carbon_reduced: " + currentCarbonProduced);
             }
-            
+
             con.close();
             return currentCarbonProduced;
         } catch (SQLException ex) {
@@ -394,7 +332,7 @@ public class Database {
             return 0;
         }
     }
-    
+
     /**
      * This method queries the database to get the total score of a user.
      *
@@ -753,29 +691,28 @@ public class Database {
     }
 
     /**
-     * (Experimental)
-     * This methods checks if the user completed a One Time Event.
+     * This method add a challenge.
      *
-     * @param token username of the user.
-     * @param id    the id of the One Time Event.
-     * @return a boolean.
+     * @param challenge CompareFriend object with token of user A,
+     *                  username of person being challenged, and score as the goal.
+     * @return if the query succeeded.
      */
-    public static boolean checkOneTimeEvent(String token, int id) {
-        System.out.println("checkOneTimeEvent called");
+    public static boolean addChallenge(CompareFriends challenge) {
+        System.out.println("addChallenge called");
         try {
-            String username = getUsername(token);
+
             Connection con = DriverManager.getConnection();
             PreparedStatement state = con.prepareStatement(
-                    "SELECT action_id "
-                            + "FROM events "
-                            + "WHERE user_name = ? AND action_id = ?");
-            state.setString(1, username);
-            state.setInt(2, id);
-            ResultSet rs = state.executeQuery();
+                    "INSERT INTO "
+                            + "challenges (goal, user_a, user_b)"
+                            + "VALUES (?, ?, ?)");
+            state.setInt(1, challenge.getScore());
+            state.setString(2, getUsername(challenge.getToken()));
+            state.setString(3, challenge.getUsername());
+            state.executeUpdate();
+
             con.close();
-            return rs.next();
-
-
+            return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
@@ -783,49 +720,136 @@ public class Database {
     }
 
     /**
-     * This method is for getting one time values.
-     * @param token string token for user
-     * @return On load values
-     */
-    public static OnLoadValues oneTimeEvent(String token) {
-
-        //CHECK THE ACTION IDS AND REPLACE WITH ONE METHOD
-        return new OnLoadValues(Database.checkOneTimeEvent(token, 6),
-                Database.checkOneTimeEvent(token, 7));
-
-    }
-
-    /**
-     * This methods adds a challenge.
+     * This method updates a challenge.
      *
-     * @param usernameA username of a user.
-     * @param usernameB username of a user.
-     * @param goal      amount of points to win.
+     * @param token the token of the user that wants to update.
+     * @return if the query succeeded.
      */
-    public static void addChallenge(String usernameA, String usernameB, int goal) {
-        System.out.println("addChallenge called");
+    public static boolean updateChallenge(String token) {
+        System.out.println("updateChallenge called");
         try {
+            String username = getUsername(token);
             Connection con = DriverManager.getConnection();
             PreparedStatement state = con.prepareStatement(
-                    "INSERT INTO "
-                            + "challenges (goal, time_added, user_a, user_b, score_a, score_b)"
-                            + "VALUES (?, ?, ?, ?, ( "
-                            + "SELECT total_score FROM total_score WHERE username = ? "
-                            + "), ( "
-                            + "SELECT total_score FROM total_score WHERE username = ? "
-                            + "));");
+                    "UPDATE "
+                            + "challenges SET score_a = "
+                            + "(SELECT total_score FROM total_score WHERE username = ?), "
+                            + "score_b = "
+                            + "(SELECT total_score FROM total_score WHERE username = ?) "
+                            + "WHERE user_a = ?");
 
-            state.setInt(1, goal);
-            state.setLong(2, Instant.now().getMillis());
-            state.setString(3, usernameA);
-            state.setString(4, usernameB);
-            state.setString(5, usernameA);
-            state.setString(6, usernameB);
+            state.setString(1, username);
+            state.setString(2, username);
+            state.setString(3, username);
             state.executeUpdate();
 
             con.close();
+            return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return false;
         }
     }
+
+    /**
+     * This method is to give list of ongoing challenges and to be accepted challengesChallengesList
+     *
+     * @param token
+     * @return
+     */
+    public static ChallengesList retrieveChallenge(String token) {
+        System.out.println("retrieveChallenge called");
+        try {
+            String username = getUsername(token);
+            Connection con = DriverManager.getConnection();
+            //accepted or ongoing challenge challenges
+            PreparedStatement stateA = con.prepareStatement("SELECT user_a, user_b, score_a, score_b, goal FROM challenges "
+                    + "WHERE user_a = ? AND score_a IS NOT NULL");
+            stateA.setString(1, username);
+            ResultSet rs = stateA.executeQuery();
+            ArrayList<Challenge> listA = new ArrayList<>();
+
+            while (rs.next()) {
+                Challenge challenge = new Challenge();
+                String userA = rs.getString(1);
+                String userB = rs.getString(2);
+                int scoreA = rs.getInt(3);
+                int scoreB = rs.getInt(4);
+                int goal = rs.getInt(5);
+
+                challenge.setUserA(userA);
+                challenge.setUserB(userB);
+                challenge.setScoreA(scoreA);
+                challenge.setScoreB(scoreB);
+                challenge.setGoal(goal);
+                listA.add(challenge);
+            }
+
+            //Challenges recieved by a user and not yet accepted
+            PreparedStatement stateB = con.prepareStatement("SELECT user_a, user_b, score_a, score_b, goal FROM challenges "
+                    + "WHERE user_b = ? AND score_b IS NULL");
+
+            stateA.setString(1, username);
+            ResultSet rs2 = stateA.executeQuery();
+            ArrayList<Challenge> listB = new ArrayList<>();
+
+            while (rs.next()) {
+                Challenge challenge = new Challenge();
+                String userA = rs.getString(1);
+                String userB = rs.getString(2);
+                int scoreA = rs.getInt(3);
+                int scoreB = rs.getInt(4);
+                int goal = rs.getInt(5);
+
+                challenge.setUserA(userA);
+                challenge.setUserB(userB);
+                challenge.setScoreA(scoreA);
+                challenge.setScoreB(scoreB);
+                challenge.setGoal(goal);
+                listB.add(challenge);
+            }
+
+            con.close();
+            ChallengesList c = new ChallengesList(listA, listB);
+            return c;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * This method updates a challenge when the other user accepts.
+     *
+     * @param challenge The CompareFriends object.
+     * @return if the query succeeded.
+     */
+    public static boolean initializeChallenge(CompareFriends challenge) {
+        System.out.println("initializeChallenge called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state = con.prepareStatement(
+                    "UPDATE challenges SET score_a = "
+                            + "(SELECT total_score FROM total_score WHERE username = ?), "
+                            + "score_b = "
+                            + "(SELECT total_score FROM total_score WHERE username = ?)"
+                            + ", time_added = ? WHERE user_a = ? OR user_b = ?");
+
+            String userA = challenge.getUsername();
+            String userB = getUsername(challenge.getToken());
+            state.setString(1, userA);
+            state.setString(2, userB);
+            state.setLong(3, Instant.now().getMillis());
+            state.setString(4, userA);
+            state.setString(5, userB);
+
+            con.close();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+
 }

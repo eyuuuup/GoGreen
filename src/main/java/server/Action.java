@@ -6,19 +6,20 @@ package server;
 public class Action {
     private String token;
     private String action;
-    private int    value;
+    private int value;
     private double carbonReduced;
     private double carbonProduced;
-    private long   date;
-    
+    private long date;
+
     /**
      * empty constructor.
      */
     public Action() {
     }
-    
+
     /**
-     * constructor containing only carbon values
+     * constructor containing only carbon values.
+     *
      * @param carbonProduced kilograms of carbon produced
      * @param carbonReduced  kilograms of carbon produced
      */
@@ -49,7 +50,8 @@ public class Action {
      * @param carbonProduced carbon produced
      * @param carbonReduced  carbon saced
      */
-    public Action(String token, String action, int value, double carbonReduced, double carbonProduced) {
+    public Action(String token, String action, int value, double carbonReduced,
+                  double carbonProduced) {
         this.token = token;
         this.action = action;
         this.value = value;
@@ -67,7 +69,8 @@ public class Action {
      * @param carbonReduced  carbon saced
      * @param date           date added (in miliseconds)
      */
-    public Action(String token, String action, int value, double carbonReduced, double carbonProduced, long date) {
+    public Action(String token, String action, int value, double carbonReduced,
+                  double carbonProduced, long date) {
         this.token = token;
         this.action = action;
         this.value = value;

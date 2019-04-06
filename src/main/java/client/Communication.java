@@ -216,8 +216,8 @@ public class Communication {
      * @return if username exists
      */
     public static boolean checkUsername(String username) {
-        HttpEntity<String> message  = new HttpEntity<>(username);
-        RestTemplate       reuquest = new RestTemplate();
+        HttpEntity<String> message = new HttpEntity<>(username);
+        RestTemplate reuquest = new RestTemplate();
         return reuquest.postForObject(hostURL + "/searchUser", message, boolean.class);
     }
 
@@ -291,9 +291,33 @@ public class Communication {
      *
      * @return an instance of onLoadValue class
      */
-    public static OnLoadValues onLoad() {
+    public static OnLoadValues load() {
         HttpEntity<String> message = new HttpEntity<>(token);
         RestTemplate request = new RestTemplate();
         return request.postForObject(hostURL + "/onLoad", message, OnLoadValues.class);
+    }
+
+    public static boolean sendChallenge(CompareFriends challenge) {
+        HttpEntity<CompareFriends> message = new HttpEntity<>(challenge);
+        RestTemplate request = new RestTemplate();
+        return request.postForObject(hostURL + "/addChallenger", message, boolean.class);
+    }
+
+    public static boolean acceptChallenge() {
+        HttpEntity<String> message = new HttpEntity<>(token);
+        RestTemplate request = new RestTemplate();
+        return request.postForObject(hostURL + "/acceptChallenge", message, boolean.class);
+    }
+
+    public static ChallengesList showChallenges() {
+        HttpEntity<String> message = new HttpEntity<>(token);
+        RestTemplate request = new RestTemplate();
+        return request.postForObject(hostURL + "/showChallenges", message, ChallengesList.class);
+    }
+
+    public static boolean updateChallenge() {
+        HttpEntity<String> message = new HttpEntity<>(token);
+        RestTemplate reuqest = new RestTemplate();
+        return reuqest.postForObject(hostURL + "/updateChallenge", message, boolean.class);
     }
 }

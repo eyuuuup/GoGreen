@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import server.*;
@@ -416,32 +417,37 @@ public class DatabaseTest {
         assertEquals(0, Database.getLastMeal("testToken"));
     }
 
-    @Test
-    public void checkOneTimeEventTrue() throws Exception{
-        assertTrue(Database.checkOneTimeEvent("token", 1));
-    }
-
-    @Test
-    public void checkOneTimeEventFalse() throws Exception{
-        when(resultSet.next()).thenReturn(false);
-        assertFalse(Database.checkOneTimeEvent("token", 1));
-    }
-
-    @Test
-    public void checkOneTimeEventException() throws Exception{
-        when(state, "executeQuery").thenThrow(SQLException.class);
-        assertFalse(Database.checkOneTimeEvent("token", 1));
-    }
+//    @Test
+//    public void checkOneTimeEventTrue() throws Exception{
+//        assertTrue(Database.checkOneTimeEvent("token", 1));
+//    }
+//
+//    @Test
+//    public void checkOneTimeEventFalse() throws Exception{
+//        when(resultSet.next()).thenReturn(false);
+//        assertFalse(Database.checkOneTimeEvent("token", 1));
+//    }
+//
+//    @Test
+//    public void checkOneTimeEventException() throws Exception{
+//        when(state, "executeQuery").thenThrow(SQLException.class);
+//        assertFalse(Database.checkOneTimeEvent("token", 1));
+//    }
     
     @Test
     public void addChallenge() throws Exception {
-        when(state, "executeUpdate").thenReturn(0);
-        Database.addChallenge("a", "b", 1000);
+        PowerMockito.when(state, "executeUpdate").thenReturn(0);
+        CompareFriends challenge= new CompareFriends("a", "b");
+        challenge.setScore(100);
+        Database.addChallenge(challenge);
+
     }
-    
+
     @Test
     public void addChallengeException() throws Exception {
-        when(state, "executeUpdate").thenThrow(SQLException.class);
-        Database.addChallenge("a", "b", 1000);
+        PowerMockito.when(state, "executeUpdate").thenThrow(SQLException.class);
+        CompareFriends challenge= new CompareFriends("a", "b");
+        challenge.setScore(100);
+        Database.addChallenge(challenge);
     }
 }
