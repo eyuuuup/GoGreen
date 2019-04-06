@@ -186,10 +186,17 @@ class ApplicationMethods {
     }
 
     static void setPresets() {
-        points = Communication.getMyTotalScore();
-        followingSize = Communication.getFriends().size();
-        followersSize = Communication.getFollowers().size();
-        savedCarbon = Communication.carbon().getCarbonReduced();
+        try {
+            points = Communication.getMyTotalScore();
+            followingSize = Communication.getFriends().size();
+            followersSize = Communication.getFollowers().size();
+            savedCarbon = Communication.carbon().getCarbonReduced();
+        } catch (NullPointerException e) {
+            points = 0;
+            followingSize = 0;
+            followersSize = 0;
+            savedCarbon = 0;
+        }
     }
 
     static int getPoints() {
