@@ -208,4 +208,8 @@ public class Controller {
     public  static ChallengesList showChallenges(@Valid @RequestBody String token){
          return Database.retrieveChallenge(token);
     }
+
+    @RequestMapping(value={"/updateChallenge"}, method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public static boolean updateChallenge(@Valid @RequestBody String token){ return Database.updateChallenge(token);}
 }

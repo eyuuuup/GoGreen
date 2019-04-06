@@ -16,7 +16,7 @@ public class ChallengesList {
 
     public ChallengesList(ArrayList<Challenge> list, ArrayList<Challenge> receivedList) {
         this.list = list;
-        this.receivedList=receivedList;
+        this.receivedList = receivedList;
     }
 
     public void setReceivedList(ArrayList<Challenge> receivedList) {

@@ -291,7 +291,7 @@ public class Communication {
      *
      * @return an instance of onLoadValue class
      */
-    public static OnLoadValues onLoad() {
+    public static OnLoadValues load() {
         HttpEntity<String> message = new HttpEntity<>(token);
         RestTemplate request = new RestTemplate();
         return request.postForObject(hostURL + "/onLoad", message, OnLoadValues.class);
@@ -313,5 +313,11 @@ public class Communication {
         HttpEntity<String> message= new HttpEntity<>(token);
         RestTemplate request = new RestTemplate();
         return request.postForObject(hostURL+"/showChallenges", message, ChallengesList.class);
+    }
+
+    public static boolean updateChallenge(){
+        HttpEntity<String> message= new HttpEntity<>(token);
+        RestTemplate reuqest = new RestTemplate();
+        return reuqest.postForObject(hostURL+"/updateChallenge", message, boolean.class);
     }
 }
