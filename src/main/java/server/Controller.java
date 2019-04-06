@@ -195,7 +195,7 @@ public class Controller {
 
     @RequestMapping(value={"/addChallenger"}, method=RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public static boolean sendCahllenge(@Valid @RequestBody CompareFriends friend){
+    public static boolean addCahllenge(@Valid @RequestBody CompareFriends friend){
         return Database.addChallenge(friend);
     }
 

@@ -25,9 +25,10 @@ public class ControllerTest {
     // ========== USER AUTHENTICATION ==========================================
 
     @Test
-    public void controller(){
-        Controller c= new Controller();
+    public void controller() {
+        Controller c = new Controller();
     }
+
     @Test
     public void login() {
         PowerMockito.when(Database.checkLogin(USER)).thenReturn(new TokenResponse("token", true));
@@ -186,10 +187,37 @@ public class ControllerTest {
 //
 //        assertEquals(ol, Controller.onLoad(token));
 //    }
-//    @Test
-//    public void addChallenge(){
-//        CompareFriends challenge= new CompareFriends("a", "b");
-//        challenge.setScore(100);
-//    }
+
+    @Test
+    public void addChallenger() {
+        CompareFriends fr = new CompareFriends("test", "testuser");
+
+        PowerMockito.when(Database.addChallenge(fr)).thenReturn(true);
+
+        assertTrue(Controller.addCahllenge(fr));
+    }
+
+    @Test
+    public void acceptChallenge() {
+        CompareFriends fr = new CompareFriends("test", "testuser");
+
+        PowerMockito.when(Database.initializeChallenge(fr)).thenReturn(true);
+        assertEquals(true, Controller.acceptChallenge(fr));
+    }
+
+    @Test
+    public void showChallenges(){
+        ChallengesList cl = new ChallengesList();
+
+        PowerMockito.when(Database.retrieveChallenge(anyString())).thenReturn(cl);
+
+        assertEquals(cl, Controller.showChallenges("testToken"));
+    }
+
+    @Test
+    public void updateChallenge(){
+        PowerMockito.when(Database.updateChallenge(anyString())).thenReturn(true);
+        assertEquals(Controller.updateChallenge("testToken"), true);
+    }
 
 }
