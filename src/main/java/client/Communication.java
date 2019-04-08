@@ -308,8 +308,9 @@ public class Communication {
         return request.postForObject(hostURL + "/addChallenger", message, boolean.class);
     }
 
-    public static boolean acceptChallenge() {
-        HttpEntity<String> message = new HttpEntity<>(token);
+    public static boolean acceptChallenge(CompareFriends friend) {
+        friend.setToken(token);
+        HttpEntity<CompareFriends> message = new HttpEntity<>(friend);
         RestTemplate request = new RestTemplate();
         return request.postForObject(hostURL + "/acceptChallenge", message, boolean.class);
     }

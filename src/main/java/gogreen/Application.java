@@ -1443,9 +1443,14 @@ public class Application extends javafx.application.Application {
         ChallengesList challenges = Communication.showChallenges();
         VBox challengeContainer = new VBox();
         try {
+            int pos = 0;
             for (client.Challenge c : challenges.getList()) {
-                Label goal = new Label("goal" + c.getGoal());
-                challengeContainer.getChildren().add(goal);
+               HBox challenge = new HBox();
+               String username = ApplicationMethods.decodeUsername(c.getUserB());
+               Label goal = new Label("Goal: " + c.getGoal());
+               Label user = new Label("User: " + username);
+               challenge.getChildren().addAll(goal, user);
+               challenge.getChildren().add(challenge);
             }
         } catch (NullPointerException e) {
             Label info = new Label("no challenges");
@@ -1456,9 +1461,29 @@ public class Application extends javafx.application.Application {
         // getting the challenges that need to be accepted
         GridPane receivedChallenge = new GridPane();
         try {
+            int pos = 0;
             for(client.Challenge c: challenges.getReceivedList()) {
-                Label goal = new Label("goal" + c.getGoal());
-                challengeContainer.getChildren().add(goal);
+                String username = ApplicationMethods.decodeUsername(c.getUserA());
+                Label goal = new Label("Goal: " + c.getGoal());
+                Label user = new Label("User: " + username);
+ 
+                JFXButton accept = new JFXButton("Accept Challenge");
+                accept.setId("smallButton");
+                receivedChallenge.add(goal, 0, pos);
+                receivedChallenge.add(user,1,pos);
+                receivedChallenge.add(accept,2,pos);
+
+                accept.setOnAction(e -> {
+                    CompareFriends challenge = new CompareFriends();
+                    challenge.setScore(c.getGoal());
+                    challenge.setUsername(c.getUserA());
+                    Communication.acceptChallenge(challenge);
+                    receivedChallenge.getChildren().removeAll(goal,user,accept);
+                    HBox acceptedChallenge = new HBox();
+                    acceptedChallenge.getChildren().addAll(goal,user);
+                    challengeContainer.getChildren().add(acceptedChallenge);
+                });
+
 
             }
         } catch(NullPointerException e){
