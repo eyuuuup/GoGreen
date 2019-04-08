@@ -1241,13 +1241,6 @@ public class Application extends javafx.application.Application {
             pos++;
         }
 
-        // places the user in the leaderboard
-        leaderboard.add(new Label("69."), 0, 11);
-        leaderboard.add(new Label("Your Username"), 1, 11);
-        leaderboard.add(new Label("1"), 2, 11);
-        leaderboard.add(new Label("0"), 3, 11);
-
-
         // makes the leaderboard page
         VBox leaderboardCenter = new VBox();
         leaderboardCenter.getChildren().addAll(header, leaderboard);
