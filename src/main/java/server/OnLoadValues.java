@@ -16,7 +16,13 @@ public class OnLoadValues {
         this.following = following;
         this.challenges = challenges;
     }
-    
+
+    public OnLoadValues() {
+        user = new User();
+        followers = new FriendsList();
+        following = new FriendsList();
+        challenges = new ChallengesList();
+    }
 
     public User getUser() {
         return user;
@@ -49,17 +55,6 @@ public class OnLoadValues {
     public void setChallenges(ChallengesList challenges) {
         this.challenges = challenges;
     }
-
-
-
-
-    /**
-     * username
-     * points
-     * followers
-     * following
-     * challenges
-     */
 
 
 }

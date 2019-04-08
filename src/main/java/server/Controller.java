@@ -168,18 +168,16 @@ public class Controller {
         return Database.getLeaderboard();
     }
 
-//    /**
-//     * This method is for getting the onLoadValues.
-//     *
-//     * @param token
-//     * @return two boolean values for the presence of electricCar or solarCar
-//     */
-//    @RequestMapping(value = {"/onLoad"}, method = RequestMethod.POST,
-//            produces = MediaType.APPLICATION_JSON_VALUE)
-//    public static OnLoadValues onLoad(@Valid @RequestBody String token) {
-//
-//        return Database.oneTimeEvent(token);
-//    }
+
+
+    @RequestMapping(value={"/onLoad"}, method=RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public static OnLoadValues onLoad(@Valid @RequestBody String token){
+        OnLoadValues o= new OnLoadValues();
+        o.setUser(Database.getUser(token));
+        o.setChallenges(Database.retrieveChallenge(token));
+        return o;
+    }
 
     /**
      * This method is for getting the total amount of carbon produced and reduced.
