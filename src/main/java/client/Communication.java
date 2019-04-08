@@ -148,15 +148,19 @@ public class Communication {
     // ========== ACTION HANDLERS ==============================================
     
     /**
-     * Checks whether a given name is according to the rules.
-     * @param actionName the name of the action
-     * @param points     the value of points to send
-     * @return boolean correctly sent to server
+     * adding an action to the database.
+     *
+     * @param actionName     the name of the action
+     * @param points         the points for the action
+     * @param carbonReduced  the carbon reduced in the action
+     * @param carbonProduced the carbon produced in the action
      */
-    public static boolean addAction(String actionName, int points) {
-        Action             action  = new Action(token, actionName, points);
+    public static boolean addAction(String actionName, int points,
+                                    double carbonReduced, double carbonProduced) {
+        Action action = new Action(token, actionName,
+                points, carbonReduced, carbonProduced);
         HttpEntity<Action> message = new HttpEntity<>(action);
-        RestTemplate       request = new RestTemplate();
+        RestTemplate request = new RestTemplate();
         
         return request.postForObject(hostURL + "/addAction", message, boolean.class);
     }
@@ -170,9 +174,9 @@ public class Communication {
      * @param carbonProduced the carbon produced in the action
      */
     public static boolean addAction(String actionName, int points,
-                                    double carbonReduced, double carbonProduced) {
+                                    double carbonReduced, double carbonProduced, String description) {
         Action action = new Action(token, actionName,
-                points, carbonReduced, carbonProduced);
+                points, carbonReduced, carbonProduced,description);
         HttpEntity<Action> message = new HttpEntity<>(action);
         RestTemplate       request = new RestTemplate();
         

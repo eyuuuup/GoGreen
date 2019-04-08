@@ -5,16 +5,17 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class ActionTest {
-    private Action ACTION = new Action("User", "Action", 100, 50, 50);
+    private Action ACTION = new Action("User", "Action", 100, 50, 50, "test");
     
     @Test
     public void constructor() {
-        Action action = new Action("user", "action", 10, 50, 50);
+        Action action = new Action("user", "action", 10, 50, 50, "test");
         assertEquals(action.getToken(), "user");
         assertEquals(action.getAction(), "action");
         assertEquals(action.getValue(), 10);
         assertEquals(action.getCarbonProduced(), 50, 0);
         assertEquals(action.getCarbonReduced(), 50, 0);
+        assertEquals(action.getDescription(), "test");
     }
 
     @Test
@@ -137,5 +138,16 @@ public class ActionTest {
         ACTION.setCarbonProduced(60);
         assertEquals(60, ACTION.getCarbonProduced(),0);
     }
+
+    @Test
+    public void getDescription(){ assertEquals(ACTION.getDescription(), "test");
+    }
+
+    @Test
+    public void setDescription() {
+        ACTION.setDescription("test");
+        assertEquals(ACTION.getDescription(),"test");
+    }
+
 
 }
