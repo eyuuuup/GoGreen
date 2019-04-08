@@ -36,7 +36,7 @@ public class TransportTest {
     @Test
     public void addCarAction() throws ConnectIOException {
         Whitebox.setInternalState(Transport.class, "hasElectricCar", false);
-        Transport.addCarAction(10);
+        Transport.addCarAction(10, "test");
         PowerMockito.verifyStatic();
         Api.carbonAmount("automobile_trips.json?distance=10");
         PowerMockito.verifyStatic();
@@ -46,7 +46,7 @@ public class TransportTest {
     @Test
     public void addCarActionElectricCar() throws ConnectIOException {
         Whitebox.setInternalState(Transport.class, "hasElectricCar", true);
-        Transport.addCarAction(10);
+        Transport.addCarAction(10, "test");
         PowerMockito.verifyStatic();
         Api.carbonAmount("automobile_trips.json?distance=10");
         PowerMockito.verifyStatic();
@@ -55,7 +55,7 @@ public class TransportTest {
 
     @Test
     public void addPlaneAction() throws ConnectIOException {
-        Transport.addPlaneAction(16);
+        Transport.addPlaneAction(16, "test");
         PowerMockito.verifyStatic();
         Api.carbonAmount("flights.json?distance=16");
         PowerMockito.verifyStatic();
@@ -66,7 +66,7 @@ public class TransportTest {
 
     @Test
     public void addPublicTransportAction() throws ConnectIOException {
-        Transport.addPublicTransportAction(10);
+        Transport.addPublicTransportAction(10, "test");
         PowerMockito.verifyStatic();
         Api.carbonAmount("bus_trips.json?distance=10");
         PowerMockito.verifyStatic();

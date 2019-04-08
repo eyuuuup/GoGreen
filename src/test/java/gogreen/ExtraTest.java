@@ -18,14 +18,14 @@ public class ExtraTest {
 
     @Test
     public void addCleanSurroundingAction() {
-        Extra.addCleanSurroundingAction();
+        Extra.addCleanSurroundingAction("description");
         PowerMockito.verifyStatic();
         Communication.addAction("CleanSurrounding", 100, 5, 0);
     }
 
     @Test
     public void addRecycleAction() {
-        Extra.addRecycleAction();
+        Extra.addRecycleAction("description");
         PowerMockito.verifyStatic();
         Communication.addAction("Recycle", 50, 1, 0);
     }

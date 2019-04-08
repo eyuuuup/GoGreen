@@ -27,7 +27,7 @@ public class EnergyTest {
     @Test
     public void addReduceEnergyAction() throws ConnectIOException {
         Whitebox.setInternalState(Energy.class, "hasSolarPanels", false);
-        Energy.addReduceEnergyAction(20);
+        Energy.addReduceEnergyAction(20, "test");
         PowerMockito.verifyStatic();
         Communication.addAction("ReduceEnergy", 300, 300, 2000);
     }
@@ -35,7 +35,7 @@ public class EnergyTest {
     @Test
     public void addReduceEnergyActionSolarPanels() throws ConnectIOException {
         Whitebox.setInternalState(Energy.class, "hasSolarPanels", true);
-        Energy.addReduceEnergyAction(20);
+        Energy.addReduceEnergyAction(20, "test");
         PowerMockito.verifyStatic();
         Communication.addAction("ReduceEnergy", 300, 2000, 0);
     }
@@ -43,7 +43,7 @@ public class EnergyTest {
     @Test
     public void addReduceWater() throws ConnectIOException {
         Whitebox.setInternalState(Energy.class, "hasSolarPanels", false);
-        Energy.addReduceWater(15);
+        Energy.addReduceWater(15, "test");
         PowerMockito.verifyStatic();
         Communication.addAction("ReduceWater", 500, 500, 1500);
     }
@@ -51,7 +51,7 @@ public class EnergyTest {
     @Test
     public void addReduceWaterSolarPanels() throws ConnectIOException {
         Whitebox.setInternalState(Energy.class, "hasSolarPanels", true);
-        Energy.addReduceWater(15);
+        Energy.addReduceWater(15, "test");
         PowerMockito.verifyStatic();
         Communication.addAction("ReduceWater", 500, 1500, 0);
     }

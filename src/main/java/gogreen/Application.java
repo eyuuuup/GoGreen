@@ -27,12 +27,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
@@ -643,7 +638,7 @@ public class Application extends javafx.application.Application {
                 int distanceInt = Integer.parseInt(distance.getText());
                 System.out.println(transportDescription.getText());
                 transportInfo.setText("");
-                Transport.addPublicTransportAction(distanceInt);
+                Transport.addPublicTransportAction(distanceInt, transportDescription.getText());
                 refresh();
             } catch (NumberFormatException exception) {
                 // throw error
@@ -669,7 +664,7 @@ public class Application extends javafx.application.Application {
                 int distanceInt = Integer.parseInt(distance.getText());
                 System.out.println(transportDescription.getText());
                 transportInfo.setText("");
-                Transport.addCarAction(distanceInt);
+                Transport.addCarAction(distanceInt, transportDescription.getText());
                 refresh();
             } catch (NumberFormatException exception) {
                 // throw error
@@ -695,7 +690,7 @@ public class Application extends javafx.application.Application {
                 int distanceInt = Integer.parseInt(distance.getText());
                 System.out.println(transportDescription.getText());
                 transportInfo.setText("");
-                Transport.addPlaneAction(distanceInt);
+                Transport.addPlaneAction(distanceInt, transportDescription.getText());
                 refresh();
             } catch (NumberFormatException exception) {
                 // throw error
@@ -764,7 +759,7 @@ public class Application extends javafx.application.Application {
         // when you press the send button, it will look what is selected and add those actions
         send.setOnAction(e -> {
             try {
-                Food.addAction(veggie.isSelected(), locally.isSelected(), bio.isSelected());
+                Food.addAction(veggie.isSelected(), locally.isSelected(), bio.isSelected(),foodDescription.getText());
                 System.out.println(foodDescription.getText());
                 refresh();
             } catch (ConnectIOException | IllegalArgumentException e1) {
@@ -835,7 +830,7 @@ public class Application extends javafx.application.Application {
                 waterInfo.setText("");
                 try {
                     System.out.println(waterDescription.getText());
-                    Energy.addReduceWater(value);
+                    Energy.addReduceWater(value, waterDescription.getText());
                     System.out.println(value);
                     refresh();
                 } catch (ConnectIOException e1) {
@@ -876,7 +871,7 @@ public class Application extends javafx.application.Application {
             System.out.println(value);
             try {
                 System.out.println(tempratureDescription.getText());
-                Energy.addReduceEnergyAction(value);
+                Energy.addReduceEnergyAction(value, tempratureDescription.getText());
                 refresh();
             } catch (ConnectIOException e1) {
                 e1.printStackTrace();
@@ -921,7 +916,7 @@ public class Application extends javafx.application.Application {
         // when pressed it will send the action
         cleanSurrounding.setOnAction(e -> {
             System.out.println(extraDescription.getText());
-            Extra.addCleanSurroundingAction();
+            Extra.addCleanSurroundingAction(extraDescription.getText());
             refresh();
         });
         
@@ -935,7 +930,7 @@ public class Application extends javafx.application.Application {
         // when pressed it will send the action
         recycle.setOnAction(e -> {
             System.out.println(extraDescription.getText());
-            Extra.addRecycleAction();
+            Extra.addRecycleAction(extraDescription.getText());
             refresh();
         });
         
@@ -1104,16 +1099,25 @@ public class Application extends javafx.application.Application {
         historyList.add(new Label("Recent activity:"), 0, 0);
         historyList.add(new Label("Date:"), 1, 0);
         historyList.add(new Label("Description:"), 2, 0);
-        
+
+        ColumnConstraints activityCol = new ColumnConstraints();
+        ColumnConstraints dateCol = new ColumnConstraints();
+        ColumnConstraints descriptionCol = new ColumnConstraints();
+        descriptionCol.setMaxWidth(300);
+
+        historyList.getColumnConstraints().addAll(activityCol, dateCol, descriptionCol);
+
         // add the history to the page
         int        pos       = 1;
         DateFormat formatter = new SimpleDateFormat("d MMMM YYYY / HH:mm");
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
         for (client.Action a : client.Communication.getLastThreeActions()) {
+            Label description = new Label(a.getDescription());
+            description.setWrapText(true);
             historyList.add(new Label(a.getAction()), 0, pos);
             String date = formatter.format(new Date(a.getDate()));
             historyList.add(new Label(date), 1, pos);
-            historyList.add(new Label(a.getDescription()), 2, pos);
+            historyList.add(description, 2, pos);
             pos++;
         }
         

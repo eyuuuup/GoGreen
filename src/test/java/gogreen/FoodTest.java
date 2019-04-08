@@ -26,7 +26,7 @@ public class FoodTest {
 
     @Test
     public void addActionAllTrue() throws ConnectIOException {
-        Food.addAction(true, true, true);
+        Food.addAction(true, true, true, "test");
         PowerMockito.verifyStatic();
         Api.carbonAmount("diets.json?size=1");
         PowerMockito.verifyStatic();
@@ -39,7 +39,7 @@ public class FoodTest {
 
     @Test
     public void addActionAllFalse() throws ConnectIOException{
-        Food.addAction(false, false, false);
+        Food.addAction(false, false, false, "test");
         PowerMockito.verifyStatic();
         Api.carbonAmount("diets.json?size=1");
         PowerMockito.verifyStatic();
@@ -48,7 +48,7 @@ public class FoodTest {
 
     @Test
     public void addActionOnlyMeatTrue() throws ConnectIOException{
-        Food.addAction(true, false, false);
+        Food.addAction(true, false, false, "test");
         PowerMockito.verifyStatic();
         Api.carbonAmount("diets.json?size=1");
         PowerMockito.verifyStatic();
@@ -58,7 +58,7 @@ public class FoodTest {
 
     @Test
     public void addActionOnlyBioTrue() throws ConnectIOException{
-        Food.addAction(false, false, true);
+        Food.addAction(false, false, true, "test");
         PowerMockito.verifyStatic();
         Api.carbonAmount("diets.json?size=1");
         PowerMockito.verifyStatic();
@@ -68,7 +68,7 @@ public class FoodTest {
 
     @Test
     public void addActionMeatAndBioTrue() throws ConnectIOException{
-        Food.addAction(true, false, true);
+        Food.addAction(true, false, true, "test");
         PowerMockito.verifyStatic();
         Api.carbonAmount("diets.json?size=1");
         PowerMockito.verifyStatic();
@@ -80,7 +80,7 @@ public class FoodTest {
 
     @Test
     public void addActionLocalAndBioTrue() throws ConnectIOException{
-        Food.addAction(false, true, true);
+        Food.addAction(false, true, true, "test");
         PowerMockito.verifyStatic();
         Api.carbonAmount("diets.json?size=1");
         PowerMockito.verifyStatic();
@@ -93,18 +93,18 @@ public class FoodTest {
     @Test (expected = IllegalArgumentException.class)
     public void addActionAllError() throws Exception {
         PowerMockito.when(Communication.addAction("Meat", 50, 100, 0)).thenReturn(false);
-        Food.addAction(true, true, true);
+        Food.addAction(true, true, true, "test");
     }
 
     @Test (expected = IllegalArgumentException.class)
     public void addActionAllErrorTwo() throws Exception {
         PowerMockito.when(Communication.addAction("Biological", 50, 100, 0)).thenReturn(false);
-        Food.addAction(true, true, true);
+        Food.addAction(true, true, true, "test");
     }
 
     @Test (expected = IllegalArgumentException.class)
     public void addActionAllErrorThree() throws Exception {
         PowerMockito.when(Communication.addAction("Local", 50, 100, 0)).thenReturn(false);
-        Food.addAction(true, true, true);
+        Food.addAction(true, true, true, "test");
     }
 }
