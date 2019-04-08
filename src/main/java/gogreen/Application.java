@@ -71,6 +71,7 @@ public class Application extends javafx.application.Application {
 
 
         this.stage = stage;
+        stage.setResizable(false);
         stage.setTitle("GoGreen");
 
         // sets the theme
