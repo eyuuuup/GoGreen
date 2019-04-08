@@ -193,6 +193,9 @@ class ApplicationMethods {
             followingSize = Communication.getFriends().size();
             followersSize = Communication.getFollowers().size();
             savedCarbon = Communication.carbon().getCarbonReduced();
+            savedCarbon = savedCarbon * 100;
+            savedCarbon = (int) savedCarbon;
+            savedCarbon = savedCarbon / 100;
         } catch (NullPointerException e) {
             points = 0;
             followingSize = 0;
