@@ -67,5 +67,27 @@ public class OnLoadValues {
         this.challenges = challenges;
     }
 
+    public boolean isSolarCar() {
+        return solarCar;
+    }
 
+    public void setSolarCar(boolean solarCar) {
+        this.solarCar = solarCar;
+    }
+
+    public boolean isElectricCar() {
+        return electricCar;
+    }
+
+    public void setElectricCar(boolean electricCar) {
+        this.electricCar = electricCar;
+    }
+
+    public boolean isEnvGroup() {
+        return envGroup;
+    }
+
+    public void setEnvGroup(boolean envGroup) {
+        this.envGroup = envGroup;
+    }
 }
