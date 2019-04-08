@@ -26,20 +26,20 @@ public class FoodTest {
 
     @Test
     public void addActionAllTrue() throws ConnectIOException {
-        Food.addAction(true, true, true, "test");
+        Food.addAction(true, true, true, "description");
         PowerMockito.verifyStatic();
         Api.carbonAmount("diets.json?size=1");
         PowerMockito.verifyStatic();
-        Communication.addAction("Meat", 50, 100, 0);
+        Communication.addAction("Meat", 50, 100, 0, "description");
         PowerMockito.verifyStatic();
-        Communication.addAction("Biological", 50, 100, 0);
+        Communication.addAction("Biological", 50, 100, 0, "description");
         PowerMockito.verifyStatic();
-        Communication.addAction("Local", 50, 100, 0);
+        Communication.addAction("Local", 50, 100, 0, "description");
     }
 
     @Test
     public void addActionAllFalse() throws ConnectIOException{
-        Food.addAction(false, false, false, "test");
+        Food.addAction(false, false, false, "description");
         PowerMockito.verifyStatic();
         Api.carbonAmount("diets.json?size=1");
         PowerMockito.verifyStatic();
@@ -48,63 +48,63 @@ public class FoodTest {
 
     @Test
     public void addActionOnlyMeatTrue() throws ConnectIOException{
-        Food.addAction(true, false, false, "test");
+        Food.addAction(true, false, false, "description");
         PowerMockito.verifyStatic();
         Api.carbonAmount("diets.json?size=1");
         PowerMockito.verifyStatic();
-        Communication.addAction("Meat", 50, 100, 0);
+        Communication.addAction("Meat", 50, 100, 0, "description");
         PowerMockito.verifyNoMoreInteractions();
     }
 
     @Test
     public void addActionOnlyBioTrue() throws ConnectIOException{
-        Food.addAction(false, false, true, "test");
+        Food.addAction(false, false, true, "description");
         PowerMockito.verifyStatic();
         Api.carbonAmount("diets.json?size=1");
         PowerMockito.verifyStatic();
-        Communication.addAction("Biological", 50, 100, 0);
+        Communication.addAction("Biological", 50, 100, 0, "description");
         PowerMockito.verifyNoMoreInteractions();
     }
 
     @Test
     public void addActionMeatAndBioTrue() throws ConnectIOException{
-        Food.addAction(true, false, true, "test");
+        Food.addAction(true, false, true, "description");
         PowerMockito.verifyStatic();
         Api.carbonAmount("diets.json?size=1");
         PowerMockito.verifyStatic();
-        Communication.addAction("Meat", 50, 100, 0);
+        Communication.addAction("Meat", 50, 100, 0, "description");
         PowerMockito.verifyStatic();
-        Communication.addAction("Biological", 50, 100, 0);
+        Communication.addAction("Biological", 50, 100, 0, "description");
         PowerMockito.verifyNoMoreInteractions();
     }
 
     @Test
     public void addActionLocalAndBioTrue() throws ConnectIOException{
-        Food.addAction(false, true, true, "test");
+        Food.addAction(false, true, true, "description");
         PowerMockito.verifyStatic();
         Api.carbonAmount("diets.json?size=1");
         PowerMockito.verifyStatic();
-        Communication.addAction("Local", 50, 100, 0);
+        Communication.addAction("Local", 50, 100, 0, "description");
         PowerMockito.verifyStatic();
-        Communication.addAction("Biological", 50, 100, 0);
+        Communication.addAction("Biological", 50, 100, 0, "description");
         PowerMockito.verifyNoMoreInteractions();
     }
 
     @Test (expected = IllegalArgumentException.class)
     public void addActionAllError() throws Exception {
-        PowerMockito.when(Communication.addAction("Meat", 50, 100, 0)).thenReturn(false);
-        Food.addAction(true, true, true, "test");
+        PowerMockito.when(Communication.addAction("Meat", 50, 100, 0, "description")).thenReturn(false);
+        Food.addAction(true, true, true, "description");
     }
 
     @Test (expected = IllegalArgumentException.class)
     public void addActionAllErrorTwo() throws Exception {
-        PowerMockito.when(Communication.addAction("Biological", 50, 100, 0)).thenReturn(false);
-        Food.addAction(true, true, true, "test");
+        PowerMockito.when(Communication.addAction("Biological", 50, 100, 0, "description")).thenReturn(false);
+        Food.addAction(true, true, true, "description");
     }
 
     @Test (expected = IllegalArgumentException.class)
     public void addActionAllErrorThree() throws Exception {
-        PowerMockito.when(Communication.addAction("Local", 50, 100, 0)).thenReturn(false);
-        Food.addAction(true, true, true, "test");
+        PowerMockito.when(Communication.addAction("Local", 50, 100, 0, "description")).thenReturn(false);
+        Food.addAction(true, true, true, "description");
     }
 }
