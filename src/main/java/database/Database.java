@@ -122,8 +122,8 @@ public class Database {
 
             PreparedStatement state1 =
                     con.prepareStatement("INSERT INTO events (action_id, date_time, "
-                            + "points, parent_category, username, carbon_reduced, carbon_produced)"
-                            + "VALUES (?, ?, ?, ?, ?,?,?);");
+                            + "points, parent_category, username, carbon_reduced, carbon_produced, description)"
+                            + "VALUES (?, ?, ?, ?, ?,?,?, ?);");
             state1.setInt(1, actionId);
 
             Long outputDate = Instant.now().getMillis();
@@ -134,6 +134,7 @@ public class Database {
             state1.setString(5, getUsername(action.getToken()));
             state1.setDouble(6, action.getCarbonReduced());
             state1.setDouble(7, action.getCarbonProduced());
+            state1.setString(8, action.getDescription());
             state1.executeUpdate();
 
 
