@@ -620,7 +620,7 @@ public class Application extends javafx.application.Application {
                 int distanceInt = Integer.parseInt(distance.getText());
                 System.out.println(transportDescription.getText());
                 transportInfo.setText("");
-                Transport.addCycleAction(distanceInt);
+                Transport.addCycleAction(distanceInt, transportDescription.getText());
                 refresh();
             } catch (NumberFormatException exception) {
                 transportInfo.setText("Please only use numbers!");
@@ -1103,7 +1103,7 @@ public class Application extends javafx.application.Application {
         historyList.setId("historyList");
         historyList.add(new Label("Recent activity:"), 0, 0);
         historyList.add(new Label("Date:"), 1, 0);
-        historyList.add(new Label("Description"), 2, 0);
+        historyList.add(new Label("Description:"), 2, 0);
         
         // add the history to the page
         int        pos       = 1;
@@ -1113,7 +1113,7 @@ public class Application extends javafx.application.Application {
             historyList.add(new Label(a.getAction()), 0, pos);
             String date = formatter.format(new Date(a.getDate()));
             historyList.add(new Label(date), 1, pos);
-            historyList.add(new Label("Description"), 2, pos);
+            historyList.add(new Label(a.getDescription()), 2, pos);
             pos++;
         }
         

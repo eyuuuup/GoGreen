@@ -26,7 +26,7 @@ public class TransportTest {
 
     @Test
     public void addCycleAction() throws ConnectIOException {
-        Transport.addCycleAction(10);
+        Transport.addCycleAction(10, "test");
         PowerMockito.verifyStatic();
         Api.carbonAmount("automobile_trips.json?distance=10");
         PowerMockito.verifyStatic();

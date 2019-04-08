@@ -25,10 +25,10 @@ public final class Transport {
      * This methods returns points for a Cycle action.
      * Next to this the method calculates the CO2 reduction using Brighter planet.
      */
-    static void addCycleAction(int distance) throws ConnectIOException {
+    static void addCycleAction(int distance, String description) throws ConnectIOException {
         checkDistance(distance, 0, 200);
         double carbon = Api.carbonAmount("automobile_trips.json?distance=" + distance);
-        Communication.addAction("Cycle", distance * 16, carbon, 0);
+        Communication.addAction("Cycle", distance * 16, carbon, 0, description);
     }
 
     /**
