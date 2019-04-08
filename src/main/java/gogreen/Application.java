@@ -8,18 +8,14 @@ import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXToggleButton;
 import com.jfoenix.controls.JFXToggleNode;
-
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import de.jensd.fx.glyphs.octicons.OctIcon;
 import de.jensd.fx.glyphs.octicons.OctIconView;
-
 import javafx.geometry.Pos;
-
 import javafx.scene.Scene;
-
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -29,19 +25,15 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-
 import javafx.scene.paint.Paint;
-
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -55,42 +47,19 @@ import java.util.TimeZone;
 
 public class Application extends javafx.application.Application {
     //the stage this application uses
-    private static Stage stage;
+    private static Stage  stage;
     private static String theme;
-
+    
     //launches the app
     public static void main(String[] args) {
         launch();
     }
-
-    /**
-     * this method starts the application.
-     * @param stage stage
-     */
-    @Override
-    public void start(Stage stage) {
-        ApplicationMethods.onLoad();
-        
-        this.stage = stage;
-        stage.setTitle("GoGreen");
-
-        // sets the theme
-        theme = "src/styles/mainSceneDefaultTheme.css";
-
-        //the silentLogin will login for the user
-        if (client.Communication.silentLogin()) {
-            ApplicationMethods.setPresets();
-            mainScreen();
-        } else {
-            loginScene();
-        }
-    }
-
+    
     /**
      * This method displays the Login screen.
      */
     private static void loginScene() {
-        Scene loginScene = new Scene(loginScreen(),1000,600);
+        Scene loginScene = new Scene(loginScreen(), 1000, 600);
         loginScene.getStylesheets().add(new File(theme).toURI().toString());
         show(loginScene);
     }
@@ -137,7 +106,7 @@ public class Application extends javafx.application.Application {
         JFXToggleNode rememberUser = new JFXToggleNode();
         rememberUser.setGraphic(new Label("Remember me"));
         rememberUser.setId("loginButtons");
-
+        
         //button to log in with the given credentials
         JFXButton login = new JFXButton("Login");
         login.setId("loginButton");
@@ -936,7 +905,7 @@ public class Application extends javafx.application.Application {
     private static BorderPane extraScreen() {
         Label extrainfo = new Label("Add extra action:");
         extrainfo.setId("information");
-
+        
         // make the description field
         TextField extraDescription = new TextField();
         extraDescription.setPromptText("Write a description here");
@@ -973,9 +942,9 @@ public class Application extends javafx.application.Application {
         // makes the page and adds the nodes
         GridPane extraCenter = new GridPane();
         extraCenter.add(extrainfo, 0, 0);
-        extraCenter.add(extraDescription,0,1);
-        extraCenter.add(cleanSurrounding, 0,2);
-        extraCenter.add(recycle,0,3);
+        extraCenter.add(extraDescription, 0, 1);
+        extraCenter.add(cleanSurrounding, 0, 2);
+        extraCenter.add(recycle, 0, 3);
         extraCenter.setId("extraPage");
         
         // makes the page and sets the sidebar
@@ -1084,10 +1053,10 @@ public class Application extends javafx.application.Application {
         amountSavedLabel.setId("title");
         
         // makes the xAxis and yAxis
-        double[] data = Communication.getRecentCOSavings();
+        double[]         data  = Communication.getRecentCOSavings();
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
-
+        
         xAxis.setTickLabelsVisible(false);
 //        xAxis.setTickMarkVisible(false);
         
@@ -1102,9 +1071,9 @@ public class Application extends javafx.application.Application {
         
         // sets the data
         double total = ApplicationMethods.getSavedCarbon();
-        for (int i=data.length; i>0; i--) {
+        for (int i = data.length; i > 0; i--) {
             series.getData().add(new XYChart.Data(i, total));
-            total -= data[i-1];
+            total -= data[i - 1];
         }
         lineChart.getData().add(series);
         lineChart.setCreateSymbols(false);
@@ -1132,10 +1101,10 @@ public class Application extends javafx.application.Application {
         // makes the header
         GridPane historyList = new GridPane();
         historyList.setId("historyList");
-        historyList.add(new Label("Recent activity:"),0,0);
-        historyList.add(new Label("Date:"),1,0);
-        historyList.add(new Label("Description"),2,0);
-
+        historyList.add(new Label("Recent activity:"), 0, 0);
+        historyList.add(new Label("Date:"), 1, 0);
+        historyList.add(new Label("Description"), 2, 0);
+        
         // add the history to the page
         int        pos       = 1;
         DateFormat formatter = new SimpleDateFormat("d MMMM YYYY / HH:mm");
@@ -1400,8 +1369,8 @@ public class Application extends javafx.application.Application {
      * @return the challenge page
      */
     private static BorderPane challengeScreen() {
-        Label challenges = new Label("Needs to be implemented.");
-        VBox challengeCenter = new VBox();
+        Label challenges      = new Label("Needs to be implemented.");
+        VBox  challengeCenter = new VBox();
         challengeCenter.getChildren().addAll(challenges);
         
         
@@ -1448,5 +1417,28 @@ public class Application extends javafx.application.Application {
     private static void refresh() {
         ApplicationMethods.setPresets();
         mainScreen();
+    }
+    
+    /**
+     * this method starts the application.
+     * @param stage stage
+     */
+    @Override
+    public void start(Stage stage) {
+        ApplicationMethods.onLoad();
+        
+        this.stage = stage;
+        stage.setTitle("GoGreen");
+        
+        // sets the theme
+        theme = "src/styles/mainSceneDefaultTheme.css";
+        
+        //the silentLogin will login for the user
+        if (client.Communication.silentLogin()) {
+            ApplicationMethods.setPresets();
+            mainScreen();
+        } else {
+            loginScene();
+        }
     }
 }

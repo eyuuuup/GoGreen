@@ -15,7 +15,9 @@ import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
 import static org.powermock.api.mockito.PowerMockito.when;
@@ -191,19 +193,19 @@ public class ApplicationMethodsTest {
         assertEquals(1, ApplicationMethods.getLevelProgress(249), 0.01);
         assertEquals(0, ApplicationMethods.getLevelProgress(250), 0.01);
     }
-
+    
     @Test
     public void decodeUsername() {
         String name = ApplicationMethods.encodeUsername("username");
         assertEquals("username", ApplicationMethods.decodeUsername(name));
     }
-
+    
     @Test
     public void decodeUsernameWrong() {
         String name = ApplicationMethods.encodeUsername("username");
         assertNotEquals("user", ApplicationMethods.decodeUsername(name));
     }
-
+    
     @Test
     public void onLoad() {
         ApplicationMethods.onLoad();

@@ -149,7 +149,6 @@ public class Communication {
     
     /**
      * adding an action to the database.
-     *
      * @param actionName     the name of the action
      * @param points         the points for the action
      * @param carbonReduced  the carbon reduced in the action
@@ -160,7 +159,7 @@ public class Communication {
         Action action = new Action(token, actionName,
                 points, carbonReduced, carbonProduced);
         HttpEntity<Action> message = new HttpEntity<>(action);
-        RestTemplate request = new RestTemplate();
+        RestTemplate       request = new RestTemplate();
         
         return request.postForObject(hostURL + "/addAction", message, boolean.class);
     }
@@ -176,7 +175,7 @@ public class Communication {
     public static boolean addAction(String actionName, int points,
                                     double carbonReduced, double carbonProduced, String description) {
         Action action = new Action(token, actionName,
-                points, carbonReduced, carbonProduced,description);
+                points, carbonReduced, carbonProduced, description);
         HttpEntity<Action> message = new HttpEntity<>(action);
         RestTemplate       request = new RestTemplate();
         
