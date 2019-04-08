@@ -88,17 +88,15 @@ public class Action {
      * @param value          the value
      * @param carbonProduced carbon produced
      * @param carbonReduced  carbon saced
-     * @param date           date added (in miliseconds)
      * @param description    the description
      */
     public Action(String token, String action, int value, double carbonReduced,
-                  double carbonProduced, long date, String description) {
+                  double carbonProduced, String description) {
         this.token = token;
         this.action = action;
         this.value = value;
         this.carbonReduced = carbonReduced;
         this.carbonProduced = carbonProduced;
-        this.date = date;
         this.description = description;
     }
 

@@ -184,7 +184,7 @@ public class Communication {
     public static boolean addAction(String actionName, int points,
                                     double carbonReduced, double carbonProduced, String description) {
         Action action = new Action(token, actionName,
-                points, carbonReduced, carbonProduced);
+                points, carbonReduced, carbonProduced,description);
         HttpEntity<Action> message = new HttpEntity<>(action);
         RestTemplate request = new RestTemplate();
         
