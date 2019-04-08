@@ -1,5 +1,6 @@
 package gogreen;
 
+import client.Communication;
 import client.CompareFriends;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
@@ -1070,24 +1071,27 @@ public class Application extends javafx.application.Application {
         amountSavedLabel.setId("title");
 
         // makes the xAxis and yAxis
-        int[] data = {500,200,600,794,240,1234,645,2345,756,234,243,745,234,863,234,856,235,745,234,644};
+        double[] data = Communication.getRecentCOSavings();
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
 
+        xAxis.setTickLabelsVisible(false);
+//        xAxis.setTickMarkVisible(false);
+        
         // makes the chart
         final LineChart<Number,Number> lineChart =
                 new LineChart<Number,Number>(xAxis,yAxis);
 
         // sets the title and make data
-        lineChart.setTitle("Recent co\u2082 reduction");
+        lineChart.setTitle("Recent CO\u2082 reductions");
         XYChart.Series series = new XYChart.Series();
         lineChart.setLegendVisible(false);
 
         // sets the data
-        int pos = 1;
-        for (int i: data) {
-            series.getData().add(new XYChart.Data(pos, i));
-            pos++;
+        double total = ApplicationMethods.getSavedCarbon();
+        for (int i=data.length; i>0; i--) {
+            series.getData().add(new XYChart.Data(i, total));
+            total -= data[i-1];
         }
         lineChart.getData().add(series);
         lineChart.setCreateSymbols(false);
