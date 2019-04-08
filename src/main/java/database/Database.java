@@ -672,7 +672,8 @@ public class Database {
                     "SELECT date_time "
                             + "FROM events JOIN user_data ON "
                             + "events.username = user_data.username "
-                            + "WHERE user_data.token = ? ORDER BY date_time DESC LIMIT 1");
+                            + "WHERE user_data.token = ? AND events.parent_category=1 "
+                            + "ORDER BY date_time DESC LIMIT 1");
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
 
