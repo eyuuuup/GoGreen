@@ -298,6 +298,7 @@ public class Communication {
     }
 
     public static boolean sendChallenge(CompareFriends challenge) {
+        challenge.setToken(token);
         HttpEntity<CompareFriends> message = new HttpEntity<>(challenge);
         RestTemplate request = new RestTemplate();
         return request.postForObject(hostURL + "/addChallenger", message, boolean.class);
