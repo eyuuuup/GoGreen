@@ -14,6 +14,9 @@ public class Main {
         // connect to the database
         Database.connect();
         
+        // prepare statements for querying
+        Database.prepare();
+        
         // when closing the app disconnect from the database
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() {
