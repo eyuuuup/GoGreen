@@ -176,6 +176,8 @@ public class Controller {
         OnLoadValues o= new OnLoadValues();
         o.setUser(Database.getUser(token));
         o.setChallenges(Database.retrieveChallenge(token));
+        o.setFollowers(Database.showFollowers(token));
+        o.setFollowing(Database.showFriends(token));
         return o;
     }
 
