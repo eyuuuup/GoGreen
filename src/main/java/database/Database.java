@@ -54,189 +54,174 @@ public class Database {
      * This method keeps trying connecting to the database until successful
      */
     public static void connect() {
-        boolean connected = false;
-        while (!connected) {
-            try {
-                connection = DriverManager.getConnection();
-            } catch (SQLException e) {
-                System.out.println("Unable to connect to the database");
-                e.printStackTrace();
-                continue;
-            }
-            connected = true;
+        try {
+            connection = DriverManager.getConnection();
+            System.out.println("Connected to the database");
+        } catch (SQLException e) {
+            System.out.println("Unable to connect to the database");
+            e.printStackTrace();
         }
-        System.out.println("Connected to the database");
     }
     
     /**
      * This method keeps trying connecting to the database until successful
      */
     public static void prepare() {
-        boolean prepared = false;
-        while (!prepared) {
-            try {
-                
-                getUsername = connection.prepareStatement(
-                        "SELECT username "
-                                + "FROM user_data "
-                                + "WHERE token = ?;");
-                
-                getUser = connection.prepareStatement(
-                        "SELECT user_data.username, user_data.mail, total_score.total_score "
-                                + "FROM user_data "
-                                + "JOIN total_score ON user_data.username = total_score.username "
-                                + "WHERE user_data.token = ?;");
-                
-                addActionOne = connection.prepareStatement(
-                        "SELECT action_id, parent_category "
-                                + "FROM actions "
-                                + "WHERE actions.action_name = ?;");
-                
-                addActionTwo = connection.prepareStatement(
-                        "INSERT INTO events (action_id, date_time, points, "
-                                + "parent_category, username, carbon_reduced, "
-                                + "carbon_produced, description)"
-                                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
-                
-                retract = connection.prepareStatement(
-                        "SELECT actions.action_name, events.points, "
-                                + "events.carbon_reduced, events.carbon_produced, events.date_time "
-                                + "FROM events JOIN actions ON events.action_id = actions.action_id "
-                                + "WHERE events.username = ? "
-                                + "ORDER BY date_time DESC "
-                                + "LIMIT 10;");
-                
-                getCarbonValues = connection.prepareStatement(
-                        "SELECT carbon_produced, carbon_reduced "
-                                + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
-                                + "WHERE user_data.token = ?;");
-                
-                updateTotalScores = connection.prepareStatement(
-                        "UPDATE total_score "
-                                + "SET total_score = ?, carbon_reduced = ?, carbon_produced = ? "
-                                + "WHERE username = ?;");
-                
-                getCarbonReduced = connection.prepareStatement(
-                        "SELECT carbon_reduced "
-                                + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
-                                + "WHERE user_data.token = ?;");
-                
-                getCarbonProduced = connection.prepareStatement(
-                        "SELECT carbon_produced "
-                                + "FROM total_score "
-                                + "JOIN user_data ON total_score.username = user_data.username "
-                                + "WHERE user_data.token = ?;");
-                
-                getTotalScore = connection.prepareStatement(
-                        "SELECT total_score "
-                                + "FROM total_score "
-                                + "JOIN user_data ON total_score.username = user_data.username "
-                                + "WHERE user_data.token = ?;");
-                
-                getTotalScoreByUser = connection.prepareStatement(
-                        "SELECT total_score "
-                                + "FROM total_score "
-                                + "WHERE total_score.username = ?;");
-                
-                silentLoginCheck = connection.prepareStatement(
-                        "SELECT user_data.token "
-                                + "FROM user_data "
-                                + "WHERE user_data.token = ?;");
-                
-                registerOne = connection.prepareStatement(
-                        "INSERT INTO user_data (token, username, hashpassword, mail)"
-                                + "VALUES (?, ?, ?, ?);");
-                
-                registerTwo = connection.prepareStatement(
-                        "INSERT INTO total_score (total_score, username)"
-                                + "VALUES (0, ?);");
-                
-                checkUsername = connection.prepareStatement(
-                        "SELECT user_data.username "
-                                + "FROM user_data "
-                                + "WHERE user_data.username = ?;");
-                
-                checkLogin = connection.prepareStatement(
-                        "SELECT user_data.token "
-                                + "FROM user_data "
-                                + "WHERE user_data.username = ? AND user_data.hashpassword = ?;");
-                
-                addFriend = connection.prepareStatement(
-                        "INSERT INTO friends (user_a, user_b) "
-                                + "VALUES (?, ?);");
-                
-                showFriends = connection.prepareStatement(
-                        "SELECT user_b "
-                                + "FROM friends "
-                                + "WHERE user_a = ?;");
-                
-                showFollowers = connection.prepareStatement(
-                        "SELECT friends.user_a, total_score.total_score "
-                                + "FROM friends "
-                                + "JOIN total_score ON friends.user_a=total_score.username "
-                                + "WHERE user_b = ?;");
-                
-                getLeaderboard = connection.prepareStatement(
-                        "SELECT username, total_score "
-                                + "FROM total_score "
-                                + "ORDER BY total_score DESC "
-                                + "LIMIT 10;");
-                
-                getLastMeal = connection.prepareStatement(
-                        "SELECT date_time "
-                                + "FROM events "
-                                + "JOIN user_data ON events.username = user_data.username "
-                                + "WHERE user_data.token = ? AND events.parent_category = 1 "
-                                + "ORDER BY date_time DESC "
-                                + "LIMIT 1;");
-                
-                addChallenge = connection.prepareStatement(
-                        "INSERT INTO challenges (goal, user_a, user_b)"
-                                + "VALUES (?, ?, ?)");
-                
-                
-                updateChallenge = connection.prepareStatement(
-                        "UPDATE challenges "
-                                + "SET score_a = "
-                                + "(SELECT total_score FROM total_score WHERE username = ?), "
-                                + "score_b = "
-                                + "(SELECT total_score FROM total_score WHERE username = ?) "
-                                + "WHERE user_a = ?");
-                
-                getRecentCOSavings = connection.prepareStatement(
-                        "SELECT events.carbon_reduced " +
-                                "FROM events " +
-                                "JOIN user_data ON events.username = user_data.username " +
-                                "WHERE user_data.token = ?" +
-                                "ORDER BY events.date_time DESC " +
-                                "LIMIT 30;");
-                
-            } catch (SQLException e) {
-                System.out.println("Unable to prepare statements to the database");
-                e.printStackTrace();
-                continue;
-            }
-            prepared = true;
+        try {
+            
+            getUsername = connection.prepareStatement(
+                    "SELECT username "
+                            + "FROM user_data "
+                            + "WHERE token = ?;");
+            
+            getUser = connection.prepareStatement(
+                    "SELECT user_data.username, user_data.mail, total_score.total_score "
+                            + "FROM user_data "
+                            + "JOIN total_score ON user_data.username = total_score.username "
+                            + "WHERE user_data.token = ?;");
+            
+            addActionOne = connection.prepareStatement(
+                    "SELECT action_id, parent_category "
+                            + "FROM actions "
+                            + "WHERE actions.action_name = ?;");
+            
+            addActionTwo = connection.prepareStatement(
+                    "INSERT INTO events (action_id, date_time, points, "
+                            + "parent_category, username, carbon_reduced, "
+                            + "carbon_produced, description)"
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+            
+            retract = connection.prepareStatement(
+                    "SELECT actions.action_name, events.points, "
+                            + "events.carbon_reduced, events.carbon_produced, events.date_time "
+                            + "FROM events JOIN actions ON events.action_id = actions.action_id "
+                            + "WHERE events.username = ? "
+                            + "ORDER BY date_time DESC "
+                            + "LIMIT 10;");
+            
+            getCarbonValues = connection.prepareStatement(
+                    "SELECT carbon_produced, carbon_reduced "
+                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
+                            + "WHERE user_data.token = ?;");
+            
+            updateTotalScores = connection.prepareStatement(
+                    "UPDATE total_score "
+                            + "SET total_score = ?, carbon_reduced = ?, carbon_produced = ? "
+                            + "WHERE username = ?;");
+            
+            getCarbonReduced = connection.prepareStatement(
+                    "SELECT carbon_reduced "
+                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
+                            + "WHERE user_data.token = ?;");
+            
+            getCarbonProduced = connection.prepareStatement(
+                    "SELECT carbon_produced "
+                            + "FROM total_score "
+                            + "JOIN user_data ON total_score.username = user_data.username "
+                            + "WHERE user_data.token = ?;");
+            
+            getTotalScore = connection.prepareStatement(
+                    "SELECT total_score "
+                            + "FROM total_score "
+                            + "JOIN user_data ON total_score.username = user_data.username "
+                            + "WHERE user_data.token = ?;");
+            
+            getTotalScoreByUser = connection.prepareStatement(
+                    "SELECT total_score "
+                            + "FROM total_score "
+                            + "WHERE total_score.username = ?;");
+            
+            silentLoginCheck = connection.prepareStatement(
+                    "SELECT user_data.token "
+                            + "FROM user_data "
+                            + "WHERE user_data.token = ?;");
+            
+            registerOne = connection.prepareStatement(
+                    "INSERT INTO user_data (token, username, hashpassword, mail)"
+                            + "VALUES (?, ?, ?, ?);");
+            
+            registerTwo = connection.prepareStatement(
+                    "INSERT INTO total_score (total_score, username)"
+                            + "VALUES (0, ?);");
+            
+            checkUsername = connection.prepareStatement(
+                    "SELECT user_data.username "
+                            + "FROM user_data "
+                            + "WHERE user_data.username = ?;");
+            
+            checkLogin = connection.prepareStatement(
+                    "SELECT user_data.token "
+                            + "FROM user_data "
+                            + "WHERE user_data.username = ? AND user_data.hashpassword = ?;");
+            
+            addFriend = connection.prepareStatement(
+                    "INSERT INTO friends (user_a, user_b) "
+                            + "VALUES (?, ?);");
+            
+            showFriends = connection.prepareStatement(
+                    "SELECT user_b "
+                            + "FROM friends "
+                            + "WHERE user_a = ?;");
+            
+            showFollowers = connection.prepareStatement(
+                    "SELECT friends.user_a, total_score.total_score "
+                            + "FROM friends "
+                            + "JOIN total_score ON friends.user_a=total_score.username "
+                            + "WHERE user_b = ?;");
+            
+            getLeaderboard = connection.prepareStatement(
+                    "SELECT username, total_score "
+                            + "FROM total_score "
+                            + "ORDER BY total_score DESC "
+                            + "LIMIT 10;");
+            
+            getLastMeal = connection.prepareStatement(
+                    "SELECT date_time "
+                            + "FROM events "
+                            + "JOIN user_data ON events.username = user_data.username "
+                            + "WHERE user_data.token = ? AND events.parent_category = 1 "
+                            + "ORDER BY date_time DESC "
+                            + "LIMIT 1;");
+            
+            addChallenge = connection.prepareStatement(
+                    "INSERT INTO challenges (goal, user_a, user_b)"
+                            + "VALUES (?, ?, ?)");
+            
+            
+            updateChallenge = connection.prepareStatement(
+                    "UPDATE challenges "
+                            + "SET score_a = "
+                            + "(SELECT total_score FROM total_score WHERE username = ?), "
+                            + "score_b = "
+                            + "(SELECT total_score FROM total_score WHERE username = ?) "
+                            + "WHERE user_a = ?");
+            
+            getRecentCOSavings = connection.prepareStatement(
+                    "SELECT events.carbon_reduced "
+                            + "FROM events "
+                            + "JOIN user_data ON events.username = user_data.username "
+                            + "WHERE user_data.token = ?"
+                            + "ORDER BY events.date_time DESC "
+                            + "LIMIT 30;");
+            
+            System.out.println("Statements prepared on the database");
+        } catch (SQLException e) {
+            System.out.println("Unable to prepare statements to the database");
+            e.printStackTrace();
         }
-        System.out.println("Statements prepared on the database");
     }
     
     /**
      * This method keeps trying disconnecting from the database until successful
      */
     public static void disconnect() {
-        boolean disconnected = false;
-        while (!disconnected) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                System.out.println("Unable to disconnect from the database");
-                e.printStackTrace();
-                continue;
-            }
-            disconnected = true;
+        try {
+            connection.close();
+            System.out.println("Disconnected from the database");
+        } catch (SQLException e) {
+            System.out.println("Unable to disconnect from the database");
+            e.printStackTrace();
         }
-        System.out.println("Disconnected from the database");
     }
     
     /**

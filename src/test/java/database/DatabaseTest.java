@@ -8,7 +8,12 @@ import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import server.*;
+import server.Action;
+import server.ActionList;
+import server.CompareFriends;
+import server.FriendsList;
+import server.TokenResponse;
+import server.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,9 +21,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
-import static org.powermock.api.mockito.PowerMockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
+import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith (PowerMockRunner.class)
 @PrepareForTest ({DriverManager.class, Connection.class})
@@ -31,20 +44,48 @@ public class DatabaseTest {
     public void setUp() throws Exception {
         resultSet = mock(ResultSet.class);
         when(resultSet.next()).thenReturn(true).thenReturn(false).thenReturn(true).thenReturn(false);
-
+        
         state = mock(PreparedStatement.class);
         when(state, "executeQuery").thenReturn(resultSet);
-
+        
         connection = mock(Connection.class);
         when(connection, "prepareStatement", anyObject()).thenReturn(state);
-
+        
         mockStatic(DriverManager.class);
         when(DriverManager.class, "getConnection").thenReturn(connection);
+        
+        Database.connect();
+        Database.prepare();
+    }
+    
+    @Test
+    public void connectException() throws SQLException {
+        PowerMockito.mockStatic(DriverManager.class);
+        PowerMockito.when(DriverManager.getConnection()).thenThrow(new SQLException("test"));
+        Database.connect();
+    }
+    
+    @Test
+    public void prepareException() throws SQLException {
+        when(connection.prepareStatement(anyString())).thenThrow(new SQLException("test"));
+        Database.prepare();
+    }
+    
+    @Test
+    public void disconnect() {
+        Database.disconnect();
+    }
+    
+    @Test
+    public void disconnectException() throws SQLException {
+        Mockito.doThrow(new SQLException("test")).when(connection).close();
+        Database.disconnect();
     }
     
     @Test
     public void defaultConstructor() {
         Database database = new Database();
+        assertNotNull(database);
     }
     
     @Test
@@ -65,14 +106,21 @@ public class DatabaseTest {
         when(resultSet.getString(1)).thenReturn("username");
         when(resultSet.getString(2)).thenReturn("email");
         when(resultSet.getInt(3)).thenReturn(100);
-
+        
         User user = Database.getUser("token");
-
+        
         assertEquals("username", user.getName());
         assertEquals("email", user.getEmail());
         assertEquals(100, user.getTotalScore());
     }
-
+    
+    @Test
+    public void getUserInvalid() throws Exception {
+        when(resultSet.next()).thenReturn(false);
+        
+        assertNull(Database.getUser("testUser"));
+    }
+    
     @Test
     public void getUserException() throws Exception {
         when(state, "executeQuery").thenThrow(SQLException.class);
@@ -81,50 +129,50 @@ public class DatabaseTest {
     
     @Test
     public void addActionError() throws Exception {
-        server.Action action = Mockito.mock(server.Action.class);
+        Action action = Mockito.mock(Action.class);
         when(resultSet.getInt(1)).thenThrow(SQLException.class);
         
         assertFalse(Database.addAction(action));
     }
-
+    
     @Test
     public void addActionNonFood() throws SQLException {
         when(resultSet.next()).thenReturn(true).thenReturn(false).thenReturn(true).thenReturn(false).thenReturn(true).thenReturn(false).thenReturn(true).thenReturn(false);
-
+        
         Action action = Mockito.mock(Action.class);
         when(resultSet.getInt(1)).thenReturn(10);
         when(resultSet.getInt(2)).thenReturn(100);
-
+        
         when(resultSet.getDouble(1)).thenReturn(new Double(200));
         when(resultSet.getDouble(2)).thenReturn(new Double(300));
-
+        
         assertTrue(Database.addAction(action));
     }
-
+    
     @Test
     public void addActionFood() throws SQLException {
         when(resultSet.next()).thenReturn(true).thenReturn(false).thenReturn(true).thenReturn(false).thenReturn(true).thenReturn(false).thenReturn(true).thenReturn(false).thenReturn(true).thenReturn(false);
-
+        
         Action action = Mockito.mock(Action.class);
         when(resultSet.getInt(1)).thenReturn(10);
         when(resultSet.getInt(2)).thenReturn(1);
-
+        
         when(resultSet.getLong(1)).thenReturn(Instant.now().getMillis());
-
+        
         when(resultSet.getDouble(1)).thenReturn(new Double(200));
         when(resultSet.getDouble(2)).thenReturn(new Double(300));
-
+        
         assertTrue(Database.addAction(action));
     }
-
+    
     @Test
     public void addActionFoodWrongTime() throws SQLException {
         Action action = Mockito.mock(Action.class);
         when(resultSet.getInt(1)).thenReturn(10);
         when(resultSet.getInt(2)).thenReturn(1);
-
-        when(resultSet.getLong(1)).thenReturn(Instant.now().getMillis() - 1000);
-
+        
+        when(resultSet.getLong(1)).thenReturn(Instant.now().getMillis() - 2000);
+        
         assertFalse(Database.addAction(action));
     }
     
@@ -135,11 +183,11 @@ public class DatabaseTest {
         when(resultSet.getInt(3)).thenReturn(200);
         when(resultSet.getInt(4)).thenReturn(300);
         when(resultSet.getLong(5)).thenReturn(new Long(10000));
-
+        
         ActionList actionList = Database.retract("token");
-
+        
         Action action = actionList.getList().get(0);
-
+        
         assertEquals("action", action.getAction());
         assertEquals(100, action.getValue());
         assertEquals(200, action.getCarbonProduced(), 0);
@@ -153,26 +201,26 @@ public class DatabaseTest {
         
         assertNull(Database.retract("token"));
     }
-
+    
     @Test
-    public void getCarbonValues() throws Exception{
+    public void getCarbonValues() throws Exception {
         when(resultSet.getDouble(1)).thenReturn(new Double(1));
         when(resultSet.getDouble(2)).thenReturn(new Double(2));
-
+        
         Action action = Database.getCarbonValues("token");
-
+        
         assertEquals(1, action.getCarbonProduced(), 0);
         assertEquals(2, action.getCarbonReduced(), 0);
     }
-
+    
     @Test
-    public void getCarbonValuesNull() throws Exception{
+    public void getCarbonValuesNull() throws Exception {
         when(resultSet.next()).thenReturn(false);
         assertNull(Database.getCarbonValues("token"));
     }
-
+    
     @Test
-    public void getCarbonValuesException() throws Exception{
+    public void getCarbonValuesException() throws Exception {
         when(state, "executeQuery").thenThrow(SQLException.class);
         assertNull(Database.getCarbonValues("token"));
     }
@@ -187,39 +235,39 @@ public class DatabaseTest {
         when(state, "executeUpdate").thenThrow(SQLException.class);
         Database.updateTotalScores("token", 10, 50, 50);
     }
-
+    
     @Test
-    public void getCarbonReduced() throws Exception{
+    public void getCarbonReduced() throws Exception {
         when(resultSet.getDouble(1)).thenReturn(new Double(2));
-
+        
         assertEquals(2, Database.getCarbonReduced("token"), 0);
     }
-
+    
     @Test
-    public void getCarbonReducedException() throws Exception{
+    public void getCarbonReducedException() throws Exception {
         when(state, "executeQuery").thenThrow(SQLException.class);
-
+        
         assertEquals(0, Database.getCarbonReduced("token"), 0);
     }
-
+    
     @Test
-    public void getCarbonProduced() throws Exception{
+    public void getCarbonProduced() throws Exception {
         when(resultSet.getDouble(1)).thenReturn(new Double(2));
-
+        
         assertEquals(2, Database.getCarbonProduced("token"), 0);
     }
-
+    
     @Test
-    public void getCarbonProducedException() throws Exception{
+    public void getCarbonProducedException() throws Exception {
         when(state, "executeQuery").thenThrow(SQLException.class);
-
+        
         assertEquals(0, Database.getCarbonProduced("token"), 0);
     }
     
     @Test
-    public void getTotalScore() throws Exception{
+    public void getTotalScore() throws Exception {
         when(resultSet.getInt(1)).thenReturn(400);
-
+        
         assertEquals(400, Database.getTotalScore("token"));
     }
     
@@ -242,7 +290,7 @@ public class DatabaseTest {
     public void getTotalScoreByUserError() throws Exception {
         when(state, "executeQuery").thenThrow(SQLException.class);
         when(resultSet.getInt(1)).thenReturn(100);
-
+        
         assertEquals(0, Database.getTotalScoreByUser("username"));
     }
     
@@ -265,27 +313,28 @@ public class DatabaseTest {
     
     @Test
     public void register() {
-        server.User user = Mockito.mock(server.User.class);
+        PreparedStatement state = Mockito.mock(PreparedStatement.class);
+        User              user  = Mockito.mock(User.class);
         Database.register(user, "token");
     }
     
     @Test
-    public void registerError() throws Exception {
-        when(state, "executeQuery").thenThrow(SQLException.class);
-        server.User user = Mockito.mock(server.User.class);
+    public void registerException() throws Exception {
+        when(state, "executeUpdate").thenThrow(SQLException.class);
+        User user = Mockito.mock(User.class);
         Database.register(user, "token");
     }
     
     @Test
     public void checkUsername() throws SQLException {
-        when(resultSet.getString(2)).thenReturn("jan");
+        when(resultSet.getString(1)).thenReturn("jan");
         
         assertTrue(Database.checkUsername("jan"));
     }
     
     @Test
     public void checkUsernameWrong() throws SQLException {
-        when(resultSet.getString(2)).thenReturn("jan");
+        when(resultSet.getString(1)).thenReturn("jan");
         
         assertFalse(Database.checkUsername("Username"));
     }
@@ -300,22 +349,21 @@ public class DatabaseTest {
     @Test
     public void checkLoginCheckUsernameFalse() throws SQLException {
         User user = Mockito.mock(User.class);
-        when(resultSet.getString(2)).thenThrow(SQLException.class);
+        when(resultSet.next()).thenReturn(false);
         
-        server.TokenResponse response = Database.checkLogin(user);
+        TokenResponse response = Database.checkLogin(user);
         assertFalse(response.isLegit());
-        assertEquals("null", response.getToken());
+        assertEquals(null, response.getToken());
     }
     
     @Test
     public void checkLoginTrue() throws Exception {
         User user = mock(User.class);
         when(user, "getName").thenReturn("name");
-        when(resultSet.getString(2)).thenReturn("name");
         
         when(resultSet.getString(1)).thenReturn("token");
         
-        server.TokenResponse response = Database.checkLogin(user);
+        TokenResponse response = Database.checkLogin(user);
         assertTrue(response.isLegit());
         assertEquals("token", response.getToken());
     }
@@ -324,13 +372,12 @@ public class DatabaseTest {
     public void checkLoginError() throws Exception {
         User user = mock(User.class);
         when(user, "getName").thenReturn("name");
-        when(resultSet.getString(2)).thenReturn("name");
         
         when(resultSet.getString(1)).thenThrow(SQLException.class);
         
-        server.TokenResponse response = Database.checkLogin(user);
+        TokenResponse response = Database.checkLogin(user);
         assertFalse(response.isLegit());
-        assertEquals("null", response.getToken());
+        assertEquals(null, response.getToken());
     }
     
     @Test
@@ -404,7 +451,7 @@ public class DatabaseTest {
         when(state, "executeQuery").thenThrow(SQLException.class);
         assertNull(Database.getLeaderboard());
     }
-
+    
     @Test
     public void getLastMeal() throws Exception {
         when(resultSet.getLong(1)).thenReturn(new Long(100));
@@ -437,17 +484,38 @@ public class DatabaseTest {
     @Test
     public void addChallenge() throws Exception {
         PowerMockito.when(state, "executeUpdate").thenReturn(0);
-        CompareFriends challenge= new CompareFriends("a", "b");
+        CompareFriends challenge = new CompareFriends("a", "b");
         challenge.setScore(100);
         Database.addChallenge(challenge);
-
+        
     }
-
+    
     @Test
     public void addChallengeException() throws Exception {
         PowerMockito.when(state, "executeUpdate").thenThrow(SQLException.class);
-        CompareFriends challenge= new CompareFriends("a", "b");
+        CompareFriends challenge = new CompareFriends("a", "b");
         challenge.setScore(100);
         Database.addChallenge(challenge);
+    }
+    
+    @Test
+    public void getRecentCOSavings() throws SQLException {
+        when(resultSet.getDouble(1)).thenReturn(10.0);
+        
+        Action a = new Action();
+        a.setCarbonReduced(10.0);
+        
+        ArrayList<Action> result = Database.getRecentCOSavings("token");
+        
+        assertEquals(1, result.size());
+        assertEquals(a.getCarbonReduced(), result.get(0).getCarbonReduced(), 0);
+        
+    }
+    
+    @Test
+    public void getRecentCOSavingsException() throws SQLException {
+        when(resultSet.getDouble(1)).thenThrow(new SQLException("test"));
+        
+        assertNull(Database.getRecentCOSavings("token"));
     }
 }
