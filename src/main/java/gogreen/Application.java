@@ -71,6 +71,7 @@ public class Application extends javafx.application.Application {
 
 
         this.stage = stage;
+        stage.getIcons().add(new Image("file:src/planets/icon.gif"));
         stage.setResizable(false);
         stage.setTitle("GoGreen");
 
