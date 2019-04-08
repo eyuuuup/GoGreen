@@ -1403,7 +1403,6 @@ public class Application extends javafx.application.Application {
      * @return the challenge page
      */
     private static BorderPane challengeScreen() {
-
         // ask a friend to challenge
         Label challengeInfo = new Label("Who is the first to reach...");
         challengeInfo.setId("information");
@@ -1439,18 +1438,52 @@ public class Application extends javafx.application.Application {
         VBox addChallengeVbox = new VBox();
         addChallengeVbox.getChildren().addAll(challengeInfo, addChallengeContainer);
 
+        ScrollPane challengeContainer = new ScrollPane();
+        challengeContainer.setId("challengeLists");
+        challengeContainer.setContent(challengeList());
+
+        ScrollPane receivedChallenge = new ScrollPane();
+        receivedChallenge.setId("challengeLists");
+        receivedChallenge.setContent(receivedList(challengeContainer));
+
+        Label challengeTitle = new Label("Current challenges");
+        challengeTitle.setId("information");
+        Label receivedTitle = new Label("Received challenges");
+        receivedTitle.setId("information");
+
+        VBox challengeCenter = new VBox();
+        challengeCenter.setId("challengePage");
+        challengeCenter.getChildren().addAll(addChallengeVbox, challengeTitle, challengeContainer, receivedTitle, receivedChallenge);
+
+        // makes the page and sets the sidebar
+        BorderPane challengePage = new BorderPane();
+        challengePage.setCenter(challengeCenter);
+        challengePage.setLeft(sideBar());
+
+        // return the request page
+        return challengePage;
+
+    }
+
+    private static GridPane challengeList() {
         // getting the challenges you accepted
         ChallengesList challenges = Communication.showChallenges();
-        VBox challengeContainer = new VBox();
+        GridPane challengeContainer = new GridPane();
+        challengeContainer.setId("challenges");
+
         try {
             int pos = 0;
             for (client.Challenge c : challenges.getList()) {
-               HBox challenge = new HBox();
-               String username = ApplicationMethods.decodeUsername(c.getUserB());
-               Label goal = new Label("Goal: " + c.getGoal());
-               Label user = new Label("User: " + username);
-               challenge.getChildren().addAll(goal, user);
-               challenge.getChildren().add(challenge);
+                ProgressBar progress = new ProgressBar(ApplicationMethods.getLevelProgress(c.getGoal()));
+                progress.setId("challengeProgress");
+                String username = ApplicationMethods.decodeUsername(c.getUserB());
+                Label goal = new Label("Goal: " + c.getGoal());
+                Label user = new Label("User: " + username);
+                challengeContainer.add(goal, 0, pos);
+                challengeContainer.add(user, 1, pos);
+                challengeContainer.add(new Label("Progress:"), 2,pos);
+                challengeContainer.add(progress,3,pos);
+                pos++;
             }
         } catch (NullPointerException e) {
             Label info = new Label("no challenges");
@@ -1458,15 +1491,22 @@ public class Application extends javafx.application.Application {
             challengeContainer.getChildren().add(info);
         }
 
+        return challengeContainer;
+    }
+
+    private static GridPane receivedList(ScrollPane challengeContainer) {
         // getting the challenges that need to be accepted
         GridPane receivedChallenge = new GridPane();
+        receivedChallenge.setId("challenges");
+
+        ChallengesList challenges = Communication.showChallenges();
         try {
             int pos = 0;
             for(client.Challenge c: challenges.getReceivedList()) {
                 String username = ApplicationMethods.decodeUsername(c.getUserA());
                 Label goal = new Label("Goal: " + c.getGoal());
                 Label user = new Label("User: " + username);
- 
+
                 JFXButton accept = new JFXButton("Accept Challenge");
                 accept.setId("smallButton");
                 receivedChallenge.add(goal, 0, pos);
@@ -1479,31 +1519,19 @@ public class Application extends javafx.application.Application {
                     challenge.setUsername(c.getUserA());
                     Communication.acceptChallenge(challenge);
                     receivedChallenge.getChildren().removeAll(goal,user,accept);
-                    HBox acceptedChallenge = new HBox();
-                    acceptedChallenge.getChildren().addAll(goal,user);
-                    challengeContainer.getChildren().add(acceptedChallenge);
+                    challengeContainer.setContent(challengeList());
                 });
 
 
             }
-        } catch(NullPointerException e){
+        } catch(NullPointerException e) {
             System.out.println("null pointer");
             Label info = new Label("no recieved challenges");
             info.setId("information");
             receivedChallenge.add(info,0,0);
         }
-        VBox challengeCenter = new VBox();
-        challengeCenter.getChildren().addAll(addChallengeVbox, challengeContainer, receivedChallenge);
 
-
-        // makes the page and sets the sidebar
-        BorderPane challengePage = new BorderPane();
-        challengePage.setCenter(challengeCenter);
-        challengePage.setLeft(sideBar());
-
-        // return the request page
-        return challengePage;
-
+        return receivedChallenge;
     }
 
     /**

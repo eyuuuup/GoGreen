@@ -57,6 +57,9 @@
     -fx-hgap: 30;
     -fx-alignment: center;
 }
+#challengePage{
+    -fx-spacing: 5;
+}
 
 /* buttons */
 #settingButtons{
@@ -250,6 +253,15 @@
     -fx-background-radius: 4, 3, 2;
 }
 
+#challengeProgress {
+    -fx-pref-width: 150;
+}
+
+#challengeProgress > .track{
+    -fx-background-color: #fdfdfd;
+}
+
+
 /* sliders */
 .jfx-slider {
     -fx-max-width: 500;
@@ -344,6 +356,16 @@
 #historyList{
     -fx-vgap: 10;
     -fx-hgap: 30;
+}
+#challengeLists{
+    -fx-min-height: 175;
+    -fx-max-height: 175;
+}
+#challenges{
+    -fx-background-color: #373737;
+    -fx-vgap: 5;
+    -fx-hgap: 30;
+    -fx-padding: 10;
 }
 
 /* text field */
