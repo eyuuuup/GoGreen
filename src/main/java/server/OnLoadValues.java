@@ -4,7 +4,11 @@ package server;
  * This class is for the on load values.
  */
 public class OnLoadValues {
-
+    /**
+     * solar panels
+     * electric car
+     * envoirment group
+     */
     private User user;
     private FriendsList followers;
     private FriendsList following;
