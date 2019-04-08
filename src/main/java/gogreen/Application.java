@@ -1420,9 +1420,11 @@ public class Application extends javafx.application.Application {
 
         addChallenge.setOnAction(e -> {
             try {
+
                int goal = Integer.parseInt(goalField.getText());
                String user = ApplicationMethods.encodeUsername(userField.getText());
                CompareFriends challenge = new CompareFriends();
+                System.out.println(Communication.checkUsername(ApplicationMethods.decodeUsername(user)));
                challenge.setScore(goal);
                challenge.setUsername(user);
                client.Communication.sendChallenge(challenge);
