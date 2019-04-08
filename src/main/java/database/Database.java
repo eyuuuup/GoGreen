@@ -156,6 +156,11 @@ public class Database {
                                 + "FROM user_data "
                                 + "WHERE user_data.username = ?;");
                 
+                checkLogin = connection.prepareStatement(
+                        "SELECT user_data.token "
+                                + "FROM user_data "
+                                + "WHERE user_data.username = ? AND user_data.hashpassword = ?;");
+                
                 addFriend = connection.prepareStatement(
                         "INSERT INTO friends (user_a, user_b) "
                                 + "VALUES (?, ?);");
@@ -643,30 +648,22 @@ public class Database {
      */
     public static TokenResponse checkLogin(User user) {
         System.out.println("checkLogin called");
-        if (checkUsername(user.getName())) {
+        try {
+            PreparedStatement state = checkLogin;
             
-            try {
-                Connection con = DriverManager.getConnection();
-                PreparedStatement state =
-                        con.prepareStatement("SELECT * "
-                                + "FROM user_data WHERE user_data.username =  ? ");
-                state.setString(1, user.getName());
-                ResultSet rs = state.executeQuery();
-                
-                String token = "";
-                while (rs.next()) {
-                    token = rs.getString(1);
-                }
-                
-                con.close();
-                return new TokenResponse(token, true);
-                
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-                return new TokenResponse("null", false);
+            state.setString(1, user.getName());
+            state.setString(2, user.getPassword());
+            ResultSet rs = state.executeQuery();
+            
+            if (rs.next()) {
+                return new TokenResponse(rs.getString(1), true);
             }
-        } else {
-            return new TokenResponse("null", false);
+            
+            return new TokenResponse(null, false);
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return new TokenResponse(null, false);
         }
         
     }
