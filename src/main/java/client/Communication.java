@@ -291,7 +291,7 @@ public class Communication {
      *
      * @return an instance of onLoadValue class
      */
-    public static OnLoadValues load() {
+    public static OnLoadValues onLoad() {
         HttpEntity<String> message = new HttpEntity<>(token);
         RestTemplate request = new RestTemplate();
         return request.postForObject(hostURL + "/onLoad", message, OnLoadValues.class);

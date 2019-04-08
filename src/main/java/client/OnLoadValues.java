@@ -5,60 +5,56 @@ package client;
  */
 public class OnLoadValues {
 
-    private boolean electricCar;
-    private boolean solarCar;
+    private User user;
+    private FriendsList followers;
+    private FriendsList following;
+    private ChallengesList challenges;
 
-    /**
-     * Constructor.
-     *
-     * @param electricCar presence of electricCar
-     * @param solarCar presence of solarCar
-     */
-    public OnLoadValues(boolean electricCar, boolean solarCar) {
-        this.electricCar = electricCar;
-        this.solarCar = solarCar;
+    public OnLoadValues(User user, FriendsList followers, FriendsList following, ChallengesList challenges) {
+        this.user = user;
+        this.followers = followers;
+        this.following = following;
+        this.challenges = challenges;
     }
 
-    /**
-     * Empty constructor.
-     */
     public OnLoadValues() {
+        user = new User();
+        followers = new FriendsList();
+        following = new FriendsList();
+        challenges = new ChallengesList();
     }
 
-    /**
-     * Getter for electric car.
-     *
-     * @return if present or not
-     */
-    public boolean isElectricCar() {
-        return electricCar;
+    public User getUser() {
+        return user;
     }
 
-    /**
-     * setter for solarcCar.
-     *
-     * @return if presernt or not
-     */
-    public boolean isSolarCar() {
-        return solarCar;
+    public FriendsList getFollowers() {
+        return followers;
     }
 
-    /**
-     * Settter for electricCar.
-     *
-     * @param electricCar presence of electricCar
-     */
-    public void setElectricCar(boolean electricCar) {
-        this.electricCar = electricCar;
+    public FriendsList getFollowing() {
+        return following;
     }
 
-    /**
-     * Setter for SolarCar.
-     *
-     * @param solarCar presence of SolarCar
-     */
-    public void setSolarCar(boolean solarCar) {
-        this.solarCar = solarCar;
+    public ChallengesList getChallenges() {
+        return challenges;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setFollowers(FriendsList followers) {
+        this.followers = followers;
+    }
+
+    public void setFollowing(FriendsList following) {
+        this.following = following;
+    }
+
+    public void setChallenges(ChallengesList challenges) {
+        this.challenges = challenges;
+    }
+
 
 }
