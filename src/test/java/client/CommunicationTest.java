@@ -122,16 +122,7 @@ public class CommunicationTest {
     }
     
     // ========== ACTION HANDLERS ==============================================
-    
-    @Test
-    public void addAction() throws Exception {
-        RestTemplate template = PowerMockito.mock(RestTemplate.class);
-        PowerMockito.when(template.postForObject(anyString(), anyObject(), eq(boolean.class))).thenReturn(true);
-        PowerMockito.whenNew(RestTemplate.class).withAnyArguments().thenReturn(template);
-        
-        assertTrue(Communication.addAction("testAction", 100));
-    }
-    
+
     @Test
     public void addActionAdvanced() throws Exception {
         RestTemplate template = PowerMockito.mock(RestTemplate.class);
@@ -139,6 +130,15 @@ public class CommunicationTest {
         PowerMockito.whenNew(RestTemplate.class).withAnyArguments().thenReturn(template);
         
         assertTrue(Communication.addAction("testAction", 100, 50, 50));
+    }
+
+    @Test
+    public void addActionAdvanced2() throws Exception {
+        RestTemplate template = PowerMockito.mock(RestTemplate.class);
+        PowerMockito.when(template.postForObject(anyString(), anyObject(), eq(boolean.class))).thenReturn(true);
+        PowerMockito.whenNew(RestTemplate.class).withAnyArguments().thenReturn(template);
+
+        assertTrue(Communication.addAction("testAction", 100, 50, 50,"test"));
     }
     
     @Test
