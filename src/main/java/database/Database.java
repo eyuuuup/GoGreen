@@ -691,37 +691,6 @@ public class Database {
     }
 
 
-    /**
-     * This methods gets the last meal.
-     *
-     * @param token A String of the token of the user.
-     * @return int with the time.
-     */
-    public static long getOTE(String token) {
-        System.out.println("getOTE called");
-        try {
-            Connection con = DriverManager.getConnection();
-            PreparedStatement state = con.prepareStatement(
-                    "SELECT * "
-                            + "FROM events JOIN user_data ON "
-                            + "events.username = user_data.username "
-                            + "WHERE user_data.token = ? ORDER BY date_time DESC LIMIT 1");
-            state.setString(1, token);
-            ResultSet rs = state.executeQuery();
-
-            long time = 0;
-            while (rs.next()) {
-                time = rs.getLong(1);
-            }
-            con.close();
-
-            return time;
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return 0;
-        }
-    }
 
     /**
      * This method add a challenge.
