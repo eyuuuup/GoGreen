@@ -159,7 +159,7 @@ public class Database {
             System.out.println("retract called");
             PreparedStatement state =
                     con.prepareStatement("SELECT actions.action_name, events.points, "
-                            + "events.carbon_reduced, events.carbon_produced, events.date_time "
+                            + "events.carbon_reduced, events.carbon_produced, events.date_time, events.description "
                             + "FROM events JOIN actions ON events.action_id = actions.action_id "
                             + "WHERE events.username = ? "
                             + "ORDER BY date_time DESC LIMIT 10");
@@ -175,6 +175,7 @@ public class Database {
                 action.setCarbonProduced(rs.getInt(3));
                 action.setCarbonReduced(rs.getInt(4));
                 action.setDate(rs.getLong(5));
+                action.setDescription(rs.getString(6));
                 
                 list.add(action);
             }
@@ -672,7 +673,44 @@ public class Database {
             return 0;
         }
     }
-    
+
+    /**
+     * This methods gets the OTE.
+     * @param token A String of the token of the user.
+     * @return ArrayList with the booleans of which events exist
+     */
+    public static boolean[] getOTE(String token) {
+        System.out.println("getOTE called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state = con.prepareStatement(
+                    "SELECT action_id "
+                            + "FROM events JOIN user_data ON "
+                            + "events.username = user_data.username "
+                            + "WHERE user_data.token = ? AND (action_id = 14 OR action_id = 13 OR action_id = 12)"
+                            + "ORDER BY action_id DESC");
+            state.setString(1, token);
+            ResultSet rs = state.executeQuery();
+
+            boolean[] result = {false, false, false};
+            while (rs.next()) {
+                switch(rs.getInt(1)){
+                    case 12: result[0] = true;
+                    case 13: result[1] = true;
+                    case 14: result[2] = true;
+                }
+            }
+            con.close();
+
+            return result;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return new boolean[]{};
+        }
+    }
+
+
     /**
      * This method add a challenge.
      * @param challenge CompareFriend object with token of user A,
@@ -814,7 +852,7 @@ public class Database {
                             + "(SELECT total_score FROM total_score WHERE username = ?), "
                             + "score_b = "
                             + "(SELECT total_score FROM total_score WHERE username = ?)"
-                            + ", time_added = ? WHERE user_a = ? OR user_b = ?");
+                            + ", time_added = ? WHERE user_a = ? AND user_b = ?");
             
             String userA = challenge.getUsername();
             String userB = getUsername(challenge.getToken());
@@ -823,7 +861,8 @@ public class Database {
             state.setLong(3, Instant.now().getMillis());
             state.setString(4, userA);
             state.setString(5, userB);
-            
+            state.executeUpdate();
+
             con.close();
             return true;
         } catch (SQLException e) {
