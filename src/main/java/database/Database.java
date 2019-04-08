@@ -1,7 +1,14 @@
 package database;
 
 import org.joda.time.Instant;
-import server.*;
+import server.Action;
+import server.ActionList;
+import server.Challenge;
+import server.ChallengesList;
+import server.CompareFriends;
+import server.FriendsList;
+import server.TokenResponse;
+import server.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +20,43 @@ import java.util.ArrayList;
  * Database is a class that will be used in communication with the server.
  */
 public class Database {
+    
+    private static Connection connection;
+    /**
+     * This method keeps trying connecting to the database until successful
+     */
+    public static void connect() {
+        boolean connected = false;
+        while (!connected) {
+            try {
+                connection = DriverManager.getConnection();
+            } catch (SQLException e) {
+                System.out.println("Unable to connect to the database");
+                e.printStackTrace();
+                continue;
+            }
+            connected = true;
+        }
+        System.out.println("Connected to the database");
+    }
+    
+    /**
+     * This method keeps trying disconnecting from the database until successful
+     */
+    public static void disconnect() {
+        boolean disconnected = false;
+        while (!disconnected) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                System.out.println("Unable to disconnect from the database");
+                e.printStackTrace();
+                continue;
+            }
+            disconnected = true;
+        }
+        System.out.println("Disconnected from the database");
+    }
     
     /**
      * This method gets the username from the database.
