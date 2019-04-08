@@ -5,66 +5,61 @@ package server;
  */
 public class OnLoadValues {
 
-    private boolean electricCar;
-    private boolean solarCar;
+    private User user;
+    private FriendsList followers;
+    private FriendsList following;
+    private ChallengesList challenges;
 
-    /**
-     * Constructor.
-     *
-     * @param electricCar presence of electricCar
-     * @param solarCar presence of solarCar
-     */
+    public OnLoadValues(User user, FriendsList followers, FriendsList following, ChallengesList challenges) {
+        this.user = user;
+        this.followers = followers;
+        this.following = following;
+        this.challenges = challenges;
+    }
+    
 
-    public OnLoadValues(boolean electricCar, boolean solarCar) {
-        this.electricCar = electricCar;
-        this.solarCar = solarCar;
+    public User getUser() {
+        return user;
+    }
+
+    public FriendsList getFollowers() {
+        return followers;
+    }
+
+    public FriendsList getFollowing() {
+        return following;
+    }
+
+    public ChallengesList getChallenges() {
+        return challenges;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setFollowers(FriendsList followers) {
+        this.followers = followers;
+    }
+
+    public void setFollowing(FriendsList following) {
+        this.following = following;
+    }
+
+    public void setChallenges(ChallengesList challenges) {
+        this.challenges = challenges;
     }
 
 
-    /**
-     * Empty constructor.
-     */
-    public OnLoadValues() {
-    }
 
 
     /**
-     * Getter for electric car.
-     *
-     * @return if present or not
+     * username
+     * points
+     * followers
+     * following
+     * challenges
      */
-    public boolean isElectricCar() {
-        return electricCar;
-    }
 
-
-    /**
-     * Setter for solarcCar.
-     *
-     * @return if presernt or not
-     */
-    public boolean isSolarCar() {
-        return solarCar;
-    }
-
-
-    /**
-     * Setter for electricCar.
-     *
-     * @param electricCar if electricCar present or not
-     */
-    public void setElectricCar(boolean electricCar) {
-        this.electricCar = electricCar;
-    }
-
-
-    /**
-     * Setter for SolarCar.
-     *
-     * @param solarCar if solarCar present or not
-     */
-    public void setSolarCar(boolean solarCar) {
-        this.solarCar = solarCar;
-    }
 
 }
