@@ -10,6 +10,7 @@ public class Action {
     private double carbonReduced;
     private double carbonProduced;
     private long date;
+    private String description;
 
     /**
      * empty constructor.
@@ -77,6 +78,26 @@ public class Action {
         this.carbonReduced = carbonReduced;
         this.carbonProduced = carbonProduced;
         this.date = date;
+    }
+
+    /**
+     * Create a new action.
+     *
+     * @param token          the token
+     * @param action         the action
+     * @param value          the value
+     * @param carbonProduced carbon produced
+     * @param carbonReduced  carbon saced
+     * @param description    the description
+     */
+    public Action(String token, String action, int value, double carbonReduced,
+                  double carbonProduced, String description) {
+        this.token = token;
+        this.action = action;
+        this.value = value;
+        this.carbonReduced = carbonReduced;
+        this.carbonProduced = carbonProduced;
+        this.description = description;
     }
 
     /**
@@ -189,5 +210,20 @@ public class Action {
      */
     public void setDate(long date) {
         this.date = date;
+    }
+
+    /**
+     * setter for description.
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * getter for description.
+     * @return description
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
