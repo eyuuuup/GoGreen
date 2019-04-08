@@ -1,4 +1,12 @@
-﻿# Group 4
+# Go Green
+An application that keeps track of your Co2 usage and helps you to save more Co2.
+
+# Why did we make this project
+We were tasked by our university to make this project, and also to make a great README
+, which is why this exists.
+
+
+# Credits
 
 ### Name: Gyum Cho
 
