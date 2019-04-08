@@ -771,17 +771,17 @@ public class Database {
                     + "FROM challenges "
                     + "WHERE user_b = ? AND score_b = -1");
             
-            stateA.setString(1, username);
-            ResultSet            rs2   = stateA.executeQuery();
+            stateB.setString(1, username);
+            ResultSet            rs2   = stateB.executeQuery();
             ArrayList<Challenge> listB = new ArrayList<>();
             
             while (rs.next()) {
                 Challenge challenge = new Challenge();
-                String    userA     = rs.getString(1);
-                String    userB     = rs.getString(2);
-                int       scoreA    = rs.getInt(3);
-                int       scoreB    = rs.getInt(4);
-                int       goal      = rs.getInt(5);
+                String    userA     = rs2.getString(1);
+                String    userB     = rs2.getString(2);
+                int       scoreA    = rs2.getInt(3);
+                int       scoreB    = rs2.getInt(4);
+                int       goal      = rs2.getInt(5);
                 
                 challenge.setUserA(userA);
                 challenge.setUserB(userB);
