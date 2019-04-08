@@ -34,11 +34,10 @@ public class Action {
      * @param action the action name
      * @param value  the amount of points
      */
-    public Action(String token, String action, int value, String description) {
+    public Action(String token, String action, int value) {
         this.token = token;
         this.action = action;
         this.value = value;
-        this.description = description;
     }
     
     /**
