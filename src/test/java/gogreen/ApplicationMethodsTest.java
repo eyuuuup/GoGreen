@@ -113,7 +113,7 @@ public class ApplicationMethodsTest {
     
     @Test (expected = NullPointerException.class)
     public void checkNameNull() throws Exception {
-        Whitebox.invokeMethod(ApplicationMethods.class, "checkName", null);
+        Whitebox.invokeMethod(ApplicationMethods.class, "checkName", (String) null);
     }
     
     @Test (expected = IllegalArgumentException.class)

@@ -69,8 +69,7 @@ public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) {
         ApplicationMethods.onLoad();
-
-
+        
         this.stage = stage;
         stage.setTitle("GoGreen");
 
@@ -1434,29 +1433,5 @@ public class Application extends javafx.application.Application {
     private static void refresh() {
         ApplicationMethods.setPresets();
         mainScreen();
-    }
-    
-    /**
-     * this method starts the application.
-     * @param stage stage
-     */
-    @Override
-    public void start(Stage stage) {
-        ApplicationMethods.onLoad();
-        
-        
-        this.stage = stage;
-        stage.setTitle("GoGreen");
-        
-        // sets the theme
-        theme = "src/styles/mainSceneDefaultTheme.css";
-        
-        //the silentLogin will login for the user
-        if (client.Communication.silentLogin()) {
-            ApplicationMethods.setPresets();
-            mainScreen();
-        } else {
-            loginScene();
-        }
     }
 }
