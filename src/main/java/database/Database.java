@@ -765,7 +765,7 @@ public class Database {
             Connection con = DriverManager.getConnection();
             //accepted or ongoing challenge challenges
             PreparedStatement stateA = con.prepareStatement("SELECT user_a, user_b, score_a, score_b, goal FROM challenges "
-                    + "WHERE user_a = ? AND score_a IS NOT NULL");
+                    + "WHERE user_a = ? AND score_a <> -1");
             stateA.setString(1, username);
             ResultSet rs = stateA.executeQuery();
             ArrayList<Challenge> listA = new ArrayList<>();
@@ -788,7 +788,7 @@ public class Database {
 
             //Challenges recieved by a user and not yet accepted
             PreparedStatement stateB = con.prepareStatement("SELECT user_a, user_b, score_a, score_b, goal FROM challenges "
-                    + "WHERE user_b = ? AND score_b IS NULL");
+                    + "WHERE user_b = ? AND score_b = -1");
 
             stateA.setString(1, username);
             ResultSet rs2 = stateA.executeQuery();
