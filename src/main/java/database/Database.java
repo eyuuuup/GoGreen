@@ -159,7 +159,7 @@ public class Database {
             System.out.println("retract called");
             PreparedStatement state =
                     con.prepareStatement("SELECT actions.action_name, events.points, "
-                            + "events.carbon_reduced, events.carbon_produced, events.date_time "
+                            + "events.carbon_reduced, events.carbon_produced, events.date_time, events.description "
                             + "FROM events JOIN actions ON events.action_id = actions.action_id "
                             + "WHERE events.username = ? "
                             + "ORDER BY date_time DESC LIMIT 10");
@@ -175,6 +175,7 @@ public class Database {
                 action.setCarbonProduced(rs.getInt(3));
                 action.setCarbonReduced(rs.getInt(4));
                 action.setDate(rs.getLong(5));
+                action.setDescription(rs.getString(6));
                 
                 list.add(action);
             }
