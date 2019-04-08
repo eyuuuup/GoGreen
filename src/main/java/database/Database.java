@@ -119,8 +119,8 @@ public class Database {
             
             PreparedStatement state1 =
                     con.prepareStatement("INSERT INTO events (action_id, date_time, "
-                            + "points, parent_category, username, carbon_reduced, carbon_produced)"
-                            + "VALUES (?, ?, ?, ?, ?,?,?);");
+                            + "points, parent_category, username, carbon_reduced, carbon_produced, description)"
+                            + "VALUES (?, ?, ?, ?, ?,?,?, ?);");
             state1.setInt(1, actionId);
             
             Long outputDate = Instant.now().getMillis();
@@ -131,6 +131,7 @@ public class Database {
             state1.setString(5, getUsername(action.getToken()));
             state1.setDouble(6, action.getCarbonReduced());
             state1.setDouble(7, action.getCarbonProduced());
+            state1.setString(8, action.getDescription());
             state1.executeUpdate();
             
             
@@ -743,7 +744,7 @@ public class Database {
             Connection con      = DriverManager.getConnection();
             //accepted or ongoing challenge challenges
             PreparedStatement stateA = con.prepareStatement("SELECT user_a, user_b, score_a, score_b, goal FROM challenges "
-                    + "WHERE user_a = ? AND score_a IS NOT NULL");
+                    + "WHERE user_a = ? AND score_a <> -1");
             stateA.setString(1, username);
             ResultSet            rs    = stateA.executeQuery();
             ArrayList<Challenge> listA = new ArrayList<>();
@@ -766,8 +767,8 @@ public class Database {
             
             //Challenges recieved by a user and not yet accepted
             PreparedStatement stateB = con.prepareStatement("SELECT user_a, user_b, score_a, score_b, goal FROM challenges "
-                    + "WHERE user_b = ? AND score_b IS NULL");
-            
+                    + "WHERE user_b = ? AND score_b = -1");
+
             stateA.setString(1, username);
             ResultSet            rs2   = stateA.executeQuery();
             ArrayList<Challenge> listB = new ArrayList<>();
