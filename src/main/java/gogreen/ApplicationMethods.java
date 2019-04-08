@@ -22,6 +22,7 @@ class ApplicationMethods {
     private static int followingSize;
     private static int followersSize;
     private static double savedCarbon;
+    private static String username;
     private static boolean solarPanel;
     private static boolean electricCar;
     private static boolean envGroup;
@@ -200,6 +201,7 @@ class ApplicationMethods {
             points = onload.getUser().getTotalScore();
             followingSize = onload.getFollowing().getList().size();
             followersSize = onload.getFollowers().getList().size();
+            username = onload.getUser().getName();
             solarPanel = onload.isSolarCar();
             electricCar = onload.isElectricCar();
             envGroup = onload.isEnvGroup();
@@ -224,6 +226,8 @@ class ApplicationMethods {
     static int getFollowersSize() {
         return followersSize;
     }
+
+    static String getUsername() { return username; }
 
     static double getSavedCarbon() {
         return savedCarbon;
