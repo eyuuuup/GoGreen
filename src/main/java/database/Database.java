@@ -835,15 +835,17 @@ public class Database {
                             + "(SELECT total_score FROM total_score WHERE username = ?), "
                             + "score_b = "
                             + "(SELECT total_score FROM total_score WHERE username = ?)"
-                            + ", time_added = ? WHERE user_a = ? OR user_b = ?");
+                            + ", time_added = ? WHERE user_a = ? AND user_b = ?");
 
             String userA = challenge.getUsername();
             String userB = getUsername(challenge.getToken());
+
             state.setString(1, userA);
             state.setString(2, userB);
             state.setLong(3, Instant.now().getMillis());
             state.setString(4, userA);
             state.setString(5, userB);
+            state.executeUpdate();
 
             con.close();
             return true;
