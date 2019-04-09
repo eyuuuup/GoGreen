@@ -9,18 +9,14 @@ import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXToggleButton;
 import com.jfoenix.controls.JFXToggleNode;
-
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import de.jensd.fx.glyphs.octicons.OctIcon;
 import de.jensd.fx.glyphs.octicons.OctIconView;
-
 import javafx.geometry.Pos;
-
 import javafx.scene.Scene;
-
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -30,61 +26,34 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-
 import javafx.scene.paint.Paint;
-
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.rmi.ConnectIOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class Application extends javafx.application.Application {
     //the stage this application uses
-    private static Stage stage;
+    private static Stage  stage;
     private static String theme;
 
     //launches the app
     public static void main(String[] args) {
         launch();
-    }
-
-    /**
-     * this method starts the application.
-     *
-     * @param stage stage
-     */
-    @Override
-    public void start(Stage stage) {
-        ApplicationMethods.onLoad();
-
-
-        this.stage = stage;
-        stage.getIcons().add(new Image("file:src/planets/icon.gif"));
-        stage.setResizable(false);
-        stage.setTitle("GoGreen");
-
-        // sets the theme
-        theme = "src/styles/mainSceneDefaultTheme.css";
-
-        //the silentLogin will login for the user
-        if (client.Communication.silentLogin()) {
-            ApplicationMethods.setPresets();
-            mainScreen();
-        } else {
-            loginScene();
-        }
     }
 
     /**
@@ -107,7 +76,6 @@ public class Application extends javafx.application.Application {
 
     /**
      * The login screen.
-     *
      * @return the screen
      */
     private static GridPane loginScreen() {
@@ -125,10 +93,11 @@ public class Application extends javafx.application.Application {
         visiblePassword.setVisible(false);
 
         //checkbox to toggle between visible password and masked password
-        JFXToggleNode showPassword = new JFXToggleNode();
-        MaterialDesignIconView showIcon = new MaterialDesignIconView(MaterialDesignIcon.EYE);
+        JFXToggleNode          showPassword = new JFXToggleNode();
+        MaterialDesignIconView showIcon     = new MaterialDesignIconView(MaterialDesignIcon.EYE);
         showIcon.setSize("20px");
         showPassword.setGraphic(new Label("Show password", showIcon));
+        showPassword.setId("loginButtons");
         showPassword.setOnAction(e -> {
             toggleVisibility(
                     visiblePassword, password, showPassword.isSelected());
@@ -137,9 +106,11 @@ public class Application extends javafx.application.Application {
         //checkbox if the user wants the application to remember the username and password
         JFXToggleNode rememberUser = new JFXToggleNode();
         rememberUser.setGraphic(new Label("Remember me"));
+        rememberUser.setId("loginButtons");
 
         //button to log in with the given credentials
         JFXButton login = new JFXButton("Login");
+        login.setId("loginButton");
         login.setOnAction(e -> {
             try {
                 ApplicationMethods.login(
@@ -151,6 +122,7 @@ public class Application extends javafx.application.Application {
 
         //button if the user wants to register instead of to log in
         JFXButton register = new JFXButton("or register");
+        register.setId("loginButtons");
         register.setOnAction(e -> {
             registerScene();
         });
@@ -183,7 +155,6 @@ public class Application extends javafx.application.Application {
 
     /**
      * The body for the register display.
-     *
      * @return the body
      */
     private static GridPane registerScreen() {
@@ -208,10 +179,11 @@ public class Application extends javafx.application.Application {
         visiblePasswordTwo.setVisible(false);
 
         //checkbox to toggle between visible password and masked password
-        JFXToggleNode showPassword = new JFXToggleNode();
-        MaterialDesignIconView showIcon = new MaterialDesignIconView(MaterialDesignIcon.EYE);
+        JFXToggleNode          showPassword = new JFXToggleNode();
+        MaterialDesignIconView showIcon     = new MaterialDesignIconView(MaterialDesignIcon.EYE);
         showIcon.setSize("20px");
         showPassword.setGraphic(new Label("Show password", showIcon));
+        showPassword.setId("loginButtons");
         showPassword.setOnAction(e -> {
             toggleVisibility(visiblePassword, password, showPassword.isSelected());
             toggleVisibility(visiblePasswordTwo, passwordTwo, showPassword.isSelected());
@@ -219,6 +191,7 @@ public class Application extends javafx.application.Application {
 
         //checkbox if the user wants his username and password to be remembered
         JFXToggleNode rememberUser = new JFXToggleNode();
+        rememberUser.setId("loginButtons");
         rememberUser.setGraphic(new Label("Remember me"));
 
         // make the register text
@@ -227,6 +200,7 @@ public class Application extends javafx.application.Application {
 
         //button to register the information the user filled in
         JFXButton register = new JFXButton("Register");
+        register.setId("loginButton");
         register.setOnAction(e -> {
             try {
                 ApplicationMethods.register(username.getText(), password.getText(),
@@ -239,6 +213,7 @@ public class Application extends javafx.application.Application {
         });
 
         JFXButton back = new JFXButton("go Back");
+        back.setId("loginButtons");
         back.setOnAction(e -> {
             loginScene();
         });
@@ -316,7 +291,6 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the home screen.
-     *
      * @return home screen
      */
     private static Pane homeScreen() {
@@ -354,7 +328,6 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the sidebar.
-     *
      * @return the sidebar
      */
     private static GridPane sideBar() {
@@ -363,15 +336,15 @@ public class Application extends javafx.application.Application {
         Label username = new Label("@Username");
 
         double savedAmount = ApplicationMethods.getSavedCarbon();
-        Label reducedCO2 = new Label(savedAmount + "kg CO\u2082 saved");
+        Label  reducedCO2  = new Label(savedAmount + "kg CO\u2082 saved");
 
-        int points = ApplicationMethods.getPoints();
+        int   points     = ApplicationMethods.getPoints();
         Label pointsText = new Label(points + " Points");
 
-        int followers = ApplicationMethods.getFollowersSize();
+        int   followers     = ApplicationMethods.getFollowersSize();
         Label followersText = new Label(followers + " Followers");
 
-        int following = ApplicationMethods.getFollowingSize();
+        int   following     = ApplicationMethods.getFollowingSize();
         Label followingText = new Label(following + " Followed");
 
         Label temp = new Label("room for some medals \nor challenges");
@@ -391,12 +364,11 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the your world screen.
-     *
      * @return your world screen
      */
     private static BorderPane yourWorldScreen() {
         int points = ApplicationMethods.getPoints();
-        int level = ApplicationMethods.getLevel(points);
+        int level  = ApplicationMethods.getLevel(points);
 
         // make the your world images
         String planetLink = "file:src/planets/levelOneWorld.gif";
@@ -407,7 +379,7 @@ public class Application extends javafx.application.Application {
         }
 
         // make the your world view
-        Image world = new Image(planetLink);
+        Image     world         = new Image(planetLink);
         ImageView yourWorldView = new ImageView();
         yourWorldView.setImage(world);
 
@@ -450,7 +422,6 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the settings screen.
-     *
      * @return settings screen
      */
     private static BorderPane settingsScreen() {
@@ -484,8 +455,8 @@ public class Application extends javafx.application.Application {
         });
 
         // make the logout button
-        JFXButton logoutButton = new JFXButton();
-        MaterialDesignIconView logoutIcon = new MaterialDesignIconView(MaterialDesignIcon.LOGOUT);
+        JFXButton              logoutButton = new JFXButton();
+        MaterialDesignIconView logoutIcon   = new MaterialDesignIconView(MaterialDesignIcon.LOGOUT);
         logoutIcon.setSize("50px");
         logoutButton.setGraphic(new Label("Log out", logoutIcon));
         logoutButton.setId("settingButtons");
@@ -513,7 +484,6 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the about page.
-     *
      * @return the about page
      */
     private static BorderPane aboutScreen() {
@@ -543,7 +513,7 @@ public class Application extends javafx.application.Application {
         aboutText.setId("aboutText");
 
         // make the your world view
-        Image apiButton = new Image("file:src/aboutPicture/apiButton.png");
+        Image     apiButton     = new Image("file:src/aboutPicture/apiButton.png");
         ImageView apiButtonView = new ImageView();
         apiButtonView.setImage(apiButton);
 
@@ -574,7 +544,6 @@ public class Application extends javafx.application.Application {
 
     /**
      * make the category screen.
-     *
      * @return the category screen
      */
     private static Pane categoryScreen() {
@@ -584,27 +553,27 @@ public class Application extends javafx.application.Application {
 
         // make the transport tab
         Tab transportTab = new Tab();
-        transportTab.setText("Transport action");
+        transportTab.setText("Transport");
         transportTab.setContent(transportScreen());
 
         // make the food tab
         Tab foodTab = new Tab();
-        foodTab.setText("Food action");
+        foodTab.setText("Food");
         foodTab.setContent(foodScreen());
 
         // make the energy tab
         Tab energyTab = new Tab();
-        energyTab.setText("Energy action");
+        energyTab.setText("Energy");
         energyTab.setContent(energyScreen());
 
         // make the extra tab
         Tab extraTab = new Tab();
-        extraTab.setText("Extra action");
+        extraTab.setText("Extra");
         extraTab.setContent(extraScreen());
 
         // make the one time events tab
         Tab oteTab = new Tab();
-        oteTab.setText("One Time Event action");
+        oteTab.setText("Luxury items");
         oteTab.setContent(oteScreen());
 
         // add all the tabs to the navigation bar
@@ -620,14 +589,13 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the transport screen.
-     *
      * @return the transport screen
      */
     private static BorderPane transportScreen() {
 
         // make the description box
         TextField transportDescription = new TextField();
-        transportDescription.setPromptText("write a description here!");
+        transportDescription.setPromptText("Write a description here");
         transportDescription.setId("description");
 
         // make the text field
@@ -636,12 +604,12 @@ public class Application extends javafx.application.Application {
         distance.setId("distance");
 
         // make the error label
-        Label transportInfo = new Label("Please fill in your distance \n"
-                + "and select your transportation vehicle");
+        Label transportInfo = new Label("Please fill in your travelled distance, \n"
+                + "and select your method of transportation:");
         transportInfo.setId("information");
 
         //button for the cycle action
-        JFXButton cycle = new JFXButton();
+        JFXButton           cycle    = new JFXButton();
         FontAwesomeIconView bikeIcon = new FontAwesomeIconView(FontAwesomeIcon.BICYCLE);
         bikeIcon.setSize("50px");
         cycle.setGraphic(bikeIcon);
@@ -656,7 +624,7 @@ public class Application extends javafx.application.Application {
                 Transport.addCycleAction(distanceInt);
                 refresh();
             } catch (NumberFormatException exception) {
-                transportInfo.setText("Please only use numbers");
+                transportInfo.setText("Please only use numbers!");
             } catch (ConnectIOException | IllegalArgumentException exception) {
                 exception.printStackTrace();
                 transportInfo.setText("Number is too high \nDid you really cycle that far?");
@@ -664,8 +632,8 @@ public class Application extends javafx.application.Application {
         });
 
         //button for the public transport action
-        JFXButton publicTransport = new JFXButton();
-        MaterialDesignIconView subwayIcon = new MaterialDesignIconView(MaterialDesignIcon.SUBWAY);
+        JFXButton              publicTransport = new JFXButton();
+        MaterialDesignIconView subwayIcon      = new MaterialDesignIconView(MaterialDesignIcon.SUBWAY);
         subwayIcon.setSize("50px");
         publicTransport.setGraphic(subwayIcon);
         publicTransport.setId("actionButton");
@@ -680,7 +648,7 @@ public class Application extends javafx.application.Application {
                 refresh();
             } catch (NumberFormatException exception) {
                 // throw error
-                transportInfo.setText("Please only use numbers");
+                transportInfo.setText("Please only use numbers!");
             } catch (ConnectIOException | IllegalArgumentException exception) {
                 exception.printStackTrace();
                 transportInfo.setText("Number is too high \n"
@@ -689,7 +657,7 @@ public class Application extends javafx.application.Application {
         });
 
         //button for the car action
-        JFXButton car = new JFXButton();
+        JFXButton           car     = new JFXButton();
         FontAwesomeIconView carIcon = new FontAwesomeIconView(FontAwesomeIcon.AUTOMOBILE);
         carIcon.setSize("50px");
         car.setGraphic(carIcon);
@@ -706,7 +674,7 @@ public class Application extends javafx.application.Application {
                 refresh();
             } catch (NumberFormatException exception) {
                 // throw error
-                transportInfo.setText("Please only use numbers");
+                transportInfo.setText("Please only use numbers!");
             } catch (ConnectIOException | IllegalArgumentException exception) {
                 exception.printStackTrace();
                 transportInfo.setText("Number is too high \n"
@@ -715,7 +683,7 @@ public class Application extends javafx.application.Application {
         });
 
         //button for the plane action
-        JFXButton plane = new JFXButton();
+        JFXButton           plane     = new JFXButton();
         FontAwesomeIconView planeIcon = new FontAwesomeIconView(FontAwesomeIcon.PLANE);
         planeIcon.setSize("50px");
         plane.setGraphic(planeIcon);
@@ -732,11 +700,11 @@ public class Application extends javafx.application.Application {
                 refresh();
             } catch (NumberFormatException exception) {
                 // throw error
-                transportInfo.setText("Please only use numbers");
+                transportInfo.setText("Please only use numbers!");
             } catch (ConnectIOException | IllegalArgumentException exception) {
                 exception.printStackTrace();
                 transportInfo.setText("Number is too high \n"
-                        + "You can't fly around the world multiple times");
+                        + "You can't fly around the world multiple times!");
             }
         });
 
@@ -759,7 +727,6 @@ public class Application extends javafx.application.Application {
         transportCenter.add(car, 0, 5);
         transportCenter.add(plane, 0, 6);
 
-
         transportCenter.setId("transportPage");
 
         // make the page and set the sidebar
@@ -773,27 +740,26 @@ public class Application extends javafx.application.Application {
 
     /**
      * make the food screen.
-     *
      * @return
      */
     private static BorderPane foodScreen() {
         // info label
-        Label foodInfo = new Label("please select the characteristics your food has");
+        Label foodInfo = new Label("Please select the characteristics of your meal:");
         foodInfo.setId("information");
 
         // make the description box
         TextField foodDescription = new TextField();
-        foodDescription.setPromptText("write a description here!");
+        foodDescription.setPromptText("Write a description here");
         foodDescription.setId("description");
 
         //makes send button
-        JFXButton send = new JFXButton("send action");
+        JFXButton send = new JFXButton("Approve");
         send.setId("actionButton");
 
         // make the check boxes
-        JFXCheckBox veggie = new JFXCheckBox("Veggie");
+        JFXCheckBox veggie  = new JFXCheckBox("Veggie");
         JFXCheckBox locally = new JFXCheckBox("Locally");
-        JFXCheckBox bio = new JFXCheckBox("Biological");
+        JFXCheckBox bio     = new JFXCheckBox("Biological");
 
         // when you press the send button, it will look what is selected and add those actions
         send.setOnAction(e -> {
@@ -802,7 +768,7 @@ public class Application extends javafx.application.Application {
                 System.out.println(foodDescription.getText());
                 refresh();
             } catch (ConnectIOException | IllegalArgumentException e1) {
-                foodInfo.setText("You have reached the daily limit of food actions \n");
+                foodInfo.setText("You have reached the daily limit of food actions! \n");
                 e1.printStackTrace();
             }
 
@@ -811,7 +777,6 @@ public class Application extends javafx.application.Application {
             locally.setSelected(false);
             bio.setSelected(false);
         });
-
 
         //make the page and will add the nodes
         GridPane foodCenter = new GridPane();
@@ -834,25 +799,23 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the energy screen.
-     *
      * @return the energy screen
      */
     private static BorderPane energyScreen() {
 
         // make the labels
-        Label waterTime = new Label("Add shower time");
+        Label waterTime = new Label("Add shower time.");
         waterTime.setId("information");
-
-        Label waterInfo = new Label("Slide to the amount you showered");
+        Label waterInfo = new Label("Slide to the amount of minutes you showered:");
         waterInfo.setId("error");
 
         // make the description textfield
         TextField waterDescription = new TextField();
-        waterDescription.setPromptText("write a description here!");
+        waterDescription.setPromptText("Write a description here");
         waterDescription.setId("description");
 
         // makes the add button
-        JFXButton addWater = new JFXButton("add shower time");
+        JFXButton addWater = new JFXButton("Add shower time");
         addWater.setId("smallButton");
 
         // make the water time slider
@@ -872,29 +835,29 @@ public class Application extends javafx.application.Application {
                 try {
                     System.out.println(waterDescription.getText());
                     Energy.addReduceWater(value);
+                    System.out.println(value);
                     refresh();
                 } catch (ConnectIOException e1) {
                     e1.printStackTrace();
                 }
             } else {
-                waterInfo.setText("Please fill in the minutes you showered");
+                waterInfo.setText("Please fill in the amount of minutes you showered.");
             }
         });
 
         // make the labels
-        Label temperature = new Label("Add house temperature");
+        Label temperature = new Label("Add house temperature.");
         temperature.setId("information");
-
-        Label temperatureInfo = new Label("Slide to add your house temperature");
+        Label temperatureInfo = new Label("Slide to your house temperature:");
         temperatureInfo.setId("error");
 
         // make the description textfield
         TextField tempratureDescription = new TextField();
-        tempratureDescription.setPromptText("write a description here!");
+        tempratureDescription.setPromptText("Write a description here");
         tempratureDescription.setId("description");
 
         // make the button
-        JFXButton addTemperature = new JFXButton("add house temperature");
+        JFXButton addTemperature = new JFXButton("Add house temperature");
         addTemperature.setId("smallButton");
 
         // make the water time slider
@@ -936,18 +899,20 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the extra screen.
-     *
      * @return the extra screen
      */
     private static BorderPane extraScreen() {
+        Label extrainfo = new Label("Add extra action:");
+        extrainfo.setId("information");
+
         // make the description field
         TextField extraDescription = new TextField();
-        extraDescription.setPromptText("write a description here!");
+        extraDescription.setPromptText("Write a description here");
         extraDescription.setId("description");
 
         // makes the clean surrounding button
-        JFXButton cleanSurrounding = new JFXButton();
-        OctIconView trashIcon = new OctIconView(OctIcon.TRASHCAN);
+        JFXButton   cleanSurrounding = new JFXButton();
+        OctIconView trashIcon        = new OctIconView(OctIcon.TRASHCAN);
         trashIcon.setSize("50px");
         cleanSurrounding.setGraphic(new Label("Clean surrounding", trashIcon));
         cleanSurrounding.setId("actionButton");
@@ -960,7 +925,7 @@ public class Application extends javafx.application.Application {
         });
 
         // makes the recycle button
-        JFXButton recycle = new JFXButton();
+        JFXButton              recycle     = new JFXButton();
         MaterialDesignIconView recycleIcon = new MaterialDesignIconView(MaterialDesignIcon.RECYCLE);
         recycleIcon.setSize("50px");
         recycle.setGraphic(new Label("Recycle", recycleIcon));
@@ -975,6 +940,7 @@ public class Application extends javafx.application.Application {
 
         // makes the page and adds the nodes
         GridPane extraCenter = new GridPane();
+//        extraCenter.add(extrainfo, 0, 0);
         extraCenter.add(extraDescription, 0, 0);
         extraCenter.add(cleanSurrounding, 0, 1);
         extraCenter.add(recycle, 0, 2);
@@ -991,17 +957,16 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the one time events screen.
-     *
      * @return the one time events page
      */
     private static BorderPane oteScreen() {
         // makes the label
-        Label oteInfo = new Label("Select all the things you have or did");
+        Label oteInfo = new Label("Select according to your lifestyle:");
         oteInfo.setId("information");
 
         // makes the solar panel toggle
         JFXToggleButton solarPanels = new JFXToggleButton();
-        solarPanels.setText("Solar Panels");
+        solarPanels.setText("Solar panels");
         solarPanels.setOnAction(e -> {
             if (solarPanels.isSelected()) {
                 OneTimeEvent.addSolarPanelAction();
@@ -1047,7 +1012,6 @@ public class Application extends javafx.application.Application {
 
     /**
      * make the stats screen.
-     *
      * @return the stats screen
      */
     private static Pane statsScreen() {
@@ -1077,7 +1041,6 @@ public class Application extends javafx.application.Application {
 
     /**
      * make the overview screen.
-     *
      * @return the overview screen
      */
     private static BorderPane overviewScreen() {
@@ -1089,24 +1052,27 @@ public class Application extends javafx.application.Application {
         amountSavedLabel.setId("title");
 
         // makes the xAxis and yAxis
-        int[] data = {500, 200, 600, 794, 240, 1234, 645, 2345, 756, 234, 243, 745, 234, 863, 234, 856, 235, 745, 234, 644};
+        double[]         data  = Communication.getRecentCOSavings();
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
+
+        xAxis.setTickLabelsVisible(false);
+//        xAxis.setTickMarkVisible(false);
 
         // makes the chart
         final LineChart<Number, Number> lineChart =
                 new LineChart<Number, Number>(xAxis, yAxis);
 
         // sets the title and make data
-        lineChart.setTitle("Recent co\u2082 reduction");
+        lineChart.setTitle("Recent CO\u2082 reductions");
         XYChart.Series series = new XYChart.Series();
         lineChart.setLegendVisible(false);
 
         // sets the data
-        int pos = 1;
-        for (int i : data) {
-            series.getData().add(new XYChart.Data(pos, i));
-            pos++;
+        double total = ApplicationMethods.getSavedCarbon();
+        for (int i = data.length; i > 0; i--) {
+            series.getData().add(new XYChart.Data(i, total));
+            total -= data[i - 1];
         }
         lineChart.getData().add(series);
         lineChart.setCreateSymbols(false);
@@ -1134,15 +1100,18 @@ public class Application extends javafx.application.Application {
         // makes the header
         GridPane historyList = new GridPane();
         historyList.setId("historyList");
-        historyList.add(new Label("Recent Activity:"), 0, 0);
+        historyList.add(new Label("Recent activity:"), 0, 0);
         historyList.add(new Label("Date:"), 1, 0);
         historyList.add(new Label("Description"), 2, 0);
 
         // add the history to the page
-        int pos = 1;
+        int        pos       = 1;
+        DateFormat formatter = new SimpleDateFormat("d MMMM YYYY / HH:mm");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
         for (client.Action a : client.Communication.getLastThreeActions()) {
             historyList.add(new Label(a.getAction()), 0, pos);
-            historyList.add(new Label(String.valueOf(a.getDate())), 1, pos);
+            String date = formatter.format(new Date(a.getDate()));
+            historyList.add(new Label(date), 1, pos);
             historyList.add(new Label("Description"), 2, pos);
             pos++;
         }
@@ -1166,7 +1135,6 @@ public class Application extends javafx.application.Application {
 
     /**
      * make the competition screen.
-     *
      * @return the competition screen
      */
     private static Pane competitionScreen() {
@@ -1206,7 +1174,6 @@ public class Application extends javafx.application.Application {
 
     /**
      * make the leaderboard screen.
-     *
      * @return the leaderboard screen
      */
     private static BorderPane leaderboardScreen() {
@@ -1232,8 +1199,8 @@ public class Application extends javafx.application.Application {
         int pos = 1;
         for (CompareFriends users : topTen) {
             String username = ApplicationMethods.decodeUsername(users.getUsername());
-            int score = users.getScore();
-            int level = ApplicationMethods.getLevel(score);
+            int    score    = users.getScore();
+            int    level    = ApplicationMethods.getLevel(score);
             leaderboard.add(new Label(pos + "."), 0, pos);
             leaderboard.add(new Label(username), 1, pos);
             leaderboard.add(new Label(String.valueOf(score)), 2, pos);
@@ -1256,7 +1223,6 @@ public class Application extends javafx.application.Application {
 
     /**
      * make the friends screen.
-     *
      * @return the friends screen
      */
     private static BorderPane friendsScreen() {
@@ -1276,7 +1242,7 @@ public class Application extends javafx.application.Application {
 
         // makes the search field
         TextField searchField = new TextField();
-        searchField.setPromptText("search");
+        searchField.setPromptText("Search");
         searchField.setPrefWidth(300);
         searchField.setAlignment(Pos.CENTER);
 
@@ -1310,7 +1276,6 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes a gridpane of the people you follow.
-     *
      * @return the gridpane with people you follow
      */
     private static GridPane followingList() {
@@ -1326,8 +1291,8 @@ public class Application extends javafx.application.Application {
             int pos = 1;
             for (CompareFriends friend : friends) {
                 String username = ApplicationMethods.decodeUsername(friend.getUsername());
-                int score = friend.getScore();
-                int level = ApplicationMethods.getLevel(score);
+                int    score    = friend.getScore();
+                int    level    = ApplicationMethods.getLevel(score);
                 friendsList.add(new Label(username), 0, pos);
                 friendsList.add(new Label(score + " points"), 1, pos);
                 friendsList.add(new Label("Level " + level), 2, pos);
@@ -1340,7 +1305,6 @@ public class Application extends javafx.application.Application {
 
     /**
      * make the friend request screen.
-     *
      * @return the friend request screen
      */
     private static BorderPane friendRequestScreen() {
@@ -1359,8 +1323,8 @@ public class Application extends javafx.application.Application {
         // puts all the friendrequests and buttons in the container
         for (CompareFriends followers : friends) {
             String username = ApplicationMethods.decodeUsername(followers.getUsername());
-            int score = followers.getScore();
-            int level = ApplicationMethods.getLevel(score);
+            int    score    = followers.getScore();
+            int    level    = ApplicationMethods.getLevel(score);
 
             // make the username label
             Label user = new Label(username);
@@ -1394,7 +1358,6 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the challenge page.
-     *
      * @return the challenge page
      */
     private static BorderPane challengeScreen() {
@@ -1416,14 +1379,14 @@ public class Application extends javafx.application.Application {
         addChallenge.setOnAction(e -> {
             try {
 
-               int goal = Integer.parseInt(goalField.getText());
-               String user = ApplicationMethods.encodeUsername(userField.getText());
-               CompareFriends challenge = new CompareFriends();
+                int            goal      = Integer.parseInt(goalField.getText());
+                String         user      = ApplicationMethods.encodeUsername(userField.getText());
+                CompareFriends challenge = new CompareFriends();
                 System.out.println(Communication.checkUsername(ApplicationMethods.decodeUsername(user)));
-               challenge.setScore(goal);
-               challenge.setUsername(user);
-               client.Communication.sendChallenge(challenge);
-            } catch(NumberFormatException exception) {
+                challenge.setScore(goal);
+                challenge.setUsername(user);
+                client.Communication.sendChallenge(challenge);
+            } catch (NumberFormatException exception) {
                 challengeInfo.setText("Please fill in a number as goal");
             }
         });
@@ -1464,8 +1427,8 @@ public class Application extends javafx.application.Application {
 
     private static GridPane challengeList() {
         // getting the challenges you accepted
-        ChallengesList challenges = Communication.showChallenges();
-        GridPane challengeContainer = new GridPane();
+        ChallengesList challenges         = Communication.showChallenges();
+        GridPane       challengeContainer = new GridPane();
         challengeContainer.setId("challenges");
 
         try {
@@ -1474,12 +1437,12 @@ public class Application extends javafx.application.Application {
                 ProgressBar progress = new ProgressBar(ApplicationMethods.getLevelProgress(c.getGoal()));
                 progress.setId("challengeProgress");
                 String username = ApplicationMethods.decodeUsername(c.getUserB());
-                Label goal = new Label("Goal: " + c.getGoal());
-                Label user = new Label("User: " + username);
+                Label  goal     = new Label("Goal: " + c.getGoal());
+                Label  user     = new Label("User: " + username);
                 challengeContainer.add(goal, 0, pos);
                 challengeContainer.add(user, 1, pos);
-                challengeContainer.add(new Label("Progress:"), 2,pos);
-                challengeContainer.add(progress,3,pos);
+                challengeContainer.add(new Label("Progress:"), 2, pos);
+                challengeContainer.add(progress, 3, pos);
                 pos++;
             }
         } catch (NullPointerException e) {
@@ -1499,33 +1462,33 @@ public class Application extends javafx.application.Application {
         ChallengesList challenges = Communication.showChallenges();
         try {
             int pos = 0;
-            for(client.Challenge c: challenges.getReceivedList()) {
+            for (client.Challenge c : challenges.getReceivedList()) {
                 String username = ApplicationMethods.decodeUsername(c.getUserA());
-                Label goal = new Label("Goal: " + c.getGoal());
-                Label user = new Label("User: " + username);
+                Label  goal     = new Label("Goal: " + c.getGoal());
+                Label  user     = new Label("User: " + username);
 
                 JFXButton accept = new JFXButton("Accept Challenge");
                 accept.setId("smallButton");
                 receivedChallenge.add(goal, 0, pos);
-                receivedChallenge.add(user,1,pos);
-                receivedChallenge.add(accept,2,pos);
+                receivedChallenge.add(user, 1, pos);
+                receivedChallenge.add(accept, 2, pos);
 
                 accept.setOnAction(e -> {
                     CompareFriends challenge = new CompareFriends();
                     challenge.setScore(c.getGoal());
                     challenge.setUsername(c.getUserA());
                     Communication.acceptChallenge(challenge);
-                    receivedChallenge.getChildren().removeAll(goal,user,accept);
+                    receivedChallenge.getChildren().removeAll(goal, user, accept);
                     challengeContainer.setContent(challengeList());
                 });
 
 
             }
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             System.out.println("null pointer");
             Label info = new Label("no recieved challenges");
             info.setId("information");
-            receivedChallenge.add(info,0,0);
+            receivedChallenge.add(info, 0, 0);
         }
 
         return receivedChallenge;
@@ -1533,7 +1496,6 @@ public class Application extends javafx.application.Application {
 
     /**
      * Toggle visibility between Textfield and PasswordField.
-     *
      * @param visible   the Textfield
      * @param invisible the PasswordField
      * @param show      whether to show the password
@@ -1552,7 +1514,6 @@ public class Application extends javafx.application.Application {
 
     /**
      * shows the given scene to the user.
-     *
      * @param scene scene
      */
     private static void show(Scene scene) {
@@ -1567,4 +1528,30 @@ public class Application extends javafx.application.Application {
         ApplicationMethods.setPresets();
         mainScreen();
     }
+
+    /**
+     * this method starts the application.
+     * @param stage stage
+     */
+    @Override
+    public void start(Stage stage) {
+        ApplicationMethods.onLoad();
+
+        this.stage = stage;
+        stage.getIcons().add(new Image("file:src/planets/icon.gif"));
+        stage.setResizable(false);
+        stage.setTitle("GoGreen");
+
+        // sets the theme
+        theme = "src/styles/mainSceneDefaultTheme.css";
+
+        //the silentLogin will login for the user
+        if (client.Communication.silentLogin()) {
+            ApplicationMethods.setPresets();
+            mainScreen();
+        } else {
+            loginScene();
+        }
+    }
+
 }

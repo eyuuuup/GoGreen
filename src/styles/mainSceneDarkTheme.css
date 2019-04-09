@@ -114,6 +114,14 @@
     -fx-font-size: 14;
 }
 
+#loginButtons{
+    -fx-pref-width: 300;
+}
+
+#loginButton{
+    -fx-pref-width: 200;
+}
+
 /* icon color */
 .glyph-icon{
     -fx-fill: #9ACD32;
