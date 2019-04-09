@@ -38,7 +38,7 @@ class ApplicationMethods {
         Transport.setHasElectricCar(false);
         Energy.setHasSolarPanels(false);
 //        Communication.onLoad(); Returns an object of class onLoadValues but action ids aren't set properly on server
-}
+    }
 
     /**
      * This methods logs in using the given username and password.
@@ -205,7 +205,7 @@ class ApplicationMethods {
             electricCar = onload.isElectricCar();
             envGroup = onload.isEnvGroup();
             // search here shruti
-            savedCarbon=onload.getCarbonReduce();
+            savedCarbon = onload.getCarbonReduce();
             savedCarbon = savedCarbon * 100;
             savedCarbon = (int) savedCarbon;
             savedCarbon = savedCarbon / 100;
@@ -229,7 +229,9 @@ class ApplicationMethods {
         return followersSize;
     }
 
-    static String getUsername() { return username; }
+    static String getUsername() {
+        return username;
+    }
 
     static double getSavedCarbon() {
         return savedCarbon;

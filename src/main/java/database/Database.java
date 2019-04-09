@@ -963,7 +963,8 @@ public class Database {
             state.setString(1, token);
             ResultSet rs = state.executeQuery();
 
-            OnLoadValues ote = new OnLoadValues();;
+            OnLoadValues ote = new OnLoadValues();
+            ;
             while (rs.next()) {
                 switch (rs.getInt(1)) {
                     case 12:
