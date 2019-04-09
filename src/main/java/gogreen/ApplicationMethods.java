@@ -207,6 +207,9 @@ class ApplicationMethods {
             envGroup = onload.isEnvGroup();
             // search here shruti
             savedCarbon = Communication.carbon().getCarbonReduced();
+            savedCarbon = savedCarbon * 100;
+            savedCarbon = (int) savedCarbon;
+            savedCarbon = savedCarbon / 100;
         } catch (NullPointerException e) {
             points = 0;
             followingSize = 0;

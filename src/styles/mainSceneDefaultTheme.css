@@ -12,7 +12,7 @@
 }
 
 #yourWorldPage{
-    -fx-vgap: 200;
+    -fx-vgap: 100;
 }
 
 #settingPage{
@@ -109,6 +109,14 @@
 
 #smallButton{
     -fx-font-size: 14;
+}
+
+#loginButtons{
+    -fx-pref-width: 300;
+}
+
+#loginButton{
+    -fx-pref-width: 200;
 }
 
 /* icon color */
