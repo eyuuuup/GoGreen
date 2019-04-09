@@ -118,7 +118,7 @@ public class Application extends javafx.application.Application {
         });
 
         //button if the user wants to register instead of to log in
-        JFXButton register = new JFXButton("or register");
+        JFXButton register = new JFXButton("Register");
         register.setId("loginButtons");
         register.setOnAction(e -> {
             registerScene();
@@ -1145,20 +1145,26 @@ public class Application extends javafx.application.Application {
         // makes the header
         GridPane historyList = new GridPane();
         historyList.setId("historyList");
-        historyList.add(new Label("Recent activity:"), 0, 0);
-        historyList.add(new Label("Date:"), 1, 0);
-        historyList.add(new Label("Description:"), 2, 0);
+
+        GridPane historyHeader = new GridPane();
+        historyHeader.setId("historyList");
+        historyHeader.add(new Label("Recent activity:"), 0, 0);
+        historyHeader.add(new Label("Date:"), 1, 0);
+        historyHeader.add(new Label("Description:"), 2, 0);
 
         ColumnConstraints activityCol = new ColumnConstraints();
+        activityCol.setMinWidth(180);
         ColumnConstraints dateCol = new ColumnConstraints();
+        dateCol.setMinWidth(230);
         ColumnConstraints descriptionCol = new ColumnConstraints();
         descriptionCol.setMaxWidth(275);
 
         historyList.getColumnConstraints().addAll(activityCol, dateCol, descriptionCol);
+        historyHeader.getColumnConstraints().addAll(activityCol, dateCol, descriptionCol);
 
         // add the history to the page
-        int pos = 1;
-        DateFormat formatter = new SimpleDateFormat("d MMMM YYYY / HH:mm");
+        int pos = 0;
+        DateFormat formatter = new SimpleDateFormat("d MMM YYYY / HH:mm");
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
         for (client.Action a : client.Communication.getLastThreeActions()) {
             Label description = new Label(a.getDescription());
@@ -1170,14 +1176,23 @@ public class Application extends javafx.application.Application {
             pos++;
         }
 
+        // makes the headerpane
+        ScrollPane historyHeaderPane = new ScrollPane();
+        historyHeaderPane.setContent(historyHeader);
+        historyHeaderPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        historyHeaderPane.setId("historyScrollPane");
+
         // makes the scrollpane
         ScrollPane historyPane = new ScrollPane();
         historyPane.setContent(historyList);
+        historyPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         historyPane.setId("historyScrollPane");
+
+        historyHeaderPane.setFitToWidth(historyPane.isFitToWidth());
 
         // makes the page
         VBox historyCenter = new VBox();
-        historyCenter.getChildren().addAll(historyTitle, historyPane);
+        historyCenter.getChildren().addAll(historyTitle, historyHeaderPane, historyPane);
 
         // makes the page and sets the sidebar
         BorderPane historyPage = new BorderPane();
