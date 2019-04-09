@@ -334,7 +334,7 @@ public class DatabaseTest {
     
     @Test
     public void checkUsernameWrong() throws SQLException {
-        when(resultSet.getString(1)).thenReturn("jan");
+        when(resultSet.next()).thenReturn(false);
         
         assertFalse(Database.checkUsername("Username"));
     }
