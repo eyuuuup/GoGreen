@@ -167,6 +167,7 @@ public class Controller {
         o.setChallenges(Database.retrieveChallenge(token));
         o.setFollowers(Database.showFollowers(token).getList().size());
         o.setFollowing(Database.showFriends(token).getList().size());
+        o.setCarbonReduce(Database.getCarbonReduced(token));
         return o;
     }
 

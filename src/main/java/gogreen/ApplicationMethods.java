@@ -1,5 +1,6 @@
 package gogreen;
 
+import client.Challenge;
 import client.Communication;
 import client.OnLoadValues;
 import com.google.common.hash.Hashing;
@@ -7,6 +8,7 @@ import com.google.common.hash.Hashing;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Scanner;
 
@@ -203,7 +205,7 @@ class ApplicationMethods {
             electricCar = onload.isElectricCar();
             envGroup = onload.isEnvGroup();
             // search here shruti
-            savedCarbon = Communication.carbon().getCarbonReduced();
+            savedCarbon=onload.getCarbonReduce();
             savedCarbon = savedCarbon * 100;
             savedCarbon = (int) savedCarbon;
             savedCarbon = savedCarbon / 100;

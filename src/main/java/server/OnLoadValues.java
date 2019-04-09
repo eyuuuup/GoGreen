@@ -12,6 +12,7 @@ public class OnLoadValues {
     private boolean solarPanel;
     private boolean electricCar;
     private boolean envGroup;
+    private double carbonReduce;
 
 
 
@@ -23,9 +24,10 @@ public class OnLoadValues {
         solarPanel =false;
         electricCar=false;
         envGroup=false;
+        carbonReduce=0;
     }
 
-    public OnLoadValues(User user, int followers, int following, ChallengesList challenges, boolean solarCar, boolean electricCar, boolean envGroup) {
+    public OnLoadValues(User user, int followers, int following, ChallengesList challenges, boolean solarCar, boolean electricCar, boolean envGroup, double carbonReduce) {
         this.user = user;
         this.followers = followers;
         this.following = following;
@@ -33,6 +35,7 @@ public class OnLoadValues {
         this.solarPanel  = solarCar;
         this.electricCar = electricCar;
         this.envGroup = envGroup;
+        this.carbonReduce=carbonReduce;
     }
 
     public User getUser() {
@@ -91,4 +94,15 @@ public class OnLoadValues {
     public void setEnvGroup(boolean envGroup) {
         this.envGroup = envGroup;
     }
+
+
+    public double getCarbonReduce() {
+        return carbonReduce;
+    }
+
+    public void setCarbonReduce(double carbonReduce) {
+        this.carbonReduce = carbonReduce;
+    }
+
+
 }
