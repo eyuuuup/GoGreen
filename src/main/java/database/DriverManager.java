@@ -7,10 +7,11 @@ import java.sql.SQLException;
 /**
  * DriverManager is a class that sets up the connection to the database.
  */
-public class DriverManager   {
+public class DriverManager {
 
     /**
      * This method sets up the actual connect with the information provided.
+     *
      * @return A Connection object.
      */
     public static Connection getConnection() throws SQLException {

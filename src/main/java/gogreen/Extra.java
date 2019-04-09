@@ -4,10 +4,12 @@ import client.Communication;
 
 /**
  * Representation of the ExtraCategory.
+ *
  * @author Gyum cho
  */
 final class Extra {
-    private Extra() {}
+    private Extra() {
+    }
 
     /**
      * Method for cleaning your surrounding.

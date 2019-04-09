@@ -15,7 +15,7 @@ public class Challenge {
         this.goal = goal;
     }
 
-    public Challenge(){
+    public Challenge() {
 
     }
 

@@ -9,11 +9,12 @@ public class Challenge {
 
     /**
      * Constructor for the Challenge class.
-     * @param userA String of userA.
-     * @param userB String of userB.
+     *
+     * @param userA  String of userA.
+     * @param userB  String of userB.
      * @param scoreA Score of userA.
      * @param scoreB score of userB.
-     * @param goal amount of points needed.
+     * @param goal   amount of points needed.
      */
     public Challenge(String userA, String userB, int scoreA, int scoreB, int goal) {
         this.userA = userA;
@@ -23,7 +24,7 @@ public class Challenge {
         this.goal = goal;
     }
 
-    public Challenge(){
+    public Challenge() {
 
     }
 

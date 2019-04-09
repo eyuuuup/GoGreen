@@ -12,7 +12,7 @@ public class ChallengesList {
 
     public ChallengesList() {
         list = new ArrayList<Challenge>();
-        receivedList= new ArrayList<Challenge>();
+        receivedList = new ArrayList<Challenge>();
     }
 
     public ChallengesList(ArrayList<Challenge> list, ArrayList<Challenge> receivedList) {

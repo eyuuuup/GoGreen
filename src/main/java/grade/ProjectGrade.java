@@ -6,9 +6,10 @@ public class ProjectGrade {
 
     /**
      * Returns a grade depending on if you used git and the project compiles.
-     * @param usedGit true if git was used
+     *
+     * @param usedGit  true if git was used
      * @param compiles true if the project compiled
-     * @param grade grade calculated from the rubric
+     * @param grade    grade calculated from the rubric
      * @return grade
      */
     public static double calculateGrade(boolean usedGit, boolean compiles, double grade) {
@@ -26,6 +27,7 @@ public class ProjectGrade {
 
     /**
      * Tells you when the ta is happy.
+     *
      * @param bringCake true if you brought cake
      * @return happyness of the TA
      */
