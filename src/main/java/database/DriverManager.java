@@ -20,7 +20,6 @@ public class DriverManager   {
                         + "&password=86bf9899b7ba509490d36a1735109060270"
                         + "adefe7db96bdfc2b59c959b069e3d"
                         + "&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory");
-        System.out.println("Connected to database");
         return con;
     }
 }
