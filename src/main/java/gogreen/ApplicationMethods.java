@@ -1,7 +1,5 @@
 package gogreen;
 
-import client.Challenge;
-import client.ChallengesList;
 import client.Communication;
 import client.OnLoadValues;
 import com.google.common.hash.Hashing;
@@ -9,7 +7,6 @@ import com.google.common.hash.Hashing;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Scanner;
 
@@ -199,10 +196,10 @@ class ApplicationMethods {
         try {
             OnLoadValues onload = Communication.onLoad();
             points = onload.getUser().getTotalScore();
-            followingSize = onload.getFollowing().getList().size();
-            followersSize = onload.getFollowers().getList().size();
+            followingSize = onload.getFollowing();
+            followersSize = onload.getFollowers();
             username = onload.getUser().getName();
-            solarPanel = onload.isSolarCar();
+            solarPanel = onload.isSolarPanel();
             electricCar = onload.isElectricCar();
             envGroup = onload.isEnvGroup();
             // search here shruti

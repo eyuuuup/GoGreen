@@ -162,11 +162,11 @@ public class Controller {
     @RequestMapping(value={"/onLoad"}, method=RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public static OnLoadValues onLoad(@Valid @RequestBody String token){
-        OnLoadValues o= new OnLoadValues();
+        OnLoadValues o= Database.getOTE(token);
         o.setUser(Database.getUser(token));
         o.setChallenges(Database.retrieveChallenge(token));
-        o.setFollowers(Database.showFollowers(token));
-        o.setFollowing(Database.showFriends(token));
+        o.setFollowers(Database.showFollowers(token).getList().size());
+        o.setFollowing(Database.showFriends(token).getList().size());
         return o;
     }
 

@@ -6,31 +6,30 @@ package client;
 public class OnLoadValues {
 
     private User user;
-    private FriendsList followers;
-    private FriendsList following;
+    private int followers;
+    private int following;
     private ChallengesList challenges;
-    private boolean solarCar;
+    private boolean solarPanel;
     private boolean electricCar;
     private boolean envGroup;
 
 
-
     public OnLoadValues() {
         user = new User();
-        followers = new FriendsList();
-        following = new FriendsList();
+        followers = 0;
+        following = 0;
         challenges = new ChallengesList();
-        solarCar=false;
-        electricCar=false;
-        envGroup=false;
+        solarPanel = false;
+        electricCar = false;
+        envGroup = false;
     }
 
-    public OnLoadValues(User user, FriendsList followers, FriendsList following, ChallengesList challenges, boolean solarCar, boolean electricCar, boolean envGroup) {
+    public OnLoadValues(User user, int followers, int following, ChallengesList challenges, boolean solarCar, boolean electricCar, boolean envGroup) {
         this.user = user;
         this.followers = followers;
         this.following = following;
         this.challenges = challenges;
-        this.solarCar = solarCar;
+        this.solarPanel = solarCar;
         this.electricCar = electricCar;
         this.envGroup = envGroup;
     }
@@ -39,11 +38,11 @@ public class OnLoadValues {
         return user;
     }
 
-    public FriendsList getFollowers() {
+    public int getFollowers() {
         return followers;
     }
 
-    public FriendsList getFollowing() {
+    public int getFollowing() {
         return following;
     }
 
@@ -55,11 +54,11 @@ public class OnLoadValues {
         this.user = user;
     }
 
-    public void setFollowers(FriendsList followers) {
+    public void setFollowers(int followers) {
         this.followers = followers;
     }
 
-    public void setFollowing(FriendsList following) {
+    public void setFollowing(int following) {
         this.following = following;
     }
 
@@ -67,12 +66,12 @@ public class OnLoadValues {
         this.challenges = challenges;
     }
 
-    public boolean isSolarCar() {
-        return solarCar;
+    public boolean isSolarPanel() {
+        return solarPanel;
     }
 
-    public void setSolarCar(boolean solarCar) {
-        this.solarCar = solarCar;
+    public void setSolarPanel(boolean solarPanel) {
+        this.solarPanel = solarPanel;
     }
 
     public boolean isElectricCar() {
