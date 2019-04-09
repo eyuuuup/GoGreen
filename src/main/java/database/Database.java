@@ -45,7 +45,8 @@ public class Database {
     private static PreparedStatement getLeaderboard;
     private static PreparedStatement getLastMeal;
     private static PreparedStatement addChallenge;
-    private static PreparedStatement updateChallenge;
+    private static PreparedStatement updateChallenge1;
+    private static PreparedStatement updateChallenge2;
 //    private static PreparedStatement retrieveChallenge;
 //    private static PreparedStatement initializeChallenge;
     private static PreparedStatement getRecentCOSavings;
@@ -188,13 +189,13 @@ public class Database {
                             + "VALUES (?, ?, ?)");
             
             
-            updateChallenge = connection.prepareStatement(
-                    "UPDATE challenges "
-                            + "SET score_a = "
-                            + "(SELECT total_score FROM total_score WHERE username = ?), "
-                            + "score_b = "
-                            + "(SELECT total_score FROM total_score WHERE username = ?) "
+            updateChallenge1 = connection.prepareStatement(
+                    "UPDATE challenges SET score_a = (SELECT total_score FROM total_score WHERE username = ?)"
                             + "WHERE user_a = ?");
+
+            updateChallenge2 = connection.prepareStatement(
+                    "UPDATE challenges SET score_b = (SELECT total_score FROM total_score WHERE username = ?)"
+                            + "WHERE user_b = ?");
             
             getRecentCOSavings = connection.prepareStatement(
                     "SELECT events.carbon_reduced "
@@ -815,13 +816,17 @@ public class Database {
         try {
             String username = getUsername(token);
             
-            PreparedStatement state = updateChallenge;
+            PreparedStatement state = updateChallenge1;
             
             state.setString(1, username);
             state.setString(2, username);
-            state.setString(3, username);
             state.executeUpdate();
-            
+
+            PreparedStatement state2 = updateChallenge2;
+            state.setString(1, username);
+            state.setString(2, username);
+            state.executeUpdate();
+
             return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
