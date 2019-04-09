@@ -1,4 +1,44 @@
-﻿# Group 4
+# Go Green
+An application that keeps track of your Co2 usage and helps you to save more Co2.
+
+# Why did we make this project
+We were tasked by our university to make this project, and also to make a great README
+, which is why this exists.
+
+# Screenshots
+
+## The login screen
+![login_screen](./Pictures/login_screen.PNG)
+
+## The home screen
+![home_screen](./Pictures/home_screen.PNG)
+
+## One of the action screens
+![action_screen](./Pictures/action.PNG)
+
+# What did we use?
+*  [Spring](https://spring.io/)
+*  [Heroku](https://www.heroku.com/postgres)
+*  [PostgreSQL](https://www.postgresql.org/)
+*  [Mockito](https://site.mockito.org/)
+*  [JavaFX](https://openjfx.io/)
+*  [JFoenix](http://www.jfoenix.com/)
+*  [Maven](https://maven.apache.org/)
+
+# Features
+*  Add a variety of daily tasks
+*  Track your Co2 savings
+*  Points and a leveling system
+*  Add followers and see yours
+*  See how you compare with others
+
+# How to use?
+
+1.  Download the source code/clone the repo
+2.  [Start the local server](../src/main/java/server/Main.java)
+3.  [Run the application](../src/main/java/gogreen/Application.java)
+
+# Credits
 
 ### Name: Gyum Cho
 
