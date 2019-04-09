@@ -19,9 +19,8 @@ public class FoodTest {
     public void setUp() throws Exception {
         PowerMockito.mockStatic(Communication.class);
         PowerMockito.mockStatic(Api.class);
-        Double d = Double.valueOf(100);
-        PowerMockito.when(Api.class, "carbonAmount", anyString()).thenReturn(d);
-        PowerMockito.when(Communication.addAction(anyString(), anyInt(), anyDouble(), anyDouble())).thenReturn(true);
+        PowerMockito.when(Api.class, "carbonAmount", anyString()).thenReturn(Double.valueOf(100));
+        PowerMockito.when(Communication.addAction(anyString(), anyInt(), anyDouble(), anyDouble(), anyString())).thenReturn(true);
     }
 
     @Test
