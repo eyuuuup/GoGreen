@@ -1102,7 +1102,6 @@ public class Application extends javafx.application.Application {
         final NumberAxis yAxis = new NumberAxis();
 
         xAxis.setTickLabelsVisible(false);
-//        xAxis.setTickMarkVisible(false);
 
         // makes the chart
         final LineChart<Number, Number> lineChart =
@@ -1142,20 +1141,24 @@ public class Application extends javafx.application.Application {
         Label historyTitle = new Label("Recent activities");
         historyTitle.setId("title");
 
-        // makes the header
+       // makes the list
         GridPane historyList = new GridPane();
         historyList.setId("historyList");
 
+        // makes the header
         GridPane historyHeader = new GridPane();
         historyHeader.setId("historyList");
         historyHeader.add(new Label("Recent activity:"), 0, 0);
         historyHeader.add(new Label("Date:"), 1, 0);
         historyHeader.add(new Label("Description:"), 2, 0);
 
+        // sets the column width
         ColumnConstraints activityCol = new ColumnConstraints();
-        activityCol.setMinWidth(180);
+        activityCol.setMinWidth(220);
+        activityCol.setMaxWidth(220);
         ColumnConstraints dateCol = new ColumnConstraints();
-        dateCol.setMinWidth(230);
+        dateCol.setMinWidth(180);
+        dateCol.setMaxWidth(180);
         ColumnConstraints descriptionCol = new ColumnConstraints();
         descriptionCol.setMaxWidth(275);
 
@@ -1164,14 +1167,15 @@ public class Application extends javafx.application.Application {
 
         // add the history to the page
         int pos = 0;
-        DateFormat formatter = new SimpleDateFormat("d MMM YYYY / HH:mm");
+        DateFormat formatter = new SimpleDateFormat("d MMM YYYY \nHH:mm");
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
         for (client.Action a : client.Communication.getLastThreeActions()) {
             Label description = new Label(a.getDescription());
             description.setWrapText(true);
             historyList.add(new Label(a.getAction()), 0, pos);
-            String date = formatter.format(new Date(a.getDate()));
-            historyList.add(new Label(date), 1, pos);
+            Label date = new Label(formatter.format(new Date(a.getDate())) + " (UTC)");
+            date.setWrapText(true);
+            historyList.add(date, 1, pos);
             historyList.add(description, 2, pos);
             pos++;
         }
