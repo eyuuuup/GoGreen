@@ -350,8 +350,6 @@ public class Application extends javafx.application.Application {
         int following = ApplicationMethods.getFollowingSize();
         Label followingText = new Label(following + " Followed");
 
-        Label temp = new Label("room for some medals \nor challenges");
-
         // puts everything into a container
         GridPane sideBar = new GridPane();
         sideBar.setId("sideBar");
@@ -360,8 +358,7 @@ public class Application extends javafx.application.Application {
         sideBar.add(pointsText, 0, 2);
         sideBar.add(followersText, 0, 3);
         sideBar.add(followingText, 0, 4);
-        sideBar.add(temp, 0, 5);
-
+        
         return sideBar;
     }
 
@@ -981,6 +978,7 @@ public class Application extends javafx.application.Application {
         // makes the solar panel toggle
         JFXToggleButton solarPanels = new JFXToggleButton();
         solarPanels.setText("Solar panels");
+        solarPanels.setSelected(ApplicationMethods.isSolarPanel());
         solarPanels.setOnAction(e -> {
             if (solarPanels.isSelected()) {
                 OneTimeEvent.addSolarPanelAction();
