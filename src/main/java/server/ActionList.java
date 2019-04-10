@@ -11,6 +11,7 @@ public class ActionList {
 
     /**
      * Constructs and initializes new instance of the class.
+     *
      * @param list list
      */
     public ActionList(ArrayList<Action> list) {
@@ -26,6 +27,7 @@ public class ActionList {
 
     /**
      * Getter for the list.
+     *
      * @return
      */
     public ArrayList<Action> getList() {
@@ -34,6 +36,7 @@ public class ActionList {
 
     /**
      * Setter for the list.
+     *
      * @param list list
      */
     public void setList(ArrayList<Action> list) {

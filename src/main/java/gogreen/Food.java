@@ -7,18 +7,21 @@ import java.rmi.ConnectIOException;
 /**
  * The food category will handle adding an action in the foodCategory.
  * And distributing the foodCategory points
+ *
  * @author Marit Radder
  * @author Erwin van Dam
  */
 public class Food {
-    private Food() {}
+    private Food() {
+    }
 
     /**
      * will receive three booleans and calculate the points for them.
      * next to this this method will calculate the amount of CO2 reduction.
-     * @param veggie vegetarian
+     *
+     * @param veggie  vegetarian
      * @param locally locally produced
-     * @param bio biological
+     * @param bio     biological
      */
     public static void addAction(boolean veggie, boolean locally, boolean bio)
             throws ConnectIOException {

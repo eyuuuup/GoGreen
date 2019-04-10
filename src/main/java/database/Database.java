@@ -1,14 +1,7 @@
 package database;
 
 import org.joda.time.Instant;
-import server.Action;
-import server.ActionList;
-import server.Challenge;
-import server.ChallengesList;
-import server.CompareFriends;
-import server.FriendsList;
-import server.TokenResponse;
-import server.User;
+import server.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -224,6 +217,7 @@ public class Database {
 
     /**
      * This method gets the username from the database.
+     *
      * @param token A String with the token.
      * @return the username.
      */
@@ -251,6 +245,7 @@ public class Database {
     /**
      * This methods queries the database for username,
      * mail and totalscore of user, found by token.
+     *
      * @param token String, token of the user
      * @return username, mail, totalscore of user
      */
@@ -281,6 +276,7 @@ public class Database {
 
     /**
      * This method saves the Action object in the database.
+     *
      * @param action An object of the class Action.
      * @return if the query succeeded.
      */
@@ -292,7 +288,7 @@ public class Database {
             state.setString(1, action.getAction());
             ResultSet rs = state.executeQuery();
 
-            int actionId       = 0;
+            int actionId = 0;
             int parentCategory = 0;
 
             while (rs.next()) {
@@ -302,7 +298,7 @@ public class Database {
 
             if (parentCategory == 1) {
                 long last = getLastMeal(action.getToken());
-                long now  = Instant.now().getMillis();
+                long now = Instant.now().getMillis();
 
                 long max = 12 * 60 * 60 * 1000;
                 long min = 1000;
@@ -341,6 +337,7 @@ public class Database {
 
     /**
      * This method gets the history of a user.
+     *
      * @param token the token from a user.
      * @return the history in a String.
      */
@@ -376,6 +373,7 @@ public class Database {
 
     /**
      * This method is for getting carbon reduced and produced.
+     *
      * @param token String token of the user
      * @return ACtion object wth carbon values
      */
@@ -406,6 +404,7 @@ public class Database {
 
     /**
      * This method updates the total score of a user.
+     *
      * @param token the token from a user.
      * @param score the score that should be added to the total.
      */
@@ -414,9 +413,9 @@ public class Database {
         try {
             System.out.println("updateTotalScores called");
 
-            int    currentTotalScore     = getTotalScore(token);
-            Action action                = Database.getCarbonValues(token);
-            double currentCarbonReduced  = action.getCarbonReduced();
+            int currentTotalScore = getTotalScore(token);
+            Action action = Database.getCarbonValues(token);
+            double currentCarbonReduced = action.getCarbonReduced();
             double currentCarbonProduced = action.getCarbonProduced();
 
             currentTotalScore = currentTotalScore + score;
@@ -438,6 +437,7 @@ public class Database {
 
     /**
      * returns the carbon reduction.
+     *
      * @param token token
      * @return carbon reduction
      */
@@ -465,6 +465,7 @@ public class Database {
 
     /**
      * get carbon produced.
+     *
      * @param token token
      * @return carbon produced
      */
@@ -492,6 +493,7 @@ public class Database {
 
     /**
      * This method queries the database to get the total score of a user.
+     *
      * @param token A String with the token of the user.
      * @return the total score of a user.
      */
@@ -519,6 +521,7 @@ public class Database {
 
     /**
      * Get the total score for a given user.
+     *
      * @param username the username
      * @return the total score
      */
@@ -545,6 +548,7 @@ public class Database {
 
     /**
      * This method queries the database with a token to look if the user exists.
+     *
      * @param token A string that contains the token.
      * @return if the query succeeded.
      */
@@ -571,6 +575,7 @@ public class Database {
 
     /**
      * This method registers a new user in the database.
+     *
      * @param user  An User object.
      * @param token A String with the token.
      */
@@ -600,6 +605,7 @@ public class Database {
 
     /**
      * This method checks if the username exists in the database.
+     *
      * @param username A string with the username.
      * @return if the users exists or not.
      */
@@ -626,6 +632,7 @@ public class Database {
 
     /**
      * This method checks if the user has a token in the database.
+     *
      * @param user A user Object.
      * @return A TokenResponse object
      */
@@ -653,6 +660,7 @@ public class Database {
 
     /**
      * This method adds User B as a friend of User A.
+     *
      * @param friend A Friend object.
      * @return if the query succeeded.
      */
@@ -674,6 +682,7 @@ public class Database {
 
     /**
      * This method shows the friends of a user.
+     *
      * @param token A String of the token.
      * @return the FriendsList object of all friends of a user.
      */
@@ -687,9 +696,9 @@ public class Database {
 
             ArrayList<CompareFriends> result = new ArrayList<>();
             while (rs.next()) {
-                String         usernameFriend = rs.getString(1);
-                int            score          = getTotalScoreByUser(usernameFriend);
-                CompareFriends friend         = new CompareFriends(usernameFriend, score);
+                String usernameFriend = rs.getString(1);
+                int score = getTotalScoreByUser(usernameFriend);
+                CompareFriends friend = new CompareFriends(usernameFriend, score);
                 result.add(friend);
             }
             return new FriendsList(result);
@@ -701,6 +710,7 @@ public class Database {
 
     /**
      * This methods shows the followers.
+     *
      * @param token A String of the token.
      * @return FriendsList object with the followers.
      */
@@ -715,7 +725,7 @@ public class Database {
             ArrayList<CompareFriends> result = new ArrayList<>();
             while (rs.next()) {
                 String username = rs.getString(1);
-                int    score    = rs.getInt(2);
+                int score = rs.getInt(2);
                 result.add(new CompareFriends(username, score));
             }
 
@@ -728,6 +738,7 @@ public class Database {
 
     /**
      * This methods gets the leaderboard.
+     *
      * @return A FriendsList object with the leaderboard inside.
      */
     public static FriendsList getLeaderboard() {
@@ -740,7 +751,7 @@ public class Database {
             ArrayList<CompareFriends> result = new ArrayList<>();
             while (rs.next()) {
                 String username = rs.getString(1);
-                int    score    = rs.getInt(2);
+                int score = rs.getInt(2);
                 result.add(new CompareFriends(username, score));
             }
 
@@ -756,6 +767,7 @@ public class Database {
 
     /**
      * This methods gets the last meal.
+     *
      * @param token A String of the token of the user.
      * @return int with the time.
      */
@@ -780,8 +792,10 @@ public class Database {
         }
     }
 
+
     /**
      * This method add a challenge.
+     *
      * @param challenge CompareFriend object with token of user A,
      *                  username of person being challenged, and score as the goal.
      * @return if the query succeeded.
@@ -805,6 +819,7 @@ public class Database {
 
     /**
      * This method updates a challenge.
+     *
      * @param token the token of the user that wants to update.
      * @return if the query succeeded.
      */
@@ -833,6 +848,7 @@ public class Database {
 
     /**
      * This method is to give list of ongoing challenges and to be accepted challengesChallengesList
+     *
      * @param token
      * @return
      */
@@ -844,16 +860,16 @@ public class Database {
             PreparedStatement stateA = connection.prepareStatement("SELECT user_a, user_b, score_a, score_b, goal FROM challenges "
                     + "WHERE user_a = ? AND score_a <> -1");
             stateA.setString(1, username);
-            ResultSet            rs    = stateA.executeQuery();
+            ResultSet rs = stateA.executeQuery();
             ArrayList<Challenge> listA = new ArrayList<>();
 
             while (rs.next()) {
                 Challenge challenge = new Challenge();
-                String    userA     = rs.getString(1);
-                String    userB     = rs.getString(2);
-                int       scoreA    = rs.getInt(3);
-                int       scoreB    = rs.getInt(4);
-                int       goal      = rs.getInt(5);
+                String userA = rs.getString(1);
+                String userB = rs.getString(2);
+                int scoreA = rs.getInt(3);
+                int scoreB = rs.getInt(4);
+                int goal = rs.getInt(5);
 
                 challenge.setUserA(userA);
                 challenge.setUserB(userB);
@@ -870,16 +886,16 @@ public class Database {
                             + "WHERE user_b = ? AND score_b = -1");
 
             stateB.setString(1, username);
-            ResultSet            rs2   = stateB.executeQuery();
+            ResultSet rs2 = stateB.executeQuery();
             ArrayList<Challenge> listB = new ArrayList<>();
 
             while (rs.next()) {
                 Challenge challenge = new Challenge();
-                String    userA     = rs2.getString(1);
-                String    userB     = rs2.getString(2);
-                int       scoreA    = rs2.getInt(3);
-                int       scoreB    = rs2.getInt(4);
-                int       goal      = rs2.getInt(5);
+                String userA = rs2.getString(1);
+                String userB = rs2.getString(2);
+                int scoreA = rs2.getInt(3);
+                int scoreB = rs2.getInt(4);
+                int goal = rs2.getInt(5);
 
                 challenge.setUserA(userA);
                 challenge.setUserB(userB);
@@ -899,6 +915,7 @@ public class Database {
 
     /**
      * This method updates a challenge when the other user accepts.
+     *
      * @param challenge The CompareFriends object.
      * @return if the query succeeded.
      */
@@ -928,8 +945,54 @@ public class Database {
     }
 
     /**
+     * This methods gets the OTE.
+     *
+     * @param token A String of the token of the user.
+     * @return ArrayList with the booleans of which events exist
+     */
+    public static OnLoadValues getOTE(String token) {
+        System.out.println("getOTE called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state = con.prepareStatement(
+                    "SELECT action_id "
+                            + "FROM events JOIN user_data ON "
+                            + "events.username = user_data.username "
+                            + "WHERE user_data.token = ? AND (action_id = 14 OR action_id = 13 OR action_id = 12)"
+                            + "ORDER BY action_id DESC");
+            state.setString(1, token);
+            ResultSet rs = state.executeQuery();
+
+            OnLoadValues ote = new OnLoadValues();
+            ;
+            while (rs.next()) {
+                switch (rs.getInt(1)) {
+                    case 12:
+                        ote.setSolarPanel(true);
+                        break;
+                    case 13:
+                        ote.setElectricCar(true);
+                        break;
+                    case 14:
+                        ote.setEnvGroup(true);
+                        break;
+                }
+            }
+            con.close();
+
+            return ote;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return new OnLoadValues();
+        }
+    }
+
+
+    /**
      * This method returns the CO2 reduced of current user of last (cap 30) actions
      * ordered from the most recent (at 0) to last (last)
+     *
      * @return the ActionList containing Action objects of CO2 saved
      */
     public static ArrayList<Action> getRecentCOSavings(String token) {

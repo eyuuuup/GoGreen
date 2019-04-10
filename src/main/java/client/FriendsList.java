@@ -27,7 +27,7 @@ public class FriendsList {
     /**
      * Getter for list of friend objects.
      *
-     * @return  a list of friends
+     * @return a list of friends
      */
     public ArrayList<CompareFriends> getList() {
         return list;

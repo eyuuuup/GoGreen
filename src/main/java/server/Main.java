@@ -6,17 +6,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class Main {
-    
+
     public static void main(String[] args) {
-        
+
         SpringApplication.run(Main.class, args);
-        
+
         // connect to the database
         Database.connect();
-        
+
         // prepare statements for querying
         Database.prepare();
-        
+
         // when closing the app disconnect from the database
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() {

@@ -5,66 +5,103 @@ package server;
  */
 public class OnLoadValues {
 
+    private User user;
+    private int followers;
+    private int following;
+    private ChallengesList challenges;
+    private boolean solarPanel;
     private boolean electricCar;
-    private boolean solarCar;
-
-    /**
-     * Constructor.
-     *
-     * @param electricCar presence of electricCar
-     * @param solarCar presence of solarCar
-     */
-
-    public OnLoadValues(boolean electricCar, boolean solarCar) {
-        this.electricCar = electricCar;
-        this.solarCar = solarCar;
-    }
+    private boolean envGroup;
+    private double carbonReduce;
 
 
-    /**
-     * Empty constructor.
-     */
     public OnLoadValues() {
+        user = new User();
+        followers = 0;
+        following = 0;
+        challenges = new ChallengesList();
+        solarPanel = false;
+        electricCar = false;
+        envGroup = false;
+        carbonReduce = 0;
+    }
+
+    public OnLoadValues(User user, int followers, int following, ChallengesList challenges, boolean solarCar, boolean electricCar, boolean envGroup, double carbonReduce) {
+        this.user = user;
+        this.followers = followers;
+        this.following = following;
+        this.challenges = challenges;
+        this.solarPanel = solarCar;
+        this.electricCar = electricCar;
+        this.envGroup = envGroup;
+        this.carbonReduce = carbonReduce;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public int getFollowers() {
+        return followers;
+    }
+
+    public int getFollowing() {
+        return following;
+    }
+
+    public ChallengesList getChallenges() {
+        return challenges;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setFollowers(int followers) {
+        this.followers = followers;
+    }
+
+    public void setFollowing(int following) {
+        this.following = following;
+    }
+
+    public void setChallenges(ChallengesList challenges) {
+        this.challenges = challenges;
     }
 
 
-    /**
-     * Getter for electric car.
-     *
-     * @return if present or not
-     */
+    public boolean isSolarPanel() {
+        return solarPanel;
+    }
+
+    public void setSolarPanel(boolean solarPanel) {
+        this.solarPanel = solarPanel;
+    }
+
     public boolean isElectricCar() {
         return electricCar;
     }
 
-
-    /**
-     * Setter for solarcCar.
-     *
-     * @return if presernt or not
-     */
-    public boolean isSolarCar() {
-        return solarCar;
-    }
-
-
-    /**
-     * Setter for electricCar.
-     *
-     * @param electricCar if electricCar present or not
-     */
     public void setElectricCar(boolean electricCar) {
         this.electricCar = electricCar;
     }
 
-
-    /**
-     * Setter for SolarCar.
-     *
-     * @param solarCar if solarCar present or not
-     */
-    public void setSolarCar(boolean solarCar) {
-        this.solarCar = solarCar;
+    public boolean isEnvGroup() {
+        return envGroup;
     }
+
+    public void setEnvGroup(boolean envGroup) {
+        this.envGroup = envGroup;
+    }
+
+
+    public double getCarbonReduce() {
+        return carbonReduce;
+    }
+
+    public void setCarbonReduce(double carbonReduce) {
+        this.carbonReduce = carbonReduce;
+    }
+
 
 }
