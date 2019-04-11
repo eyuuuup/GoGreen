@@ -88,7 +88,7 @@ class ApplicationMethods {
         if (client.Communication.register(encodedUsername, hashedPassword, remember)) {
             Application.mainScreen();
         } else {
-            throw new IllegalAccessException("Registration unsuccessful");
+            throw new IllegalAccessException("Username was already taken");
         }
     }
 
