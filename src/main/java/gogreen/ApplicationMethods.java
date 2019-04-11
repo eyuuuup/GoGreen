@@ -86,6 +86,7 @@ class ApplicationMethods {
         String hashedPassword = hashPassword(password);
 
         if (client.Communication.register(encodedUsername, hashedPassword, remember)) {
+            setPresets();
             Application.mainScreen();
         } else {
             throw new IllegalAccessException("Registration unsuccessful");
