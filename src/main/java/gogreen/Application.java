@@ -123,7 +123,7 @@ public class Application extends javafx.application.Application {
         });
 
         //button if the user wants to register instead of to log in
-        JFXButton register = new JFXButton("or register");
+        JFXButton register = new JFXButton("Register");
         register.setId("loginButtons");
         register.setOnAction(e -> {
             registerScene();
