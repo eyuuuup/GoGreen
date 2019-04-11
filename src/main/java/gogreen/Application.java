@@ -123,7 +123,7 @@ public class Application extends javafx.application.Application {
         });
 
         //button if the user wants to register instead of to log in
-        JFXButton register = new JFXButton("or register");
+        JFXButton register = new JFXButton("Register");
         register.setId("loginButtons");
         register.setOnAction(e -> {
             registerScene();
@@ -1253,7 +1253,10 @@ public class Application extends javafx.application.Application {
         searchButton.setId("smallButton");
         searchButton.setOnAction(e -> {
             String user = ApplicationMethods.encodeUsername(searchField.getText());
-            Communication.addFriend(user);
+            if(!Communication.addFriend(user)) {
+                searchField.setText("");
+                searchField.setPromptText("Friend not found");
+            }
             followingList.setContent(followingList());
         });
 

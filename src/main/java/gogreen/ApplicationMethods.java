@@ -88,7 +88,7 @@ class ApplicationMethods {
         if (client.Communication.register(encodedUsername, hashedPassword, remember)) {
             Application.mainScreen();
         } else {
-            throw new IllegalAccessException("Registration unsuccessful");
+            throw new IllegalAccessException("Username was already taken");
         }
     }
 
@@ -209,6 +209,9 @@ class ApplicationMethods {
             savedCarbon = savedCarbon * 100;
             savedCarbon = (int) savedCarbon;
             savedCarbon = savedCarbon / 100;
+
+            Transport.setHasElectricCar(onload.isElectricCar());
+            Energy.setHasSolarPanels(onload.isSolarPanel());
         } catch (NullPointerException e) {
             points = 0;
             followingSize = 0;
