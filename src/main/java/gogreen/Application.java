@@ -335,7 +335,7 @@ public class Application extends javafx.application.Application {
     private static GridPane sideBar() {
 
         // makes all the labels to display
-        Label username = new Label("@Username");
+        Label username = new Label("@" + ApplicationMethods.decodeUsername(ApplicationMethods.getUsername()));
 
         double savedAmount = ApplicationMethods.getSavedCarbon();
         Label  reducedCO2  = new Label(savedAmount + "kg CO\u2082 saved");
