@@ -228,6 +228,13 @@ public class ControllerTest {
     }
 
     @Test
+    public void showChallenges(){
+        PowerMockito.when(Database.retrieveChallenges(anyString())).thenReturn(new ArrayList<Challenge>());
+        ChallengesList list2=new ChallengesList(new ArrayList<Challenge>());
+        assertEquals(list2, Controller.showChallenges("token"));
+    }
+
+    @Test
     public void acceptChallenge(){
         Challenge c= new Challenge("a","b",10,20,40);
         c.setOnA(false);
@@ -236,12 +243,12 @@ public class ControllerTest {
         c.setOnA(true);
         assertFalse(Controller.acceptChallenge(c));
     }
-//
-//    @Test
-//    public void getRecentCO2Savings(){
-//        ArrayList<Action> a= new ArrayList<>();
-//        PowerMockito.when(Database.getRecentCOSavings(anyString())).thenReturn(a);
-//        ActionList list= new ActionList(a);
-//        assertEquals(list,Controller.getRecentCOSavings("token"));
-//    }
+
+    @Test
+    public void getRecentCO2Savings(){
+        ArrayList<Action> a= new ArrayList<>();
+        PowerMockito.when(Database.getRecentCOSavings(anyString())).thenReturn(a);
+        ActionList list= new ActionList(a);
+        assertEquals(list,Controller.getRecentCOSavings("token"));
+    }
 }
