@@ -481,22 +481,22 @@ public class DatabaseTest {
 //        assertFalse(Database.checkOneTimeEvent("token", 1));
 //    }
     
-    @Test
-    public void addChallenge() throws Exception {
-        PowerMockito.when(state, "executeUpdate").thenReturn(0);
-        CompareFriends challenge = new CompareFriends("a", "b");
-        challenge.setScore(100);
-        Database.addChallenge(challenge);
-        
-    }
-    
-    @Test
-    public void addChallengeException() throws Exception {
-        PowerMockito.when(state, "executeUpdate").thenThrow(SQLException.class);
-        CompareFriends challenge = new CompareFriends("a", "b");
-        challenge.setScore(100);
-        Database.addChallenge(challenge);
-    }
+//    @Test
+//    public void addChallenge() throws Exception {
+//        PowerMockito.when(state, "executeUpdate").thenReturn(0);
+//        CompareFriends challenge = new CompareFriends("a", "b");
+//        challenge.setScore(100);
+//        Database.addChallenge(challenge);
+//
+//    }
+//
+//    @Test
+//    public void addChallengeException() throws Exception {
+//        PowerMockito.when(state, "executeUpdate").thenThrow(SQLException.class);
+//        CompareFriends challenge = new CompareFriends("a", "b");
+//        challenge.setScore(100);
+//        Database.addChallenge(challenge);
+//    }
     
     @Test
     public void getRecentCOSavings() throws SQLException {
