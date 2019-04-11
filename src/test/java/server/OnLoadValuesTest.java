@@ -14,6 +14,19 @@ public class OnLoadValuesTest {
     private  OnLoadValues test = new OnLoadValues(user, 2,3,list,false,false, false,50);
 
     @Test
+    public void emptyConstructor(){
+        OnLoadValues o=new OnLoadValues();
+        assertNotNull(o.getChallenges());
+        assertNotNull(o.getCarbonReduce());
+        assertNotNull(o.getFollowers());
+        assertNotNull(o.getFollowing());
+        assertNotNull(o.getUser());
+        assertFalse(o.isEnvGroup());
+        assertFalse(o.isSolarPanel());
+        assertFalse(o.isElectricCar());
+    }
+
+    @Test
     public void getUser() {
         assertEquals(user, test.getUser());
     }
