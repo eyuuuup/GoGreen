@@ -227,7 +227,6 @@
                 <configuration>
                     <excludes>
                         <exclude>**/*Application.*</exclude>
-                        <exclude>**/*Communication.*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
