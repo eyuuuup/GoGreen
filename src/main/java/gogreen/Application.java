@@ -424,21 +424,18 @@ public class Application extends javafx.application.Application {
      * @return settings screen
      */
     private static BorderPane settingsScreen() {
-        // set the status of the dark mode
-        String status = "Enable";
-
-        // makes the dark mode button
+         // makes the dark mode button
         JFXToggleNode darkTheme = new JFXToggleNode();
         MaterialDesignIconView darkThemeIcon =
                 new MaterialDesignIconView(MaterialDesignIcon.THEME_LIGHT_DARK);
         darkThemeIcon.setSize("50px");
-        darkTheme.setGraphic(new Label(status + " dark theme", darkThemeIcon));
+        darkTheme.setGraphic(new Label("Enable dark theme", darkThemeIcon));
         darkTheme.setId("settingButtons");
 
         // if the dark mode is enabled, we will have the disable button
         if (theme.equals("src/styles/mainSceneDarkTheme.css")) {
             darkTheme.setSelected(true);
-            status = "Disable";
+            darkTheme.setGraphic(new Label("Disable dark theme", darkThemeIcon));
         }
 
         // if you toggle the button, you change the theme
