@@ -217,6 +217,10 @@ class ApplicationMethods {
         }
     }
 
+    public static double getChallengeProgress(int goal) {
+        return (double) points / goal;
+    }
+
     static int getPoints() {
         return points;
     }

@@ -13,9 +13,19 @@ import java.util.ArrayList;
 
 @SpringBootApplication
 public class Communication {
+
     private static final String hostURL = "http://localhost:8080";
     private static final String fileDir = "src/extraFiles/Token.txt";
-    private static String token = null;
+    private static       String token   = null;
+
+    // CACHE
+    private static User        userChanged    = null;
+    private static Integer     totalChanged   = null;
+    private static ActionList  lastChanged    = null;
+    private static double[]    coChanged      = null;
+    private static Action      carbonChanged  = null;
+    private static FriendsList friendsChanged = null;
+
 
     // ========== PART METHODS =================================================
 
@@ -134,6 +144,13 @@ public class Communication {
      * Removes traces of previous user.
      */
     public static void logout() {
+        // everything has changed
+        userChanged = null;
+        totalChanged = null;
+        lastChanged = null;
+        coChanged = null;
+        carbonChanged = null;
+
         // remove token from Main Memory
         token = null;
 
@@ -163,12 +180,7 @@ public class Communication {
      */
     public static boolean addAction(String actionName, int points,
                                     double carbonReduced, double carbonProduced) {
-        Action action = new Action(token, actionName,
-                points, carbonReduced, carbonProduced);
-        HttpEntity<Action> message = new HttpEntity<>(action);
-        RestTemplate request = new RestTemplate();
-
-        return request.postForObject(hostURL + "/addAction", message, boolean.class);
+        return addAction(actionName, points, carbonReduced, carbonReduced, null);
     }
 
     /**
@@ -182,10 +194,15 @@ public class Communication {
      */
     public static boolean addAction(String actionName, int points,
                                     double carbonReduced, double carbonProduced, String description) {
+        totalChanged = null;
+        coChanged = null;
+        carbonChanged = null;
+        lastChanged = null;
+
         Action action = new Action(token, actionName,
                 points, carbonReduced, carbonProduced, description);
         HttpEntity<Action> message = new HttpEntity<>(action);
-        RestTemplate request = new RestTemplate();
+        RestTemplate       request = new RestTemplate();
 
         return request.postForObject(hostURL + "/addAction", message, boolean.class);
     }
@@ -196,7 +213,10 @@ public class Communication {
      * @return string containing last three actions
      */
     public static ArrayList<Action> getLastThreeActions() {
-        return ((ActionList) postToken("/retract", ActionList.class)).getList();
+        if (lastChanged == null) {
+            lastChanged = (ActionList) postToken("/retract", ActionList.class);
+        }
+        return lastChanged.getList();
     }
 
 
@@ -207,7 +227,10 @@ public class Communication {
      */
 
     public static int getMyTotalScore() {
-        return (int) postToken("/getTotalScore", Integer.class);
+        if (totalChanged == null) {
+            totalChanged = (int) postToken("/getTotalScore", Integer.class);
+        }
+        return totalChanged;
     }
 
     // ========== SOCIAL HANDLERS ==============================================
@@ -230,7 +253,10 @@ public class Communication {
      * @return username object containg all information about the user
      */
     public static User getUser() {
-        return (User) postToken("/getUser", User.class);
+        if (userChanged == null) {
+            userChanged = (User) postToken("/getUser", User.class);
+        }
+        return userChanged;
     }
 
     /**
@@ -241,6 +267,8 @@ public class Communication {
      * @return whether the friend is added
      */
     public static boolean addFriend(String friendUsername) {
+        friendsChanged = null;
+
         CompareFriends friend = new CompareFriends(token, friendUsername);
 
         HttpEntity<CompareFriends> message = new HttpEntity<>(friend);
@@ -255,7 +283,10 @@ public class Communication {
      * @return an arraylist ofCompareFriends
      */
     public static ArrayList<CompareFriends> getFriends() {
-        return ((FriendsList) postToken("/showFriends", FriendsList.class)).getList();
+        if (friendsChanged == null) {
+            friendsChanged = (FriendsList) postToken("/showFriends", FriendsList.class);
+        }
+        return friendsChanged.getList();
     }
 
     /**
@@ -284,9 +315,10 @@ public class Communication {
      * @return carbon Action object with carbonReduced and carbonProduced values
      */
     public static Action carbon() {
-        HttpEntity<String> message = new HttpEntity<>(token);
-        RestTemplate request = new RestTemplate();
-        return request.postForObject(hostURL + "/carbon", message, Action.class);
+        if (carbonChanged == null) {
+            carbonChanged = (Action) postToken("/carbon", Action.class);
+        }
+        return carbonChanged;
     }
 
     /**
@@ -300,28 +332,25 @@ public class Communication {
         return request.postForObject(hostURL + "/onLoad", message, OnLoadValues.class);
     }
 
-    public static boolean sendChallenge(CompareFriends challenge) {
+    public static boolean addChallenge(String username, int goal) {
+        CompareFriends challenge = new CompareFriends();
+        challenge.setToken(token);
+        challenge.setUsername(username);
+        challenge.setScore(goal);
         HttpEntity<CompareFriends> message = new HttpEntity<>(challenge);
-        RestTemplate request = new RestTemplate();
-        return request.postForObject(hostURL + "/addChallenger", message, boolean.class);
+        RestTemplate               request = new RestTemplate();
+        return request.postForObject(hostURL + "/addChallenge", message, boolean.class);
     }
 
-    public static boolean acceptChallenge() {
-        HttpEntity<String> message = new HttpEntity<>(token);
-        RestTemplate request = new RestTemplate();
+    public static ChallengesList getChallenges() {
+        return (ChallengesList) postToken("/getChallenges", ChallengesList.class);
+    }
+
+    public static boolean acceptChallenge(Challenge challenge) {
+        challenge.setUserB(token);
+        HttpEntity<Challenge> message = new HttpEntity<>(challenge);
+        RestTemplate          request = new RestTemplate();
         return request.postForObject(hostURL + "/acceptChallenge", message, boolean.class);
-    }
-
-    public static ChallengesList showChallenges() {
-        HttpEntity<String> message = new HttpEntity<>(token);
-        RestTemplate request = new RestTemplate();
-        return request.postForObject(hostURL + "/showChallenges", message, ChallengesList.class);
-    }
-
-    public static boolean updateChallenge() {
-        HttpEntity<String> message = new HttpEntity<>(token);
-        RestTemplate reuqest = new RestTemplate();
-        return reuqest.postForObject(hostURL + "/updateChallenge", message, boolean.class);
     }
 
     /**
@@ -331,13 +360,17 @@ public class Communication {
      * @return the filtered list containing only CO2 saved
      */
     public static double[] getRecentCOSavings() {
-        ArrayList<Action> actions = ((ActionList) postToken("/getRecentCOSavings", ActionList.class)).getList();
+        if (coChanged == null) {
 
-        double[] arr = new double[actions.size()];
-        for (int i = 0; i < arr.length; i++) {
-            arr[arr.length - i - 1] = actions.get(i).getCarbonReduced();
+            ArrayList<Action> actions = ((ActionList) postToken("/getRecentCOSavings", ActionList.class)).getList();
+
+            double[] arr = new double[actions.size()];
+            for (int i = 0; i < arr.length; i++) {
+                arr[arr.length - i - 1] = actions.get(i).getCarbonReduced();
+            }
+
+            coChanged = arr;
         }
-
-        return arr;
+        return coChanged;
     }
 }

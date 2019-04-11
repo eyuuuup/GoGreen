@@ -152,8 +152,8 @@ public class Controller {
         return Database.showFriends(token);
     }
 
-    @RequestMapping(value = {"/showFollowers"}, method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping (value = {"/showFollowers"}, method = RequestMethod.POST,
+                     produces = MediaType.APPLICATION_JSON_VALUE)
     public static FriendsList showFollowers(@Valid @RequestBody String token) {
         return Database.showFollowers(token);
     }
@@ -169,13 +169,12 @@ public class Controller {
         return Database.getLeaderboard();
     }
 
-
     @RequestMapping(value = {"/onLoad"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public static OnLoadValues onLoad(@Valid @RequestBody String token) {
         OnLoadValues o = Database.getOTE(token);
         o.setUser(Database.getUser(token));
-        o.setChallenges(Database.retrieveChallenge(token));
+        o.setChallenges(new ChallengesList(Database.retrieveChallenges(token)));
         o.setFollowers(Database.showFollowers(token).getList().size());
         o.setFollowing(Database.showFriends(token).getList().size());
         o.setCarbonReduce(Database.getCarbonReduced(token));
@@ -194,28 +193,23 @@ public class Controller {
         return Database.getCarbonValues(token);
     }
 
-    @RequestMapping(value = {"/addChallenger"}, method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping (value = {"/addChallenge"}, method = RequestMethod.POST,
+                     produces = MediaType.APPLICATION_JSON_VALUE)
     public static boolean addCahllenge(@Valid @RequestBody CompareFriends friend) {
-        return Database.addChallenge(friend);
+        return Database.addChallenge(friend.getToken(), friend.getUsername(), friend.getScore());
     }
 
-    @RequestMapping(value = {"/acceptChallenge"}, method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public static boolean acceptChallenge(@Valid @RequestBody CompareFriends accept) {
-        return Database.initializeChallenge(accept);
-    }
-
-    @RequestMapping(value = {"/showChallenges"}, method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping (value = {"/getChallenges"}, method = RequestMethod.POST,
+                     produces = MediaType.APPLICATION_JSON_VALUE)
     public static ChallengesList showChallenges(@Valid @RequestBody String token) {
-        return Database.retrieveChallenge(token);
+        return new ChallengesList(Database.retrieveChallenges(token));
     }
 
-    @RequestMapping(value = {"/updateChallenge"}, method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public static boolean updateChallenge(@Valid @RequestBody String token) {
-        return Database.updateChallenge(token);
+    @RequestMapping (value = {"/acceptChallenge"}, method = RequestMethod.POST,
+                     produces = MediaType.APPLICATION_JSON_VALUE)
+    public static boolean acceptChallenge(@Valid @RequestBody Challenge accept) {
+        if(accept.isOnA()) return false;
+        return Database.initializeChallenge(accept.getUserB(), accept.getUserA());
     }
 
     /**

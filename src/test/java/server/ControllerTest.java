@@ -188,36 +188,36 @@ public class ControllerTest {
 //        assertEquals(ol, Controller.onLoad(token));
 //    }
 
-    @Test
-    public void addChallenger() {
-        CompareFriends fr = new CompareFriends("test", "testuser");
+//    @Test
+//    public void addChallenger() {
+//        CompareFriends fr = new CompareFriends("test", "testuser");
+//
+//        PowerMockito.when(Database.addChallenge(fr)).thenReturn(true);
+//
+//        assertTrue(Controller.addCahllenge(fr));
+//    }
 
-        PowerMockito.when(Database.addChallenge(fr)).thenReturn(true);
+//    @Test
+//    public void acceptChallenge() {
+//        CompareFriends fr = new CompareFriends("test", "testuser");
+//
+//        PowerMockito.when(Database.initializeChallenge(fr)).thenReturn(true);
+//        assertEquals(true, Controller.acceptChallenge(fr));
+//    }
 
-        assertTrue(Controller.addCahllenge(fr));
-    }
-
-    @Test
-    public void acceptChallenge() {
-        CompareFriends fr = new CompareFriends("test", "testuser");
-
-        PowerMockito.when(Database.initializeChallenge(fr)).thenReturn(true);
-        assertEquals(true, Controller.acceptChallenge(fr));
-    }
-
-    @Test
-    public void showChallenges() {
-        ChallengesList cl = new ChallengesList();
-
-        PowerMockito.when(Database.retrieveChallenge(anyString())).thenReturn(cl);
-
-        assertEquals(cl, Controller.showChallenges("testToken"));
-    }
-
-    @Test
-    public void updateChallenge() {
-        PowerMockito.when(Database.updateChallenge(anyString())).thenReturn(true);
-        assertEquals(Controller.updateChallenge("testToken"), true);
-    }
+//    @Test
+//    public void showChallenges() {
+//        ChallengesList cl = new ChallengesList();
+//
+//        PowerMockito.when(Database.retrieveChallenge(anyString())).thenReturn(cl);
+//
+//        assertEquals(cl, Controller.showChallenges("testToken"));
+//    }
+//
+//    @Test
+//    public void updateChallenge() {
+//        PowerMockito.when(Database.updateChallenge(anyString())).thenReturn(true);
+//        assertEquals(Controller.updateChallenge("testToken"), true);
+//    }
 
 }

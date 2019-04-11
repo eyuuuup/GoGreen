@@ -1,11 +1,13 @@
 package client;
 
 public class Challenge {
-    private String userA;
-    private String userB;
-    private int scoreA;
-    private int scoreB;
-    private int goal;
+    private String  userA;
+    private String  userB;
+    private int     scoreA;
+    private int     scoreB;
+    private int     goal;
+    private int    state;
+    private boolean onA;
 
     /**
      * Constructor for the Challenge class.
@@ -25,7 +27,6 @@ public class Challenge {
     }
 
     public Challenge() {
-
     }
 
     public String getUserA() {
@@ -66,6 +67,22 @@ public class Challenge {
 
     public void setGoal(int goal) {
         this.goal = goal;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    public boolean isOnA() {
+        return onA;
+    }
+
+    public void setOnA(boolean onA) {
+        this.onA = onA;
     }
 
 }
