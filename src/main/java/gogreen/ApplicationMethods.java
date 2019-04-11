@@ -86,6 +86,7 @@ class ApplicationMethods {
         String hashedPassword = hashPassword(password);
 
         if (client.Communication.register(encodedUsername, hashedPassword, remember)) {
+            setPresets();
             Application.mainScreen();
         } else {
             throw new IllegalAccessException("Username was already taken");
@@ -220,8 +221,11 @@ class ApplicationMethods {
         }
     }
 
-    public static double getChallengeProgress(int goal) {
-        return (double) points / goal;
+    static double getChallengeProgress(int start, int goal) {
+        if ((ApplicationMethods.getPoints() - start) / goal < 0) {
+            return 0;
+        }
+        return (ApplicationMethods.getPoints() - start) / goal;
     }
 
     static int getPoints() {
