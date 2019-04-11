@@ -1403,7 +1403,7 @@ public class Application extends javafx.application.Application {
 
         ScrollPane receivedChallenge = new ScrollPane();
         receivedChallenge.setId("challengeLists");
-        receivedChallenge.setContent(receivedList(challengeContainer));
+        receivedChallenge.setContent(receivedList());
 
         Label challengeTitle = new Label("Current challenges");
         challengeTitle.setId("information");
@@ -1473,7 +1473,7 @@ public class Application extends javafx.application.Application {
         return challengeContainer;
     }
 
-    private static GridPane receivedList(ScrollPane challengeContainer) {
+    private static GridPane receivedList() {
         // getting the challenges that need to be accepted
         GridPane receivedChallenge = new GridPane();
         receivedChallenge.setId("challenges");
@@ -1505,9 +1505,6 @@ public class Application extends javafx.application.Application {
                         } else {
                             System.out.println("nope");
                         }
-//                        receivedChallenge.getChildren().removeAll(goal, user, accept);
-//                        challengeContainer.setContent(challengeList());
-
                     });
                 } else {
                     Label wait = new Label("Waiting for response");
