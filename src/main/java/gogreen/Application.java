@@ -1,5 +1,7 @@
 package gogreen;
 
+import client.Action;
+import client.Challenge;
 import client.ChallengesList;
 import client.Communication;
 import client.CompareFriends;
@@ -463,7 +465,7 @@ public class Application extends javafx.application.Application {
 
         // if we press the button we log out
         logoutButton.setOnAction(e -> {
-            client.Communication.logout();
+            Communication.logout();
             loginScene();
         });
 
@@ -1108,7 +1110,7 @@ public class Application extends javafx.application.Application {
         int        pos       = 1;
         DateFormat formatter = new SimpleDateFormat("d MMMM YYYY / HH:mm");
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-        for (client.Action a : client.Communication.getLastThreeActions()) {
+        for (Action a : Communication.getLastThreeActions()) {
             historyList.add(new Label(a.getAction()), 0, pos);
             String date = formatter.format(new Date(a.getDate()));
             historyList.add(new Label(date), 1, pos);
@@ -1193,7 +1195,7 @@ public class Application extends javafx.application.Application {
         leaderboard.add(new Label("Level"), 3, 0);
 
         // get the top ten
-        ArrayList<CompareFriends> topTen = client.Communication.getLeaderboard();
+        ArrayList<CompareFriends> topTen = Communication.getLeaderboard();
 
         // place all the people in the leaderboard
         int pos = 1;
@@ -1251,7 +1253,7 @@ public class Application extends javafx.application.Application {
         searchButton.setId("smallButton");
         searchButton.setOnAction(e -> {
             String user = ApplicationMethods.encodeUsername(searchField.getText());
-            client.Communication.addFriend(user);
+            Communication.addFriend(user);
             followingList.setContent(followingList());
         });
 
@@ -1284,7 +1286,7 @@ public class Application extends javafx.application.Application {
         friendsList.setId("friendsList");
 
         // getting the friends
-        ArrayList<CompareFriends> friends = client.Communication.getFriends();
+        ArrayList<CompareFriends> friends = Communication.getFriends();
 
         // fills the friendlist with your friends
         if (!friends.isEmpty()) {
@@ -1309,7 +1311,7 @@ public class Application extends javafx.application.Application {
      */
     private static BorderPane friendRequestScreen() {
         // get the followers
-        ArrayList<CompareFriends> friends = client.Communication.getFollowers();
+        ArrayList<CompareFriends> friends = Communication.getFollowers();
 
         // makes the title
         Label nrRequest = new Label(friends.size() + " followers:");
@@ -1379,13 +1381,13 @@ public class Application extends javafx.application.Application {
         addChallenge.setOnAction(e -> {
             try {
 
-                int            goal      = Integer.parseInt(goalField.getText());
-                String         user      = ApplicationMethods.encodeUsername(userField.getText());
-                CompareFriends challenge = new CompareFriends();
-                System.out.println(Communication.checkUsername(ApplicationMethods.decodeUsername(user)));
-                challenge.setScore(goal);
-                challenge.setUsername(user);
-                client.Communication.sendChallenge(challenge);
+                int    goal = Integer.parseInt(goalField.getText());
+                String user = ApplicationMethods.encodeUsername(userField.getText());
+                if (Communication.addChallenge(user, goal)) {
+                    refresh();
+                } else {
+                    challengeInfo.setText("Try someone else");
+                }
             } catch (NumberFormatException exception) {
                 challengeInfo.setText("Please fill in a number as goal");
             }
@@ -1427,22 +1429,42 @@ public class Application extends javafx.application.Application {
 
     private static GridPane challengeList() {
         // getting the challenges you accepted
-        ChallengesList challenges         = Communication.showChallenges();
+        ChallengesList challenges         = Communication.getChallenges();
         GridPane       challengeContainer = new GridPane();
         challengeContainer.setId("challenges");
 
         try {
             int pos = 0;
-            for (client.Challenge c : challenges.getList()) {
-                ProgressBar progress = new ProgressBar(ApplicationMethods.getLevelProgress(c.getGoal()));
-                progress.setId("challengeProgress");
-                String username = ApplicationMethods.decodeUsername(c.getUserB());
+            for (Challenge c : challenges.getList()) {
+                if (c.getState() == 0) continue;
+
+                String name  = c.getUserA();
+                int    start = c.getScoreA();
+                if (c.isOnA()) {
+                    name = c.getUserB();
+                    start = c.getScoreB();
+                }
+
                 Label  goal     = new Label("Goal: " + c.getGoal());
-                Label  user     = new Label("User: " + username);
                 challengeContainer.add(goal, 0, pos);
+
+                String username = ApplicationMethods.decodeUsername(name);
+                Label  user     = new Label("User: " + username);
                 challengeContainer.add(user, 1, pos);
-                challengeContainer.add(new Label("Progress:"), 2, pos);
-                challengeContainer.add(progress, 3, pos);
+
+                if (c.getState() == 10 && c.isOnA()) {
+                    // I won
+                    challengeContainer.add(new Label("You won!"), 2, pos);
+                } else if (c.getState() == 11 && !c.isOnA()) {
+                    // opponent won
+                    challengeContainer.add(new Label("You lost!"), 2, pos);
+                } else {
+                    ProgressBar progress = new ProgressBar((ApplicationMethods.getPoints() - start) / c.getGoal());
+                    progress.setId("challengeProgress");
+                    challengeContainer.add(new Label("Progress:"), 2, pos);
+                    challengeContainer.add(progress, 3, pos);
+                }
+
                 pos++;
             }
         } catch (NullPointerException e) {
@@ -1459,30 +1481,43 @@ public class Application extends javafx.application.Application {
         GridPane receivedChallenge = new GridPane();
         receivedChallenge.setId("challenges");
 
-        ChallengesList challenges = Communication.showChallenges();
+        ChallengesList challenges = Communication.getChallenges();
         try {
             int pos = 0;
-            for (client.Challenge c : challenges.getReceivedList()) {
-                String username = ApplicationMethods.decodeUsername(c.getUserA());
-                Label  goal     = new Label("Goal: " + c.getGoal());
-                Label  user     = new Label("User: " + username);
+            for (Challenge c : challenges.getList()) {
+                if (c.getState() != 0) continue;
 
-                JFXButton accept = new JFXButton("Accept Challenge");
-                accept.setId("smallButton");
+                String name = c.getUserA();
+                if (c.isOnA()) name = c.getUserB();
+
+                Label goal = new Label("Goal: " + c.getGoal());
                 receivedChallenge.add(goal, 0, pos);
+
+                String username = ApplicationMethods.decodeUsername(name);
+                Label  user     = new Label("User: " + username);
                 receivedChallenge.add(user, 1, pos);
-                receivedChallenge.add(accept, 2, pos);
 
-                accept.setOnAction(e -> {
-                    CompareFriends challenge = new CompareFriends();
-                    challenge.setScore(c.getGoal());
-                    challenge.setUsername(c.getUserA());
-                    Communication.acceptChallenge(challenge);
-                    receivedChallenge.getChildren().removeAll(goal, user, accept);
-                    challengeContainer.setContent(challengeList());
-                });
+                if (!c.isOnA()) {
+                    JFXButton accept = new JFXButton("Accept Challenge");
+                    accept.setId("smallButton");
+                    receivedChallenge.add(accept, 2, pos);
 
+                    accept.setOnAction(e -> {
+                        if (Communication.acceptChallenge(c)) {
+                            refresh();
+                        } else {
+                            System.out.println("nope");
+                        }
+//                        receivedChallenge.getChildren().removeAll(goal, user, accept);
+//                        challengeContainer.setContent(challengeList());
 
+                    });
+                } else {
+                    Label wait = new Label("Waiting for response");
+                    receivedChallenge.add(wait, 2, pos);
+                }
+
+                pos++;
             }
         } catch (NullPointerException e) {
             System.out.println("null pointer");
@@ -1546,7 +1581,7 @@ public class Application extends javafx.application.Application {
         theme = "src/styles/mainSceneDefaultTheme.css";
 
         //the silentLogin will login for the user
-        if (client.Communication.silentLogin()) {
+        if (Communication.silentLogin()) {
             ApplicationMethods.setPresets();
             mainScreen();
         } else {
