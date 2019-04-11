@@ -145,11 +145,12 @@ public class Communication {
      */
     public static void logout() {
         // everything has changed
-        userChanged = null;
-        totalChanged = null;
-        lastChanged = null;
-        coChanged = null;
-        carbonChanged = null;
+        userChanged    = null;
+        totalChanged   = null;
+        lastChanged    = null;
+        coChanged      = null;
+        carbonChanged  = null;
+        friendsChanged = null;
 
         // remove token from Main Memory
         token = null;
