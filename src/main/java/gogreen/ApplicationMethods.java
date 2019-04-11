@@ -217,8 +217,11 @@ class ApplicationMethods {
         }
     }
 
-    public static double getChallengeProgress(int goal) {
-        return (double) points / goal;
+    static double getChallengeProgress(int start, int goal) {
+        if ((ApplicationMethods.getPoints() - start) / goal < 0) {
+            return 0;
+        }
+        return (ApplicationMethods.getPoints() - start) / goal;
     }
 
     static int getPoints() {
