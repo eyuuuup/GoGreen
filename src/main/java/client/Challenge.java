@@ -11,6 +11,7 @@ public class Challenge {
 
     /**
      * Constructor for the Challenge class.
+     *
      * @param userA  String of userA.
      * @param userB  String of userB.
      * @param scoreA Score of userA.

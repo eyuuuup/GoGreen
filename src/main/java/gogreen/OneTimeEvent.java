@@ -4,10 +4,12 @@ import client.Communication;
 
 /**
  * This class represents the one time events.
+ *
  * @author Gyum cho
  */
 final class OneTimeEvent {
-    private OneTimeEvent() {}
+    private OneTimeEvent() {
+    }
 
     /**
      * Method for installing a solar panel.

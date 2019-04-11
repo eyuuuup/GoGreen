@@ -978,6 +978,7 @@ public class Application extends javafx.application.Application {
 
         // makes the electric car toggle
         JFXToggleButton electricCar = new JFXToggleButton();
+        electricCar.setSelected(ApplicationMethods.isElectricCar());
         electricCar.setText("Electric car");
         electricCar.setOnAction(e -> {
             if (electricCar.isSelected()) {
@@ -988,6 +989,7 @@ public class Application extends javafx.application.Application {
 
         // makes the joined a group toggle
         JFXToggleButton joinedGroup = new JFXToggleButton();
+        joinedGroup.setSelected(ApplicationMethods.isEnvGroup());
         joinedGroup.setText("Joined environment group");
         joinedGroup.setOnAction(e -> {
             if (joinedGroup.isSelected()) {
@@ -1325,8 +1327,8 @@ public class Application extends javafx.application.Application {
         // puts all the friendrequests and buttons in the container
         for (CompareFriends followers : friends) {
             String username = ApplicationMethods.decodeUsername(followers.getUsername());
-            int    score    = followers.getScore();
-            int    level    = ApplicationMethods.getLevel(score);
+            int score = followers.getScore();
+            int level = ApplicationMethods.getLevel(score);
 
             // make the username label
             Label user = new Label(username);
@@ -1445,7 +1447,7 @@ public class Application extends javafx.application.Application {
                     start = c.getScoreB();
                 }
 
-                Label  goal     = new Label("Goal: " + c.getGoal());
+                Label goal = new Label("Goal: " + c.getGoal());
                 challengeContainer.add(goal, 0, pos);
 
                 String username = ApplicationMethods.decodeUsername(name);

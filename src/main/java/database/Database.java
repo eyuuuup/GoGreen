@@ -6,6 +6,7 @@ import server.ActionList;
 import server.Challenge;
 import server.CompareFriends;
 import server.FriendsList;
+import server.OnLoadValues;
 import server.TokenResponse;
 import server.User;
 
@@ -806,6 +807,7 @@ public class Database {
         }
     }
 
+
     /**
      * This method add a challenge.
      * @param token token of user A
@@ -838,7 +840,7 @@ public class Database {
      */
     public static ArrayList<Challenge> retrieveChallenges(String token) {
         String user = getUsername(token);
-        System.out.println("retrieveChallenge called for user: "+user);
+        System.out.println("retrieveChallenge called for user: " + user);
         try {
             ArrayList<Challenge> list = new ArrayList<>();
 
@@ -957,6 +959,49 @@ public class Database {
             return false;
         }
     }
+
+    /**
+     * This methods gets the OTE.
+     * @param token A String of the token of the user.
+     * @return ArrayList with the booleans of which events exist
+     */
+    public static OnLoadValues getOTE(String token) {
+        System.out.println("getOTE called");
+        try {
+            Connection con = DriverManager.getConnection();
+            PreparedStatement state = con.prepareStatement(
+                    "SELECT action_id "
+                            + "FROM events JOIN user_data ON "
+                            + "events.username = user_data.username "
+                            + "WHERE user_data.token = ? AND (action_id = 14 OR action_id = 13 OR action_id = 12)"
+                            + "ORDER BY action_id DESC");
+            state.setString(1, token);
+            ResultSet rs = state.executeQuery();
+
+            OnLoadValues ote = new OnLoadValues();
+            while (rs.next()) {
+                switch (rs.getInt(1)) {
+                    case 12:
+                        ote.setSolarPanel(true);
+                        break;
+                    case 13:
+                        ote.setElectricCar(true);
+                        break;
+                    case 14:
+                        ote.setEnvGroup(true);
+                        break;
+                }
+            }
+            con.close();
+
+            return ote;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return new OnLoadValues();
+        }
+    }
+
 
     /**
      * This method returns the CO2 reduced of current user of last (cap 30) actions

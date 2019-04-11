@@ -6,15 +6,18 @@ import java.rmi.ConnectIOException;
 
 /**
  * Represent the Energy Category.
+ *
  * @author Gyum cho
  */
 public final class Energy {
     private static boolean hasSolarPanels = false;
 
-    private Energy() {}
+    private Energy() {
+    }
 
     /**
      * sets boolean hasSolarPanels to solarPanels.
+     *
      * @param solarPanels has solar panels
      */
     public static void setHasSolarPanels(boolean solarPanels) {

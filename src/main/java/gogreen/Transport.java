@@ -6,15 +6,18 @@ import java.rmi.ConnectIOException;
 
 /**
  * This class represents the Transport Category.
+ *
  * @author Erwin van Dam
  */
 public final class Transport {
     private static boolean hasElectricCar = false;
 
-    private Transport() {}
+    private Transport() {
+    }
 
     /**
      * Sets the boolean hasElectricCar to electricCar.
+     *
      * @param electricCar has electric Car
      */
     public static void setHasElectricCar(boolean electricCar) {
@@ -73,9 +76,10 @@ public final class Transport {
 
     /**
      * Checks of the distance is acceptable.
+     *
      * @param distance the distance
-     * @param min the minimum distance
-     * @param max the maximum distance
+     * @param min      the minimum distance
+     * @param max      the maximum distance
      */
     static void checkDistance(int distance, int min, int max) {
         if (distance < min) {

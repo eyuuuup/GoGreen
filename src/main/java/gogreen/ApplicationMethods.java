@@ -1,11 +1,14 @@
 package gogreen;
 
+import client.Challenge;
 import client.Communication;
+import client.OnLoadValues;
 import com.google.common.hash.Hashing;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Scanner;
 
@@ -18,6 +21,10 @@ class ApplicationMethods {
     private static int followingSize;
     private static int followersSize;
     private static double savedCarbon;
+    private static String username;
+    private static boolean solarPanel;
+    private static boolean electricCar;
+    private static boolean envGroup;
 
     private ApplicationMethods() {
     }
@@ -31,7 +38,7 @@ class ApplicationMethods {
         Transport.setHasElectricCar(false);
         Energy.setHasSolarPanels(false);
 //        Communication.onLoad(); Returns an object of class onLoadValues but action ids aren't set properly on server
-}
+    }
 
     /**
      * This methods logs in using the given username and password.
@@ -189,10 +196,16 @@ class ApplicationMethods {
     static void setPresets() {
         Application.loadingScreen();
         try {
-            points = Communication.getMyTotalScore();
-            followingSize = Communication.getFriends().size();
-            followersSize = Communication.getFollowers().size();
-            savedCarbon = Communication.carbon().getCarbonReduced();
+            OnLoadValues onload = Communication.onLoad();
+            points = onload.getUser().getTotalScore();
+            followingSize = onload.getFollowing();
+            followersSize = onload.getFollowers();
+            username = onload.getUser().getName();
+            solarPanel = onload.isSolarPanel();
+            electricCar = onload.isElectricCar();
+            envGroup = onload.isEnvGroup();
+            // search here shruti
+            savedCarbon = onload.getCarbonReduce();
             savedCarbon = savedCarbon * 100;
             savedCarbon = (int) savedCarbon;
             savedCarbon = savedCarbon / 100;
@@ -220,7 +233,23 @@ class ApplicationMethods {
         return followersSize;
     }
 
+    static String getUsername() {
+        return username;
+    }
+
     static double getSavedCarbon() {
         return savedCarbon;
+    }
+
+    public static boolean isSolarPanel() {
+        return solarPanel;
+    }
+
+    public static boolean isElectricCar() {
+        return electricCar;
+    }
+
+    public static boolean isEnvGroup() {
+        return envGroup;
     }
 }
