@@ -13,9 +13,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping ("/")
 public class Controller {
-    
+
     // ========== USER AUTHENTICATION ==========================================
-    
+
     /**
      * This is the login method which connects the server and client.
      * @param user username, password
@@ -27,7 +27,7 @@ public class Controller {
         //if(check in database)
         return Database.checkLogin(user);
     }
-    
+
     /**
      * Register as new user.
      * checks if username already taken or not and generates new token.
@@ -49,7 +49,7 @@ public class Controller {
             return new TokenResponse(null, false);
         }
     }
-    
+
     /**
      * This is the method for silentLogin.
      * @param token string
@@ -60,9 +60,9 @@ public class Controller {
     public static boolean silentLogin(@Valid @RequestBody String token) {
         return Database.silentLoginCheck(token);
     }
-    
+
     // ========== ACTION HANDLERS ==============================================
-    
+
     /**
      * add action to the database.
      * @param action action
@@ -72,7 +72,7 @@ public class Controller {
     public static boolean addAction(@Valid @RequestBody Action action) {
         return Database.addAction(action);
     }
-    
+
     /**
      * For the history.
      * @param token token
@@ -83,7 +83,7 @@ public class Controller {
     public static ActionList forDemo(@Valid @RequestBody String token) {
         return Database.retract(token);
     }
-    
+
     /**
      * returns the total score.
      * @param token token
@@ -94,9 +94,9 @@ public class Controller {
     public static int totalScore(@Valid @RequestBody String token) {
         return Database.getTotalScore(token);
     }
-    
+
     // ========== SOCIAL HANDLERS ==============================================
-    
+
     /**
      * check if username searched for following exists or not.
      * @param username username
@@ -107,7 +107,7 @@ public class Controller {
     public static boolean checkUser(@Valid @RequestBody String username) {
         return Database.checkUsername(username);
     }
-    
+
     /**
      * username of the present user.
      * @param token token of the user
@@ -118,7 +118,7 @@ public class Controller {
     public static User getUser(@Valid @RequestBody String token) {
         return Database.getUser(token);
     }
-    
+
     /**
      * adds a friend.
      * @param friend the friend
@@ -129,7 +129,7 @@ public class Controller {
     public static boolean addFriend(@Valid @RequestBody CompareFriends friend) {
         return Database.addFriend(friend);
     }
-    
+
     /**
      * shows the friends.
      * @param token token
@@ -141,13 +141,13 @@ public class Controller {
     public static FriendsList showFriends(@Valid @RequestBody String token) {
         return Database.showFriends(token);
     }
-    
+
     @RequestMapping (value = {"/showFollowers"}, method = RequestMethod.POST,
                      produces = MediaType.APPLICATION_JSON_VALUE)
     public static FriendsList showFollowers(@Valid @RequestBody String token) {
         return Database.showFollowers(token);
     }
-    
+
     /**
      * for implementing the leaderboard and getting top ten users.
      * @return returns a list of top ten users
@@ -167,10 +167,9 @@ public class Controller {
 //    @RequestMapping(value = {"/onLoad"}, method = RequestMethod.POST,
 //            produces = MediaType.APPLICATION_JSON_VALUE)
 //    public static OnLoadValues onLoad(@Valid @RequestBody String token) {
-//
 //        return Database.oneTimeEvent(token);
 //    }
-    
+
     /**
      * This method is for getting the total amount of carbon produced and reduced.
      * @param token the token of the user requesting the data
@@ -181,31 +180,26 @@ public class Controller {
     public static Action carbon(@Valid @RequestBody String token) {
         return Database.getCarbonValues(token);
     }
-    
-    @RequestMapping (value = {"/addChallenger"}, method = RequestMethod.POST,
+
+    @RequestMapping (value = {"/addChallenge"}, method = RequestMethod.POST,
                      produces = MediaType.APPLICATION_JSON_VALUE)
     public static boolean addCahllenge(@Valid @RequestBody CompareFriends friend) {
-        return Database.addChallenge(friend);
+        return Database.addChallenge(friend.getToken(), friend.getUsername(), friend.getScore());
     }
-    
-    @RequestMapping (value = {"/acceptChallenge"}, method = RequestMethod.POST,
-                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public static boolean acceptChallenge(@Valid @RequestBody CompareFriends accept) {
-        return Database.initializeChallenge(accept);
-    }
-    
-    @RequestMapping (value = {"/showChallenges"}, method = RequestMethod.POST,
+
+    @RequestMapping (value = {"/getChallenges"}, method = RequestMethod.POST,
                      produces = MediaType.APPLICATION_JSON_VALUE)
     public static ChallengesList showChallenges(@Valid @RequestBody String token) {
-        return Database.retrieveChallenge(token);
+        return new ChallengesList(Database.retrieveChallenges(token));
     }
-    
-    @RequestMapping (value = {"/updateChallenge"}, method = RequestMethod.POST,
+
+    @RequestMapping (value = {"/acceptChallenge"}, method = RequestMethod.POST,
                      produces = MediaType.APPLICATION_JSON_VALUE)
-    public static boolean updateChallenge(@Valid @RequestBody String token) {
-        return Database.updateChallenge(token);
+    public static boolean acceptChallenge(@Valid @RequestBody Challenge accept) {
+        if(accept.isOnA()) return false;
+        return Database.initializeChallenge(accept.getUserB(), accept.getUserA());
     }
-    
+
     /**
      * This method returns the CO2 reduced of current user of last (cap 30) actions
      * ordered from the most recent (at 0) to last (last)
