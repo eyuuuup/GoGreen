@@ -1,6 +1,6 @@
 package gogreen;
 
-import client.Communication;
+import client.ComCached;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,11 +14,11 @@ import java.rmi.ConnectIOException;
 import static org.mockito.Matchers.anyString;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Communication.class, Api.class})
+@PrepareForTest({ComCached.class, Api.class})
 public class TransportTest {
     @Before
     public void setUp() throws Exception {
-        PowerMockito.mockStatic(Communication.class);
+        PowerMockito.mockStatic(ComCached.class);
         PowerMockito.mockStatic(Api.class);
         Double d = Double.valueOf(100);
         PowerMockito.when(Api.class, "carbonAmount", anyString()).thenReturn(d);
@@ -30,7 +30,7 @@ public class TransportTest {
         PowerMockito.verifyStatic();
         Api.carbonAmount("automobile_trips.json?distance=10");
         PowerMockito.verifyStatic();
-        Communication.addAction("Cycle", 160, 100, 0);
+        ComCached.addAction("Cycle", 160, 100, 0);
     }
 
     @Test
@@ -40,7 +40,7 @@ public class TransportTest {
         PowerMockito.verifyStatic();
         Api.carbonAmount("automobile_trips.json?distance=10");
         PowerMockito.verifyStatic();
-        Communication.addAction("Car", 80, 0, 100);
+        ComCached.addAction("Car", 80, 0, 100);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class TransportTest {
         PowerMockito.verifyStatic();
         Api.carbonAmount("automobile_trips.json?distance=10");
         PowerMockito.verifyStatic();
-        Communication.addAction("Car", 80, 100, 0);
+        ComCached.addAction("Car", 80, 100, 0);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class TransportTest {
         PowerMockito.verifyStatic();
         Api.carbonAmount("automobile_trips.json?distance=16");
         PowerMockito.verifyStatic();
-        Communication.addAction("Plane", 1, 0, 100);
+        ComCached.addAction("Plane", 1, 0, 100);
     }
 
     @Test
@@ -72,7 +72,7 @@ public class TransportTest {
         PowerMockito.verifyStatic();
         Api.carbonAmount("automobile_trips.json?distance=10");
         PowerMockito.verifyStatic();
-        Communication.addAction("PublicTransport", 40, 0, 100);
+        ComCached.addAction("PublicTransport", 40, 0, 100);
     }
 
     @Test
