@@ -109,6 +109,10 @@ public class Application extends javafx.application.Application {
         rememberUser.setGraphic(new Label("Remember me"));
         rememberUser.setId("loginButtons");
 
+        // make the login titles
+        Label loginText = new Label("Login:");
+        loginText.setId("loginText");
+
         //button to log in with the given credentials
         JFXButton login = new JFXButton("Login");
         login.setId("loginButton");
@@ -117,7 +121,8 @@ public class Application extends javafx.application.Application {
                 ApplicationMethods.login(
                         username.getText(), password.getText(), rememberUser.isSelected());
             } catch (IllegalAccessException e1) {
-                e1.printStackTrace();
+                loginText.setText(e1.getMessage());
+                loginText.setTextFill(Paint.valueOf("#FF0000"));
             }
         });
 
@@ -127,10 +132,6 @@ public class Application extends javafx.application.Application {
         register.setOnAction(e -> {
             registerScene();
         });
-
-        // make the login titles
-        Label loginText = new Label("Login:");
-        loginText.setId("loginText");
 
         Label usernameTitle = new Label("Username:");
         usernameTitle.setId("loginTitles");

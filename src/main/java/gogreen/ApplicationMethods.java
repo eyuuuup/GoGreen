@@ -57,7 +57,7 @@ class ApplicationMethods {
             setPresets();
             Application.mainScreen();
         } else {
-            throw new IllegalAccessException("Login unsuccessful");
+            throw new IllegalAccessException("User not found");
         }
     }
 
