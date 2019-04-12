@@ -97,50 +97,26 @@ public class ComCached extends Communication {
     }
 
 
-    // ========================== GETTERS AND SETTERS ==========================
-
-    public static User getUserChanged() {
-        return userChanged;
-    }
+    // ==========================  SETTERS =====================================
 
     public static void setUserChanged(User userChanged) {
         ComCached.userChanged = userChanged;
-    }
-
-    public static Integer getTotalChanged() {
-        return totalChanged;
     }
 
     public static void setTotalChanged(Integer totalChanged) {
         ComCached.totalChanged = totalChanged;
     }
 
-    public static ArrayList<Action> getLastChanged() {
-        return lastChanged;
-    }
-
     public static void setLastChanged(ArrayList<Action> lastChanged) {
         ComCached.lastChanged = lastChanged;
-    }
-
-    public static double[] getCoChanged() {
-        return coChanged;
     }
 
     public static void setCoChanged(double[] coChanged) {
         ComCached.coChanged = coChanged;
     }
 
-    public static Action getCarbonChanged() {
-        return carbonChanged;
-    }
-
     public static void setCarbonChanged(Action carbonChanged) {
         ComCached.carbonChanged = carbonChanged;
-    }
-
-    public static ArrayList<CompareFriends> getFriendsChanged() {
-        return friendsChanged;
     }
 
     public static void setFriendsChanged(ArrayList<CompareFriends> friendsChanged) {
