@@ -26,53 +26,53 @@ public class TransportTest {
 
     @Test
     public void addCycleAction() throws ConnectIOException {
-        Transport.addCycleAction(10);
+        Transport.addCycleAction(10, "description");
         PowerMockito.verifyStatic();
         Api.carbonAmount("automobile_trips.json?distance=10");
         PowerMockito.verifyStatic();
-        ComCached.addAction("Cycle", 160, 100, 0);
+        ComCached.addAction("Cycle", 160, 100, 0, "description");
     }
 
     @Test
     public void addCarAction() throws ConnectIOException {
         Whitebox.setInternalState(Transport.class, "hasElectricCar", false);
-        Transport.addCarAction(10);
+        Transport.addCarAction(10, "description");
         PowerMockito.verifyStatic();
         Api.carbonAmount("automobile_trips.json?distance=10");
         PowerMockito.verifyStatic();
-        ComCached.addAction("Car", 80, 0, 100);
+        ComCached.addAction("Car", 80, 0, 100, "description");
     }
 
     @Test
     public void addCarActionElectricCar() throws ConnectIOException {
         Whitebox.setInternalState(Transport.class, "hasElectricCar", true);
-        Transport.addCarAction(10);
+        Transport.addCarAction(10, "description");
         PowerMockito.verifyStatic();
         Api.carbonAmount("automobile_trips.json?distance=10");
         PowerMockito.verifyStatic();
-        ComCached.addAction("Car", 80, 100, 0);
+        ComCached.addAction("Car", 80, 100, 0, "description");
     }
 
     @Test
     public void addPlaneAction() throws ConnectIOException {
-        Transport.addPlaneAction(16);
+        Transport.addPlaneAction(16, "description");
         PowerMockito.verifyStatic();
         Api.carbonAmount("flights.json?distance=16");
         PowerMockito.verifyStatic();
         Api.carbonAmount("automobile_trips.json?distance=16");
         PowerMockito.verifyStatic();
-        ComCached.addAction("Plane", 1, 0, 100);
+        ComCached.addAction("Plane", 1, 0, 100, "description");
     }
 
     @Test
     public void addPublicTransportAction() throws ConnectIOException {
-        Transport.addPublicTransportAction(10);
+        Transport.addPublicTransportAction(10, "description");
         PowerMockito.verifyStatic();
         Api.carbonAmount("bus_trips.json?distance=10");
         PowerMockito.verifyStatic();
         Api.carbonAmount("automobile_trips.json?distance=10");
         PowerMockito.verifyStatic();
-        ComCached.addAction("PublicTransport", 40, 0, 100);
+        ComCached.addAction("PublicTransport", 40, 0, 100, "description");
     }
 
     @Test

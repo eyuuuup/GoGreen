@@ -19,15 +19,15 @@ public class ExtraTest {
 
     @Test
     public void addCleanSurroundingAction() {
-        Extra.addCleanSurroundingAction();
+        Extra.addCleanSurroundingAction("description");
         PowerMockito.verifyStatic();
-        ComCached.addAction("CleanSurrounding", 100, 5, 0);
+        ComCached.addAction("CleanSurrounding", 100, 5, 0, "description");
     }
 
     @Test
     public void addRecycleAction() {
-        Extra.addRecycleAction();
+        Extra.addRecycleAction("description");
         PowerMockito.verifyStatic();
-        ComCached.addAction("Recycle", 50, 1, 0);
+        ComCached.addAction("Recycle", 50, 1, 0, "description");
     }
 }
