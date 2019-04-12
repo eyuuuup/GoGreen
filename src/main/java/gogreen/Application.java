@@ -4,6 +4,7 @@ import client.Action;
 import client.Challenge;
 import client.ComCached;
 import client.CompareFriends;
+import client.DescriptionTooLong;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXSlider;
@@ -29,12 +30,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
@@ -45,11 +41,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.IllegalFormatException;
 import java.util.TimeZone;
 
 public class Application extends javafx.application.Application {
     //the stage this application uses
-    private static Stage  stage;
+    private static Stage stage;
     private static String theme;
 
     //launches the app
@@ -77,6 +74,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * The login screen.
+     *
      * @return the screen
      */
     private static GridPane loginScreen() {
@@ -94,8 +92,8 @@ public class Application extends javafx.application.Application {
         visiblePassword.setVisible(false);
 
         //checkbox to toggle between visible password and masked password
-        JFXToggleNode          showPassword = new JFXToggleNode();
-        MaterialDesignIconView showIcon     = new MaterialDesignIconView(MaterialDesignIcon.EYE);
+        JFXToggleNode showPassword = new JFXToggleNode();
+        MaterialDesignIconView showIcon = new MaterialDesignIconView(MaterialDesignIcon.EYE);
         showIcon.setSize("20px");
         showPassword.setGraphic(new Label("Show password", showIcon));
         showPassword.setId("loginButtons");
@@ -156,6 +154,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * The body for the register display.
+     *
      * @return the body
      */
     private static GridPane registerScreen() {
@@ -180,8 +179,8 @@ public class Application extends javafx.application.Application {
         visiblePasswordTwo.setVisible(false);
 
         //checkbox to toggle between visible password and masked password
-        JFXToggleNode          showPassword = new JFXToggleNode();
-        MaterialDesignIconView showIcon     = new MaterialDesignIconView(MaterialDesignIcon.EYE);
+        JFXToggleNode showPassword = new JFXToggleNode();
+        MaterialDesignIconView showIcon = new MaterialDesignIconView(MaterialDesignIcon.EYE);
         showIcon.setSize("20px");
         showPassword.setGraphic(new Label("Show password", showIcon));
         showPassword.setId("loginButtons");
@@ -292,6 +291,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the home screen.
+     *
      * @return home screen
      */
     private static Pane homeScreen() {
@@ -329,6 +329,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the sidebar.
+     *
      * @return the sidebar
      */
     private static GridPane sideBar() {
@@ -362,6 +363,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the your world screen.
+     *
      * @return your world screen
      */
     private static BorderPane yourWorldScreen() {
@@ -377,7 +379,7 @@ public class Application extends javafx.application.Application {
         }
 
         // make the your world view
-        Image     world         = new Image(planetLink);
+        Image world = new Image(planetLink);
         ImageView yourWorldView = new ImageView();
         yourWorldView.setImage(world);
 
@@ -420,10 +422,14 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the settings screen.
+     *
      * @return settings screen
      */
     private static BorderPane settingsScreen() {
-         // makes the dark mode button
+        // set the status of the dark mode
+        String status = "Enable";
+
+        // makes the dark mode button
         JFXToggleNode darkTheme = new JFXToggleNode();
         MaterialDesignIconView darkThemeIcon =
                 new MaterialDesignIconView(MaterialDesignIcon.THEME_LIGHT_DARK);
@@ -450,8 +456,8 @@ public class Application extends javafx.application.Application {
         });
 
         // make the logout button
-        JFXButton              logoutButton = new JFXButton();
-        MaterialDesignIconView logoutIcon   = new MaterialDesignIconView(MaterialDesignIcon.LOGOUT);
+        JFXButton logoutButton = new JFXButton();
+        MaterialDesignIconView logoutIcon = new MaterialDesignIconView(MaterialDesignIcon.LOGOUT);
         logoutIcon.setSize("50px");
         logoutButton.setGraphic(new Label("Log out", logoutIcon));
         logoutButton.setId("settingButtons");
@@ -479,6 +485,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the about page.
+     *
      * @return the about page
      */
     private static BorderPane aboutScreen() {
@@ -508,7 +515,7 @@ public class Application extends javafx.application.Application {
         aboutText.setId("aboutText");
 
         // make the your world view
-        Image     apiButton     = new Image("file:src/aboutPicture/apiButton.png");
+        Image apiButton = new Image("file:src/aboutPicture/apiButton.png");
         ImageView apiButtonView = new ImageView();
         apiButtonView.setImage(apiButton);
 
@@ -539,6 +546,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * make the category screen.
+     *
      * @return the category screen
      */
     private static Pane categoryScreen() {
@@ -584,6 +592,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the transport screen.
+     *
      * @return the transport screen
      */
     private static BorderPane transportScreen() {
@@ -604,7 +613,7 @@ public class Application extends javafx.application.Application {
         transportInfo.setId("information");
 
         //button for the cycle action
-        JFXButton           cycle    = new JFXButton();
+        JFXButton cycle = new JFXButton();
         FontAwesomeIconView bikeIcon = new FontAwesomeIconView(FontAwesomeIcon.BICYCLE);
         bikeIcon.setSize("50px");
         cycle.setGraphic(bikeIcon);
@@ -614,21 +623,24 @@ public class Application extends javafx.application.Application {
         cycle.setOnAction(e -> {
             try {
                 int distanceInt = Integer.parseInt(distance.getText());
+                checkDescriptionLength(transportDescription.getText());
                 System.out.println(transportDescription.getText());
                 transportInfo.setText("");
-                Transport.addCycleAction(distanceInt);
+                Transport.addCycleAction(distanceInt, transportDescription.getText());
                 refresh();
             } catch (NumberFormatException exception) {
                 transportInfo.setText("Please only use numbers!");
             } catch (ConnectIOException | IllegalArgumentException exception) {
                 exception.printStackTrace();
                 transportInfo.setText("Number is too high \nDid you really cycle that far?");
+            } catch (DescriptionTooLong exception) {
+                transportInfo.setText("You description is too long. \nChill down and please use less then 150 characters.");
             }
         });
 
         //button for the public transport action
-        JFXButton              publicTransport = new JFXButton();
-        MaterialDesignIconView subwayIcon      = new MaterialDesignIconView(MaterialDesignIcon.SUBWAY);
+        JFXButton publicTransport = new JFXButton();
+        MaterialDesignIconView subwayIcon = new MaterialDesignIconView(MaterialDesignIcon.SUBWAY);
         subwayIcon.setSize("50px");
         publicTransport.setGraphic(subwayIcon);
         publicTransport.setId("actionButton");
@@ -636,10 +648,11 @@ public class Application extends javafx.application.Application {
         // when you press the button you add an action or get an error which will be displayed
         publicTransport.setOnAction(e -> {
             try {
+                checkDescriptionLength(transportDescription.getText());
                 int distanceInt = Integer.parseInt(distance.getText());
                 System.out.println(transportDescription.getText());
                 transportInfo.setText("");
-                Transport.addPublicTransportAction(distanceInt);
+                Transport.addPublicTransportAction(distanceInt, transportDescription.getText());
                 refresh();
             } catch (NumberFormatException exception) {
                 // throw error
@@ -648,11 +661,13 @@ public class Application extends javafx.application.Application {
                 exception.printStackTrace();
                 transportInfo.setText("Number is too high \n"
                         + "Did you really used public transport that far?");
+            } catch (DescriptionTooLong exception) {
+                transportInfo.setText("You description is too long. \nChill down and please use less then 150 characters.");
             }
         });
 
         //button for the car action
-        JFXButton           car     = new JFXButton();
+        JFXButton car = new JFXButton();
         FontAwesomeIconView carIcon = new FontAwesomeIconView(FontAwesomeIcon.AUTOMOBILE);
         carIcon.setSize("50px");
         car.setGraphic(carIcon);
@@ -662,10 +677,11 @@ public class Application extends javafx.application.Application {
         // if you get an error it will be displayed
         car.setOnAction(e -> {
             try {
+                checkDescriptionLength(transportDescription.getText());
                 int distanceInt = Integer.parseInt(distance.getText());
                 System.out.println(transportDescription.getText());
                 transportInfo.setText("");
-                Transport.addCarAction(distanceInt);
+                Transport.addCarAction(distanceInt, transportDescription.getText());
                 refresh();
             } catch (NumberFormatException exception) {
                 // throw error
@@ -674,11 +690,13 @@ public class Application extends javafx.application.Application {
                 exception.printStackTrace();
                 transportInfo.setText("Number is too high \n"
                         + "Did you really drove your car that far?");
+            } catch (DescriptionTooLong exception) {
+                transportInfo.setText("You description is too long. \nChill down and please use less then 150 characters.");
             }
         });
 
         //button for the plane action
-        JFXButton           plane     = new JFXButton();
+        JFXButton plane = new JFXButton();
         FontAwesomeIconView planeIcon = new FontAwesomeIconView(FontAwesomeIcon.PLANE);
         planeIcon.setSize("50px");
         plane.setGraphic(planeIcon);
@@ -688,10 +706,11 @@ public class Application extends javafx.application.Application {
         // and if you get an error it will be displayed
         plane.setOnAction(e -> {
             try {
+                checkDescriptionLength(transportDescription.getText());
                 int distanceInt = Integer.parseInt(distance.getText());
                 System.out.println(transportDescription.getText());
                 transportInfo.setText("");
-                Transport.addPlaneAction(distanceInt);
+                Transport.addPlaneAction(distanceInt, transportDescription.getText());
                 refresh();
             } catch (NumberFormatException exception) {
                 // throw error
@@ -700,6 +719,8 @@ public class Application extends javafx.application.Application {
                 exception.printStackTrace();
                 transportInfo.setText("Number is too high \n"
                         + "You can't fly around the world multiple times!");
+            } catch (DescriptionTooLong exception) {
+                transportInfo.setText("You description is too long. \nChill down and please use less then 150 characters.");
             }
         });
 
@@ -735,6 +756,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * make the food screen.
+     *
      * @return
      */
     private static BorderPane foodScreen() {
@@ -752,19 +774,22 @@ public class Application extends javafx.application.Application {
         send.setId("actionButton");
 
         // make the check boxes
-        JFXCheckBox veggie  = new JFXCheckBox("Veggie");
+        JFXCheckBox veggie = new JFXCheckBox("Veggie");
         JFXCheckBox locally = new JFXCheckBox("Locally");
         JFXCheckBox bio     = new JFXCheckBox("Biological");
 
         // when you press the send button, it will look what is selected and add those actions
         send.setOnAction(e -> {
             try {
-                Food.addAction(veggie.isSelected(), locally.isSelected(), bio.isSelected());
+                checkDescriptionLength(foodDescription.getText());
+                Food.addAction(veggie.isSelected(), locally.isSelected(), bio.isSelected(), foodDescription.getText());
                 System.out.println(foodDescription.getText());
                 refresh();
             } catch (ConnectIOException | IllegalArgumentException e1) {
                 foodInfo.setText("You have reached the daily limit of food actions! \n");
                 e1.printStackTrace();
+            } catch (DescriptionTooLong exception) {
+                foodInfo.setText("You description is too long. \nChill down and please use less then 150 characters.");
             }
 
             // then sets it to false to select it again
@@ -794,6 +819,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the energy screen.
+     *
      * @return the energy screen
      */
     private static BorderPane energyScreen() {
@@ -828,12 +854,15 @@ public class Application extends javafx.application.Application {
             if (value != 0) {
                 waterInfo.setText("");
                 try {
+                    checkDescriptionLength(waterDescription.getText());
                     System.out.println(waterDescription.getText());
-                    Energy.addReduceWater(value);
+                    Energy.addReduceWater(value, waterDescription.getText());
                     System.out.println(value);
                     refresh();
                 } catch (ConnectIOException e1) {
                     e1.printStackTrace();
+                } catch (DescriptionTooLong exception) {
+                    waterInfo.setText("You description is too long. \nChill down and please use less then 150 characters.");
                 }
             } else {
                 waterInfo.setText("Please fill in the amount of minutes you showered.");
@@ -869,11 +898,14 @@ public class Application extends javafx.application.Application {
             int value = (int) Math.round(temperatureSlider.getValue());
             System.out.println(value);
             try {
+                checkDescriptionLength(tempratureDescription.getText());
                 System.out.println(tempratureDescription.getText());
-                Energy.addReduceEnergyAction(value);
+                Energy.addReduceEnergyAction(value, tempratureDescription.getText());
                 refresh();
             } catch (ConnectIOException e1) {
                 e1.printStackTrace();
+            } catch (DescriptionTooLong exception) {
+                temperatureInfo.setText("You description is too long. \nChill down and please use less then 150 characters.");
             }
         });
 
@@ -894,6 +926,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the extra screen.
+     *
      * @return the extra screen
      */
     private static BorderPane extraScreen() {
@@ -906,21 +939,26 @@ public class Application extends javafx.application.Application {
         extraDescription.setId("description");
 
         // makes the clean surrounding button
-        JFXButton   cleanSurrounding = new JFXButton();
-        OctIconView trashIcon        = new OctIconView(OctIcon.TRASHCAN);
+        JFXButton cleanSurrounding = new JFXButton();
+        OctIconView trashIcon = new OctIconView(OctIcon.TRASHCAN);
         trashIcon.setSize("50px");
         cleanSurrounding.setGraphic(new Label("Clean surrounding", trashIcon));
         cleanSurrounding.setId("actionButton");
 
         // when pressed it will send the action
         cleanSurrounding.setOnAction(e -> {
-            System.out.println(extraDescription.getText());
-            Extra.addCleanSurroundingAction();
-            refresh();
+            try {
+                checkDescriptionLength(extraDescription.getText());
+                System.out.println(extraDescription.getText());
+                Extra.addCleanSurroundingAction(extraDescription.getText());
+                refresh();
+            } catch (DescriptionTooLong exception) {
+                extrainfo.setText("You description is too long. \nChill down and please use less then 150 characters.");
+            }
         });
 
         // makes the recycle button
-        JFXButton              recycle     = new JFXButton();
+        JFXButton recycle = new JFXButton();
         MaterialDesignIconView recycleIcon = new MaterialDesignIconView(MaterialDesignIcon.RECYCLE);
         recycleIcon.setSize("50px");
         recycle.setGraphic(new Label("Recycle", recycleIcon));
@@ -928,9 +966,15 @@ public class Application extends javafx.application.Application {
 
         // when pressed it will send the action
         recycle.setOnAction(e -> {
-            System.out.println(extraDescription.getText());
-            Extra.addRecycleAction();
-            refresh();
+            try {
+                checkDescriptionLength(extraDescription.getText());
+                System.out.println(extraDescription.getText());
+                Extra.addRecycleAction(extraDescription.getText());
+                refresh();
+            } catch (DescriptionTooLong exception) {
+                extrainfo.setText("You description is too long. \nChill down and please use less then 150 characters.");
+            }
+
         });
 
         // makes the page and adds the nodes
@@ -952,6 +996,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the one time events screen.
+     *
      * @return the one time events page
      */
     private static BorderPane oteScreen() {
@@ -1010,6 +1055,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * make the stats screen.
+     *
      * @return the stats screen
      */
     private static Pane statsScreen() {
@@ -1039,6 +1085,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * make the overview screen.
+     *
      * @return the overview screen
      */
     private static BorderPane overviewScreen() {
@@ -1055,7 +1102,6 @@ public class Application extends javafx.application.Application {
         final NumberAxis yAxis = new NumberAxis();
 
         xAxis.setTickLabelsVisible(false);
-//        xAxis.setTickMarkVisible(false);
 
         // makes the chart
         final LineChart<Number, Number> lineChart =
@@ -1095,28 +1141,54 @@ public class Application extends javafx.application.Application {
         Label historyTitle = new Label("Recent activities");
         historyTitle.setId("title");
 
-        // makes the header
+       // makes the list
         GridPane historyList = new GridPane();
         historyList.setId("historyList");
-        historyList.add(new Label("Recent activity:"), 0, 0);
-        historyList.add(new Label("Date:"), 1, 0);
-        historyList.add(new Label("Description"), 2, 0);
+
+        // makes the header
+        GridPane historyHeader = new GridPane();
+        historyHeader.setId("historyList");
+        historyHeader.add(new Label("Recent activity:"), 0, 0);
+        historyHeader.add(new Label("Date:"), 1, 0);
+        historyHeader.add(new Label("Description:"), 2, 0);
+
+        // sets the column width
+        ColumnConstraints activityCol = new ColumnConstraints();
+        activityCol.setMinWidth(220);
+        activityCol.setMaxWidth(220);
+        ColumnConstraints dateCol = new ColumnConstraints();
+        dateCol.setMinWidth(180);
+        dateCol.setMaxWidth(180);
+        ColumnConstraints descriptionCol = new ColumnConstraints();
+        descriptionCol.setMaxWidth(275);
+
+        historyList.getColumnConstraints().addAll(activityCol, dateCol, descriptionCol);
+        historyHeader.getColumnConstraints().addAll(activityCol, dateCol, descriptionCol);
 
         // add the history to the page
-        int        pos       = 1;
-        DateFormat formatter = new SimpleDateFormat("d MMMM YYYY / HH:mm");
+        int pos = 0;
+        DateFormat formatter = new SimpleDateFormat("d MMM YYYY \nHH:mm");
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-        for (Action a : ComCached.getLastThreeActions()) {
-            historyList.add(new Label(a.getAction()), 0, pos);
-            String date = formatter.format(new Date(a.getDate()));
-            historyList.add(new Label(date), 1, pos);
-            historyList.add(new Label("Description"), 2, pos);
+        for (client.Action a : ComCached.getLastThreeActions()) {
+            Label action = new Label(a.getAction());
+            action.setWrapText(true);
+
+            Label date = new Label(formatter.format(new Date(a.getDate())) + " (UTC)");
+            date.setWrapText(true);
+
+            Label description = new Label(a.getDescription());
+            description.setWrapText(true);
+
+            historyList.add(action, 0, pos);
+            historyList.add(date, 1, pos);
+            historyList.add(description, 2, pos);
             pos++;
         }
 
         // makes the scrollpane
         ScrollPane historyPane = new ScrollPane();
         historyPane.setContent(historyList);
+        historyPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         historyPane.setId("historyScrollPane");
 
         // makes the page
@@ -1133,6 +1205,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * make the competition screen.
+     *
      * @return the competition screen
      */
     private static Pane competitionScreen() {
@@ -1172,6 +1245,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * make the leaderboard screen.
+     *
      * @return the leaderboard screen
      */
     private static BorderPane leaderboardScreen() {
@@ -1197,8 +1271,8 @@ public class Application extends javafx.application.Application {
         int pos = 1;
         for (CompareFriends users : topTen) {
             String username = ApplicationMethods.decodeUsername(users.getUsername());
-            int    score    = users.getScore();
-            int    level    = ApplicationMethods.getLevel(score);
+            int score = users.getScore();
+            int level = ApplicationMethods.getLevel(score);
             leaderboard.add(new Label(pos + "."), 0, pos);
             leaderboard.add(new Label(username), 1, pos);
             leaderboard.add(new Label(String.valueOf(score)), 2, pos);
@@ -1221,6 +1295,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * make the friends screen.
+     *
      * @return the friends screen
      */
     private static BorderPane friendsScreen() {
@@ -1277,6 +1352,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes a gridpane of the people you follow.
+     *
      * @return the gridpane with people you follow
      */
     private static GridPane followingList() {
@@ -1292,8 +1368,8 @@ public class Application extends javafx.application.Application {
             int pos = 1;
             for (CompareFriends friend : friends) {
                 String username = ApplicationMethods.decodeUsername(friend.getUsername());
-                int    score    = friend.getScore();
-                int    level    = ApplicationMethods.getLevel(score);
+                int score = friend.getScore();
+                int level = ApplicationMethods.getLevel(score);
                 friendsList.add(new Label(username), 0, pos);
                 friendsList.add(new Label(score + " points"), 1, pos);
                 friendsList.add(new Label("Level " + level), 2, pos);
@@ -1306,6 +1382,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * make the friend request screen.
+     *
      * @return the friend request screen
      */
     private static BorderPane friendRequestScreen() {
@@ -1359,6 +1436,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the challenge page.
+     *
      * @return the challenge page
      */
     private static BorderPane challengeScreen() {
@@ -1527,6 +1605,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * Toggle visibility between Textfield and PasswordField.
+     *
      * @param visible   the Textfield
      * @param invisible the PasswordField
      * @param show      whether to show the password
@@ -1545,6 +1624,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * shows the given scene to the user.
+     *
      * @param scene scene
      */
     private static void show(Scene scene) {
@@ -1560,8 +1640,16 @@ public class Application extends javafx.application.Application {
         mainScreen();
     }
 
+    private static void checkDescriptionLength(String description) throws DescriptionTooLong {
+        if (description.length() > 150) {
+            throw new DescriptionTooLong("The description needs to be less then 150 characters");
+        }
+
+    }
+
     /**
      * this method starts the application.
+     *
      * @param stage stage
      */
     @Override

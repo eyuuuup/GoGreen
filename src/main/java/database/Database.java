@@ -44,6 +44,7 @@ public class Database {
     private static PreparedStatement showFollowers;
     private static PreparedStatement getLeaderboard;
     private static PreparedStatement getLastMeal;
+    private static PreparedStatement getOTE;
     private static PreparedStatement addChallenge;
     private static PreparedStatement retrieveChallenges;
     private static PreparedStatement initializeChallenge;
@@ -95,7 +96,7 @@ public class Database {
 
             retract = connection.prepareStatement(
                     "SELECT actions.action_name, events.points, "
-                            + "events.carbon_reduced, events.carbon_produced, events.date_time "
+                            + "events.carbon_reduced, events.carbon_produced, events.date_time, events.description "
                             + "FROM events JOIN actions ON events.action_id = actions.action_id "
                             + "WHERE events.username = ? "
                             + "ORDER BY date_time DESC "
@@ -184,6 +185,13 @@ public class Database {
                             + "WHERE user_data.token = ? AND events.parent_category = 1 "
                             + "ORDER BY date_time DESC "
                             + "LIMIT 1;");
+
+            getOTE = connection.prepareStatement(
+                    "SELECT action_id "
+                            + "FROM events "
+                            + "JOIN user_data ON events.username = user_data.username "
+                            + "WHERE user_data.token = ? AND (action_id = 14 OR action_id = 13 OR action_id = 12)"
+                            + "ORDER BY action_id DESC;");
 
             addChallenge = connection.prepareStatement(
                     "INSERT INTO challenges (goal, user_a, user_b, state, time_added)"
@@ -388,7 +396,8 @@ public class Database {
                 action.setCarbonProduced(rs.getInt(3));
                 action.setCarbonReduced(rs.getInt(4));
                 action.setDate(rs.getLong(5));
-
+                action.setDescription(rs.getString(6));
+                
                 list.add(action);
             }
 
@@ -807,6 +816,45 @@ public class Database {
         }
     }
 
+    /**
+     * This methods gets the OTE.
+     * @param token A String of the token of the user.
+     * @return ArrayList with the booleans of which events exist
+     */
+    public static OnLoadValues getOTE(String token) {
+        System.out.println("getOTE called");
+        try {
+            PreparedStatement state = getOTE;
+            state.setString(1, token);
+            ResultSet    rs  = state.executeQuery();
+            OnLoadValues olv = new OnLoadValues();
+            olv.setSolarPanel(false);
+            olv.setElectricCar(false);
+            olv.setEnvGroup(false);
+            while (rs.next()) {
+                switch (rs.getInt(1)) {
+                    case 12: {
+                        olv.setSolarPanel(true);
+                        break;
+                    }
+                    case 13: {
+                        olv.setElectricCar(true);
+                        break;
+                    }
+                    case 14: {
+                        olv.setEnvGroup(true);
+                        break;
+                    }
+                }
+            }
+            return olv;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return new OnLoadValues();
+        }
+    }
+
 
     /**
      * This method add a challenge.
@@ -957,48 +1005,6 @@ public class Database {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
-        }
-    }
-
-    /**
-     * This methods gets the OTE.
-     * @param token A String of the token of the user.
-     * @return ArrayList with the booleans of which events exist
-     */
-    public static OnLoadValues getOTE(String token) {
-        System.out.println("getOTE called");
-        try {
-            Connection con = DriverManager.getConnection();
-            PreparedStatement state = con.prepareStatement(
-                    "SELECT action_id "
-                            + "FROM events JOIN user_data ON "
-                            + "events.username = user_data.username "
-                            + "WHERE user_data.token = ? AND (action_id = 14 OR action_id = 13 OR action_id = 12)"
-                            + "ORDER BY action_id DESC");
-            state.setString(1, token);
-            ResultSet rs = state.executeQuery();
-
-            OnLoadValues ote = new OnLoadValues();
-            while (rs.next()) {
-                switch (rs.getInt(1)) {
-                    case 12:
-                        ote.setSolarPanel(true);
-                        break;
-                    case 13:
-                        ote.setElectricCar(true);
-                        break;
-                    case 14:
-                        ote.setEnvGroup(true);
-                        break;
-                }
-            }
-            con.close();
-
-            return ote;
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return new OnLoadValues();
         }
     }
 

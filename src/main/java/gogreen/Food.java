@@ -23,24 +23,24 @@ public class Food {
      * @param locally locally produced
      * @param bio     biological
      */
-    public static void addAction(boolean veggie, boolean locally, boolean bio)
+    public static void addAction(boolean veggie, boolean locally, boolean bio, String description)
             throws ConnectIOException {
         String exception = "you have reached the daily limit of food actions";
         double carbonReduced = Api.carbonAmount("diets.json?size=1");
         if (veggie) {
-            if (!ComCached.addAction("Meat", 50, carbonReduced, 0)) {
+            if (!ComCached.addAction("Meat", 50, carbonReduced, 0, description)) {
                 throw new IllegalArgumentException(exception);
             }
         }
 
         if (locally) {
-            if (!ComCached.addAction("Local", 50, carbonReduced, 0)) {
+            if (!ComCached.addAction("Local", 50, carbonReduced, 0, description)) {
                 throw new IllegalArgumentException(exception);
             }
         }
 
         if (bio) {
-            if (!ComCached.addAction("Biological", 50, carbonReduced, 0)) {
+            if (!ComCached.addAction("Biological", 50, carbonReduced, 0, description)) {
                 throw new IllegalArgumentException(exception);
             }
         }

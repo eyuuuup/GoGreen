@@ -27,7 +27,7 @@ public final class Energy {
     /**
      * Method for reduced energy usage due to a lower house temperature.
      */
-    static void addReduceEnergyAction(int houseTemperature) throws ConnectIOException {
+    static void addReduceEnergyAction(int houseTemperature, String description) throws ConnectIOException {
         int temperatureDiff = 23 - houseTemperature;
         //average area of house * average  Specific heat capacity of house * energy used in normal day(1min)
         double carbon = Api.carbonAmount("electricity_uses.json?energy=" + 18.24);
@@ -35,16 +35,16 @@ public final class Energy {
         double carbonProduced = carbon * houseTemperature;
 
         if (hasSolarPanels) {
-            ComCached.addAction("ReduceEnergy", 100 * temperatureDiff, carbonProduced, 0);
+            ComCached.addAction("ReduceEnergy", 100 * temperatureDiff, carbonProduced, 0, description);
         } else {
-            ComCached.addAction("ReduceEnergy", 100 * temperatureDiff, carbonReduced, carbonProduced);
+            ComCached.addAction("ReduceEnergy", 100 * temperatureDiff, carbonReduced, carbonProduced, description);
         }
     }
 
     /**
      * Method for less shower time.
      */
-    static void addReduceWater(int showerTime) throws ConnectIOException {
+    static void addReduceWater(int showerTime, String description) throws ConnectIOException {
         int timeDiff = 20 - showerTime;
         //normal time spent of shower * normal water use during shower (1min) * normal energy contain by water(1KG)
         double carbon = Api.carbonAmount("electricity_uses.json?energy=" + 18.4);
@@ -52,9 +52,9 @@ public final class Energy {
         double carbonProduced = showerTime * carbon;
 
         if (hasSolarPanels) {
-            ComCached.addAction("ReduceWater", 100 * timeDiff, carbonProduced, 0);
+            ComCached.addAction("ReduceWater", 100 * timeDiff, carbonProduced, 0, description);
         } else {
-            ComCached.addAction("ReduceWater", 100 * timeDiff, carbonReduced, carbonProduced);
+            ComCached.addAction("ReduceWater", 100 * timeDiff, carbonReduced, carbonProduced, description);
         }
     }
 }
