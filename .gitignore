@@ -80,4 +80,4 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 # Personal token login info
-src/extraFiles/Token.txt
+src/main/resources/extraFiles/Token.txt

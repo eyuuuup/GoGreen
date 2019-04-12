@@ -155,7 +155,7 @@ class ApplicationMethods {
         testName = testName.toLowerCase();
 
         //check whether the name is not offensive
-        File file = new File("src/extraFiles/InvalidNamesComma.txt");
+        File file = new File("src/main/resources/extraFiles/InvalidNamesComma.txt");
         Scanner sc = new Scanner(file).useDelimiter(", ");
         while (sc.hasNext()) {
             if (testName.contains(sc.next())) {

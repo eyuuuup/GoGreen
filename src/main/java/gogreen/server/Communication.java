@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class Communication {
 
     private static String hostURL = "http://localhost:8080";
-    private static String fileDir = "src/extraFiles/Token.txt";
+    private static String fileDir = "src/main/resources/extraFiles/Token.txt";
     private static String token   = null;
 
     /**

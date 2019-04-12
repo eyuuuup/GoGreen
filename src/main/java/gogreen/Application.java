@@ -376,11 +376,11 @@ public class Application extends javafx.application.Application {
         int level  = ApplicationMethods.getLevel(points);
 
         // make the your world images
-        String planetLink = "file:src/planets/levelOneWorld.gif";
+        String planetLink = "file:src/main/resources/planets/levelOneWorld.gif";
         if (33 <= level && level < 66) {
-            planetLink = "file:src/planets/levelTwoWorld.gif";
+            planetLink = "file:src/main/resources/planets/levelTwoWorld.gif";
         } else if (level >= 66) {
-            planetLink = "file:src/planets/levelThreeWorld.gif";
+            planetLink = "file:src/main/resources/planets/levelThreeWorld.gif";
         }
 
         // make the your world view
@@ -443,7 +443,7 @@ public class Application extends javafx.application.Application {
         darkTheme.setId("settingButtons");
 
         // if the dark mode is enabled, we will have the disable button
-        if (theme.equals("src/styles/mainSceneDarkTheme.css")) {
+        if (theme.equals("src/main/resources/styles/mainSceneDarkTheme.css")) {
             darkTheme.setSelected(true);
             darkTheme.setGraphic(new Label("Disable dark theme", darkThemeIcon));
         }
@@ -452,10 +452,10 @@ public class Application extends javafx.application.Application {
         darkTheme.setOnAction(e -> {
             System.out.println(darkTheme.isSelected());
             if (darkTheme.isSelected()) {
-                theme = "src/styles/mainSceneDarkTheme.css";
+                theme = "src/main/resources/styles/mainSceneDarkTheme.css";
                 mainScreen();
             } else {
-                theme = "src/styles/mainSceneDefaultTheme.css";
+                theme = "src/main/resources/styles/mainSceneDefaultTheme.css";
                 mainScreen();
             }
         });
@@ -520,7 +520,7 @@ public class Application extends javafx.application.Application {
         aboutText.setId("aboutText");
 
         // make the your world view
-        Image apiButton = new Image("file:src/aboutPicture/apiButton.png");
+        Image apiButton = new Image("file:src/main/resources/aboutPicture/apiButton.png");
         ImageView apiButtonView = new ImageView();
         apiButtonView.setImage(apiButton);
 
@@ -1664,12 +1664,12 @@ public class Application extends javafx.application.Application {
         ApplicationMethods.onLoad();
 
         this.stage = stage;
-        stage.getIcons().add(new Image("file:src/planets/icon.gif"));
+        stage.getIcons().add(new Image("file:src/main/resources/planets/icon.gif"));
         stage.setResizable(false);
         stage.setTitle("GoGreen");
 
         // sets the theme
-        theme = "src/styles/mainSceneDefaultTheme.css";
+        theme = "src/main/resources/styles/mainSceneDefaultTheme.css";
 
         //the silentLogin will login for the user
         if (ComCached.silentLogin()) {
