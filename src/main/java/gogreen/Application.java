@@ -1,6 +1,8 @@
 package gogreen;
 
-import client.Communication;
+import client.Action;
+import client.Challenge;
+import client.ComCached;
 import client.CompareFriends;
 import client.DescriptionTooLong;
 import com.jfoenix.controls.JFXButton;
@@ -245,7 +247,7 @@ public class Application extends javafx.application.Application {
 
     }
 
-    /*
+    /**
      * the main screen.
      */
     static void mainScreen() {
@@ -333,21 +335,19 @@ public class Application extends javafx.application.Application {
     private static GridPane sideBar() {
 
         // makes all the labels to display
-        Label username = new Label("@Username");
+        Label username = new Label("@" + ApplicationMethods.decodeUsername(ApplicationMethods.getUsername()));
 
         double savedAmount = ApplicationMethods.getSavedCarbon();
-        Label reducedCO2 = new Label(savedAmount + "kg CO\u2082 saved");
+        Label  reducedCO2  = new Label(savedAmount + "kg CO\u2082 saved");
 
-        int points = ApplicationMethods.getPoints();
+        int   points     = ApplicationMethods.getPoints();
         Label pointsText = new Label(points + " Points");
 
-        int followers = ApplicationMethods.getFollowersSize();
+        int   followers     = ApplicationMethods.getFollowersSize();
         Label followersText = new Label(followers + " Followers");
 
-        int following = ApplicationMethods.getFollowingSize();
+        int   following     = ApplicationMethods.getFollowingSize();
         Label followingText = new Label(following + " Followed");
-
-        Label temp = new Label("room for some medals \nor challenges");
 
         // puts everything into a container
         GridPane sideBar = new GridPane();
@@ -357,7 +357,6 @@ public class Application extends javafx.application.Application {
         sideBar.add(pointsText, 0, 2);
         sideBar.add(followersText, 0, 3);
         sideBar.add(followingText, 0, 4);
-        sideBar.add(temp, 0, 5);
 
         return sideBar;
     }
@@ -369,7 +368,7 @@ public class Application extends javafx.application.Application {
      */
     private static BorderPane yourWorldScreen() {
         int points = ApplicationMethods.getPoints();
-        int level = ApplicationMethods.getLevel(points);
+        int level  = ApplicationMethods.getLevel(points);
 
         // make the your world images
         String planetLink = "file:src/planets/levelOneWorld.gif";
@@ -435,13 +434,13 @@ public class Application extends javafx.application.Application {
         MaterialDesignIconView darkThemeIcon =
                 new MaterialDesignIconView(MaterialDesignIcon.THEME_LIGHT_DARK);
         darkThemeIcon.setSize("50px");
-        darkTheme.setGraphic(new Label(status + " dark theme", darkThemeIcon));
+        darkTheme.setGraphic(new Label("Enable dark theme", darkThemeIcon));
         darkTheme.setId("settingButtons");
 
         // if the dark mode is enabled, we will have the disable button
         if (theme.equals("src/styles/mainSceneDarkTheme.css")) {
             darkTheme.setSelected(true);
-            status = "Disable";
+            darkTheme.setGraphic(new Label("Disable dark theme", darkThemeIcon));
         }
 
         // if you toggle the button, you change the theme
@@ -465,7 +464,7 @@ public class Application extends javafx.application.Application {
 
         // if we press the button we log out
         logoutButton.setOnAction(e -> {
-            client.Communication.logout();
+            ComCached.logout();
             loginScene();
         });
 
@@ -744,7 +743,6 @@ public class Application extends javafx.application.Application {
         transportCenter.add(car, 0, 5);
         transportCenter.add(plane, 0, 6);
 
-
         transportCenter.setId("transportPage");
 
         // make the page and set the sidebar
@@ -778,7 +776,7 @@ public class Application extends javafx.application.Application {
         // make the check boxes
         JFXCheckBox veggie = new JFXCheckBox("Veggie");
         JFXCheckBox locally = new JFXCheckBox("Locally");
-        JFXCheckBox bio = new JFXCheckBox("Biological");
+        JFXCheckBox bio     = new JFXCheckBox("Biological");
 
         // when you press the send button, it will look what is selected and add those actions
         send.setOnAction(e -> {
@@ -799,7 +797,6 @@ public class Application extends javafx.application.Application {
             locally.setSelected(false);
             bio.setSelected(false);
         });
-
 
         //make the page and will add the nodes
         GridPane foodCenter = new GridPane();
@@ -982,10 +979,10 @@ public class Application extends javafx.application.Application {
 
         // makes the page and adds the nodes
         GridPane extraCenter = new GridPane();
-        extraCenter.add(extrainfo, 0, 0);
-        extraCenter.add(extraDescription, 0, 1);
-        extraCenter.add(cleanSurrounding, 0, 2);
-        extraCenter.add(recycle, 0, 3);
+//        extraCenter.add(extrainfo, 0, 0);
+        extraCenter.add(extraDescription, 0, 0);
+        extraCenter.add(cleanSurrounding, 0, 1);
+        extraCenter.add(recycle, 0, 2);
         extraCenter.setId("extraPage");
 
         // makes the page and sets the sidebar
@@ -1010,6 +1007,7 @@ public class Application extends javafx.application.Application {
         // makes the solar panel toggle
         JFXToggleButton solarPanels = new JFXToggleButton();
         solarPanels.setText("Solar panels");
+        solarPanels.setSelected(ApplicationMethods.isSolarPanel());
         solarPanels.setOnAction(e -> {
             if (solarPanels.isSelected()) {
                 OneTimeEvent.addSolarPanelAction();
@@ -1019,6 +1017,7 @@ public class Application extends javafx.application.Application {
 
         // makes the electric car toggle
         JFXToggleButton electricCar = new JFXToggleButton();
+        electricCar.setSelected(ApplicationMethods.isElectricCar());
         electricCar.setText("Electric car");
         electricCar.setOnAction(e -> {
             if (electricCar.isSelected()) {
@@ -1029,6 +1028,7 @@ public class Application extends javafx.application.Application {
 
         // makes the joined a group toggle
         JFXToggleButton joinedGroup = new JFXToggleButton();
+        joinedGroup.setSelected(ApplicationMethods.isEnvGroup());
         joinedGroup.setText("Joined environment group");
         joinedGroup.setOnAction(e -> {
             if (joinedGroup.isSelected()) {
@@ -1097,7 +1097,7 @@ public class Application extends javafx.application.Application {
         amountSavedLabel.setId("title");
 
         // makes the xAxis and yAxis
-        double[] data = Communication.getRecentCOSavings();
+        double[]         data  = ComCached.getRecentCOSavings();
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
 
@@ -1169,22 +1169,21 @@ public class Application extends javafx.application.Application {
         int pos = 0;
         DateFormat formatter = new SimpleDateFormat("d MMM YYYY \nHH:mm");
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-        for (client.Action a : client.Communication.getLastThreeActions()) {
-            Label description = new Label(a.getDescription());
-            description.setWrapText(true);
-            historyList.add(new Label(a.getAction()), 0, pos);
+        for (client.Action a : ComCached.getLastThreeActions()) {
+            Label action = new Label(a.getAction());
+            action.setWrapText(true);
+
             Label date = new Label(formatter.format(new Date(a.getDate())) + " (UTC)");
             date.setWrapText(true);
+
+            Label description = new Label(a.getDescription());
+            description.setWrapText(true);
+
+            historyList.add(action, 0, pos);
             historyList.add(date, 1, pos);
             historyList.add(description, 2, pos);
             pos++;
         }
-
-        // makes the headerpane
-        ScrollPane historyHeaderPane = new ScrollPane();
-        historyHeaderPane.setContent(historyHeader);
-        historyHeaderPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        historyHeaderPane.setId("historyScrollPane");
 
         // makes the scrollpane
         ScrollPane historyPane = new ScrollPane();
@@ -1192,11 +1191,9 @@ public class Application extends javafx.application.Application {
         historyPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         historyPane.setId("historyScrollPane");
 
-        historyHeaderPane.setFitToWidth(historyPane.isFitToWidth());
-
         // makes the page
         VBox historyCenter = new VBox();
-        historyCenter.getChildren().addAll(historyTitle, historyHeaderPane, historyPane);
+        historyCenter.getChildren().addAll(historyTitle, historyPane);
 
         // makes the page and sets the sidebar
         BorderPane historyPage = new BorderPane();
@@ -1268,7 +1265,7 @@ public class Application extends javafx.application.Application {
         leaderboard.add(new Label("Level"), 3, 0);
 
         // get the top ten
-        ArrayList<CompareFriends> topTen = client.Communication.getLeaderboard();
+        ArrayList<CompareFriends> topTen = ComCached.getLeaderboard();
 
         // place all the people in the leaderboard
         int pos = 1;
@@ -1282,13 +1279,6 @@ public class Application extends javafx.application.Application {
             leaderboard.add(new Label(String.valueOf(level)), 3, pos);
             pos++;
         }
-
-        // places the user in the leaderboard
-        leaderboard.add(new Label("69."), 0, 11);
-        leaderboard.add(new Label("Your Username"), 1, 11);
-        leaderboard.add(new Label("1"), 2, 11);
-        leaderboard.add(new Label("0"), 3, 11);
-
 
         // makes the leaderboard page
         VBox leaderboardCenter = new VBox();
@@ -1334,7 +1324,10 @@ public class Application extends javafx.application.Application {
         searchButton.setId("smallButton");
         searchButton.setOnAction(e -> {
             String user = ApplicationMethods.encodeUsername(searchField.getText());
-            client.Communication.addFriend(user);
+            if(!ComCached.addFriend(user)) {
+                searchField.setText("");
+                searchField.setPromptText("Friend not found");
+            }
             followingList.setContent(followingList());
         });
 
@@ -1368,7 +1361,7 @@ public class Application extends javafx.application.Application {
         friendsList.setId("friendsList");
 
         // getting the friends
-        ArrayList<CompareFriends> friends = client.Communication.getFriends();
+        ArrayList<CompareFriends> friends = ComCached.getFriends();
 
         // fills the friendlist with your friends
         if (!friends.isEmpty()) {
@@ -1394,7 +1387,7 @@ public class Application extends javafx.application.Application {
      */
     private static BorderPane friendRequestScreen() {
         // get the followers
-        ArrayList<CompareFriends> friends = client.Communication.getFollowers();
+        ArrayList<CompareFriends> friends = ComCached.getFollowers();
 
         // makes the title
         Label nrRequest = new Label(friends.size() + " followers:");
@@ -1408,8 +1401,8 @@ public class Application extends javafx.application.Application {
         // puts all the friendrequests and buttons in the container
         for (CompareFriends followers : friends) {
             String username = ApplicationMethods.decodeUsername(followers.getUsername());
-            int score = followers.getScore();
-            int level = ApplicationMethods.getLevel(score);
+            int    score    = followers.getScore();
+            int    level    = ApplicationMethods.getLevel(score);
 
             // make the username label
             Label user = new Label(username);
@@ -1447,10 +1440,59 @@ public class Application extends javafx.application.Application {
      * @return the challenge page
      */
     private static BorderPane challengeScreen() {
-        Label challenges = new Label("Needs to be implemented.");
-        VBox challengeCenter = new VBox();
-        challengeCenter.getChildren().addAll(challenges);
+        // ask a friend to challenge
+        Label challengeInfo = new Label("Who is the first to reach...");
+        challengeInfo.setId("information");
 
+        TextField goalField = new TextField();
+        goalField.setId("challengeTextfield");
+        goalField.setPromptText("fill in the amount of points");
+
+        TextField userField = new TextField();
+        userField.setId("challengeTextfield");
+        userField.setPromptText("fill in the user");
+
+        JFXButton addChallenge = new JFXButton("add the challenge");
+        addChallenge.setId("smallButton");
+
+        addChallenge.setOnAction(e -> {
+            try {
+
+                int    goal = Integer.parseInt(goalField.getText());
+                String user = ApplicationMethods.encodeUsername(userField.getText());
+                if (ComCached.addChallenge(user, goal)) {
+                    refresh();
+                } else {
+                    challengeInfo.setText("Try someone else");
+                }
+            } catch (NumberFormatException exception) {
+                challengeInfo.setText("Please fill in a number as goal");
+            }
+        });
+
+        HBox addChallengeContainer = new HBox();
+        addChallengeContainer.setId("addChallengeContainer");
+        addChallengeContainer.getChildren().addAll(goalField, userField, addChallenge);
+
+        VBox addChallengeVbox = new VBox();
+        addChallengeVbox.getChildren().addAll(challengeInfo, addChallengeContainer);
+
+        ScrollPane challengeContainer = new ScrollPane();
+        challengeContainer.setId("challengeLists");
+        challengeContainer.setContent(challengeList());
+
+        ScrollPane receivedChallenge = new ScrollPane();
+        receivedChallenge.setId("challengeLists");
+        receivedChallenge.setContent(receivedList());
+
+        Label challengeTitle = new Label("Current challenges");
+        challengeTitle.setId("information");
+        Label receivedTitle = new Label("Received challenges");
+        receivedTitle.setId("information");
+
+        VBox challengeCenter = new VBox();
+        challengeCenter.setId("challengePage");
+        challengeCenter.getChildren().addAll(addChallengeVbox, challengeTitle, challengeContainer, receivedTitle, receivedChallenge);
 
         // makes the page and sets the sidebar
         BorderPane challengePage = new BorderPane();
@@ -1460,6 +1502,105 @@ public class Application extends javafx.application.Application {
         // return the request page
         return challengePage;
 
+    }
+
+    private static GridPane challengeList() {
+        // getting the challenges you accepted
+        ArrayList<Challenge> challenges         = ComCached.getChallenges();
+        GridPane             challengeContainer = new GridPane();
+        challengeContainer.setId("challenges");
+
+        try {
+            int pos = 0;
+            for (Challenge c : challenges) {
+                if (c.getState() == 0) continue;
+
+                String name  = c.getUserA();
+                int    start = c.getScoreA();
+                if (c.isOnA()) {
+                    name = c.getUserB();
+                    start = c.getScoreB();
+                }
+
+                Label goal = new Label("Goal: " + c.getGoal());
+                challengeContainer.add(goal, 0, pos);
+
+                String username = ApplicationMethods.decodeUsername(name);
+                Label  user     = new Label("User: " + username);
+                challengeContainer.add(user, 1, pos);
+
+                if (c.getState() == 10 && c.isOnA()) {
+                    // I won
+                    challengeContainer.add(new Label("You won!"), 2, pos);
+                } else if (c.getState() == 11 && !c.isOnA()) {
+                    // opponent won
+                    challengeContainer.add(new Label("You lost!"), 2, pos);
+                } else {
+                    ProgressBar progress = new ProgressBar(ApplicationMethods.getChallengeProgress(start, c.getGoal()));
+                    progress.setId("challengeProgress");
+                    challengeContainer.add(new Label("Progress:"), 2, pos);
+                    challengeContainer.add(progress, 3, pos);
+                }
+
+                pos++;
+            }
+        } catch (NullPointerException e) {
+            Label info = new Label("no challenges");
+            info.setId("information");
+            challengeContainer.getChildren().add(info);
+        }
+
+        return challengeContainer;
+    }
+
+    private static GridPane receivedList() {
+        // getting the challenges that need to be accepted
+        GridPane receivedChallenge = new GridPane();
+        receivedChallenge.setId("challenges");
+
+        ArrayList<Challenge> challenges = ComCached.getChallenges();
+        try {
+            int pos = 0;
+            for (Challenge c : challenges) {
+                if (c.getState() != 0) continue;
+
+                String name = c.getUserA();
+                if (c.isOnA()) name = c.getUserB();
+
+                Label goal = new Label("Goal: " + c.getGoal());
+                receivedChallenge.add(goal, 0, pos);
+
+                String username = ApplicationMethods.decodeUsername(name);
+                Label  user     = new Label("User: " + username);
+                receivedChallenge.add(user, 1, pos);
+
+                if (!c.isOnA()) {
+                    JFXButton accept = new JFXButton("Accept Challenge");
+                    accept.setId("smallButton");
+                    receivedChallenge.add(accept, 2, pos);
+
+                    accept.setOnAction(e -> {
+                        if (ComCached.acceptChallenge(c)) {
+                            refresh();
+                        } else {
+                            System.out.println("nope");
+                        }
+                    });
+                } else {
+                    Label wait = new Label("Waiting for response");
+                    receivedChallenge.add(wait, 2, pos);
+                }
+
+                pos++;
+            }
+        } catch (NullPointerException e) {
+            System.out.println("null pointer");
+            Label info = new Label("no recieved challenges");
+            info.setId("information");
+            receivedChallenge.add(info, 0, 0);
+        }
+
+        return receivedChallenge;
     }
 
     /**
@@ -1505,6 +1646,7 @@ public class Application extends javafx.application.Application {
         }
 
     }
+
     /**
      * this method starts the application.
      *
@@ -1515,17 +1657,20 @@ public class Application extends javafx.application.Application {
         ApplicationMethods.onLoad();
 
         this.stage = stage;
+        stage.getIcons().add(new Image("file:src/planets/icon.gif"));
+        stage.setResizable(false);
         stage.setTitle("GoGreen");
 
         // sets the theme
         theme = "src/styles/mainSceneDefaultTheme.css";
 
         //the silentLogin will login for the user
-        if (client.Communication.silentLogin()) {
+        if (ComCached.silentLogin()) {
             ApplicationMethods.setPresets();
             mainScreen();
         } else {
             loginScene();
         }
     }
+
 }

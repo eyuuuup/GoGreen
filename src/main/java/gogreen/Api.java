@@ -15,10 +15,12 @@ class Api {
     private static String site = "http://impact.brighterplanet.com/";
     private static final String key = "&key=58e64232-2368-4379-a71c-56c00675b46c";
 
-    private Api() {}
+    private Api() {
+    }
 
     /**
      * this class calculates the amount of CO2 for a given input.
+     *
      * @param parameters parameters
      * @return kg of CO2
      */

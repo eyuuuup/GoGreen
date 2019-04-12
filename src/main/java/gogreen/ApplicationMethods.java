@@ -1,11 +1,14 @@
 package gogreen;
 
-import client.Communication;
+import client.Challenge;
+import client.ComCached;
+import client.OnLoadValues;
 import com.google.common.hash.Hashing;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Scanner;
 
@@ -18,6 +21,10 @@ class ApplicationMethods {
     private static int followingSize;
     private static int followersSize;
     private static double savedCarbon;
+    private static String username;
+    private static boolean solarPanel;
+    private static boolean electricCar;
+    private static boolean envGroup;
 
     private ApplicationMethods() {
     }
@@ -30,8 +37,8 @@ class ApplicationMethods {
         // to be implemented: fetch data from the database
         Transport.setHasElectricCar(false);
         Energy.setHasSolarPanels(false);
-//        Communication.onLoad(); Returns an object of class onLoadValues but action ids aren't set properly on server
-}
+//        ComCached.onLoad(); Returns an object of class onLoadValues but action ids aren't set properly on server
+    }
 
     /**
      * This methods logs in using the given username and password.
@@ -45,7 +52,7 @@ class ApplicationMethods {
         String encodedUsername = encodeUsername(username);
         String hashedPassword = hashPassword(password);
 
-        if (client.Communication.login(encodedUsername, hashedPassword, remember)) {
+        if (client.ComCached.login(encodedUsername, hashedPassword, remember)) {
 
             setPresets();
             Application.mainScreen();
@@ -78,10 +85,11 @@ class ApplicationMethods {
         String encodedUsername = encodeUsername(username);
         String hashedPassword = hashPassword(password);
 
-        if (client.Communication.register(encodedUsername, hashedPassword, remember)) {
+        if (client.ComCached.register(encodedUsername, hashedPassword, remember)) {
+            setPresets();
             Application.mainScreen();
         } else {
-            throw new IllegalAccessException("Registration unsuccessful");
+            throw new IllegalAccessException("Username was already taken");
         }
     }
 
@@ -189,19 +197,35 @@ class ApplicationMethods {
     static void setPresets() {
         Application.loadingScreen();
         try {
-            points = Communication.getMyTotalScore();
-            followingSize = Communication.getFriends().size();
-            followersSize = Communication.getFollowers().size();
-            savedCarbon = Communication.carbon().getCarbonReduced();
+            OnLoadValues onload = ComCached.onLoad();
+            points = onload.getUser().getTotalScore();
+            followingSize = onload.getFollowing();
+            followersSize = onload.getFollowers();
+            username = onload.getUser().getName();
+            solarPanel = onload.isSolarPanel();
+            electricCar = onload.isElectricCar();
+            envGroup = onload.isEnvGroup();
+            // search here shruti
+            savedCarbon = onload.getCarbonReduce();
             savedCarbon = savedCarbon * 100;
             savedCarbon = (int) savedCarbon;
             savedCarbon = savedCarbon / 100;
+
+            Transport.setHasElectricCar(onload.isElectricCar());
+            Energy.setHasSolarPanels(onload.isSolarPanel());
         } catch (NullPointerException e) {
             points = 0;
             followingSize = 0;
             followersSize = 0;
             savedCarbon = 0;
         }
+    }
+
+    static double getChallengeProgress(int start, int goal) {
+        if ((ApplicationMethods.getPoints() - start) / goal < 0) {
+            return 0;
+        }
+        return (ApplicationMethods.getPoints() - start) / goal;
     }
 
     static int getPoints() {
@@ -216,7 +240,23 @@ class ApplicationMethods {
         return followersSize;
     }
 
+    static String getUsername() {
+        return username;
+    }
+
     static double getSavedCarbon() {
         return savedCarbon;
+    }
+
+    public static boolean isSolarPanel() {
+        return solarPanel;
+    }
+
+    public static boolean isElectricCar() {
+        return electricCar;
+    }
+
+    public static boolean isEnvGroup() {
+        return envGroup;
     }
 }

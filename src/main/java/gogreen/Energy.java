@@ -1,20 +1,23 @@
 package gogreen;
 
-import client.Communication;
+import client.ComCached;
 
 import java.rmi.ConnectIOException;
 
 /**
  * Represent the Energy Category.
+ *
  * @author Gyum cho
  */
 public final class Energy {
     private static boolean hasSolarPanels = false;
 
-    private Energy() {}
+    private Energy() {
+    }
 
     /**
      * sets boolean hasSolarPanels to solarPanels.
+     *
      * @param solarPanels has solar panels
      */
     public static void setHasSolarPanels(boolean solarPanels) {
@@ -32,9 +35,9 @@ public final class Energy {
         double carbonProduced = carbon * houseTemperature;
 
         if (hasSolarPanels) {
-            Communication.addAction("ReduceEnergy", 100 * temperatureDiff, carbonProduced, 0, description);
+            ComCached.addAction("ReduceEnergy", 100 * temperatureDiff, carbonProduced, 0, description);
         } else {
-            Communication.addAction("ReduceEnergy", 100 * temperatureDiff, carbonReduced, carbonProduced, description);
+            ComCached.addAction("ReduceEnergy", 100 * temperatureDiff, carbonReduced, carbonProduced, description);
         }
     }
 
@@ -49,9 +52,9 @@ public final class Energy {
         double carbonProduced = showerTime * carbon;
 
         if (hasSolarPanels) {
-            Communication.addAction("ReduceWater", 100 * timeDiff, carbonProduced, 0, description);
+            ComCached.addAction("ReduceWater", 100 * timeDiff, carbonProduced, 0, description);
         } else {
-            Communication.addAction("ReduceWater", 100 * timeDiff, carbonReduced, carbonProduced, description);
+            ComCached.addAction("ReduceWater", 100 * timeDiff, carbonReduced, carbonProduced, description);
         }
     }
 }

@@ -1,20 +1,23 @@
 package gogreen;
 
-import client.Communication;
+import client.ComCached;
 
 import java.rmi.ConnectIOException;
 
 /**
  * This class represents the Transport Category.
+ *
  * @author Erwin van Dam
  */
 public final class Transport {
     private static boolean hasElectricCar = false;
 
-    private Transport() {}
+    private Transport() {
+    }
 
     /**
      * Sets the boolean hasElectricCar to electricCar.
+     *
      * @param electricCar has electric Car
      */
     public static void setHasElectricCar(boolean electricCar) {
@@ -28,7 +31,7 @@ public final class Transport {
     static void addCycleAction(int distance, String description) throws ConnectIOException {
         checkDistance(distance, 0, 200);
         double carbon = Api.carbonAmount("automobile_trips.json?distance=" + distance);
-        Communication.addAction("Cycle", distance * 16, carbon, 0, description);
+        ComCached.addAction("Cycle", distance * 16, carbon, 0, description);
     }
 
     /**
@@ -40,9 +43,9 @@ public final class Transport {
         checkDistance(distance, 0, 2500);
         double carbon = Api.carbonAmount("automobile_trips.json?distance=" + distance);
         if (hasElectricCar) {
-            Communication.addAction("Car", distance * 8, carbon, 0, description);
+            ComCached.addAction("Car", distance * 8, carbon, 0, description);
         } else {
-            Communication.addAction("Car", distance * 8, 0, carbon, description);
+            ComCached.addAction("Car", distance * 8, 0, carbon, description);
         }
     }
 
@@ -55,7 +58,7 @@ public final class Transport {
         double carbonPlane = Api.carbonAmount("flights.json?distance=" + distance);
         double carbonCar = Api.carbonAmount("automobile_trips.json?distance=" + distance);
         double carbonReduced = carbonCar - carbonPlane;
-        Communication.addAction("Plane", distance / 16, carbonReduced, carbonPlane, description);
+        ComCached.addAction("Plane", distance / 16, carbonReduced, carbonPlane, description);
     }
 
     /**
@@ -67,15 +70,16 @@ public final class Transport {
         double carbonPublicTransport = Api.carbonAmount("bus_trips.json?distance=" + distance);
         double carbonCar = Api.carbonAmount("automobile_trips.json?distance=" + distance);
         double carbonReduced = carbonCar - carbonPublicTransport;
-        Communication.addAction("PublicTransport", distance * 4, carbonReduced,
+        ComCached.addAction("PublicTransport", distance * 4, carbonReduced,
                 carbonPublicTransport, description);
     }
 
     /**
      * Checks of the distance is acceptable.
+     *
      * @param distance the distance
-     * @param min the minimum distance
-     * @param max the maximum distance
+     * @param min      the minimum distance
+     * @param max      the maximum distance
      */
     static void checkDistance(int distance, int min, int max) {
         if (distance < min) {

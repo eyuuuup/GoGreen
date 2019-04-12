@@ -84,4 +84,27 @@ public class ChallengeTest {
         test.setGoal(40);
         assertEquals(40, test.getGoal());
     }
+
+    @Test
+    public void getState(){
+        test.setState(1);
+        assertEquals(1, test.getState());
+    }
+
+    @Test
+    public void setState(){
+        test.setState(0);
+        assertEquals(0,test.getState());
+    }
+
+    @Test
+    public void setOnA(){
+        test.setOnA(false);
+        assertEquals(false, test.isOnA());
+    }
+
+    @Test
+    public void isOnA(){
+        assertEquals(false,test.isOnA());
+    }
 }

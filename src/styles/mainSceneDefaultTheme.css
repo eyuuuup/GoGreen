@@ -12,7 +12,7 @@
 }
 
 #yourWorldPage{
-    -fx-vgap: 100;
+    -fx-vgap: 50;
 }
 
 #settingPage{
@@ -56,6 +56,10 @@
 #overviewPage{
     -fx-hgap: 30;
     -fx-alignment: center;
+}
+
+#challengePage{
+    -fx-spacing: 5;
 }
 
 /* buttons */
@@ -231,6 +235,11 @@
     -fx-alignment: center;
 }
 
+#addChallengeContainer{
+    -fx-spacing: 10;
+}
+
+
 /* level bar */
 .progress-bar {
     -fx-indeterminate-bar-length: 60;
@@ -251,6 +260,14 @@
     -fx-background-color: #249677;
     -fx-background-insets: 0, 0 0 1 0, 1 1 2 1;
     -fx-background-radius: 4, 3, 2;
+}
+
+#challengeProgress {
+    -fx-pref-width: 150;
+}
+
+#challengeProgress > .track{
+    -fx-background-color: #fdfdfd;
 }
 
 /* sliders */
@@ -343,6 +360,16 @@
     -fx-vgap: 10;
     -fx-hgap: 30;
 }
+#challengeLists{
+    -fx-min-height: 175;
+    -fx-max-height: 175;
+}
+#challenges{
+    -fx-background-color: #249677;
+    -fx-vgap: 5;
+    -fx-hgap: 30;
+    -fx-padding: 10;
+}
 
 /* text field */
 #description{
@@ -356,6 +383,9 @@
     -fx-background-color: #9ACD32 , white , white;
     -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
     -fx-alignment: center-left;
+}
+#challengeTextfield{
+    -fx-pref-width: 250;
 }
 /* side bar */
 #sideBar >.label{

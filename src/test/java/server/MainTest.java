@@ -1,5 +1,6 @@
 package server;
 
+import database.Database;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,14 +9,16 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.boot.SpringApplication;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(SpringApplication.class)
+@RunWith (PowerMockRunner.class)
+@PrepareForTest ({SpringApplication.class, Database.class})
 public class MainTest {
+    
     @Before
     public void setUp() {
         PowerMockito.mockStatic(SpringApplication.class);
+        PowerMockito.mockStatic(Database.class);
     }
-
+    
     @Test
     public void main() {
         String[] args = new String[0];

@@ -1,6 +1,7 @@
 package server;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * This class is for the list of challenges
@@ -8,24 +9,13 @@ import java.util.ArrayList;
 public class ChallengesList {
 
     ArrayList<Challenge> list;
-    ArrayList<Challenge> receivedList;
 
     public ChallengesList() {
         list = new ArrayList<Challenge>();
-        receivedList= new ArrayList<Challenge>();
     }
 
-    public ChallengesList(ArrayList<Challenge> list, ArrayList<Challenge> receivedList) {
+    public ChallengesList(ArrayList<Challenge> list) {
         this.list = list;
-        this.receivedList = receivedList;
-    }
-
-    public void setReceivedList(ArrayList<Challenge> receivedList) {
-        this.receivedList = receivedList;
-    }
-
-    public ArrayList<Challenge> getReceivedList() {
-        return receivedList;
     }
 
     public ArrayList<Challenge> getList() {
@@ -34,6 +24,14 @@ public class ChallengesList {
 
     public void setList(ArrayList<Challenge> list) {
         this.list = list;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ChallengesList)) return false;
+        ChallengesList that = (ChallengesList) o;
+        return Objects.equals(list, that.list);
     }
 
 }

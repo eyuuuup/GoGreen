@@ -1,12 +1,22 @@
 package server;
 
 public class Challenge {
-    private String userA;
-    private String userB;
-    private int scoreA;
-    private int scoreB;
-    private int goal;
+    private String  userA;
+    private String  userB;
+    private int     scoreA;
+    private int     scoreB;
+    private int     goal;
+    private int    state;
+    private boolean onA;
 
+    /**
+     * Constructor for the Challenge class.
+     * @param userA  String of userA.
+     * @param userB  String of userB.
+     * @param scoreA Score of userA.
+     * @param scoreB score of userB.
+     * @param goal   amount of points needed.
+     */
     public Challenge(String userA, String userB, int scoreA, int scoreB, int goal) {
         this.userA = userA;
         this.userB = userB;
@@ -15,8 +25,7 @@ public class Challenge {
         this.goal = goal;
     }
 
-    public Challenge(){
-
+    public Challenge() {
     }
 
     public String getUserA() {
@@ -58,4 +67,21 @@ public class Challenge {
     public void setGoal(int goal) {
         this.goal = goal;
     }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    public boolean isOnA() {
+        return onA;
+    }
+
+    public void setOnA(boolean onA) {
+        this.onA = onA;
+    }
+
 }

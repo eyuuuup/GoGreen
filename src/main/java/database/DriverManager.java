@@ -7,10 +7,11 @@ import java.sql.SQLException;
 /**
  * DriverManager is a class that sets up the connection to the database.
  */
-public class DriverManager   {
+public class DriverManager {
 
     /**
      * This method sets up the actual connect with the information provided.
+     *
      * @return A Connection object.
      */
     public static Connection getConnection() throws SQLException {
@@ -20,7 +21,6 @@ public class DriverManager   {
                         + "&password=86bf9899b7ba509490d36a1735109060270"
                         + "adefe7db96bdfc2b59c959b069e3d"
                         + "&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory");
-        System.out.println("Connected to database");
         return con;
     }
 }
