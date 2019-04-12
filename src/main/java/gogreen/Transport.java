@@ -1,6 +1,6 @@
 package gogreen;
 
-import client.Communication;
+import client.ComCached;
 
 import java.rmi.ConnectIOException;
 
@@ -31,7 +31,7 @@ public final class Transport {
     static void addCycleAction(int distance) throws ConnectIOException {
         checkDistance(distance, 0, 200);
         double carbon = Api.carbonAmount("automobile_trips.json?distance=" + distance);
-        Communication.addAction("Cycle", distance * 16, carbon, 0);
+        ComCached.addAction("Cycle", distance * 16, carbon, 0);
     }
 
     /**
@@ -43,9 +43,9 @@ public final class Transport {
         checkDistance(distance, 0, 2500);
         double carbon = Api.carbonAmount("automobile_trips.json?distance=" + distance);
         if (hasElectricCar) {
-            Communication.addAction("Car", distance * 8, carbon, 0);
+            ComCached.addAction("Car", distance * 8, carbon, 0);
         } else {
-            Communication.addAction("Car", distance * 8, 0, carbon);
+            ComCached.addAction("Car", distance * 8, 0, carbon);
         }
     }
 
@@ -58,7 +58,7 @@ public final class Transport {
         double carbonPlane = Api.carbonAmount("flights.json?distance=" + distance);
         double carbonCar = Api.carbonAmount("automobile_trips.json?distance=" + distance);
         double carbonReduced = carbonCar - carbonPlane;
-        Communication.addAction("Plane", distance / 16, carbonReduced, carbonPlane);
+        ComCached.addAction("Plane", distance / 16, carbonReduced, carbonPlane);
     }
 
     /**
@@ -70,7 +70,7 @@ public final class Transport {
         double carbonPublicTransport = Api.carbonAmount("bus_trips.json?distance=" + distance);
         double carbonCar = Api.carbonAmount("automobile_trips.json?distance=" + distance);
         double carbonReduced = carbonCar - carbonPublicTransport;
-        Communication.addAction("PublicTransport", distance * 4, carbonReduced,
+        ComCached.addAction("PublicTransport", distance * 4, carbonReduced,
                 carbonPublicTransport);
     }
 

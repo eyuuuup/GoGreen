@@ -1,6 +1,6 @@
 package gogreen;
 
-import client.Communication;
+import client.ComCached;
 
 import java.rmi.ConnectIOException;
 
@@ -35,9 +35,9 @@ public final class Energy {
         double carbonProduced = carbon * houseTemperature;
 
         if (hasSolarPanels) {
-            Communication.addAction("ReduceEnergy", 100 * temperatureDiff, carbonProduced, 0);
+            ComCached.addAction("ReduceEnergy", 100 * temperatureDiff, carbonProduced, 0);
         } else {
-            Communication.addAction("ReduceEnergy", 100 * temperatureDiff, carbonReduced, carbonProduced);
+            ComCached.addAction("ReduceEnergy", 100 * temperatureDiff, carbonReduced, carbonProduced);
         }
     }
 
@@ -52,9 +52,9 @@ public final class Energy {
         double carbonProduced = showerTime * carbon;
 
         if (hasSolarPanels) {
-            Communication.addAction("ReduceWater", 100 * timeDiff, carbonProduced, 0);
+            ComCached.addAction("ReduceWater", 100 * timeDiff, carbonProduced, 0);
         } else {
-            Communication.addAction("ReduceWater", 100 * timeDiff, carbonReduced, carbonProduced);
+            ComCached.addAction("ReduceWater", 100 * timeDiff, carbonReduced, carbonProduced);
         }
     }
 }
