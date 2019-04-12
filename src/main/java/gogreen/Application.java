@@ -1461,7 +1461,9 @@ public class Application extends javafx.application.Application {
 
                 int    goal = Integer.parseInt(goalField.getText());
                 String user = ApplicationMethods.encodeUsername(userField.getText());
-                if (ComCached.addChallenge(user, goal)) {
+                if (ApplicationMethods.getUsername().equals(user)){
+                    challengeInfo.setText("You can't challenge yourself!");
+                }else if (ComCached.addChallenge(user, goal)) {
                     refresh();
                 } else {
                     challengeInfo.setText("Try someone else");
