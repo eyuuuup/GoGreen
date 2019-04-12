@@ -1,14 +1,14 @@
 package gogreen;
 
-import client.Challenge;
-import client.ComCached;
-import client.OnLoadValues;
+import gogreen.server.ComCached;
+import gogreen.server.holders.OnLoadValues;
 import com.google.common.hash.Hashing;
+import gogreen.actions.Energy;
+import gogreen.actions.Transport;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Scanner;
 
@@ -31,10 +31,10 @@ class ApplicationMethods {
 
     /**
      * To be implemented:
-     * checks whether user has solar panels and or an electric car in the database.
+     * checks whether user has solar panels and or an electric car in the server.database.
      */
     public static void onLoad() {
-        // to be implemented: fetch data from the database
+        // to be implemented: fetch data from the server.database
         Transport.setHasElectricCar(false);
         Energy.setHasSolarPanels(false);
 //        ComCached.onLoad(); Returns an object of class onLoadValues but action ids aren't set properly on server
@@ -52,7 +52,7 @@ class ApplicationMethods {
         String encodedUsername = encodeUsername(username);
         String hashedPassword = hashPassword(password);
 
-        if (client.ComCached.login(encodedUsername, hashedPassword, remember)) {
+        if (gogreen.server.ComCached.login(encodedUsername, hashedPassword, remember)) {
 
             setPresets();
             Application.mainScreen();
@@ -85,7 +85,7 @@ class ApplicationMethods {
         String encodedUsername = encodeUsername(username);
         String hashedPassword = hashPassword(password);
 
-        if (client.ComCached.register(encodedUsername, hashedPassword, remember)) {
+        if (gogreen.server.ComCached.register(encodedUsername, hashedPassword, remember)) {
             setPresets();
             Application.mainScreen();
         } else {

@@ -1,10 +1,10 @@
 package gogreen;
 
-import client.Action;
-import client.Challenge;
-import client.ComCached;
-import client.CompareFriends;
-import client.DescriptionTooLong;
+import gogreen.server.holders.Action;
+import gogreen.server.holders.Challenge;
+import gogreen.server.ComCached;
+import gogreen.server.holders.CompareFriends;
+import gogreen.server.DescriptionTooLong;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXSlider;
@@ -17,6 +17,11 @@ import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import de.jensd.fx.glyphs.octicons.OctIcon;
 import de.jensd.fx.glyphs.octicons.OctIconView;
+import gogreen.actions.Energy;
+import gogreen.actions.Extra;
+import gogreen.actions.Food;
+import gogreen.actions.OneTimeEvent;
+import gogreen.actions.Transport;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -41,7 +46,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.IllegalFormatException;
 import java.util.TimeZone;
 
 public class Application extends javafx.application.Application {
@@ -505,12 +509,12 @@ public class Application extends javafx.application.Application {
                 + "You can also have a little competition with "
                 + "friends and send them challenges. \n\n"
                 + "About the team: \n"
-                + "* Eyüp, one of our database guys \n"
-                + "* Elias, our other database guy \n"
+                + "* Eyüp, one of our server.database guys \n"
+                + "* Elias, our other server.database guy \n"
                 + "* Shruti, our server girl \n"
                 + "* Marko, our handy man with extra focus on the server \n"
-                + "* Guym, our client and calculation guy \n"
-                + "* Erwin, our client and API guy \n"
+                + "* Guym, our gogreen.server and calculation guy \n"
+                + "* Erwin, our gogreen.server and API guy \n"
                 + "* Marit, our GUI girl \n\n"
                 + "But this app wouldn't be possible without the brighter climate API");
         aboutText.setId("aboutText");
@@ -1170,7 +1174,7 @@ public class Application extends javafx.application.Application {
         int pos = 0;
         DateFormat formatter = new SimpleDateFormat("d MMM YYYY \nHH:mm");
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-        for (client.Action a : ComCached.getLastThreeActions()) {
+        for (Action a : ComCached.getLastThreeActions()) {
             Label action = new Label(a.getAction());
             action.setWrapText(true);
 

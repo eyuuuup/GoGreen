@@ -1,6 +1,10 @@
 package server;
 
 import org.junit.Test;
+import server.holders.Challenge;
+import server.holders.ChallengesList;
+import server.holders.OnLoadValues;
+import server.holders.User;
 
 import java.util.ArrayList;
 
@@ -8,10 +12,10 @@ import static org.junit.Assert.*;
 
 public class OnLoadValuesTest {
 
-    private User user = new User("user","password", "mail", 150);
-    private ArrayList<Challenge> listA      = new ArrayList<>();
-    private ChallengesList list=new ChallengesList(listA);
-    private  OnLoadValues test = new OnLoadValues(user, 2,3,list,false,false, false,50);
+    private User                 user  = new User("user","password", "mail", 150);
+    private ArrayList<Challenge> listA = new ArrayList<>();
+    private ChallengesList       list  =new ChallengesList(listA);
+    private OnLoadValues         test  = new OnLoadValues(user, 2,3,list,false,false, false,50);
 
     @Test
     public void emptyConstructor(){

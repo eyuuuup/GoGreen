@@ -244,7 +244,7 @@
                     <excludes>
                         <exclude>**/grade/*</exclude>           // OOPP team's work
                         <exclude>**/*Application.*</exclude>    // GUI
-                        <exclude>**/*DriverManager.*</exclude>  // Connect to remote database on Heroku
+                        <exclude>**/*DriverManager.*</exclude>  // Connect to remote server.database on Heroku
                     </excludes>
                 </configuration>
                 <executions>

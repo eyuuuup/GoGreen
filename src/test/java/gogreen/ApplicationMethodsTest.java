@@ -1,9 +1,11 @@
 package gogreen;
 
-import client.Communication;
-import client.OnLoadValues;
-import client.User;
+import gogreen.server.Communication;
+import gogreen.server.holders.OnLoadValues;
+import gogreen.server.holders.User;
 import com.google.common.hash.Hashing;
+import gogreen.actions.Energy;
+import gogreen.actions.Transport;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

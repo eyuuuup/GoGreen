@@ -1,6 +1,8 @@
 package server;
 
 import org.junit.Test;
+import server.holders.Challenge;
+import server.holders.ChallengesList;
 
 import java.util.ArrayList;
 

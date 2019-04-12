@@ -1,6 +1,7 @@
 package gogreen;
 
-import client.ComCached;
+import gogreen.server.ComCached;
+import gogreen.actions.Energy;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,11 +1,20 @@
 package server;
 
-import database.Database;
+import server.database.Database;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import server.holders.Action;
+import server.holders.ActionList;
+import server.holders.Challenge;
+import server.holders.ChallengesList;
+import server.holders.CompareFriends;
+import server.holders.FriendsList;
+import server.holders.OnLoadValues;
+import server.holders.TokenResponse;
+import server.holders.User;
 
 import javax.validation.Valid;
 import java.util.UUID;
@@ -17,7 +26,7 @@ public class Controller {
     // ========== USER AUTHENTICATION ==========================================
 
     /**
-     * This is the login method which connects the server and client.
+     * This is the login method which connects the server and gogreen.server.
      *
      * @param user username, password
      * @return TokenResponse token, bool
@@ -25,7 +34,7 @@ public class Controller {
     @RequestMapping(value = {"/login"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public static TokenResponse login(@Valid @RequestBody User user) {
-        //if(check in database)
+        //if(check in server.database)
         return Database.checkLogin(user);
     }
 
@@ -67,7 +76,7 @@ public class Controller {
     // ========== ACTION HANDLERS ==============================================
 
     /**
-     * add action to the database.
+     * add action to the server.database.
      *
      * @param action action
      * @return boolean if action added or not
