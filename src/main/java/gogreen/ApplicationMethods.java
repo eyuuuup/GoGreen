@@ -86,9 +86,10 @@ class ApplicationMethods {
         String hashedPassword = hashPassword(password);
 
         if (client.ComCached.register(encodedUsername, hashedPassword, remember)) {
+            setPresets();
             Application.mainScreen();
         } else {
-            throw new IllegalAccessException("Registration unsuccessful");
+            throw new IllegalAccessException("Username was already taken");
         }
     }
 
@@ -209,6 +210,9 @@ class ApplicationMethods {
             savedCarbon = savedCarbon * 100;
             savedCarbon = (int) savedCarbon;
             savedCarbon = savedCarbon / 100;
+
+            Transport.setHasElectricCar(onload.isElectricCar());
+            Energy.setHasSolarPanels(onload.isSolarPanel());
         } catch (NullPointerException e) {
             points = 0;
             followingSize = 0;
@@ -217,8 +221,11 @@ class ApplicationMethods {
         }
     }
 
-    public static double getChallengeProgress(int goal) {
-        return (double) points / goal;
+    static double getChallengeProgress(int start, int goal) {
+        if ((ApplicationMethods.getPoints() - start) / goal < 0) {
+            return 0;
+        }
+        return (ApplicationMethods.getPoints() - start) / goal;
     }
 
     static int getPoints() {

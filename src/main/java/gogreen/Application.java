@@ -122,7 +122,7 @@ public class Application extends javafx.application.Application {
         });
 
         //button if the user wants to register instead of to log in
-        JFXButton register = new JFXButton("or register");
+        JFXButton register = new JFXButton("Register");
         register.setId("loginButtons");
         register.setOnAction(e -> {
             registerScene();
@@ -248,7 +248,7 @@ public class Application extends javafx.application.Application {
 
     }
 
-    /*
+    /**
      * the main screen.
      */
     static void mainScreen() {
@@ -334,7 +334,7 @@ public class Application extends javafx.application.Application {
     private static GridPane sideBar() {
 
         // makes all the labels to display
-        Label username = new Label("@Username");
+        Label username = new Label("@" + ApplicationMethods.decodeUsername(ApplicationMethods.getUsername()));
 
         double savedAmount = ApplicationMethods.getSavedCarbon();
         Label  reducedCO2  = new Label(savedAmount + "kg CO\u2082 saved");
@@ -423,21 +423,18 @@ public class Application extends javafx.application.Application {
      * @return settings screen
      */
     private static BorderPane settingsScreen() {
-        // set the status of the dark mode
-        String status = "Enable";
-
-        // makes the dark mode button
+         // makes the dark mode button
         JFXToggleNode darkTheme = new JFXToggleNode();
         MaterialDesignIconView darkThemeIcon =
                 new MaterialDesignIconView(MaterialDesignIcon.THEME_LIGHT_DARK);
         darkThemeIcon.setSize("50px");
-        darkTheme.setGraphic(new Label(status + " dark theme", darkThemeIcon));
+        darkTheme.setGraphic(new Label("Enable dark theme", darkThemeIcon));
         darkTheme.setId("settingButtons");
 
         // if the dark mode is enabled, we will have the disable button
         if (theme.equals("src/styles/mainSceneDarkTheme.css")) {
             darkTheme.setSelected(true);
-            status = "Disable";
+            darkTheme.setGraphic(new Label("Disable dark theme", darkThemeIcon));
         }
 
         // if you toggle the button, you change the theme
@@ -1252,7 +1249,10 @@ public class Application extends javafx.application.Application {
         searchButton.setId("smallButton");
         searchButton.setOnAction(e -> {
             String user = ApplicationMethods.encodeUsername(searchField.getText());
-            ComCached.addFriend(user);
+            if(!ComCached.addFriend(user)) {
+                searchField.setText("");
+                searchField.setPromptText("Friend not found");
+            }
             followingList.setContent(followingList());
         });
 
@@ -1405,7 +1405,7 @@ public class Application extends javafx.application.Application {
 
         ScrollPane receivedChallenge = new ScrollPane();
         receivedChallenge.setId("challengeLists");
-        receivedChallenge.setContent(receivedList(challengeContainer));
+        receivedChallenge.setContent(receivedList());
 
         Label challengeTitle = new Label("Current challenges");
         challengeTitle.setId("information");
@@ -1458,7 +1458,7 @@ public class Application extends javafx.application.Application {
                     // opponent won
                     challengeContainer.add(new Label("You lost!"), 2, pos);
                 } else {
-                    ProgressBar progress = new ProgressBar((ApplicationMethods.getPoints() - start) / c.getGoal());
+                    ProgressBar progress = new ProgressBar(ApplicationMethods.getChallengeProgress(start, c.getGoal()));
                     progress.setId("challengeProgress");
                     challengeContainer.add(new Label("Progress:"), 2, pos);
                     challengeContainer.add(progress, 3, pos);
@@ -1475,7 +1475,7 @@ public class Application extends javafx.application.Application {
         return challengeContainer;
     }
 
-    private static GridPane receivedList(ScrollPane challengeContainer) {
+    private static GridPane receivedList() {
         // getting the challenges that need to be accepted
         GridPane receivedChallenge = new GridPane();
         receivedChallenge.setId("challenges");
@@ -1507,9 +1507,6 @@ public class Application extends javafx.application.Application {
                         } else {
                             System.out.println("nope");
                         }
-//                        receivedChallenge.getChildren().removeAll(goal, user, accept);
-//                        challengeContainer.setContent(challengeList());
-
                     });
                 } else {
                     Label wait = new Label("Waiting for response");

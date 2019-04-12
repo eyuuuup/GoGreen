@@ -195,7 +195,7 @@ public class Controller {
 
     @RequestMapping (value = {"/addChallenge"}, method = RequestMethod.POST,
                      produces = MediaType.APPLICATION_JSON_VALUE)
-    public static boolean addCahllenge(@Valid @RequestBody CompareFriends friend) {
+    public static boolean addChallenge(@Valid @RequestBody CompareFriends friend) {
         return Database.addChallenge(friend.getToken(), friend.getUsername(), friend.getScore());
     }
 
@@ -221,7 +221,6 @@ public class Controller {
     @RequestMapping(value = {"/getRecentCOSavings"}, method = RequestMethod.POST,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public static ActionList getRecentCOSavings(@Valid @RequestBody String token) {
-        System.out.println("retrieving last actions");
         return new ActionList(Database.getRecentCOSavings(token));
     }
 }
