@@ -47,7 +47,7 @@ public final class Energy {
     static void addReduceWater(int showerTime) throws ConnectIOException {
         int timeDiff = 20 - showerTime;
         //normal time spent of shower * normal water use during shower (1min) * normal energy contain by water(1KG)
-        double carbon = Api.carbonAmount("electricity_uses.json?energy=" + 18.4);
+        double carbon = Api.carbonAmount("electricity_uses.json?energy=" + 1.84);
         double carbonReduced = timeDiff * carbon;
         double carbonProduced = showerTime * carbon;
 
