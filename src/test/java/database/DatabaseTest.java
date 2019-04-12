@@ -4,16 +4,13 @@ import org.joda.time.Instant;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import server.Action;
-import server.ActionList;
-import server.CompareFriends;
-import server.FriendsList;
-import server.TokenResponse;
-import server.User;
+import org.powermock.reflect.Whitebox;
+import server.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,9 +26,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 @RunWith (PowerMockRunner.class)
 @PrepareForTest ({DriverManager.class, Connection.class})
@@ -53,18 +48,30 @@ public class DatabaseTest {
         
         mockStatic(DriverManager.class);
         when(DriverManager.class, "getConnection").thenReturn(connection);
-        
-        Database.connect();
+
+        Whitebox.setInternalState(Database.class, "connection", connection);
         Database.prepare();
     }
-    
+
+    @Test
+    public void connect() throws SQLException {
+        Database.connect();
+        verifyStatic();
+        DriverManager.getConnection();
+    }
+
     @Test
     public void connectException() throws SQLException {
         PowerMockito.mockStatic(DriverManager.class);
         PowerMockito.when(DriverManager.getConnection()).thenThrow(new SQLException("test"));
         Database.connect();
     }
-    
+
+    @Test
+    public void prepare() {
+        Database.prepare();
+    }
+
     @Test
     public void prepareException() throws SQLException {
         when(connection.prepareStatement(anyString())).thenThrow(new SQLException("test"));
@@ -72,7 +79,7 @@ public class DatabaseTest {
     }
     
     @Test
-    public void disconnect() {
+    public void disconnect() throws SQLException {
         Database.disconnect();
     }
     
@@ -464,39 +471,64 @@ public class DatabaseTest {
         assertEquals(0, Database.getLastMeal("testToken"));
     }
 
-//    @Test
-//    public void checkOneTimeEventTrue() throws Exception{
-//        assertTrue(Database.checkOneTimeEvent("token", 1));
-//    }
-//
-//    @Test
-//    public void checkOneTimeEventFalse() throws Exception{
-//        when(resultSet.next()).thenReturn(false);
-//        assertFalse(Database.checkOneTimeEvent("token", 1));
-//    }
-//
-//    @Test
-//    public void checkOneTimeEventException() throws Exception{
-//        when(state, "executeQuery").thenThrow(SQLException.class);
-//        assertFalse(Database.checkOneTimeEvent("token", 1));
-//    }
-    
-//    @Test
-//    public void addChallenge() throws Exception {
-//        PowerMockito.when(state, "executeUpdate").thenReturn(0);
-//        CompareFriends challenge = new CompareFriends("a", "b");
-//        challenge.setScore(100);
-//        Database.addChallenge(challenge);
-//
-//    }
-//
-//    @Test
-//    public void addChallengeException() throws Exception {
-//        PowerMockito.when(state, "executeUpdate").thenThrow(SQLException.class);
-//        CompareFriends challenge = new CompareFriends("a", "b");
-//        challenge.setScore(100);
-//        Database.addChallenge(challenge);
-//    }
+    @Test
+    public void addChallenge() {
+        assertTrue(Database.addChallenge("one", "two", 100));
+    }
+
+    @Test
+    public void addChallengeException() throws Exception {
+        when(state, "executeUpdate").thenThrow(SQLException.class);
+        assertFalse(Database.addChallenge("one", "two", 100));
+    }
+
+    @Test
+    public void retrieveChallenges() throws Exception{
+        when(resultSet.getString(1)).thenReturn("StringOne");
+        when(resultSet.getString(2)).thenReturn("StringTwo");
+        when(resultSet.getInt(3)).thenReturn(100);
+        when(resultSet.getInt(4)).thenReturn(200);
+        when(resultSet.getInt(5)).thenReturn(300);
+        when(resultSet.getInt(6)).thenReturn(400);
+
+        ArrayList challenges = Database.retrieveChallenges("token");
+        Challenge challenge = (Challenge) challenges.get(0);
+
+        assertEquals("StringOne", challenge.getUserA());
+        assertEquals("StringTwo", challenge.getUserB());
+        assertEquals(100, challenge.getScoreA());
+        assertEquals(200, challenge.getScoreB());
+        assertEquals(300, challenge.getGoal());
+        assertEquals(400, challenge.getState());
+        assertTrue(challenge.isOnA());
+    }
+
+    @Test
+    public void retrieveChallengesNotOnA() throws Exception{
+        when(resultSet.getString(1)).thenReturn("NotStringOne").thenReturn("StringOne");
+        when(resultSet.getString(2)).thenReturn("StringTwo");
+        when(resultSet.getInt(3)).thenReturn(100);
+        when(resultSet.getInt(4)).thenReturn(200);
+        when(resultSet.getInt(5)).thenReturn(300);
+        when(resultSet.getInt(6)).thenReturn(400);
+
+        ArrayList challenges = Database.retrieveChallenges("token");
+        Challenge challenge = (Challenge) challenges.get(0);
+
+        assertEquals("StringOne", challenge.getUserA());
+        assertEquals("StringTwo", challenge.getUserB());
+        assertEquals(100, challenge.getScoreA());
+        assertEquals(200, challenge.getScoreB());
+        assertEquals(300, challenge.getGoal());
+        assertEquals(400, challenge.getState());
+        assertFalse(challenge.isOnA());
+    }
+
+    @Test
+    public void retrieveChallengesException() throws Exception{
+        when(state, "executeQuery").thenThrow(SQLException.class);
+        assertNull(Database.retrieveChallenges("token"));
+    }
     
     @Test
     public void getRecentCOSavings() throws SQLException {
@@ -509,7 +541,114 @@ public class DatabaseTest {
         
         assertEquals(1, result.size());
         assertEquals(a.getCarbonReduced(), result.get(0).getCarbonReduced(), 0);
-        
+    }
+
+    @Test
+    public void initializeChallenge() throws Exception {
+        when(state, "executeUpdate").thenReturn(1);
+        assertTrue(Database.initializeChallenge("token", "user"));
+    }
+
+    @Test
+    public void initializeChallengeFalse() throws Exception {
+        when(state, "executeUpdate").thenReturn(10);
+        assertFalse(Database.initializeChallenge("token", "user"));
+    }
+
+    @Test
+    public void initializeChallengeException() throws Exception {
+        when(state, "executeUpdate").thenThrow(new SQLException("test"));
+        assertFalse(Database.initializeChallenge("token", "user"));
+    }
+
+    @Test
+    public void evaluateChallenges() throws Exception {
+        Whitebox.invokeMethod(Database.class, "evaluateChallenges", "token");
+    }
+
+    @Test
+    public void evaluateChallengesException() throws Exception {
+        when(state, "executeQuery").thenThrow(new SQLException("test"));
+        Whitebox.invokeMethod(Database.class, "evaluateChallenges", "token");
+    }
+
+    @Test
+    public void evaluateChallenge() throws Exception {
+        when(resultSet.getInt(1)).thenReturn(10);
+        when(resultSet.getInt(2)).thenReturn(20);
+        Whitebox.invokeMethod(Database.class, "evaluateChallenge", "user", 100, state, 2);
+    }
+
+    @Test
+    public void evaluateChallengeScoreSmaller() throws Exception {
+        when(resultSet.getInt(1)).thenReturn(10);
+        when(resultSet.getInt(2)).thenReturn(20);
+        Whitebox.invokeMethod(Database.class, "evaluateChallenge", "user", 29, state, 2);
+    }
+
+    @Test
+    public void updateChallenge() throws Exception {
+        when(state, "executeUpdate").thenReturn(1);
+        assertTrue(Database.updateChallenge(new Long(100), "A", "B", 1));
+    }
+
+    @Test
+    public void updateChallengeFalse() throws Exception {
+        when(state, "executeUpdate").thenReturn(2);
+        assertFalse(Database.updateChallenge(new Long(100), "A", "B", 1));
+    }
+
+    @Test
+    public void updateChallengeException() throws Exception {
+        when(state, "executeUpdate").thenThrow(new SQLException("test"));
+        assertFalse(Database.updateChallenge(new Long(100), "A", "B", 1));
+    }
+
+    @Test
+    public void getOTE() throws SQLException {
+        when(resultSet.next()).thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(false);
+        when(resultSet.getInt(1)).thenReturn(12).thenReturn(13).thenReturn(14);
+
+        OnLoadValues  ote = Database.getOTE("token");
+
+        assertTrue(ote.isElectricCar());
+        assertTrue(ote.isEnvGroup());
+        assertTrue(ote.isSolarPanel());
+    }
+
+    @Test
+    public void getOTEnoSolarPanels() throws SQLException {
+        when(resultSet.next()).thenReturn(true).thenReturn(true).thenReturn(false);
+        when(resultSet.getInt(1)).thenReturn(13).thenReturn(14);
+
+        OnLoadValues  ote = Database.getOTE("token");
+
+        assertTrue(ote.isElectricCar());
+        assertTrue(ote.isEnvGroup());
+        assertFalse(ote.isSolarPanel());
+    }
+
+    @Test
+    public void getOTENothing() throws SQLException {
+        when(resultSet.next()).thenReturn(true).thenReturn(false);
+        when(resultSet.getInt(1)).thenReturn(1);
+
+        OnLoadValues  ote = Database.getOTE("token");
+
+        assertFalse(ote.isElectricCar());
+        assertFalse(ote.isEnvGroup());
+        assertFalse(ote.isSolarPanel());
+    }
+
+    @Test
+    public void getOTEException() throws Exception {
+        when(state, "executeQuery").thenThrow(new SQLException("test"));
+
+        OnLoadValues  ote = Database.getOTE("token");
+
+        assertFalse(ote.isElectricCar());
+        assertFalse(ote.isEnvGroup());
+        assertFalse(ote.isSolarPanel());
     }
     
     @Test
