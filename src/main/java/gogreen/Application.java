@@ -2,8 +2,7 @@ package gogreen;
 
 import client.Action;
 import client.Challenge;
-import client.ChallengesList;
-import client.Communication;
+import client.ComCached;
 import client.CompareFriends;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
@@ -249,7 +248,7 @@ public class Application extends javafx.application.Application {
 
     }
 
-    /*
+    /**
      * the main screen.
      */
     static void mainScreen() {
@@ -357,7 +356,7 @@ public class Application extends javafx.application.Application {
         sideBar.add(pointsText, 0, 2);
         sideBar.add(followersText, 0, 3);
         sideBar.add(followingText, 0, 4);
-        
+
         return sideBar;
     }
 
@@ -459,7 +458,7 @@ public class Application extends javafx.application.Application {
 
         // if we press the button we log out
         logoutButton.setOnAction(e -> {
-            Communication.logout();
+            ComCached.logout();
             loginScene();
         });
 
@@ -1051,7 +1050,7 @@ public class Application extends javafx.application.Application {
         amountSavedLabel.setId("title");
 
         // makes the xAxis and yAxis
-        double[]         data  = Communication.getRecentCOSavings();
+        double[]         data  = ComCached.getRecentCOSavings();
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
 
@@ -1107,7 +1106,7 @@ public class Application extends javafx.application.Application {
         int        pos       = 1;
         DateFormat formatter = new SimpleDateFormat("d MMMM YYYY / HH:mm");
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-        for (Action a : Communication.getLastThreeActions()) {
+        for (Action a : ComCached.getLastThreeActions()) {
             historyList.add(new Label(a.getAction()), 0, pos);
             String date = formatter.format(new Date(a.getDate()));
             historyList.add(new Label(date), 1, pos);
@@ -1192,7 +1191,7 @@ public class Application extends javafx.application.Application {
         leaderboard.add(new Label("Level"), 3, 0);
 
         // get the top ten
-        ArrayList<CompareFriends> topTen = Communication.getLeaderboard();
+        ArrayList<CompareFriends> topTen = ComCached.getLeaderboard();
 
         // place all the people in the leaderboard
         int pos = 1;
@@ -1250,7 +1249,7 @@ public class Application extends javafx.application.Application {
         searchButton.setId("smallButton");
         searchButton.setOnAction(e -> {
             String user = ApplicationMethods.encodeUsername(searchField.getText());
-            if(!Communication.addFriend(user)) {
+            if(!ComCached.addFriend(user)) {
                 searchField.setText("");
                 searchField.setPromptText("Friend not found");
             }
@@ -1286,7 +1285,7 @@ public class Application extends javafx.application.Application {
         friendsList.setId("friendsList");
 
         // getting the friends
-        ArrayList<CompareFriends> friends = Communication.getFriends();
+        ArrayList<CompareFriends> friends = ComCached.getFriends();
 
         // fills the friendlist with your friends
         if (!friends.isEmpty()) {
@@ -1311,7 +1310,7 @@ public class Application extends javafx.application.Application {
      */
     private static BorderPane friendRequestScreen() {
         // get the followers
-        ArrayList<CompareFriends> friends = Communication.getFollowers();
+        ArrayList<CompareFriends> friends = ComCached.getFollowers();
 
         // makes the title
         Label nrRequest = new Label(friends.size() + " followers:");
@@ -1325,8 +1324,8 @@ public class Application extends javafx.application.Application {
         // puts all the friendrequests and buttons in the container
         for (CompareFriends followers : friends) {
             String username = ApplicationMethods.decodeUsername(followers.getUsername());
-            int score = followers.getScore();
-            int level = ApplicationMethods.getLevel(score);
+            int    score    = followers.getScore();
+            int    level    = ApplicationMethods.getLevel(score);
 
             // make the username label
             Label user = new Label(username);
@@ -1383,7 +1382,7 @@ public class Application extends javafx.application.Application {
 
                 int    goal = Integer.parseInt(goalField.getText());
                 String user = ApplicationMethods.encodeUsername(userField.getText());
-                if (Communication.addChallenge(user, goal)) {
+                if (ComCached.addChallenge(user, goal)) {
                     refresh();
                 } else {
                     challengeInfo.setText("Try someone else");
@@ -1429,13 +1428,13 @@ public class Application extends javafx.application.Application {
 
     private static GridPane challengeList() {
         // getting the challenges you accepted
-        ChallengesList challenges         = Communication.getChallenges();
-        GridPane       challengeContainer = new GridPane();
+        ArrayList<Challenge> challenges         = ComCached.getChallenges();
+        GridPane             challengeContainer = new GridPane();
         challengeContainer.setId("challenges");
 
         try {
             int pos = 0;
-            for (Challenge c : challenges.getList()) {
+            for (Challenge c : challenges) {
                 if (c.getState() == 0) continue;
 
                 String name  = c.getUserA();
@@ -1481,10 +1480,10 @@ public class Application extends javafx.application.Application {
         GridPane receivedChallenge = new GridPane();
         receivedChallenge.setId("challenges");
 
-        ChallengesList challenges = Communication.getChallenges();
+        ArrayList<Challenge> challenges = ComCached.getChallenges();
         try {
             int pos = 0;
-            for (Challenge c : challenges.getList()) {
+            for (Challenge c : challenges) {
                 if (c.getState() != 0) continue;
 
                 String name = c.getUserA();
@@ -1503,7 +1502,7 @@ public class Application extends javafx.application.Application {
                     receivedChallenge.add(accept, 2, pos);
 
                     accept.setOnAction(e -> {
-                        if (Communication.acceptChallenge(c)) {
+                        if (ComCached.acceptChallenge(c)) {
                             refresh();
                         } else {
                             System.out.println("nope");
@@ -1578,7 +1577,7 @@ public class Application extends javafx.application.Application {
         theme = "src/styles/mainSceneDefaultTheme.css";
 
         //the silentLogin will login for the user
-        if (Communication.silentLogin()) {
+        if (ComCached.silentLogin()) {
             ApplicationMethods.setPresets();
             mainScreen();
         } else {

@@ -1,7 +1,7 @@
 package gogreen;
 
 import client.Challenge;
-import client.Communication;
+import client.ComCached;
 import client.OnLoadValues;
 import com.google.common.hash.Hashing;
 
@@ -37,7 +37,7 @@ class ApplicationMethods {
         // to be implemented: fetch data from the database
         Transport.setHasElectricCar(false);
         Energy.setHasSolarPanels(false);
-//        Communication.onLoad(); Returns an object of class onLoadValues but action ids aren't set properly on server
+//        ComCached.onLoad(); Returns an object of class onLoadValues but action ids aren't set properly on server
     }
 
     /**
@@ -52,7 +52,7 @@ class ApplicationMethods {
         String encodedUsername = encodeUsername(username);
         String hashedPassword = hashPassword(password);
 
-        if (client.Communication.login(encodedUsername, hashedPassword, remember)) {
+        if (client.ComCached.login(encodedUsername, hashedPassword, remember)) {
 
             setPresets();
             Application.mainScreen();
@@ -85,7 +85,7 @@ class ApplicationMethods {
         String encodedUsername = encodeUsername(username);
         String hashedPassword = hashPassword(password);
 
-        if (client.Communication.register(encodedUsername, hashedPassword, remember)) {
+        if (client.ComCached.register(encodedUsername, hashedPassword, remember)) {
             setPresets();
             Application.mainScreen();
         } else {
@@ -197,7 +197,7 @@ class ApplicationMethods {
     static void setPresets() {
         Application.loadingScreen();
         try {
-            OnLoadValues onload = Communication.onLoad();
+            OnLoadValues onload = ComCached.onLoad();
             points = onload.getUser().getTotalScore();
             followingSize = onload.getFollowing();
             followersSize = onload.getFollowers();

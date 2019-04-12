@@ -1,6 +1,6 @@
 package gogreen;
 
-import client.Communication;
+import client.ComCached;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,11 +14,11 @@ import java.rmi.ConnectIOException;
 import static org.mockito.Matchers.anyString;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Communication.class, Api.class})
+@PrepareForTest({ComCached.class, Api.class})
 public class EnergyTest {
     @Before
     public void setUp() throws Exception {
-        PowerMockito.mockStatic(Communication.class);
+        PowerMockito.mockStatic(ComCached.class);
         PowerMockito.mockStatic(Api.class);
         Double d = Double.valueOf(100);
         PowerMockito.when(Api.class, "carbonAmount", anyString()).thenReturn(d);
@@ -29,7 +29,7 @@ public class EnergyTest {
         Whitebox.setInternalState(Energy.class, "hasSolarPanels", false);
         Energy.addReduceEnergyAction(20);
         PowerMockito.verifyStatic();
-        Communication.addAction("ReduceEnergy", 300, 300, 2000);
+        ComCached.addAction("ReduceEnergy", 300, 300, 2000);
     }
 
     @Test
@@ -37,7 +37,7 @@ public class EnergyTest {
         Whitebox.setInternalState(Energy.class, "hasSolarPanels", true);
         Energy.addReduceEnergyAction(20);
         PowerMockito.verifyStatic();
-        Communication.addAction("ReduceEnergy", 300, 2000, 0);
+        ComCached.addAction("ReduceEnergy", 300, 2000, 0);
     }
 
     @Test
@@ -45,7 +45,7 @@ public class EnergyTest {
         Whitebox.setInternalState(Energy.class, "hasSolarPanels", false);
         Energy.addReduceWater(15);
         PowerMockito.verifyStatic();
-        Communication.addAction("ReduceWater", 500, 500, 1500);
+        ComCached.addAction("ReduceWater", 500, 500, 1500);
     }
 
     @Test
@@ -53,6 +53,6 @@ public class EnergyTest {
         Whitebox.setInternalState(Energy.class, "hasSolarPanels", true);
         Energy.addReduceWater(15);
         PowerMockito.verifyStatic();
-        Communication.addAction("ReduceWater", 500, 1500, 0);
+        ComCached.addAction("ReduceWater", 500, 1500, 0);
     }
 }

@@ -219,7 +219,7 @@ public class Controller {
      * @return the ActionList containing Action objects of CO2 saved
      */
     @RequestMapping(value = {"/getRecentCOSavings"}, method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+                    produces = MediaType.APPLICATION_JSON_VALUE)
     public static ActionList getRecentCOSavings(@Valid @RequestBody String token) {
         return new ActionList(Database.getRecentCOSavings(token));
     }

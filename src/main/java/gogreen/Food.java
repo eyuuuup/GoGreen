@@ -1,6 +1,6 @@
 package gogreen;
 
-import client.Communication;
+import client.ComCached;
 
 import java.rmi.ConnectIOException;
 
@@ -28,19 +28,19 @@ public class Food {
         String exception = "you have reached the daily limit of food actions";
         double carbonReduced = Api.carbonAmount("diets.json?size=1");
         if (veggie) {
-            if (!Communication.addAction("Meat", 50, carbonReduced, 0)) {
+            if (!ComCached.addAction("Meat", 50, carbonReduced, 0)) {
                 throw new IllegalArgumentException(exception);
             }
         }
 
         if (locally) {
-            if (!Communication.addAction("Local", 50, carbonReduced, 0)) {
+            if (!ComCached.addAction("Local", 50, carbonReduced, 0)) {
                 throw new IllegalArgumentException(exception);
             }
         }
 
         if (bio) {
-            if (!Communication.addAction("Biological", 50, carbonReduced, 0)) {
+            if (!ComCached.addAction("Biological", 50, carbonReduced, 0)) {
                 throw new IllegalArgumentException(exception);
             }
         }

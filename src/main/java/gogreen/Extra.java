@@ -1,6 +1,6 @@
 package gogreen;
 
-import client.Communication;
+import client.ComCached;
 
 /**
  * Representation of the ExtraCategory.
@@ -16,7 +16,7 @@ final class Extra {
      * gives a carbon reduction of 10 kg because of approximately 20 bottles per clean up.
      */
     static void addCleanSurroundingAction() {
-        Communication.addAction("CleanSurrounding", 100, 5, 0);
+        ComCached.addAction("CleanSurrounding", 100, 5, 0);
     }
 
     /**
@@ -24,6 +24,6 @@ final class Extra {
      * gives a carbon reduction of 1 kg because 1 bottle causes 0.5 kg CO2, as int that is 1.
      */
     static void addRecycleAction() {
-        Communication.addAction("Recycle", 50, 1, 0);
+        ComCached.addAction("Recycle", 50, 1, 0);
     }
 }

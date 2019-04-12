@@ -1,6 +1,5 @@
 package client;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -11,28 +10,25 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@SpringBootApplication
 public class Communication {
 
-    private static final String hostURL = "http://localhost:8080";
-    private static final String fileDir = "src/extraFiles/Token.txt";
-    private static       String token   = null;
+    private static String hostURL = "http://localhost:8080";
+    private static String fileDir = "src/extraFiles/Token.txt";
+    private static String token   = null;
 
-    // CACHE
-    private static User        userChanged    = null;
-    private static Integer     totalChanged   = null;
-    private static ActionList  lastChanged    = null;
-    private static double[]    coChanged      = null;
-    private static Action      carbonChanged  = null;
-    private static FriendsList friendsChanged = null;
-
+    /**
+     * Setter for hostURL
+     * @param url of the new path
+     */
+    public static void setHostURL(String url) {
+        hostURL = url;
+    }
 
     // ========== PART METHODS =================================================
 
     /**
      * Handles login and register.
      * avoid duplicate code.
-     *
      * @param username the username
      * @param password the password
      * @param remember wether to store token in a file
@@ -41,7 +37,7 @@ public class Communication {
      */
     private static boolean submit(
             String username, String password, boolean remember, String postUrl) {
-        User user = new User(username, password);
+        User             user    = new User(username, password);
         HttpEntity<User> message = new HttpEntity<>(user);
 
         RestTemplate request = new RestTemplate();
@@ -64,7 +60,7 @@ public class Communication {
                 out.flush();
                 out.close();
             } catch (IOException e) {
-                System.out.println("No token file found");
+                System.out.println("Wrong directory for token file");
             }
         }
 
@@ -73,14 +69,13 @@ public class Communication {
 
     /**
      * sends the user's token to the server and retrieves whatever from it, then returns it.
-     *
      * @param url    url at which to querry  the server
      * @param expect what class to return and expect from server
      * @return the answer from the server of the class "expect"
      */
     private static Object postToken(String url, Class expect) {
         HttpEntity<String> message = new HttpEntity<>(token);
-        RestTemplate request = new RestTemplate();
+        RestTemplate       request = new RestTemplate();
         return request.postForObject(hostURL + url, message, expect);
     }
 
@@ -90,7 +85,6 @@ public class Communication {
     /**
      * Checks whether a given username is not taken on the server.
      * Stores the username and password, retrieves assigned token.
-     *
      * @param username the username
      * @param password the password
      * @param remember whether to store token in a file
@@ -99,13 +93,13 @@ public class Communication {
     public static boolean register(String username, String password, boolean remember) {
         //send username and password to the server, validate if it is not taken
         //expect generated token if successful, null if username taken
+        ComCached.setUserChanged(null);
         return submit(username, password, remember, "/register");
     }
 
     /**
      * Checks whether a given username and password matches on the server.
      * If yes, retrieves token for such combination for further authentication
-     *
      * @param username the username
      * @param password the password
      * @param remember wether to store token in a file
@@ -114,12 +108,12 @@ public class Communication {
     public static boolean login(String username, String password, boolean remember) {
         //validate if username and password matched those on server
         //if they do retrieve token and store it
+        ComCached.setUserChanged(null);
         return submit(username, password, remember, "/login");
     }
 
     /**
      * Tries to log in with the stored username and password.
-     *
      * @return boolean correctly logged in and token received
      */
     public static boolean silentLogin() {
@@ -144,13 +138,12 @@ public class Communication {
      * Removes traces of previous user.
      */
     public static void logout() {
-        // everything has changed
-        userChanged    = null;
-        totalChanged   = null;
-        lastChanged    = null;
-        coChanged      = null;
-        carbonChanged  = null;
-        friendsChanged = null;
+        ComCached.setUserChanged(null);
+        ComCached.setTotalChanged(null);
+        ComCached.setLastChanged(null);
+        ComCached.setCoChanged(null);
+        ComCached.setCarbonChanged(null);
+        ComCached.setFriendsChanged(null);
 
         // remove token from Main Memory
         token = null;
@@ -160,20 +153,10 @@ public class Communication {
         file.delete();
     }
 
-    /**
-     * Checks whether the user is logged in, checked by comparing token to null.
-     *
-     * @return whether the user is logged in
-     */
-    private static boolean isLoggedIn() {
-        return token != null;
-    }
-
     // ========== ACTION HANDLERS ==============================================
 
     /**
      * adding an action to the database.
-     *
      * @param actionName     the name of the action
      * @param points         the points for the action
      * @param carbonReduced  the carbon reduced in the action
@@ -187,7 +170,6 @@ public class Communication {
     /**
      * to be implemented:
      * adding an action to the database.
-     *
      * @param actionName     the name of the action
      * @param points         the points for the action
      * @param carbonReduced  the carbon reduced in the action
@@ -195,10 +177,10 @@ public class Communication {
      */
     public static boolean addAction(String actionName, int points,
                                     double carbonReduced, double carbonProduced, String description) {
-        totalChanged = null;
-        coChanged = null;
-        carbonChanged = null;
-        lastChanged = null;
+        ComCached.setTotalChanged(null);
+        ComCached.setLastChanged(null);
+        ComCached.setCoChanged(null);
+        ComCached.setCarbonChanged(null);
 
         Action action = new Action(token, actionName,
                 points, carbonReduced, carbonProduced, description);
@@ -210,90 +192,70 @@ public class Communication {
 
     /**
      * Sends request to the server to retrieve last three actions for current user.
-     *
      * @return string containing last three actions
      */
     public static ArrayList<Action> getLastThreeActions() {
-        if (lastChanged == null) {
-            lastChanged = (ActionList) postToken("/retract", ActionList.class);
-        }
-        return lastChanged.getList();
+        return ((ActionList) postToken("/retract", ActionList.class)).getList();
     }
 
 
     /**
      * Sends request to the server to retrieve this user's total score.
-     *
      * @return integer containing total score
      */
-
     public static int getMyTotalScore() {
-        if (totalChanged == null) {
-            totalChanged = (int) postToken("/getTotalScore", Integer.class);
-        }
-        return totalChanged;
+        return (int) postToken("/getTotalScore", Integer.class);
     }
 
     // ========== SOCIAL HANDLERS ==============================================
 
     /**
      * This method checks if the searched username exists or not.
-     *
      * @param username username
      * @return if username exists
      */
     public static boolean checkUsername(String username) {
         HttpEntity<String> message = new HttpEntity<>(username);
-        RestTemplate reuquest = new RestTemplate();
-        return reuquest.postForObject(hostURL + "/searchUser", message, boolean.class);
+        RestTemplate       request = new RestTemplate();
+        return request.postForObject(hostURL + "/searchUser", message, boolean.class);
     }
 
     /**
      * This method is to get the information of user for the user.
-     *
      * @return username object containg all information about the user
      */
     public static User getUser() {
-        if (userChanged == null) {
-            userChanged = (User) postToken("/getUser", User.class);
-        }
-        return userChanged;
+        return (User) postToken("/getUser", User.class);
     }
 
     /**
      * This method adds a friend by it's username.
      * Friend is someone who you follow.
-     *
      * @param friendUsername username of the friend
      * @return whether the friend is added
      */
     public static boolean addFriend(String friendUsername) {
-        friendsChanged = null;
+        ComCached.setFriendsChanged(null);
 
         CompareFriends friend = new CompareFriends(token, friendUsername);
 
         HttpEntity<CompareFriends> message = new HttpEntity<>(friend);
-        RestTemplate request = new RestTemplate();
+        RestTemplate               request = new RestTemplate();
         return request.postForObject(hostURL + "/addFriend", message, boolean.class);
     }
 
     /**
      * This method retrieves the user's list of friends from the server.
      * Friend is someone who you follow.
-     *
      * @return an arraylist ofCompareFriends
      */
     public static ArrayList<CompareFriends> getFriends() {
-        if (friendsChanged == null) {
-            friendsChanged = (FriendsList) postToken("/showFriends", FriendsList.class);
-        }
-        return friendsChanged.getList();
+        return ((FriendsList) postToken("/showFriends", FriendsList.class)).getList();
     }
 
     /**
      * This method retrieves the user's list of followers from the server.
      * Follower is someone who follows you.
-     *
      * @return an arraylist of "CompareFriends"
      */
     public static ArrayList<CompareFriends> getFollowers() {
@@ -302,7 +264,6 @@ public class Communication {
 
     /**
      * This method is to get the list of top ten users for the leaderboard.
-     *
      * @return an object containing a list of users
      */
     public static ArrayList<CompareFriends> getLeaderboard() {
@@ -312,25 +273,18 @@ public class Communication {
 
     /**
      * This method is to get get carbon produced and reduced by the user.
-     *
      * @return carbon Action object with carbonReduced and carbonProduced values
      */
     public static Action carbon() {
-        if (carbonChanged == null) {
-            carbonChanged = (Action) postToken("/carbon", Action.class);
-        }
-        return carbonChanged;
+        return (Action) postToken("/carbon", Action.class);
     }
 
     /**
      * This method is to get the values needed on the loading of the application.
-     *
      * @return an instance of onLoadValue class
      */
     public static OnLoadValues onLoad() {
-        HttpEntity<String> message = new HttpEntity<>(token);
-        RestTemplate request = new RestTemplate();
-        return request.postForObject(hostURL + "/onLoad", message, OnLoadValues.class);
+        return (OnLoadValues) postToken("/onLoad", OnLoadValues.class);
     }
 
     public static boolean addChallenge(String username, int goal) {
@@ -343,8 +297,8 @@ public class Communication {
         return request.postForObject(hostURL + "/addChallenge", message, boolean.class);
     }
 
-    public static ChallengesList getChallenges() {
-        return (ChallengesList) postToken("/getChallenges", ChallengesList.class);
+    public static ArrayList<Challenge> getChallenges() {
+        return ((ChallengesList) postToken("/getChallenges", ChallengesList.class)).getList();
     }
 
     public static boolean acceptChallenge(Challenge challenge) {
@@ -357,21 +311,16 @@ public class Communication {
     /**
      * This method returns the CO2 reduced of current user of last (cap 30) actions
      * ordered from last (at 0) to the most recent (last)
-     *
      * @return the filtered list containing only CO2 saved
      */
     public static double[] getRecentCOSavings() {
-        if (coChanged == null) {
+        ArrayList<Action> actions = ((ActionList) postToken("/getRecentCOSavings", ActionList.class)).getList();
 
-            ArrayList<Action> actions = ((ActionList) postToken("/getRecentCOSavings", ActionList.class)).getList();
-
-            double[] arr = new double[actions.size()];
-            for (int i = 0; i < arr.length; i++) {
-                arr[arr.length - i - 1] = actions.get(i).getCarbonReduced();
-            }
-
-            coChanged = arr;
+        double[] arr = new double[actions.size()];
+        for (int i = 0; i < arr.length; i++) {
+            arr[arr.length - i - 1] = actions.get(i).getCarbonReduced();
         }
-        return coChanged;
+
+        return arr;
     }
 }
