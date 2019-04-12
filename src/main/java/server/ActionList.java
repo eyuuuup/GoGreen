@@ -1,6 +1,7 @@
 package server;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * This class is for the list of actions.
@@ -42,4 +43,13 @@ public class ActionList {
     public void setList(ArrayList<Action> list) {
         this.list = list;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ActionList)) return false;
+        ActionList that = (ActionList) o;
+        return Objects.equals(list, that.list);
+    }
+
 }

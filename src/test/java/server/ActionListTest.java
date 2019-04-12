@@ -4,8 +4,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class ActionListTest {
     
@@ -37,5 +36,21 @@ public class ActionListTest {
         ActionList al = new ActionList();
         al.setList(l);
         assertEquals(al.getList(), l);
+    }
+
+    @Test
+    public void equals() {
+        String fail = "hello";
+        ActionList test = new ActionList();
+        assertFalse(test.equals(fail));
+
+        Action action= new Action(25,22);
+        ArrayList<Action> addAction= new ArrayList<>();
+        addAction.add(action);
+        ActionList list=new ActionList(addAction);
+        assertFalse(list.equals(test));
+
+        ActionList testList = new ActionList(addAction);
+        assertTrue(testList.equals(list));
     }
 }
