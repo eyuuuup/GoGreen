@@ -838,22 +838,15 @@ public class Database {
 
             ResultSet    rs  = state.executeQuery();
             while (rs.next()) {
-                switch (rs.getInt(1)) {
-                    case 12: {
-                        olv.setSolarPanel(true);
-                        break;
-                    }
-                    case 13: {
-                        olv.setElectricCar(true);
-                        break;
-                    }
-                    case 14: {
-                        olv.setEnvGroup(true);
-                        break;
-                    }
-                    default: {
-                        break;
-                    }
+                int number = rs.getInt(1);
+                if (number == 12) {
+                    olv.setSolarPanel(true);
+                }
+                if (number == 13) {
+                    olv.setElectricCar(true);
+                }
+                if (number == 14) {
+                    olv.setEnvGroup(true);
                 }
             }
             return olv;
