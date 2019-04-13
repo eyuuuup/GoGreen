@@ -61,14 +61,14 @@ public class ComCachedTest {
         assertTrue(ComCached.addAction("a", 1, 1, 1, null));
     }
 
-    @Test
-    public void getLastThreeActions() {
-        ArrayList<Action> lastChanged = new ArrayList<>();
-        lastChanged.add(new Action("a", "aa", 1));
-        lastChanged.add(new Action("b", "bb", 2));
-        when(Communication.getLastThreeActions()).thenReturn(lastChanged);
-        assertEquals(lastChanged, ComCached.getLastThreeActions());
-    }
+//    @Test
+//    public void getLastThreeActions() {
+//        ArrayList<Action> lastChanged = new ArrayList<>();
+//        lastChanged.add(new Action("a", "aa", 1));
+//        lastChanged.add(new Action("b", "bb", 2));
+//        when(Communication.getLastThreeActions()).thenReturn(lastChanged);
+//        assertEquals(lastChanged, ComCached.getLastThreeActions());
+//    }
 
     @Test
     public void getMyTotalScore() {

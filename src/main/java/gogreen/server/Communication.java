@@ -346,7 +346,7 @@ public class Communication {
      * @return the user's recent CO2 reductions
      */
     public static double[] getRecentCoSavings() {
-        ArrayList<Action> actions = ((ActionList) postToken("/getRecentCOSavings",
+        ArrayList<Action> actions = ((ActionList) postToken("/getRecentCoSavings",
                 ActionList.class)).getList();
 
         double[] arr = new double[actions.size()];

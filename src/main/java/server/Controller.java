@@ -244,7 +244,7 @@ public class Controller {
      * @param token the user's token
      * @return the user's recent CO2 reductions
      */
-    @RequestMapping(value = {"/getRecentCOSavings"}, method = RequestMethod.POST,
+    @RequestMapping(value = {"/getRecentCoSavings"}, method = RequestMethod.POST,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public static ActionList getRecentCoSavings(@Valid @RequestBody String token) {
         return new ActionList(Database.getRecentCoSavings(token));
