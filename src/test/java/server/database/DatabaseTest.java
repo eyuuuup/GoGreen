@@ -542,15 +542,9 @@ public class DatabaseTest {
 
         Action a = new Action();
         a.setCarbonReduced(10.0);
-<<<<<<< HEAD:src/test/java/database/DatabaseTest.java
         
         ArrayList<Action> result = Database.getRecentCoSavings("token");
-        
-=======
 
-        ArrayList<Action> result = Database.getRecentCOSavings("token");
-
->>>>>>> e016a38735b28bfbefe56c49d701d2d53e89830f:src/test/java/server/database/DatabaseTest.java
         assertEquals(1, result.size());
         assertEquals(a.getCarbonReduced(), result.get(0).getCarbonReduced(), 0);
     }
@@ -621,11 +615,7 @@ public class DatabaseTest {
         when(resultSet.next()).thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(false);
         when(resultSet.getInt(1)).thenReturn(12).thenReturn(13).thenReturn(14);
 
-<<<<<<< HEAD:src/test/java/database/DatabaseTest.java
         OnLoadValues  ote = Database.getOte("token");
-=======
-        OnLoadValues ote = Database.getOTE("token");
->>>>>>> e016a38735b28bfbefe56c49d701d2d53e89830f:src/test/java/server/database/DatabaseTest.java
 
         assertTrue(ote.isElectricCar());
         assertTrue(ote.isEnvGroup());
@@ -670,12 +660,7 @@ public class DatabaseTest {
     @Test
     public void getRecentCOSavingsException() throws SQLException {
         when(resultSet.getDouble(1)).thenThrow(new SQLException("test"));
-<<<<<<< HEAD:src/test/java/database/DatabaseTest.java
         
         assertNull(Database.getRecentCoSavings("token"));
-=======
-
-        assertNull(Database.getRecentCOSavings("token"));
->>>>>>> e016a38735b28bfbefe56c49d701d2d53e89830f:src/test/java/server/database/DatabaseTest.java
     }
 }

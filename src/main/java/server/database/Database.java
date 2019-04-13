@@ -54,11 +54,7 @@ public class Database {
     private static PreparedStatement getRecentCOSavings;
 
     /**
-<<<<<<< HEAD:src/main/java/database/Database.java
      * Connects to the database.
-=======
-     * This method keeps trying connecting to the server.database until successful
->>>>>>> e016a38735b28bfbefe56c49d701d2d53e89830f:src/main/java/server/database/Database.java
      */
     public static void connect() {
         try {
@@ -71,11 +67,7 @@ public class Database {
     }
 
     /**
-<<<<<<< HEAD:src/main/java/database/Database.java
      * Caches the prepareStatements for the database queries.
-=======
-     * This method keeps trying connecting to the server.database until successful
->>>>>>> e016a38735b28bfbefe56c49d701d2d53e89830f:src/main/java/server/database/Database.java
      */
     public static void prepare() {
         try {
@@ -256,11 +248,7 @@ public class Database {
     }
 
     /**
-<<<<<<< HEAD:src/main/java/database/Database.java
      * Disconnects from the database.
-=======
-     * This method keeps trying disconnecting from the server.database until successful
->>>>>>> e016a38735b28bfbefe56c49d701d2d53e89830f:src/main/java/server/database/Database.java
      */
     public static void disconnect() {
         try {
@@ -273,15 +261,9 @@ public class Database {
     }
 
     /**
-<<<<<<< HEAD:src/main/java/database/Database.java
      * Retrieves the username from the database.
      * @param token the user's token
      * @return the user's username
-=======
-     * This method gets the username from the server.database.
-     * @param token A String with the token.
-     * @return the username.
->>>>>>> e016a38735b28bfbefe56c49d701d2d53e89830f:src/main/java/server/database/Database.java
      */
     public static String getUsername(String token) {
         try {
@@ -305,16 +287,9 @@ public class Database {
     }
 
     /**
-<<<<<<< HEAD:src/main/java/database/Database.java
      * Retrieves the user's general information from the database.
      * @param token the user's token
      * @return the user's general information.
-=======
-     * This methods queries the server.database for username,
-     * mail and totalscore of user, found by token.
-     * @param token String, token of the user
-     * @return username, mail, totalscore of user
->>>>>>> e016a38735b28bfbefe56c49d701d2d53e89830f:src/main/java/server/database/Database.java
      */
     public static User getUser(String token) {
         try {
@@ -342,15 +317,9 @@ public class Database {
     }
 
     /**
-<<<<<<< HEAD:src/main/java/database/Database.java
      * Adds action to the database.
      * @param action the action to add
      * @return if the action was added successfully
-=======
-     * This method saves the Action object in the server.database.
-     * @param action An object of the class Action.
-     * @return if the query succeeded.
->>>>>>> e016a38735b28bfbefe56c49d701d2d53e89830f:src/main/java/server/database/Database.java
      */
     public static boolean addAction(Action action) {
         try {
@@ -562,15 +531,9 @@ public class Database {
     }
 
     /**
-<<<<<<< HEAD:src/main/java/database/Database.java
      * Retrieves the user's total score.
      * @param token the user's token
      * @return the user's total score
-=======
-     * This method queries the server.database to get the total score of a user.
-     * @param token A String with the token of the user.
-     * @return the total score of a user.
->>>>>>> e016a38735b28bfbefe56c49d701d2d53e89830f:src/main/java/server/database/Database.java
      */
     public static int getTotalScore(String token) {
         System.out.println("getTotalScore called");
@@ -621,15 +584,9 @@ public class Database {
     }
 
     /**
-<<<<<<< HEAD:src/main/java/database/Database.java
      * Tries silent login with a stored token.
      * @param token the user's stored token
      * @return whether logged in
-=======
-     * This method queries the server.database with a token to look if the user exists.
-     * @param token A string that contains the token.
-     * @return if the query succeeded.
->>>>>>> e016a38735b28bfbefe56c49d701d2d53e89830f:src/main/java/server/database/Database.java
      */
     public static boolean silentLoginCheck(String token) {
         System.out.println("silentLogicCheck called");
@@ -653,15 +610,9 @@ public class Database {
     }
 
     /**
-<<<<<<< HEAD:src/main/java/database/Database.java
      * Registers a new user in the database.
      * @param user  the new user.
      * @param token the new user's token.
-=======
-     * This method registers a new user in the server.database.
-     * @param user  An User object.
-     * @param token A String with the token.
->>>>>>> e016a38735b28bfbefe56c49d701d2d53e89830f:src/main/java/server/database/Database.java
      */
     public static void register(User user, String token) {
         System.out.println("register called");
@@ -688,15 +639,9 @@ public class Database {
     }
 
     /**
-<<<<<<< HEAD:src/main/java/database/Database.java
      * Checks if the given username is already in the database.
      * @param username the username to check for
      * @return whether the username is already in the database
-=======
-     * This method checks if the username exists in the server.database.
-     * @param username A string with the username.
-     * @return if the users exists or not.
->>>>>>> e016a38735b28bfbefe56c49d701d2d53e89830f:src/main/java/server/database/Database.java
      */
     public static boolean checkUsername(String username) {
         System.out.println("checkUsername called (looking for '" + username + "')");
@@ -720,15 +665,9 @@ public class Database {
     }
 
     /**
-<<<<<<< HEAD:src/main/java/database/Database.java
      * Tries to log in.
      * @param user the user.
      * @return a TokenResponse with a token for further communication
-=======
-     * This method checks if the user has a token in the server.database.
-     * @param user A user Object.
-     * @return A TokenResponse object
->>>>>>> e016a38735b28bfbefe56c49d701d2d53e89830f:src/main/java/server/database/Database.java
      */
     public static TokenResponse checkLogin(User user) {
         System.out.println("checkLogin called");

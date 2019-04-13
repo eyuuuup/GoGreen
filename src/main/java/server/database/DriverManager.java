@@ -5,11 +5,7 @@ import java.sql.SQLException;
 
 
 /**
-<<<<<<< HEAD:src/main/java/database/DriverManager.java
  * This class represents the connection with the database.
-=======
- * DriverManager is a class that sets up the connection to the server.database.
->>>>>>> e016a38735b28bfbefe56c49d701d2d53e89830f:src/main/java/server/database/DriverManager.java
  */
 public class DriverManager {
 
