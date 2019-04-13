@@ -14,22 +14,12 @@ public class Challenge {
     private boolean onA;
 
     /**
-<<<<<<< HEAD:src/main/java/server/Challenge.java
      * Constructor for the Challenge containing the two users, their scores and the goal.
      * @param userA  String of userA
      * @param userB  String of userB
      * @param scoreA Score of userA
      * @param scoreB score of userB
      * @param goal   amount of points needed
-=======
-     * Constructor for the Challenge class.
-     *
-     * @param userA  String of userA.
-     * @param userB  String of userB.
-     * @param scoreA Score of userA.
-     * @param scoreB score of userB.
-     * @param goal   amount of points needed.
->>>>>>> e016a38735b28bfbefe56c49d701d2d53e89830f:src/main/java/gogreen/server/holders/Challenge.java
      */
     public Challenge(String userA, String userB, int scoreA, int scoreB, int goal) {
         this.userA = userA;

@@ -1,8 +1,8 @@
 package server;
 
-import server.database.Database;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import server.database.Database;
 
 /**
  * This class represents the spring application on which our server runs.
