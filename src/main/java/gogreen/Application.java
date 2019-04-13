@@ -54,12 +54,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 
+/**
+ * the main class displays the GUI.
+ */
 public class Application extends javafx.application.Application {
-    //the stage this application uses
     private static Stage  stage;
     private static String theme;
 
-    //launches the app
+    //launches the application
     public static void main(String[] args) {
         launch();
     }
@@ -84,7 +86,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * The login screen.
-     * @return the screen
+     * @return the login screen
      */
     private static GridPane loginScreen() {
 
@@ -140,6 +142,7 @@ public class Application extends javafx.application.Application {
             registerScene();
         });
 
+        // makes the username and password titles
         Label usernameTitle = new Label("Username:");
         usernameTitle.setId("loginTitles");
         Label passwordTitle = new Label("Password:");
@@ -164,7 +167,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * The body for the register display.
-     * @return the body
+     * @return the register screen
      */
     private static GridPane registerScreen() {
         //textfield for the username
@@ -221,12 +224,14 @@ public class Application extends javafx.application.Application {
             }
         });
 
+        // makes the back button
         JFXButton back = new JFXButton("go Back");
         back.setId("loginButtons");
         back.setOnAction(e -> {
             loginScene();
         });
 
+        // makes the username and password titles
         Label usernameTitle = new Label("Username:");
         usernameTitle.setId("loginTitles");
         Label passwordTitle = new Label("Password:");
@@ -248,12 +253,6 @@ public class Application extends javafx.application.Application {
 
         //and returns it
         return registerPage;
-    }
-
-    static void loadingScreen() {
-        // WIP
-        System.out.println("Loading...");
-
     }
 
     /**
@@ -300,7 +299,7 @@ public class Application extends javafx.application.Application {
 
     /**
      * makes the home screen.
-     * @return home screen
+     * @return the home screen
      */
     private static Pane homeScreen() {
 
@@ -342,7 +341,8 @@ public class Application extends javafx.application.Application {
     private static GridPane sideBar() {
 
         // makes all the labels to display
-        Label username = new Label("@" + ApplicationMethods.decodeUsername(ApplicationMethods.getUsername()));
+        Label username = new Label("@" + ApplicationMethods.decodeUsername(
+                ApplicationMethods.getUsername()));
 
         double savedAmount = ApplicationMethods.getSavedCarbon();
         Label  reducedCO2  = new Label(savedAmount + "kg CO\u2082 saved");
@@ -422,17 +422,14 @@ public class Application extends javafx.application.Application {
         yourWorldPage.setCenter(yourWorldCenter);
         yourWorldPage.setLeft(sideBar());
 
-        // returns the page
         return yourWorldPage;
     }
 
     /**
      * makes the settings screen.
-     * @return settings screen
+     * @return the settings screen
      */
     private static BorderPane settingsScreen() {
-        // set the status of the dark mode
-        String status = "Enable";
 
         // makes the dark mode button
         JFXToggleNode darkTheme = new JFXToggleNode();
@@ -473,7 +470,6 @@ public class Application extends javafx.application.Application {
             loginScene();
         });
 
-
         // make the page and add the nodes
         VBox settingsCenter = new VBox(10);
         settingsCenter.setId("settingPage");
@@ -484,7 +480,6 @@ public class Application extends javafx.application.Application {
         settingsPage.setCenter(settingsCenter);
         settingsPage.setLeft(sideBar());
 
-        // return the page
         return settingsPage;
     }
 
@@ -493,12 +488,8 @@ public class Application extends javafx.application.Application {
      * @return the about page
      */
     private static BorderPane aboutScreen() {
-
         // makes the label with the about text
-        Label aboutText = new Label("Welcome to our App *insert app name* \n"
-                + "One of my favorite quotes is that "
-                + "if you move one grain of sand in the Sahara, you changed the whole Sahara. "
-                + "And that is what we wanted to do. "
+        Label aboutText = new Label("Welcome to our App Go Green \n"
                 + "We wanted to change the world, but we realised we couldn't do it alone. "
                 + "So we decided to encourage other people to change the world with us. "
                 + "This is one of the reasons we made this app, the other reason is that we "
@@ -621,51 +612,21 @@ public class Application extends javafx.application.Application {
         cycle.setGraphic(bikeIcon);
         cycle.setId("actionButton");
 
-        // when you press the button you add a action, or get an error which will be displayed
+        // when you press the button you will add an action or you displayed an error
         cycle.setOnAction(e -> {
-            try {
-                int distanceInt = Integer.parseInt(distance.getText());
-                checkDescriptionLength(transportDescription.getText());
-                System.out.println(transportDescription.getText());
-                transportInfo.setText("");
-                Transport.addCycleAction(distanceInt, transportDescription.getText());
-                refresh();
-            } catch (NumberFormatException exception) {
-                transportInfo.setText("Please only use numbers!");
-            } catch (ConnectIOException | IllegalArgumentException exception) {
-                exception.printStackTrace();
-                transportInfo.setText("Number is too high \nDid you really cycle that far?");
-            } catch (DescriptionTooLong exception) {
-                transportInfo.setText("You description is too long. \nChill down and please use less then 150 characters.");
-            }
+            addTransportAction(transportDescription.getText(), distance.getText(), transportInfo);
         });
 
         //button for the public transport action
-        JFXButton              publicTransport = new JFXButton();
-        MaterialDesignIconView subwayIcon      = new MaterialDesignIconView(MaterialDesignIcon.SUBWAY);
+        JFXButton publicTransport = new JFXButton();
+        MaterialDesignIconView subwayIcon = new MaterialDesignIconView(MaterialDesignIcon.SUBWAY);
         subwayIcon.setSize("50px");
         publicTransport.setGraphic(subwayIcon);
         publicTransport.setId("actionButton");
 
-        // when you press the button you add an action or get an error which will be displayed
+        // when you press the button you will add an action or you displayed an error
         publicTransport.setOnAction(e -> {
-            try {
-                checkDescriptionLength(transportDescription.getText());
-                int distanceInt = Integer.parseInt(distance.getText());
-                System.out.println(transportDescription.getText());
-                transportInfo.setText("");
-                Transport.addPublicTransportAction(distanceInt, transportDescription.getText());
-                refresh();
-            } catch (NumberFormatException exception) {
-                // throw error
-                transportInfo.setText("Please only use numbers!");
-            } catch (ConnectIOException | IllegalArgumentException exception) {
-                exception.printStackTrace();
-                transportInfo.setText("Number is too high \n"
-                        + "Did you really used public transport that far?");
-            } catch (DescriptionTooLong exception) {
-                transportInfo.setText("You description is too long. \nChill down and please use less then 150 characters.");
-            }
+            addTransportAction(transportDescription.getText(), distance.getText(), transportInfo);
         });
 
         //button for the car action
@@ -675,26 +636,9 @@ public class Application extends javafx.application.Application {
         car.setGraphic(carIcon);
         car.setId("actionButton");
 
-        // when you press the button you will add an action and
-        // if you get an error it will be displayed
+        // when you press the button you will add an action or you displayed an error
         car.setOnAction(e -> {
-            try {
-                checkDescriptionLength(transportDescription.getText());
-                int distanceInt = Integer.parseInt(distance.getText());
-                System.out.println(transportDescription.getText());
-                transportInfo.setText("");
-                Transport.addCarAction(distanceInt, transportDescription.getText());
-                refresh();
-            } catch (NumberFormatException exception) {
-                // throw error
-                transportInfo.setText("Please only use numbers!");
-            } catch (ConnectIOException | IllegalArgumentException exception) {
-                exception.printStackTrace();
-                transportInfo.setText("Number is too high \n"
-                        + "Did you really drove your car that far?");
-            } catch (DescriptionTooLong exception) {
-                transportInfo.setText("You description is too long. \nChill down and please use less then 150 characters.");
-            }
+            addTransportAction(transportDescription.getText(), distance.getText(), transportInfo);
         });
 
         //button for the plane action
@@ -704,26 +648,9 @@ public class Application extends javafx.application.Application {
         plane.setGraphic(planeIcon);
         plane.setId("actionButton");
 
-        // when you press a button you will add an action
-        // and if you get an error it will be displayed
+        // when you press the button you will add an action or you displayed an error
         plane.setOnAction(e -> {
-            try {
-                checkDescriptionLength(transportDescription.getText());
-                int distanceInt = Integer.parseInt(distance.getText());
-                System.out.println(transportDescription.getText());
-                transportInfo.setText("");
-                Transport.addPlaneAction(distanceInt, transportDescription.getText());
-                refresh();
-            } catch (NumberFormatException exception) {
-                // throw error
-                transportInfo.setText("Please only use numbers!");
-            } catch (ConnectIOException | IllegalArgumentException exception) {
-                exception.printStackTrace();
-                transportInfo.setText("Number is too high \n"
-                        + "You can't fly around the world multiple times!");
-            } catch (DescriptionTooLong exception) {
-                transportInfo.setText("You description is too long. \nChill down and please use less then 150 characters.");
-            }
+            addTransportAction(transportDescription.getText(), distance.getText(), transportInfo);
         });
 
         // make the kilometer label and the distance container
@@ -734,7 +661,6 @@ public class Application extends javafx.application.Application {
         distanceContainer.setId("commonContainer");
         distanceContainer.getChildren().addAll(distance, km);
 
-
         // make the transport page
         GridPane transportCenter = new GridPane();
         transportCenter.add(transportInfo, 0, 0);
@@ -744,7 +670,6 @@ public class Application extends javafx.application.Application {
         transportCenter.add(publicTransport, 0, 4);
         transportCenter.add(car, 0, 5);
         transportCenter.add(plane, 0, 6);
-
         transportCenter.setId("transportPage");
 
         // make the page and set the sidebar
@@ -752,13 +677,12 @@ public class Application extends javafx.application.Application {
         transportPage.setCenter(transportCenter);
         transportPage.setLeft(sideBar());
 
-        // return the page
         return transportPage;
     }
 
     /**
      * make the food screen.
-     * @return
+     * @return the food screen
      */
     private static BorderPane foodScreen() {
         // info label
@@ -783,14 +707,15 @@ public class Application extends javafx.application.Application {
         send.setOnAction(e -> {
             try {
                 checkDescriptionLength(foodDescription.getText());
-                Food.addAction(veggie.isSelected(), locally.isSelected(), bio.isSelected(), foodDescription.getText());
-                System.out.println(foodDescription.getText());
+                Food.addAction(veggie.isSelected(), locally.isSelected(), bio.isSelected(),
+                        foodDescription.getText());
                 refresh();
             } catch (ConnectIOException | IllegalArgumentException e1) {
                 foodInfo.setText("You have reached the daily limit of food actions! \n");
                 e1.printStackTrace();
             } catch (DescriptionTooLong exception) {
-                foodInfo.setText("You description is too long. \nChill down and please use less then 150 characters.");
+                foodInfo.setText("You description is too long. \n"
+                        + "Chill down and please use less then 150 characters.");
             }
 
             // then sets it to false to select it again
@@ -814,7 +739,6 @@ public class Application extends javafx.application.Application {
         foodPage.setCenter(foodCenter);
         foodPage.setLeft(sideBar());
 
-        // return the body
         return foodPage;
     }
 
@@ -823,7 +747,6 @@ public class Application extends javafx.application.Application {
      * @return the energy screen
      */
     private static BorderPane energyScreen() {
-
         // make the labels
         Label waterTime = new Label("Add shower time.");
         waterTime.setId("information");
@@ -848,21 +771,21 @@ public class Application extends javafx.application.Application {
         waterContainer.getChildren().addAll(waterTime, waterInfo,
                 waterTimeSlider, waterDescription, addWater);
 
-        // if the add button is pressed, checks the conditions and sends the action
+        // when you press the button you will add an action and
+        // if you get an error it will be displayed
         addWater.setOnAction(e -> {
             int value = (int) Math.round(waterTimeSlider.getValue());
             if (value != 0) {
                 waterInfo.setText("");
                 try {
                     checkDescriptionLength(waterDescription.getText());
-                    System.out.println(waterDescription.getText());
                     Energy.addReduceWater(value, waterDescription.getText());
-                    System.out.println(value);
                     refresh();
                 } catch (ConnectIOException e1) {
                     e1.printStackTrace();
                 } catch (DescriptionTooLong exception) {
-                    waterInfo.setText("You description is too long. \nChill down and please use less then 150 characters.");
+                    waterInfo.setText("You description is too long. \n"
+                            + "Chill down and please use less then 150 characters.");
                 }
             } else {
                 waterInfo.setText("Please fill in the amount of minutes you showered.");
@@ -893,19 +816,19 @@ public class Application extends javafx.application.Application {
         temperatureContainer.getChildren().addAll(temperature, temperatureInfo,
                 temperatureSlider, tempratureDescription, addTemperature);
 
-        // when pressed it will send an action
+        // when you press the button you will add an action and
+        // if you get an error it will be displayed
         addTemperature.setOnAction(e -> {
             int value = (int) Math.round(temperatureSlider.getValue());
-            System.out.println(value);
             try {
                 checkDescriptionLength(tempratureDescription.getText());
-                System.out.println(tempratureDescription.getText());
                 Energy.addReduceEnergyAction(value, tempratureDescription.getText());
                 refresh();
             } catch (ConnectIOException e1) {
                 e1.printStackTrace();
             } catch (DescriptionTooLong exception) {
-                temperatureInfo.setText("You description is too long. \nChill down and please use less then 150 characters.");
+                temperatureInfo.setText("You description is too long. \n"
+                        + "Chill down and please use less then 150 characters.");
             }
         });
 
@@ -920,7 +843,6 @@ public class Application extends javafx.application.Application {
         energyPage.setCenter(energyCenter);
         energyPage.setLeft(sideBar());
 
-        // returns the page
         return energyPage;
     }
 
@@ -929,6 +851,7 @@ public class Application extends javafx.application.Application {
      * @return the extra screen
      */
     private static BorderPane extraScreen() {
+        // make the information label
         Label extrainfo = new Label("Add extra action:");
         extrainfo.setId("information");
 
@@ -944,15 +867,16 @@ public class Application extends javafx.application.Application {
         cleanSurrounding.setGraphic(new Label("Clean surrounding", trashIcon));
         cleanSurrounding.setId("actionButton");
 
-        // when pressed it will send the action
+        // when you press the button you will add an action and
+        // if you get an error it will be displayed
         cleanSurrounding.setOnAction(e -> {
             try {
                 checkDescriptionLength(extraDescription.getText());
-                System.out.println(extraDescription.getText());
                 Extra.addCleanSurroundingAction(extraDescription.getText());
                 refresh();
             } catch (DescriptionTooLong exception) {
-                extrainfo.setText("You description is too long. \nChill down and please use less then 150 characters.");
+                extrainfo.setText("You description is too long. \n"
+                        + "Chill down and please use less then 150 characters.");
             }
         });
 
@@ -963,25 +887,25 @@ public class Application extends javafx.application.Application {
         recycle.setGraphic(new Label("Recycle", recycleIcon));
         recycle.setId("actionButton");
 
-        // when pressed it will send the action
+        // when you press the button you will add an action and
+        // if you get an error it will be displayed
         recycle.setOnAction(e -> {
             try {
                 checkDescriptionLength(extraDescription.getText());
-                System.out.println(extraDescription.getText());
                 Extra.addRecycleAction(extraDescription.getText());
                 refresh();
             } catch (DescriptionTooLong exception) {
-                extrainfo.setText("You description is too long. \nChill down and please use less then 150 characters.");
+                extrainfo.setText("You description is too long. \n"
+                        + "Chill down and please use less then 150 characters.");
             }
-
         });
 
         // makes the page and adds the nodes
         GridPane extraCenter = new GridPane();
-//        extraCenter.add(extrainfo, 0, 0);
-        extraCenter.add(extraDescription, 0, 0);
-        extraCenter.add(cleanSurrounding, 0, 1);
-        extraCenter.add(recycle, 0, 2);
+        extraCenter.add(extrainfo, 0, 0);
+        extraCenter.add(extraDescription, 0, 1);
+        extraCenter.add(cleanSurrounding, 0, 2);
+        extraCenter.add(recycle, 0, 3);
         extraCenter.setId("extraPage");
 
         // makes the page and sets the sidebar
@@ -989,7 +913,6 @@ public class Application extends javafx.application.Application {
         extraPage.setCenter(extraCenter);
         extraPage.setLeft(sideBar());
 
-        // returns the page
         return extraPage;
     }
 
@@ -1093,7 +1016,6 @@ public class Application extends javafx.application.Application {
         amountSavedLabel.setId("title");
 
         // makes the xAxis and yAxis
-        double[]         data  = ComCached.getRecentCoSavings();
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
 
@@ -1108,6 +1030,7 @@ public class Application extends javafx.application.Application {
         XYChart.Series series = new XYChart.Series();
         lineChart.setLegendVisible(false);
 
+        double[]         data  = ComCached.getRecentCoSavings();
         // sets the data
         double total = ApplicationMethods.getSavedCarbon();
         for (int i = data.length; i > 0; i--) {
@@ -1128,10 +1051,13 @@ public class Application extends javafx.application.Application {
         overviewPage.setCenter(overviewCenter);
         overviewPage.setLeft(sideBar());
 
-        // return the page
         return overviewPage;
     }
 
+    /**
+     * make the history screen.
+     * @return the history screen
+     */
     private static BorderPane historyScreen() {
         // make the recent activites text
         Label historyTitle = new Label("Recent activities");
@@ -1243,7 +1169,6 @@ public class Application extends javafx.application.Application {
      * @return the leaderboard screen
      */
     private static BorderPane leaderboardScreen() {
-
         // make the leaderboard title
         Label header = new Label("Leaderboard");
         header.setId("title");
@@ -1283,7 +1208,6 @@ public class Application extends javafx.application.Application {
         leaderboardPage.setCenter(leaderboardCenter);
         leaderboardPage.setLeft(sideBar());
 
-        // returns the page
         return leaderboardPage;
     }
 
@@ -1292,7 +1216,6 @@ public class Application extends javafx.application.Application {
      * @return the friends screen
      */
     private static BorderPane friendsScreen() {
-
         // make the title
         Label title = new Label("You follow:");
         title.setId("title");
@@ -1329,7 +1252,6 @@ public class Application extends javafx.application.Application {
         searchBar.setAlignment(Pos.CENTER);
         searchBar.getChildren().addAll(searchField, searchButton);
 
-
         // makes the friends page
         VBox friendsCenter = new VBox(5);
         friendsCenter.getChildren().addAll(title, followingList, searchBar);
@@ -1339,7 +1261,6 @@ public class Application extends javafx.application.Application {
         friendsPage.setCenter(friendsCenter);
         friendsPage.setLeft(sideBar());
 
-        // returns the friendspage
         return friendsPage;
     }
 
@@ -1388,8 +1309,8 @@ public class Application extends javafx.application.Application {
         GridPane followersContainer = new GridPane();
         followersContainer.setId("followersContainer");
 
-        int pos = 1;
         // puts all the friendrequests and buttons in the container
+        int pos = 1;
         for (CompareFriends followers : friends) {
             String username = ApplicationMethods.decodeUsername(followers.getUsername());
             int    score    = followers.getScore();
@@ -1421,7 +1342,6 @@ public class Application extends javafx.application.Application {
         requestPage.setCenter(requestCenter);
         requestPage.setLeft(sideBar());
 
-        // return the request page
         return requestPage;
     }
 
@@ -1430,7 +1350,7 @@ public class Application extends javafx.application.Application {
      * @return the challenge page
      */
     private static BorderPane challengeScreen() {
-        // ask a friend to challenge
+        // ask some to challenge
         Label challengeInfo = new Label("Who is the first to reach...");
         challengeInfo.setId("information");
 
@@ -1445,9 +1365,9 @@ public class Application extends javafx.application.Application {
         JFXButton addChallenge = new JFXButton("add the challenge");
         addChallenge.setId("smallButton");
 
+        // sends the challenge request, displays an error if something went wrong
         addChallenge.setOnAction(e -> {
             try {
-
                 int    goal = Integer.parseInt(goalField.getText());
                 String user = ApplicationMethods.encodeUsername(userField.getText());
                 if (ApplicationMethods.getUsername().equals(user)) {
@@ -1462,6 +1382,7 @@ public class Application extends javafx.application.Application {
             }
         });
 
+        // makes the challenge containers
         HBox addChallengeContainer = new HBox();
         addChallengeContainer.setId("addChallengeContainer");
         addChallengeContainer.getChildren().addAll(goalField, userField, addChallenge);
@@ -1477,25 +1398,30 @@ public class Application extends javafx.application.Application {
         receivedChallenge.setId("challengeLists");
         receivedChallenge.setContent(receivedList());
 
+        // makes the challenge title
         Label challengeTitle = new Label("Current challenges");
         challengeTitle.setId("information");
         Label receivedTitle = new Label("Received challenges");
         receivedTitle.setId("information");
 
+        // makes the challenge page
         VBox challengeCenter = new VBox();
         challengeCenter.setId("challengePage");
-        challengeCenter.getChildren().addAll(addChallengeVbox, challengeTitle, challengeContainer, receivedTitle, receivedChallenge);
+        challengeCenter.getChildren().addAll(addChallengeVbox, challengeTitle, challengeContainer,
+                receivedTitle, receivedChallenge);
 
         // makes the page and sets the sidebar
         BorderPane challengePage = new BorderPane();
         challengePage.setCenter(challengeCenter);
         challengePage.setLeft(sideBar());
 
-        // return the request page
         return challengePage;
-
     }
 
+    /**
+     * makes the challenge list.
+     * @return the challenge list
+     */
     private static GridPane challengeList() {
         // getting the challenges you accepted
         ArrayList<Challenge> challenges         = ComCached.getChallenges();
@@ -1505,7 +1431,9 @@ public class Application extends javafx.application.Application {
         try {
             int pos = 0;
             for (Challenge c : challenges) {
-                if (c.getState() == 0) continue;
+                if (c.getState() == 0) {
+                    continue;
+                }
 
                 String nameOpponent = c.getUserB();
                 int    start        = c.getScoreA();
@@ -1521,20 +1449,7 @@ public class Application extends javafx.application.Application {
                 Label  user     = new Label("User: " + username);
                 challengeContainer.add(user, 1, pos);
 
-                if ((c.getState() == 10 && c.isOnA()) || (c.getState()==11 && !c.isOnA())) {
-                    // I won
-                    challengeContainer.add(new Label("You won!"), 2, pos);
-                } else if ((c.getState()==10 && !c.isOnA()) || (c.getState() == 11 && c.isOnA())) {
-                    // opponent won
-                    challengeContainer.add(new Label("You lost!"), 2, pos);
-                } else {
-                    System.out.println("progress: " + ApplicationMethods.getChallengeProgress(start, c.getGoal()) + "\tstart: " + start + "\t goal: " + c.getGoal());
-                    ProgressBar progress = new ProgressBar(ApplicationMethods.getChallengeProgress(start, c.getGoal()));
-                    progress.setId("challengeProgress");
-                    challengeContainer.add(new Label("Progress:"), 2, pos);
-                    challengeContainer.add(progress, 3, pos);
-                }
-
+                checkIfWon(challengeContainer, pos, c, start);
                 pos++;
             }
         } catch (NullPointerException e) {
@@ -1546,19 +1461,28 @@ public class Application extends javafx.application.Application {
         return challengeContainer;
     }
 
+    /**
+     * makes a list of the challenges you received.
+     * @return a gridpane containing the challenges you received
+     */
     private static GridPane receivedList() {
         // getting the challenges that need to be accepted
         GridPane receivedChallenge = new GridPane();
         receivedChallenge.setId("challenges");
 
+        // makes the list
         ArrayList<Challenge> challenges = ComCached.getChallenges();
         try {
             int pos = 0;
             for (Challenge c : challenges) {
-                if (c.getState() != 0) continue;
+                if (c.getState() != 0) {
+                    continue;
+                }
 
                 String name = c.getUserA();
-                if (c.isOnA()) name = c.getUserB();
+                if (c.isOnA()) {
+                    name = c.getUserB();
+                }
 
                 Label goal = new Label("Goal: " + c.getGoal());
                 receivedChallenge.add(goal, 0, pos);
@@ -1572,6 +1496,7 @@ public class Application extends javafx.application.Application {
                     accept.setId("smallButton");
                     receivedChallenge.add(accept, 2, pos);
 
+                    // when you press the button you accept the challenge
                     accept.setOnAction(e -> {
                         if (ComCached.acceptChallenge(c)) {
                             refresh();
@@ -1583,7 +1508,6 @@ public class Application extends javafx.application.Application {
                     Label wait = new Label("Waiting for response");
                     receivedChallenge.add(wait, 2, pos);
                 }
-
                 pos++;
             }
         } catch (NullPointerException e) {
@@ -1631,6 +1555,11 @@ public class Application extends javafx.application.Application {
         mainScreen();
     }
 
+    /**
+     * checks if the description is not too long.
+     * @param description the description
+     * @throws DescriptionTooLong if the description is too long we throw an error
+     */
     private static void checkDescriptionLength(String description) throws DescriptionTooLong {
         if (description.length() > 150) {
             throw new DescriptionTooLong("The description needs to be less then 150 characters");
@@ -1663,4 +1592,57 @@ public class Application extends javafx.application.Application {
         }
     }
 
+    /**
+     * adds the transport action or displays an error.
+     * @param description the description
+     * @param distance the distance
+     * @param transportInfo the transport information label
+     */
+    private static void addTransportAction(String description,
+                                           String distance, Label transportInfo) {
+        try {
+            checkDescriptionLength(description);
+            int distanceInt = Integer.parseInt(distance);
+            transportInfo.setText("");
+            Transport.addPublicTransportAction(distanceInt, description);
+            refresh();
+        } catch (NumberFormatException exception) {
+            transportInfo.setText("Please only use numbers!");
+        } catch (ConnectIOException | IllegalArgumentException exception) {
+            exception.printStackTrace();
+            transportInfo.setText("Number is too high \n"
+                    + "Did you really used public transport that far?");
+        } catch (DescriptionTooLong exception) {
+            transportInfo.setText("You description is too long. \n"
+                    + "Chill down and please use less then 150 characters.");
+        }
+    }
+
+    /**
+     * checks if you won the challenge, or you lost, or it is still going on.
+     * @param challengeContainer the challenge container
+     * @param pos the position in the container
+     * @param challenge the challenge
+     * @param start the start amount of points
+     */
+    private static void checkIfWon(GridPane challengeContainer, int pos,
+                                   Challenge challenge, int start) {
+        if ((challenge.getState() == 10 && challenge.isOnA())
+                || (challenge.getState() == 11 && !challenge.isOnA())) {
+            // I won
+            challengeContainer.add(new Label("You won!"), 2, pos);
+        } else if ((challenge.getState() == 10 && !challenge.isOnA())
+                || (challenge.getState() == 11 && challenge.isOnA())) {
+            // opponent won
+            challengeContainer.add(new Label("You lost!"), 2, pos);
+        } else {
+            System.out.println("progress: " + ApplicationMethods.getChallengeProgress(start,
+                    challenge.getGoal()) + "\tstart: " + start + "\t goal: " + challenge.getGoal());
+            ProgressBar progress = new ProgressBar(
+                    ApplicationMethods.getChallengeProgress(start, challenge.getGoal()));
+            progress.setId("challengeProgress");
+            challengeContainer.add(new Label("Progress:"), 2, pos);
+            challengeContainer.add(progress, 3, pos);
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package gogreen;
 
 import com.google.common.hash.Hashing;
+
 import gogreen.actions.Energy;
 import gogreen.actions.Transport;
 import gogreen.server.ComCached;
@@ -26,33 +27,38 @@ class ApplicationMethods {
     private static boolean electricCar;
     private static boolean envGroup;
 
+    /**
+     * private empty constructor.
+     */
     private ApplicationMethods() {
     }
 
     /**
-     * To be implemented:
      * checks whether user has solar panels and or an electric car in the server.database.
      */
     public static void onLoad() {
         // to be implemented: fetch data from the server.database
         Transport.setHasElectricCar(false);
         Energy.setHasSolarPanels(false);
-//        ComCached.onLoad(); Returns an object of class onLoadValues but action ids aren't set properly on server
+        // Returns an object of class onLoadValues but action ids aren't set properly on server
+        // ComCached.onLoad();
+
     }
 
     /**
      * This methods logs in using the given username and password.
      * @param username the username
      * @param password the password
-     * @param remember whether to remember this user
+     * @param remember if the user should be remembered
+     * @throws IllegalAccessException if the combination is incorrect we throw an error
      */
     static void login(String username, String password, boolean remember)
             throws IllegalAccessException {
         String encodedUsername = encodeUsername(username);
         String hashedPassword  = hashPassword(password);
 
+        // tries to login
         if (gogreen.server.ComCached.login(encodedUsername, hashedPassword, remember)) {
-
             setPresets();
             Application.mainScreen();
         } else {
@@ -62,10 +68,15 @@ class ApplicationMethods {
 
     /**
      * This methods registers using the given username and password.
-     * @param username    the username
-     * @param password    the password
-     * @param passwordTwo the rewritten password
-     * @param remember    whether to remember this user
+     * @param username the username
+     * @param password the password
+     * @param passwordTwo the second password
+     * @param remember if we wanted to be remembered
+     * @throws NullPointerException when we get an null pointer we throw an error
+     * @throws IllegalArgumentException if one of the inputs is not correct we throw an error
+     * @throws IllegalAccessException if the username and password combination is incorrect
+     *                                we throw an error
+     * @throws FileNotFoundException if the token is not found we throw an error
      */
     static void register(String username, String password, String passwordTwo, boolean remember)
             throws NullPointerException, IllegalArgumentException,
@@ -122,8 +133,8 @@ class ApplicationMethods {
     /**
      * Checks whether a given name is according to the rules.
      * @param testName the name to test
-     * @throws NullPointerException     if null
-     * @throws IllegalArgumentException if invalid
+     * @throws NullPointerException if we get a null pointer we throw an error
+     * @throws IllegalArgumentException if we give an illegal input we throw an error
      */
     private static void checkName(String testName)
             throws NullPointerException, IllegalArgumentException, FileNotFoundException {
@@ -171,15 +182,30 @@ class ApplicationMethods {
         }
     }
 
+    /**
+     * we calculate the level out of the points.
+     * @param points the points
+     * @return the level
+     */
     static int getLevel(int points) {
         return (int) (Math.floor((-1 + Math.sqrt(1 + 8 * (points / 50 + 10))) / 2) - 3);
     }
 
+    /**
+     * we calculate the points out the level.
+     * @param lvl the level
+     * @return the points
+     */
     static int getLevelInv(int lvl) {
         lvl = (int) Math.floor(lvl) - 1;
         return 50 * lvl * (9 + lvl) / 2;
     }
 
+    /**
+     * we get the progress till the next level.
+     * @param points the points
+     * @return the progress till the next level
+     */
     static double getLevelProgress(int points) {
         int    lvl   = getLevel(points);
         double start = getLevelInv(lvl);
@@ -187,8 +213,11 @@ class ApplicationMethods {
         return (points - start) / (end - start);
     }
 
+    /**
+     * sets all the presets.
+     */
     static void setPresets() {
-        Application.loadingScreen();
+        System.out.println("Loading..");
         try {
             OnLoadValues onload = ComCached.onLoad();
             points = onload.getUser().getTotalScore();
@@ -198,7 +227,6 @@ class ApplicationMethods {
             solarPanel = onload.isSolarPanel();
             electricCar = onload.isElectricCar();
             envGroup = onload.isEnvGroup();
-            // search here shruti
             savedCarbon = onload.getCarbonReduce();
             savedCarbon = savedCarbon * 100;
             savedCarbon = (int) savedCarbon;
@@ -214,6 +242,12 @@ class ApplicationMethods {
         }
     }
 
+    /**
+     * get the progress of the challenge.
+     * @param start the points you start with
+     * @param goal the goal
+     * @return the progress of the challenge
+     */
     static double getChallengeProgress(int start, int goal) {
         if (goal == 0) {
             throw new ArithmeticException("cannot divide by 0");
@@ -226,35 +260,68 @@ class ApplicationMethods {
         return value;
     }
 
+    /**
+     * returns the points.
+     * @return the points
+     */
     static int getPoints() {
         return points;
     }
 
+    /**
+     * returns the amount of people you follow.
+     * @return the amount of people you follow
+     */
     static int getFollowingSize() {
         return followingSize;
     }
 
+    /**
+     * returns the amount of people who follow you.
+     * @return the amount of people who follow you
+     */
     static int getFollowersSize() {
         return followersSize;
     }
 
+    /**
+     * returns the username.
+     * @return the username
+     */
     static String getUsername() {
         return username;
     }
 
+    /**
+     * returns the amount of co2 saved.
+     * @return the amount of co2 saved
+     */
     static double getSavedCarbon() {
         return savedCarbon;
     }
 
+    /**
+     * returns if we have solar panels.
+     * @return is we have solar panels
+     */
     public static boolean isSolarPanel() {
         return solarPanel;
     }
 
+    /**
+     * returns if we have an electric car.
+     * @return if we have an electric car
+     */
     public static boolean isElectricCar() {
         return electricCar;
     }
 
+    /**
+     * returns if we joined an environment group.
+     * @return if we joined an environment group
+     */
     public static boolean isEnvGroup() {
         return envGroup;
     }
+
 }
