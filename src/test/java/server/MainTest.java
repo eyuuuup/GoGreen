@@ -1,6 +1,6 @@
 package server;
 
-import database.Database;
+import server.database.Database;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

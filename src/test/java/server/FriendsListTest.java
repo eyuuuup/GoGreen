@@ -1,6 +1,8 @@
 package server;
 
 import org.junit.Test;
+import server.holders.CompareFriends;
+import server.holders.FriendsList;
 
 import java.util.ArrayList;
 

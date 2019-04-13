@@ -11,7 +11,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.rmi.ConnectIOException;
 
-class Api {
+public class Api {
     private static String site = "http://impact.brighterplanet.com/";
     private static final String key = "&key=58e64232-2368-4379-a71c-56c00675b46c";
 
@@ -24,7 +24,7 @@ class Api {
      * @param parameters parameters
      * @return kg of CO2
      */
-    static double carbonAmount(String parameters) throws ConnectIOException {
+    public static double carbonAmount(String parameters) throws ConnectIOException {
         HttpClient client = HttpClientBuilder.create().build();
         HttpGet request = new HttpGet(
                 site + "" + parameters + "" + key);
