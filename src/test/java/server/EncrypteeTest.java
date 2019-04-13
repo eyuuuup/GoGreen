@@ -2,6 +2,7 @@ package server;
 
 import org.junit.Before;
 import org.junit.Test;
+import server.holders.Encryptee;
 
 import static org.junit.Assert.assertEquals;
 

@@ -1,12 +1,13 @@
 package server;
 
 import org.junit.Test;
+import server.holders.Challenge;
 
 import static org.junit.Assert.assertEquals;
 
 public class ChallengeTest {
 
-    private Challenge test= new Challenge("a", "b", 10, 20,30);
+    private Challenge test = new Challenge("a", "b", 10, 20,30);
 
 
     @Test

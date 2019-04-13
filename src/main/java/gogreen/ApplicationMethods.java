@@ -1,14 +1,14 @@
 package gogreen;
 
-import client.Challenge;
-import client.ComCached;
-import client.OnLoadValues;
 import com.google.common.hash.Hashing;
+import gogreen.actions.Energy;
+import gogreen.actions.Transport;
+import gogreen.server.ComCached;
+import gogreen.server.holders.OnLoadValues;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Scanner;
 
@@ -17,11 +17,11 @@ import java.util.Scanner;
  */
 class ApplicationMethods {
 
-    private static int points;
-    private static int followingSize;
-    private static int followersSize;
-    private static double savedCarbon;
-    private static String username;
+    private static int     points;
+    private static int     followingSize;
+    private static int     followersSize;
+    private static double  savedCarbon;
+    private static String  username;
     private static boolean solarPanel;
     private static boolean electricCar;
     private static boolean envGroup;
@@ -31,10 +31,10 @@ class ApplicationMethods {
 
     /**
      * To be implemented:
-     * checks whether user has solar panels and or an electric car in the database.
+     * checks whether user has solar panels and or an electric car in the server.database.
      */
     public static void onLoad() {
-        // to be implemented: fetch data from the database
+        // to be implemented: fetch data from the server.database
         Transport.setHasElectricCar(false);
         Energy.setHasSolarPanels(false);
 //        ComCached.onLoad(); Returns an object of class onLoadValues but action ids aren't set properly on server
@@ -42,7 +42,6 @@ class ApplicationMethods {
 
     /**
      * This methods logs in using the given username and password.
-     *
      * @param username the username
      * @param password the password
      * @param remember whether to remember this user
@@ -50,9 +49,9 @@ class ApplicationMethods {
     static void login(String username, String password, boolean remember)
             throws IllegalAccessException {
         String encodedUsername = encodeUsername(username);
-        String hashedPassword = hashPassword(password);
+        String hashedPassword  = hashPassword(password);
 
-        if (client.ComCached.login(encodedUsername, hashedPassword, remember)) {
+        if (gogreen.server.ComCached.login(encodedUsername, hashedPassword, remember)) {
 
             setPresets();
             Application.mainScreen();
@@ -63,7 +62,6 @@ class ApplicationMethods {
 
     /**
      * This methods registers using the given username and password.
-     *
      * @param username    the username
      * @param password    the password
      * @param passwordTwo the rewritten password
@@ -83,9 +81,9 @@ class ApplicationMethods {
         }
 
         String encodedUsername = encodeUsername(username);
-        String hashedPassword = hashPassword(password);
+        String hashedPassword  = hashPassword(password);
 
-        if (client.ComCached.register(encodedUsername, hashedPassword, remember)) {
+        if (gogreen.server.ComCached.register(encodedUsername, hashedPassword, remember)) {
             setPresets();
             Application.mainScreen();
         } else {
@@ -95,7 +93,6 @@ class ApplicationMethods {
 
     /**
      * This method hashes the given password, using SHA256.
-     *
      * @param password the password
      * @return the hashed password
      */
@@ -105,7 +102,6 @@ class ApplicationMethods {
 
     /**
      * This method encodes the username.
-     *
      * @param username the username
      * @return the encoded username
      */
@@ -115,7 +111,6 @@ class ApplicationMethods {
 
     /**
      * This method decodes the username.
-     *
      * @param username the username
      * @return the decoded username
      */
@@ -126,7 +121,6 @@ class ApplicationMethods {
 
     /**
      * Checks whether a given name is according to the rules.
-     *
      * @param testName the name to test
      * @throws NullPointerException     if null
      * @throws IllegalArgumentException if invalid
@@ -155,8 +149,8 @@ class ApplicationMethods {
         testName = testName.toLowerCase();
 
         //check whether the name is not offensive
-        File file = new File("src/extraFiles/InvalidNamesComma.txt");
-        Scanner sc = new Scanner(file).useDelimiter(", ");
+        File    file = new File("src/main/resources/extraFiles/InvalidNamesComma.txt");
+        Scanner sc   = new Scanner(file).useDelimiter(", ");
         while (sc.hasNext()) {
             if (testName.contains(sc.next())) {
                 throw new IllegalArgumentException("Offensive name!");
@@ -167,7 +161,6 @@ class ApplicationMethods {
 
     /**
      * checks the characters in the new name.
-     *
      * @param testName the new name
      */
     private static void checkCharacters(String testName) {
@@ -188,9 +181,9 @@ class ApplicationMethods {
     }
 
     static double getLevelProgress(int points) {
-        int lvl = getLevel(points);
+        int    lvl   = getLevel(points);
         double start = getLevelInv(lvl);
-        double end = getLevelInv(lvl + 1);
+        double end   = getLevelInv(lvl + 1);
         return (points - start) / (end - start);
     }
 
@@ -222,10 +215,15 @@ class ApplicationMethods {
     }
 
     static double getChallengeProgress(int start, int goal) {
-        if ((ApplicationMethods.getPoints() - start) / goal < 0) {
+        if (goal == 0) {
+            throw new ArithmeticException("cannot divide by 0");
+        }
+        Double value = ((double) (ApplicationMethods.getPoints() - start)) / (double) goal;
+        System.out.println(value);
+        if (value < 0) {
             return 0;
         }
-        return (ApplicationMethods.getPoints() - start) / goal;
+        return value;
     }
 
     static int getPoints() {

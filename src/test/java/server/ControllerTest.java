@@ -1,12 +1,21 @@
 package server;
 
-import database.Database;
+import server.database.Database;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import server.holders.Action;
+import server.holders.ActionList;
+import server.holders.Challenge;
+import server.holders.ChallengesList;
+import server.holders.CompareFriends;
+import server.holders.FriendsList;
+import server.holders.OnLoadValues;
+import server.holders.TokenResponse;
+import server.holders.User;
 
 import java.util.ArrayList;
 
@@ -197,13 +206,13 @@ public class ControllerTest {
     public void OnLoadValues(){
         User user= new User();
         PowerMockito.when(Database.getUser(anyString())).thenReturn(user);
-        ArrayList<Challenge> list=new ArrayList<>();
+        ArrayList<Challenge> list =new ArrayList<>();
         PowerMockito.when(Database.retrieveChallenges(anyString())).thenReturn(list);
         FriendsList fl = new FriendsList();
         PowerMockito.when(Database.showFollowers(anyString())).thenReturn(fl);
         PowerMockito.when(Database.showFriends(anyString())).thenReturn(fl);
         PowerMockito.when(Database.getCarbonReduced(anyString())).thenReturn(50.0);
-        OnLoadValues test=new OnLoadValues();
+        OnLoadValues test =new OnLoadValues();
         test.setEnvGroup(false);
         test.setElectricCar(false);
         test.setSolarPanel(false);

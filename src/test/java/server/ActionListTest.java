@@ -1,6 +1,8 @@
 package server;
 
 import org.junit.Test;
+import server.holders.Action;
+import server.holders.ActionList;
 
 import java.util.ArrayList;
 
@@ -10,8 +12,8 @@ public class ActionListTest {
     
     @Test
     public void constructor() {
-        ArrayList<Action> l = new ArrayList<>();
-        ActionList al = new ActionList(l);
+        ArrayList<Action> l  = new ArrayList<>();
+        ActionList        al = new ActionList(l);
         assertNotNull(al);
         assertEquals(al.getList(), l);
     }
