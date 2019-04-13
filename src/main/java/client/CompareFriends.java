@@ -1,20 +1,18 @@
 package client;
 
 /**
- * This class is for getting username and score of a user's friend.
+ * This class represents a friend of the user.
  */
 public class CompareFriends {
-
 
     private String token;
     private String username;
     private int score;
 
     /**
-     * Create a new friend object.
-     *
-     * @param username username
-     * @param score    score
+     * Constructor for a new friend with the friend's username and the friend's score.
+     * @param username username of the friend
+     * @param score    score of the friend
      */
     public CompareFriends(String username, int score) {
         this.username = username;
@@ -23,10 +21,9 @@ public class CompareFriends {
     }
 
     /**
-     * creates a new friend object.
-     *
-     * @param token    token
-     * @param username username
+     * Constructor for a new friend with the user's token and the friend's username.
+     * @param token    token of the user
+     * @param username username of the friend
      */
     public CompareFriends(String token, String username) {
         this.token = token;
@@ -42,9 +39,8 @@ public class CompareFriends {
 
 
     /**
-     * getter for token of the user.
-     *
-     * @return token
+     * Getter for the user's token.
+     * @return token of the user
      */
     public String getToken() {
         return token;
@@ -52,45 +48,40 @@ public class CompareFriends {
 
 
     /**
-     * setter for the user's token.
-     *
-     * @param token token
+     * Setter for the user's token.
+     * @param token token of the user
      */
     public void setToken(String token) {
         this.token = token;
     }
 
     /**
-     * getter for the username of a friend.
-     *
-     * @return friend
+     * Getter for the friend's username.
+     * @return the friend's username
      */
     public String getUsername() {
         return username;
     }
 
     /**
-     * setter for the username of a friend.
-     *
-     * @param username username
+     * Setter for the friend's username.
+     * @param username the friend's username
      */
     public void setUsername(String username) {
         this.username = username;
     }
 
     /**
-     * getter for the total score of a friend.
-     *
-     * @return score
+     * Getter for the friend's score.
+     * @return the friend's score
      */
     public int getScore() {
         return score;
     }
 
     /**
-     * setter for the total score of friend.
-     *
-     * @param score score
+     * Setter for the friend's score.
+     * @param score the friend's score
      */
     public void setScore(int score) {
         this.score = score;

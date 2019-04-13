@@ -44,7 +44,7 @@ public class CommunicationTest {
     public void init() {
         baseUrl = "http://localhost:" + port;
 
-        Communication.setHostURL(baseUrl);
+        Communication.setHostUrl(baseUrl);
     }
 
     @BeforeEach
@@ -373,14 +373,14 @@ public class CommunicationTest {
         alist.add(new Action("auto", "abc", 10));
         ActionList list = new ActionList(alist);
 
-        wireMockRule.stubFor(post(urlEqualTo("/getRecentCOSavings"))
+        wireMockRule.stubFor(post(urlEqualTo("/getRecentCoSavings"))
                 .willReturn(aResponse()
                         .withHeader("Content-type", "application/json")
                         .withBody(mapper.writeValueAsString(list))
                 )
         );
 
-        double[] res = Communication.getRecentCOSavings();
+        double[] res = Communication.getRecentCoSavings();
 
         assertEquals(alist.get(0).getCarbonReduced(), res[0], 0.1);
     }

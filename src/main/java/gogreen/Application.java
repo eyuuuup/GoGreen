@@ -1,6 +1,5 @@
 package gogreen;
 
-import client.Action;
 import client.Challenge;
 import client.ComCached;
 import client.CompareFriends;
@@ -41,7 +40,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.IllegalFormatException;
 import java.util.TimeZone;
 
 public class Application extends javafx.application.Application {
@@ -1098,7 +1096,7 @@ public class Application extends javafx.application.Application {
         amountSavedLabel.setId("title");
 
         // makes the xAxis and yAxis
-        double[]         data  = ComCached.getRecentCOSavings();
+        double[]         data  = ComCached.getRecentCoSavings();
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
 

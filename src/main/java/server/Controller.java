@@ -7,8 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.UUID;
+import javax.validation.Valid;
+
+/**
+ * This class represents the communication with the client.
+ */
 
 @RestController
 @RequestMapping("/")
@@ -17,10 +21,10 @@ public class Controller {
     // ========== USER AUTHENTICATION ==========================================
 
     /**
-     * This is the login method which connects the server and client.
-     *
-     * @param user username, password
-     * @return TokenResponse token, bool
+     * This method checks whether the given user is in the database, to log in.
+     * This is also the start of the client server connection.
+     * @param user the user with the user's username and password
+     * @return TokenResponse with the token for the connection, and whether the token is legit
      */
     @RequestMapping(value = {"/login"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -30,12 +34,10 @@ public class Controller {
     }
 
     /**
-     * Register as new user.
-     * checks if username already taken or not and generates new token.
-     * if true user is added else false username already exists.
-     *
-     * @param user username, password
-     * @return TokenResponse token,
+     * Register a new user, checks if the username is already taken or not
+     * and generates a new token.
+     * @param user the user with the user's username and password
+     * @return TokenResponse with the token and whether the token is legit
      */
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -53,10 +55,9 @@ public class Controller {
     }
 
     /**
-     * This is the method for silentLogin.
-     *
-     * @param token string
-     * @return whether token exists
+     * This method is used when the client wants to silent login using a stored token.
+     * @param token the client's token
+     * @return whether the client's token is legit
      */
     @RequestMapping(value = {"/silentLogin"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -67,10 +68,9 @@ public class Controller {
     // ========== ACTION HANDLERS ==============================================
 
     /**
-     * add action to the database.
-     *
-     * @param action action
-     * @return boolean if action added or not
+     * Adds the user's action to the database.
+     * @param action the user's action
+     * @return whether the action is added successfully
      */
     @RequestMapping(value = {"/addAction"}, method = RequestMethod.POST)
     public static boolean addAction(@Valid @RequestBody Action action) {
@@ -78,10 +78,9 @@ public class Controller {
     }
 
     /**
-     * For the history.
-     *
-     * @param token token
-     * @return String last three actions
+     * Getter for the user's last three actions from the database.
+     * @param token the user's token
+     * @return the user's last three actions
      */
     @RequestMapping(value = {"/retract"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -90,10 +89,9 @@ public class Controller {
     }
 
     /**
-     * returns the total score.
-     *
-     * @param token token
-     * @return int returns the total score
+     * Getter for the user's total score from the database.
+     * @param token the user's token
+     * @return the user's total score
      */
     @RequestMapping(value = {"/getTotalScore"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -104,10 +102,9 @@ public class Controller {
     // ========== SOCIAL HANDLERS ==============================================
 
     /**
-     * check if username searched for following exists or not.
-     *
-     * @param username username
-     * @return boolean is username exists or not
+     * Checks if the given username is in the database.
+     * @param username the username
+     * @return whether the username is in the database
      */
     @RequestMapping(value = {"/searchUser"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -116,10 +113,9 @@ public class Controller {
     }
 
     /**
-     * username of the present user.
-     *
-     * @param token token of the user
-     * @return username String
+     * Getter for a User object from the database.
+     * @param token the user's token
+     * @return the user
      */
     @RequestMapping(value = {"/getUser"}, method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -128,10 +124,9 @@ public class Controller {
     }
 
     /**
-     * adds a friend.
-     *
-     * @param friend the friend
-     * @return boolean
+     * Adds a friend to the user's friends in the Database.
+     * @param friend the friend to add
+     * @return whether the friend is added successfully
      */
     @RequestMapping(value = {"/addFriend"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -140,11 +135,9 @@ public class Controller {
     }
 
     /**
-     * shows the friends.
-     *
-     * @param token token
-     * @return ArrayList of CompareFriends
-     * //
+     * Getter for the user's list of friends from the database.
+     * @param token the user's token
+     * @return the user's list of friends
      */
     @RequestMapping(value = {"/showFriends"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -152,6 +145,11 @@ public class Controller {
         return Database.showFriends(token);
     }
 
+    /**
+     * Getter for the user's followers from the database.
+     * @param token the user's token
+     * @return the user's followers
+     */
     @RequestMapping (value = {"/showFollowers"}, method = RequestMethod.POST,
                      produces = MediaType.APPLICATION_JSON_VALUE)
     public static FriendsList showFollowers(@Valid @RequestBody String token) {
@@ -159,9 +157,8 @@ public class Controller {
     }
 
     /**
-     * for implementing the leaderboard and getting top ten users.
-     *
-     * @return returns a list of top ten users
+     * Getter for the leaderboard from the database.
+     * @return the leaderboard
      */
     @RequestMapping(value = {"/getLeaderboard"}, method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -169,23 +166,27 @@ public class Controller {
         return Database.getLeaderboard();
     }
 
+    /**
+     * Getter for the user's OnLoadValues from the database.
+     * @param token the user's token.
+     * @return the user's OnLoadValues
+     */
     @RequestMapping(value = {"/onLoad"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public static OnLoadValues onLoad(@Valid @RequestBody String token) {
-        OnLoadValues o = Database.getOTE(token);
-        o.setUser(Database.getUser(token));
-        o.setChallenges(new ChallengesList(Database.retrieveChallenges(token)));
-        o.setFollowers(Database.showFollowers(token).getList().size());
-        o.setFollowing(Database.showFriends(token).getList().size());
-        o.setCarbonReduce(Database.getCarbonReduced(token));
-        return o;
+        OnLoadValues onLoadValues = Database.getOTE(token);
+        onLoadValues.setUser(Database.getUser(token));
+        onLoadValues.setChallenges(new ChallengesList(Database.retrieveChallenges(token)));
+        onLoadValues.setFollowers(Database.showFollowers(token).getList().size());
+        onLoadValues.setFollowing(Database.showFriends(token).getList().size());
+        onLoadValues.setCarbonReduce(Database.getCarbonReduced(token));
+        return onLoadValues;
     }
 
     /**
-     * This method is for getting the total amount of carbon produced and reduced.
-     *
-     * @param token the token of the user requesting the data
-     * @return token
+     * Getter for the user's total CO2 reduction from the database.
+     * @param token the user's token.
+     * @return the user's total CO2 reduction
      */
     @RequestMapping(value = {"/carbon"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -193,34 +194,50 @@ public class Controller {
         return Database.getCarbonValues(token);
     }
 
+    /**
+     * Adds a challenge to the user's challenges in the database.
+     * @param friend the friend the user challenges
+     * @return whether the challenge is successfully added to the database
+     */
     @RequestMapping (value = {"/addChallenge"}, method = RequestMethod.POST,
                      produces = MediaType.APPLICATION_JSON_VALUE)
     public static boolean addChallenge(@Valid @RequestBody CompareFriends friend) {
         return Database.addChallenge(friend.getToken(), friend.getUsername(), friend.getScore());
     }
 
+    /**
+     * Getter for the user's list of challenges from the database.
+     * @param token the user's token
+     * @return the user's list of challenges
+     */
     @RequestMapping (value = {"/getChallenges"}, method = RequestMethod.POST,
                      produces = MediaType.APPLICATION_JSON_VALUE)
     public static ChallengesList showChallenges(@Valid @RequestBody String token) {
         return new ChallengesList(Database.retrieveChallenges(token));
     }
 
+    /**
+     * Method to accept and initialize a challenge.
+     * @param accept the challenge to accept
+     * @return the initialized challenge.
+     */
     @RequestMapping (value = {"/acceptChallenge"}, method = RequestMethod.POST,
                      produces = MediaType.APPLICATION_JSON_VALUE)
     public static boolean acceptChallenge(@Valid @RequestBody Challenge accept) {
-        if(accept.isOnA()) return false;
+        if (accept.isOnA()) {
+            return false;
+        }
         return Database.initializeChallenge(accept.getUserB(), accept.getUserA());
     }
 
     /**
-     * This method returns the CO2 reduced of current user of last (cap 30) actions
-     * ordered from the most recent (at 0) to last (last)
-     *
-     * @return the ActionList containing Action objects of CO2 saved
+     * Getter for the user's recent CO2 reductions from the database.
+     * @param token the user's token
+     * @return the user's recent CO2 reductions
      */
     @RequestMapping(value = {"/getRecentCOSavings"}, method = RequestMethod.POST,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public static ActionList getRecentCOSavings(@Valid @RequestBody String token) {
+    public static ActionList getRecentCoSavings(@Valid @RequestBody String token) {
         return new ActionList(Database.getRecentCOSavings(token));
     }
 }

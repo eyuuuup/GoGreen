@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * This class is for the list of actions.
+ * This class represents a list of actions.
  */
 public class ActionList {
 
     ArrayList<Action> list;
 
     /**
-     * Constructs and initializes new instance of the class.
-     *
-     * @param list list
+     * Constructor for ActionList.
+     * @param list list of actions
      */
     public ActionList(ArrayList<Action> list) {
         this.list = list;
@@ -28,8 +27,7 @@ public class ActionList {
 
     /**
      * Getter for the list.
-     *
-     * @return
+     * @return action list
      */
     public ArrayList<Action> getList() {
         return list;
@@ -37,18 +35,26 @@ public class ActionList {
 
     /**
      * Setter for the list.
-     *
-     * @param list list
+     * @param list action list
      */
     public void setList(ArrayList<Action> list) {
         this.list = list;
     }
 
+    /**
+     * Equals method for ActionList.
+     * @param other other object
+     * @return whether this equals the other object
+     */
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ActionList)) return false;
-        ActionList that = (ActionList) o;
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof ActionList)) {
+            return false;
+        }
+        ActionList that = (ActionList) other;
         return Objects.equals(list, that.list);
     }
 

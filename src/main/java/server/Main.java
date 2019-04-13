@@ -4,9 +4,16 @@ import database.Database;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * This class represents the spring application on which our server runs.
+ */
+
 @SpringBootApplication
 public class Main {
-
+    /**
+     * Starts the Server and connects to the Database.
+     * @param args arguments
+     */
     public static void main(String[] args) {
 
         SpringApplication.run(Main.class, args);

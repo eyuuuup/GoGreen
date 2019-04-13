@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.springframework.test.context.TestExecutionListeners;
 
 import java.util.ArrayList;
 
@@ -249,6 +248,6 @@ public class ControllerTest {
         ArrayList<Action> a= new ArrayList<>();
         PowerMockito.when(Database.getRecentCOSavings(anyString())).thenReturn(a);
         ActionList list= new ActionList(a);
-        assertEquals(list,Controller.getRecentCOSavings("token"));
+        assertEquals(list,Controller.getRecentCoSavings("token"));
     }
 }

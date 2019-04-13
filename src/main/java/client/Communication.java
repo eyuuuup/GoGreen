@@ -10,6 +10,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * This class represents the communication with the server.
+ */
 public class Communication {
 
     private static String hostURL = "http://localhost:8080";
@@ -17,23 +20,23 @@ public class Communication {
     private static String token   = null;
 
     /**
-     * Setter for hostURL
-     * @param url of the new path
+     * Setter for the hostURL.
+     * @param url the hostURL
      */
-    public static void setHostURL(String url) {
+    public static void setHostUrl(String url) {
         hostURL = url;
     }
 
     // ========== PART METHODS =================================================
 
     /**
-     * Handles login and register.
-     * avoid duplicate code.
+     * Handles login and register with the server.
+     * avoids duplicate code.
      * @param username the username
      * @param password the password
-     * @param remember wether to store token in a file
-     * @param postUrl  determine between login and register
-     * @return boolean wether the submit/fetch was sucessful
+     * @param remember whether to store token in a file
+     * @param postUrl  the postURL, determine between login and register
+     * @return boolean whether the submit/fetch was successful
      */
     private static boolean submit(
             String username, String password, boolean remember, String postUrl) {
@@ -68,10 +71,10 @@ public class Communication {
     }
 
     /**
-     * sends the user's token to the server and retrieves whatever from it, then returns it.
-     * @param url    url at which to querry  the server
-     * @param expect what class to return and expect from server
-     * @return the answer from the server of the class "expect"
+     * sends the user's token to the server and retrieves a given request from it, then returns it.
+     * @param url    url to query to in the server
+     * @param expect what class to expect the server to return
+     * @return the answer from the server of type "expect"
      */
     private static Object postToken(String url, Class expect) {
         HttpEntity<String> message = new HttpEntity<>(token);
@@ -83,12 +86,12 @@ public class Communication {
     // ========== USER AUTHENTICATION ==========================================
 
     /**
-     * Checks whether a given username is not taken on the server.
+     * Checks whether a given username is not already taken on the server.
      * Stores the username and password, retrieves assigned token.
      * @param username the username
      * @param password the password
-     * @param remember whether to store token in a file
-     * @return boolean correctly logged in and token recieved
+     * @param remember whether to store the token in a file
+     * @return boolean correctly logged in and if the token was received
      */
     public static boolean register(String username, String password, boolean remember) {
         //send username and password to the server, validate if it is not taken
@@ -99,11 +102,11 @@ public class Communication {
 
     /**
      * Checks whether a given username and password matches on the server.
-     * If yes, retrieves token for such combination for further authentication
+     * If yes, retrieves token for such combination for further communication
      * @param username the username
      * @param password the password
-     * @param remember wether to store token in a file
-     * @return boolean correctly logged in and token recieved
+     * @param remember whether to store the token in a file
+     * @return boolean correctly logged in and token received
      */
     public static boolean login(String username, String password, boolean remember) {
         //validate if username and password matched those on server
@@ -113,7 +116,7 @@ public class Communication {
     }
 
     /**
-     * Tries to log in with the stored username and password.
+     * Tries to log in with the eventually stored username and password.
      * @return boolean correctly logged in and token received
      */
     public static boolean silentLogin() {
@@ -135,7 +138,7 @@ public class Communication {
     }
 
     /**
-     * Removes traces of previous user.
+     * Removes cached information about the user and logs out.
      */
     public static void logout() {
         ComCached.setUserChanged(null);
@@ -168,15 +171,15 @@ public class Communication {
     }
 
     /**
-     * to be implemented:
-     * adding an action to the database.
+     * adding an action to the database, removes all the cached information
+     * about CO2 reductions and the user's score.
      * @param actionName     the name of the action
      * @param points         the points for the action
      * @param carbonReduced  the carbon reduced in the action
      * @param carbonProduced the carbon produced in the action
      */
-    public static boolean addAction(String actionName, int points,
-                                    double carbonReduced, double carbonProduced, String description) {
+    public static boolean addAction(String actionName, int points, double carbonReduced,
+                                    double carbonProduced, String description) {
         ComCached.setTotalChanged(null);
         ComCached.setLastChanged(null);
         ComCached.setCoChanged(null);
@@ -191,8 +194,8 @@ public class Communication {
     }
 
     /**
-     * Sends request to the server to retrieve last three actions for current user.
-     * @return string containing last three actions
+     * Sends a request to the server to retrieve the user's last three actions.
+     * @return string containing the user's last three actions
      */
     public static ArrayList<Action> getLastThreeActions() {
         return ((ActionList) postToken("/retract", ActionList.class)).getList();
@@ -200,8 +203,8 @@ public class Communication {
 
 
     /**
-     * Sends request to the server to retrieve this user's total score.
-     * @return integer containing total score
+     * Sends a request to the server to retrieve the user's total score.
+     * @return the user's total score
      */
     public static int getMyTotalScore() {
         return (int) postToken("/getTotalScore", Integer.class);
@@ -210,9 +213,9 @@ public class Communication {
     // ========== SOCIAL HANDLERS ==============================================
 
     /**
-     * This method checks if the searched username exists or not.
+     * This method checks if the searched username exists in the database or not.
      * @param username username
-     * @return if username exists
+     * @return whether the username exists
      */
     public static boolean checkUsername(String username) {
         HttpEntity<String> message = new HttpEntity<>(username);
@@ -221,18 +224,18 @@ public class Communication {
     }
 
     /**
-     * This method is to get the information of user for the user.
-     * @return username object containg all information about the user
+     * This method is to get the general information about the user.
+     * @return the user's general information (User.class)
      */
     public static User getUser() {
         return (User) postToken("/getUser", User.class);
     }
 
     /**
-     * This method adds a friend by it's username.
-     * Friend is someone who you follow.
+     * This method adds a friend by the friend's username.
+     * a Friend is someone the user follows.
      * @param friendUsername username of the friend
-     * @return whether the friend is added
+     * @return whether the user's friend is added successfully
      */
     public static boolean addFriend(String friendUsername) {
         ComCached.setFriendsChanged(null);
@@ -246,8 +249,8 @@ public class Communication {
 
     /**
      * This method retrieves the user's list of friends from the server.
-     * Friend is someone who you follow.
-     * @return an arraylist ofCompareFriends
+     * A friend is someone the user follows.
+     * @return the user's list of friends
      */
     public static ArrayList<CompareFriends> getFriends() {
         return ((FriendsList) postToken("/showFriends", FriendsList.class)).getList();
@@ -255,16 +258,16 @@ public class Communication {
 
     /**
      * This method retrieves the user's list of followers from the server.
-     * Follower is someone who follows you.
-     * @return an arraylist of "CompareFriends"
+     * A follower is someone who follows the user.
+     * @return the user's followers"
      */
     public static ArrayList<CompareFriends> getFollowers() {
         return ((FriendsList) postToken("/showFollowers", FriendsList.class)).getList();
     }
 
     /**
-     * This method is to get the list of top ten users for the leaderboard.
-     * @return an object containing a list of users
+     * Getter for the leaderboard from the Server.
+     * @return the leaderboard
      */
     public static ArrayList<CompareFriends> getLeaderboard() {
         RestTemplate request = new RestTemplate();
@@ -272,21 +275,27 @@ public class Communication {
     }
 
     /**
-     * This method is to get get carbon produced and reduced by the user.
-     * @return carbon Action object with carbonReduced and carbonProduced values
+     * Getter for the user's total CO2 reduction.
+     * @return the user's total CO2 reduction
      */
     public static Action carbon() {
         return (Action) postToken("/carbon", Action.class);
     }
 
     /**
-     * This method is to get the values needed on the loading of the application.
-     * @return an instance of onLoadValue class
+     * Getter for the user's OnLoadValues.
+     * @return the user's OnLoadValues
      */
     public static OnLoadValues onLoad() {
         return (OnLoadValues) postToken("/onLoad", OnLoadValues.class);
     }
 
+    /**
+     * Adds a challenge.
+     * @param username the user's username
+     * @param goal     the goal of the challenge
+     * @return whether the challenge was added successfully
+     */
     public static boolean addChallenge(String username, int goal) {
         CompareFriends challenge = new CompareFriends();
         challenge.setToken(token);
@@ -297,10 +306,19 @@ public class Communication {
         return request.postForObject(hostURL + "/addChallenge", message, boolean.class);
     }
 
+    /**
+     * Getter for the user's list of challenges from the server.
+     * @return the user's list of challenges
+     */
     public static ArrayList<Challenge> getChallenges() {
         return ((ChallengesList) postToken("/getChallenges", ChallengesList.class)).getList();
     }
 
+    /**
+     * This method is to accept a challenge.
+     * @param challenge the challenge to accept
+     * @return whether the challenge was successfully accepted
+     */
     public static boolean acceptChallenge(Challenge challenge) {
         challenge.setUserB(token);
         HttpEntity<Challenge> message = new HttpEntity<>(challenge);
@@ -309,12 +327,13 @@ public class Communication {
     }
 
     /**
-     * This method returns the CO2 reduced of current user of last (cap 30) actions
+     * Getter for the user's recent CO2 reductions (cap 30 actions).
      * ordered from last (at 0) to the most recent (last)
-     * @return the filtered list containing only CO2 saved
+     * @return the user's recent CO2 reductions
      */
-    public static double[] getRecentCOSavings() {
-        ArrayList<Action> actions = ((ActionList) postToken("/getRecentCOSavings", ActionList.class)).getList();
+    public static double[] getRecentCoSavings() {
+        ArrayList<Action> actions = ((ActionList) postToken("/getRecentCoSavings",
+                ActionList.class)).getList();
 
         double[] arr = new double[actions.size()];
         for (int i = 0; i < arr.length; i++) {

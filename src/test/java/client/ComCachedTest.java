@@ -113,8 +113,8 @@ public class ComCachedTest {
     public void getRecentCOSavings() {
         ComCached.setCoChanged(null);
         double[] coChanged = new double[]{1, 2, 3};
-        when(Communication.getRecentCOSavings()).thenReturn(coChanged);
-        assertEquals(coChanged, ComCached.getRecentCOSavings());
+        when(Communication.getRecentCoSavings()).thenReturn(coChanged);
+        assertEquals(coChanged, ComCached.getRecentCoSavings());
     }
 
     @Test
@@ -144,7 +144,7 @@ public class ComCachedTest {
     public void setCoChanged() {
         double[] coChanged = new double[]{1, 2, 3};
         ComCached.setCoChanged(coChanged);
-        assertEquals(coChanged, ComCached.getRecentCOSavings());
+        assertEquals(coChanged, ComCached.getRecentCoSavings());
     }
 
     @Test
