@@ -78,13 +78,13 @@ public class ComCachedTest {
         assertEquals(total, ComCached.getMyTotalScore());
     }
 
-    @Test
-    public void getUser() throws Exception {
-        ComCached.setFriendsChanged(null);
-        User user = new User("abc", "cba");
-        when(Communication.class, "getUser").thenReturn(user);
-        assertEquals(user, ComCached.getUser());
-    }
+//    @Test
+//    public void getUser() throws Exception {
+//        ComCached.setFriendsChanged(null);
+//        User user = new User("abc", "cba");
+//        when(Communication.class, "getUser").thenReturn(user);
+//        assertEquals(user, ComCached.getUser());
+//    }
 
     @Test
     public void addFriend() {
