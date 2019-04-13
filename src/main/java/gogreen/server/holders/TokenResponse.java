@@ -1,21 +1,21 @@
 package gogreen.server.holders;
 
 /**
- * This class is for sending user's token.
+ * This class represents the user's token for transactions.
  */
 public class TokenResponse {
+
     private String token;
     private boolean legit;
 
     /**
-     * Empty constructor.
+     * Empty constructor for TokenResponse.
      */
     public TokenResponse() {
     }
 
     /**
-     * Constructor.
-     *
+     * Constructor for TokenResponse with a token and whether the token is legit.
      * @param token String token of user
      * @param legit if token is correct or not
      */
@@ -25,39 +25,34 @@ public class TokenResponse {
     }
 
     /**
-     * Getter for token.
-     *
-     * @return
+     * Getter for the user's token.
+     * @return the user's token
      */
     public String getToken() {
         return token;
     }
 
     /**
-     * Setter for token.
-     *
-     * @param token String token of the user
+     * Setter for the user's token.
+     * @param token the user's token
      */
     public void setToken(String token) {
         this.token = token;
     }
 
     /**
-     * Getter for legit.
-     *
-     * @return if the token passd is correct or not
+     * Getter whether the token is legit.
+     * @return whether the token is legit
      */
     public boolean isLegit() {
         return legit;
     }
 
     /**
-     * Setter for legit.
-     *
-     * @param legit set the legit correct or not
+     * Setter whether the token is legit.
+     * @param legit whether the token is legit
      */
     public void setLegit(boolean legit) {
         this.legit = legit;
     }
-
 }

@@ -1,7 +1,7 @@
 package gogreen.server.holders;
 
 /**
- * This class is for getting encrypted token.
+ * This class represents the encrypted token.
  */
 public class Encryptee {
 
@@ -9,10 +9,9 @@ public class Encryptee {
     private String token;
 
     /**
-     * Constructs a new Encyptee.
-     *
-     * @param message message
-     * @param token   token
+     * Constructs a new Encyptee with a message and the user's token.
+     * @param message the message
+     * @param token   the user's token
      */
     public Encryptee(byte[] message, String token) {
         this.message = message;
@@ -20,36 +19,32 @@ public class Encryptee {
     }
 
     /**
-     * getter for th message.
-     *
-     * @return message
+     * Getter for the message.
+     * @return the message
      */
     public byte[] getMessage() {
         return message;
     }
 
     /**
-     * setter for the message.
-     *
-     * @param message message
+     * Setter for the message.
+     * @param message the message
      */
     public void setMessage(byte[] message) {
         this.message = message;
     }
 
     /**
-     * getter for the token.
-     *
-     * @return message
+     * Getter for the user's token.
+     * @return the token of the user
      */
     public String getToken() {
         return token;
     }
 
     /**
-     * setter for the token.
-     *
-     * @param token token
+     * Setter for the user's token.
+     * @param token the user's token
      */
     public void setToken(String token) {
         this.token = token;

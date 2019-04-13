@@ -1,16 +1,15 @@
 package server.holders;
 
-
 /**
- * This class is for sending user's token.
+ * This class represents the user's token for transactions.
  */
 public class TokenResponse {
+
     private String token;
     private boolean legit;
 
     /**
-     * Constructor.
-     *
+     * Constructor for TokenResponse with a token and whether the token is legit.
      * @param token String token of user
      * @param legit if token is correct or not
      */
@@ -21,9 +20,8 @@ public class TokenResponse {
 
 
     /**
-     * Getter for token.
-     *
-     * @return String token of user
+     * Getter for the user's token.
+     * @return the user's token
      */
     public String getToken() {
         return token;
@@ -31,9 +29,8 @@ public class TokenResponse {
 
 
     /**
-     * Setter for token.
-     *
-     * @param token String token of user
+     * Setter for the user's token.
+     * @param token the user's token
      */
     public void setToken(String token) {
         this.token = token;
@@ -41,9 +38,8 @@ public class TokenResponse {
 
 
     /**
-     * Getter for legit.
-     *
-     * @return if the token passd is correct or not
+     * Getter whether the token is legit.
+     * @return whether the token is legit
      */
     public boolean isLegit() {
         return legit;
@@ -51,9 +47,8 @@ public class TokenResponse {
 
 
     /**
-     * setter for legit.
-     *
-     * @param legit set the legit correct or not
+     * Setter whether the token is legit.
+     * @param legit whether the token is legit
      */
     public void setLegit(boolean legit) {
         this.legit = legit;

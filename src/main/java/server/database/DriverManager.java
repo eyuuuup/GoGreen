@@ -5,14 +5,13 @@ import java.sql.SQLException;
 
 
 /**
- * DriverManager is a class that sets up the connection to the server.database.
+ * This class represents the connection with the database.
  */
 public class DriverManager {
 
     /**
-     * This method sets up the actual connect with the information provided.
-     *
-     * @return A Connection object.
+     * Sets up the actual connection with the database.
+     * @return the database connection.
      */
     public static Connection getConnection() throws SQLException {
         Connection con = java.sql.DriverManager.getConnection(

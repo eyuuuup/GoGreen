@@ -10,11 +10,9 @@ public class ActionList {
     ArrayList<Action> list;
 
     /**
-     * Constructs and initializes new instance of the class.
-     *
-     * @param list list
+     * Constructor for ActionList.
+     * @param list list of actions
      */
-
     public ActionList(ArrayList<Action> list) {
         this.list = list;
     }
@@ -22,27 +20,22 @@ public class ActionList {
     /**
      * Empty constructor.
      */
-
     public ActionList() {
         this.list = new ArrayList<>();
     }
 
     /**
      * Getter for the list.
-     *
-     * @return
+     * @return action list
      */
-
     public ArrayList<Action> getList() {
         return list;
     }
 
     /**
      * Setter for the list.
-     *
-     * @param list list
+     * @param list action list
      */
-
     public void setList(ArrayList<Action> list) {
         this.list = list;
     }

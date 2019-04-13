@@ -1030,8 +1030,7 @@ public class Application extends javafx.application.Application {
         XYChart.Series series = new XYChart.Series();
         lineChart.setLegendVisible(false);
 
-        double[]         data  = ComCached.getRecentCOSavings();
-
+        double[]         data  = ComCached.getRecentCoSavings();
         // sets the data
         double total = ApplicationMethods.getSavedCarbon();
         for (int i = data.length; i > 0; i--) {
