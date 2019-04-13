@@ -4,7 +4,6 @@ import org.joda.time.Instant;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -537,7 +536,7 @@ public class DatabaseTest {
         Action a = new Action();
         a.setCarbonReduced(10.0);
         
-        ArrayList<Action> result = Database.getRecentCOSavings("token");
+        ArrayList<Action> result = Database.getRecentCoSavings("token");
         
         assertEquals(1, result.size());
         assertEquals(a.getCarbonReduced(), result.get(0).getCarbonReduced(), 0);
@@ -609,7 +608,7 @@ public class DatabaseTest {
         when(resultSet.next()).thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(false);
         when(resultSet.getInt(1)).thenReturn(12).thenReturn(13).thenReturn(14);
 
-        OnLoadValues  ote = Database.getOTE("token");
+        OnLoadValues  ote = Database.getOte("token");
 
         assertTrue(ote.isElectricCar());
         assertTrue(ote.isEnvGroup());
@@ -621,7 +620,7 @@ public class DatabaseTest {
         when(resultSet.next()).thenReturn(true).thenReturn(true).thenReturn(false);
         when(resultSet.getInt(1)).thenReturn(13).thenReturn(14);
 
-        OnLoadValues  ote = Database.getOTE("token");
+        OnLoadValues  ote = Database.getOte("token");
 
         assertTrue(ote.isElectricCar());
         assertTrue(ote.isEnvGroup());
@@ -633,7 +632,7 @@ public class DatabaseTest {
         when(resultSet.next()).thenReturn(true).thenReturn(false);
         when(resultSet.getInt(1)).thenReturn(1);
 
-        OnLoadValues  ote = Database.getOTE("token");
+        OnLoadValues  ote = Database.getOte("token");
 
         assertFalse(ote.isElectricCar());
         assertFalse(ote.isEnvGroup());
@@ -644,7 +643,7 @@ public class DatabaseTest {
     public void getOTEException() throws Exception {
         when(state, "executeQuery").thenThrow(new SQLException("test"));
 
-        OnLoadValues  ote = Database.getOTE("token");
+        OnLoadValues  ote = Database.getOte("token");
 
         assertFalse(ote.isElectricCar());
         assertFalse(ote.isEnvGroup());
@@ -655,6 +654,6 @@ public class DatabaseTest {
     public void getRecentCOSavingsException() throws SQLException {
         when(resultSet.getDouble(1)).thenThrow(new SQLException("test"));
         
-        assertNull(Database.getRecentCOSavings("token"));
+        assertNull(Database.getRecentCoSavings("token"));
     }
 }

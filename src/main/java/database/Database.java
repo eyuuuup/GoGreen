@@ -17,7 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Database is a class that will be used in communication with the server.
+ * This class represents the communication with the database.
  */
 public class Database {
 
@@ -54,7 +54,7 @@ public class Database {
     private static PreparedStatement getRecentCOSavings;
 
     /**
-     * This method keeps trying connecting to the database until successful
+     * Connects to the database.
      */
     public static void connect() {
         try {
@@ -67,7 +67,7 @@ public class Database {
     }
 
     /**
-     * This method keeps trying connecting to the database until successful
+     * Caches the prepareStatements for the database queries.
      */
     public static void prepare() {
         try {
@@ -96,7 +96,8 @@ public class Database {
 
             retract = connection.prepareStatement(
                     "SELECT actions.action_name, events.points, "
-                            + "events.carbon_reduced, events.carbon_produced, events.date_time, events.description "
+                            + "events.carbon_reduced, events.carbon_produced, "
+                            + "events.date_time, events.description "
                             + "FROM events JOIN actions ON events.action_id = actions.action_id "
                             + "WHERE events.username = ? "
                             + "ORDER BY date_time DESC "
@@ -104,7 +105,8 @@ public class Database {
 
             getCarbonValues = connection.prepareStatement(
                     "SELECT carbon_produced, carbon_reduced "
-                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
+                            + "FROM total_score JOIN user_data ON "
+                            + "total_score.username = user_data.username "
                             + "WHERE user_data.token = ?;");
 
             updateTotalScores = connection.prepareStatement(
@@ -114,7 +116,8 @@ public class Database {
 
             getCarbonReduced = connection.prepareStatement(
                     "SELECT carbon_reduced "
-                            + "FROM total_score JOIN user_data ON total_score.username = user_data.username "
+                            + "FROM total_score JOIN user_data "
+                            + "ON total_score.username = user_data.username "
                             + "WHERE user_data.token = ?;");
 
             getCarbonProduced = connection.prepareStatement(
@@ -190,12 +193,14 @@ public class Database {
                     "SELECT action_id "
                             + "FROM events "
                             + "JOIN user_data ON events.username = user_data.username "
-                            + "WHERE user_data.token = ? AND (action_id = 14 OR action_id = 13 OR action_id = 12)"
+                            + "WHERE user_data.token = ? AND "
+                            + "(action_id = 14 OR action_id = 13 OR action_id = 12)"
                             + "ORDER BY action_id DESC;");
 
             addChallenge = connection.prepareStatement(
                     "INSERT INTO challenges (goal, user_a, user_b, state, time_added)"
-                            + "VALUES (?, (SELECT username FROM user_data WHERE token = ?), ?, '0', ?);");
+                            + "VALUES (?, (SELECT username FROM user_data "
+                            + "WHERE token = ?), ?, '0', ?);");
 
             retrieveChallenges = connection.prepareStatement(
                     "SELECT user_a, user_b, score_a, score_b, goal, state "
@@ -243,7 +248,7 @@ public class Database {
     }
 
     /**
-     * This method keeps trying disconnecting from the database until successful
+     * Disconnects from the database.
      */
     public static void disconnect() {
         try {
@@ -256,9 +261,9 @@ public class Database {
     }
 
     /**
-     * This method gets the username from the database.
-     * @param token A String with the token.
-     * @return the username.
+     * Retrieves the username from the database.
+     * @param token the user's token
+     * @return the user's username
      */
     public static String getUsername(String token) {
         try {
@@ -282,10 +287,9 @@ public class Database {
     }
 
     /**
-     * This methods queries the database for username,
-     * mail and totalscore of user, found by token.
-     * @param token String, token of the user
-     * @return username, mail, totalscore of user
+     * Retrieves the user's general information from the database.
+     * @param token the user's token
+     * @return the user's general information.
      */
     public static User getUser(String token) {
         try {
@@ -313,9 +317,9 @@ public class Database {
     }
 
     /**
-     * This method saves the Action object in the database.
-     * @param action An object of the class Action.
-     * @return if the query succeeded.
+     * Adds action to the database.
+     * @param action the action to add
+     * @return if the action was added successfully
      */
     public static boolean addAction(Action action) {
         try {
@@ -375,9 +379,9 @@ public class Database {
     }
 
     /**
-     * This method gets the history of a user.
-     * @param token the token from a user.
-     * @return the history in a String.
+     * Retrieves the user's last three actions from the database.
+     * @param token the user's token
+     * @return the user's last three actions
      */
     public static ActionList retract(String token) {
         try {
@@ -411,9 +415,9 @@ public class Database {
     }
 
     /**
-     * This method is for getting carbon reduced and produced.
-     * @param token String token of the user
-     * @return ACtion object wth carbon values
+     * Retrieves the user's total CO2 reduction from the database.
+     * @param token the user's token
+     * @return the user's total CO2 reduction
      */
     public static Action getCarbonValues(String token) {
         System.out.println("get carbon values called");
@@ -441,9 +445,9 @@ public class Database {
     }
 
     /**
-     * This method updates the total score of a user.
-     * @param token the token from a user.
-     * @param score the score that should be added to the total.
+     * Updates the user's total score in the database.
+     * @param token the user's token
+     * @param score the score to be added to the total score
      */
     public static void updateTotalScores(String token, int score,
                                          double carbonReduced, double carbonProduced) {
@@ -473,9 +477,9 @@ public class Database {
     }
 
     /**
-     * returns the carbon reduction.
-     * @param token token
-     * @return carbon reduction
+     * Retrieves the user's recent CO2 reductions from the database.
+     * @param token the user's token
+     * @return the user's recent CO2 reductions
      */
     public static double getCarbonReduced(String token) {
         try {
@@ -500,9 +504,9 @@ public class Database {
     }
 
     /**
-     * get carbon produced.
-     * @param token token
-     * @return carbon produced
+     * Retrieve the user's total CO2 production.
+     * @param token the user's token
+     * @return the user's total CO2 production
      */
     public static double getCarbonProduced(String token) {
         try {
@@ -527,9 +531,9 @@ public class Database {
     }
 
     /**
-     * This method queries the database to get the total score of a user.
-     * @param token A String with the token of the user.
-     * @return the total score of a user.
+     * Retrieves the user's total score.
+     * @param token the user's token
+     * @return the user's total score
      */
     public static int getTotalScore(String token) {
         System.out.println("getTotalScore called");
@@ -554,9 +558,9 @@ public class Database {
     }
 
     /**
-     * Get the total score for a given user.
-     * @param username the username
-     * @return the total score
+     * Retrieves the user's total score.
+     * @param username the user's username
+     * @return the user's total score
      */
     public static int getTotalScoreByUser(String username) {
         System.out.println("getTotalScore called");
@@ -580,9 +584,9 @@ public class Database {
     }
 
     /**
-     * This method queries the database with a token to look if the user exists.
-     * @param token A string that contains the token.
-     * @return if the query succeeded.
+     * Tries silent login with a stored token.
+     * @param token the user's stored token
+     * @return whether logged in
      */
     public static boolean silentLoginCheck(String token) {
         System.out.println("silentLogicCheck called");
@@ -606,9 +610,9 @@ public class Database {
     }
 
     /**
-     * This method registers a new user in the database.
-     * @param user  An User object.
-     * @param token A String with the token.
+     * Registers a new user in the database.
+     * @param user  the new user.
+     * @param token the new user's token.
      */
     public static void register(User user, String token) {
         System.out.println("register called");
@@ -635,9 +639,9 @@ public class Database {
     }
 
     /**
-     * This method checks if the username exists in the database.
-     * @param username A string with the username.
-     * @return if the users exists or not.
+     * Checks if the given username is already in the database.
+     * @param username the username to check for
+     * @return whether the username is already in the database
      */
     public static boolean checkUsername(String username) {
         System.out.println("checkUsername called (looking for '" + username + "')");
@@ -661,9 +665,9 @@ public class Database {
     }
 
     /**
-     * This method checks if the user has a token in the database.
-     * @param user A user Object.
-     * @return A TokenResponse object
+     * Tries to log in.
+     * @param user the user.
+     * @return a TokenResponse with a token for further communication
      */
     public static TokenResponse checkLogin(User user) {
         System.out.println("checkLogin called");
@@ -688,9 +692,9 @@ public class Database {
     }
 
     /**
-     * This method adds User B as a friend of User A.
-     * @param friend A Friend object.
-     * @return if the query succeeded.
+     * Adds User B as a friend of User A in the database.
+     * @param friend the friend.
+     * @return whether the friend was added successfully.
      */
     public static boolean addFriend(CompareFriends friend) {
         System.out.println("addFriend called");
@@ -709,9 +713,9 @@ public class Database {
     }
 
     /**
-     * This method shows the friends of a user.
-     * @param token A String of the token.
-     * @return the FriendsList object of all friends of a user.
+     * Retrieves the user's list of friends from the database.
+     * @param token the user's token
+     * @return the user's list of friends
      */
     public static FriendsList showFriends(String token) {
         System.out.println("showFriends called");
@@ -736,9 +740,9 @@ public class Database {
     }
 
     /**
-     * This methods shows the followers.
-     * @param token A String of the token.
-     * @return FriendsList object with the followers.
+     * Retrieves the user's list of followers from the database.
+     * @param token the user's token
+     * @return the user's list of followers.
      */
     public static FriendsList showFollowers(String token) {
         System.out.println("showFollowers called");
@@ -763,8 +767,8 @@ public class Database {
     }
 
     /**
-     * This methods gets the leaderboard.
-     * @return A FriendsList object with the leaderboard inside.
+     * Retrieves the leaderboard from the database.
+     * @return the leaderboard
      */
     public static FriendsList getLeaderboard() {
         System.out.println("getLeaderboard called");
@@ -791,9 +795,9 @@ public class Database {
     }
 
     /**
-     * This methods gets the last meal.
-     * @param token A String of the token of the user.
-     * @return int with the time.
+     * Retrieves the user's last meal from the database.
+     * @param token the user's last meal
+     * @return the time of the last meal
      */
     public static long getLastMeal(String token) {
         System.out.println("getLastMeal called");
@@ -817,20 +821,22 @@ public class Database {
     }
 
     /**
-     * This methods gets the OTE.
-     * @param token A String of the token of the user.
-     * @return ArrayList with the booleans of which events exist
+     * Retrieves the user's one time events from the database.
+     * @param token the user's token
+     * @return the user's one time events
      */
-    public static OnLoadValues getOTE(String token) {
-        System.out.println("getOTE called");
+    public static OnLoadValues getOte(String token) {
+        System.out.println("getOte called");
         try {
             PreparedStatement state = getOTE;
             state.setString(1, token);
-            ResultSet    rs  = state.executeQuery();
+
             OnLoadValues olv = new OnLoadValues();
             olv.setSolarPanel(false);
             olv.setElectricCar(false);
             olv.setEnvGroup(false);
+
+            ResultSet    rs  = state.executeQuery();
             while (rs.next()) {
                 switch (rs.getInt(1)) {
                     case 12: {
@@ -845,6 +851,9 @@ public class Database {
                         olv.setEnvGroup(true);
                         break;
                     }
+                    default: {
+                        break;
+                    }
                 }
             }
             return olv;
@@ -855,13 +864,12 @@ public class Database {
         }
     }
 
-
     /**
-     * This method add a challenge.
-     * @param token token of user A
-     * @param userB username of person being challenged
-     * @param goal  score as the goal.
-     * @return if the query succeeded.
+     * Adds a challenge to the database.
+     * @param token the user's token
+     * @param userB username of the user being challenged
+     * @param goal  the goal of the challenge in points
+     * @return whether the challenge was added successfully
      */
     public static boolean addChallenge(String token, String userB, int goal) {
         System.out.println("addChallenge called");
@@ -882,9 +890,9 @@ public class Database {
     }
 
     /**
-     * This method is to give list of ongoing challenges and to be accepted challengesChallengesList
-     * @param token
-     * @return
+     * Retrieves the user's list of challenges from the database.
+     * @param token the user's token
+     * @return the user's challenges
      */
     public static ArrayList<Challenge> retrieveChallenges(String token) {
         String user = getUsername(token);
@@ -919,10 +927,10 @@ public class Database {
     }
 
     /**
-     * This method updates a challenge when the other user accepts.
-     * @param token    authorization token of the user initialising challenge
+     * Updates the accepted challenge in the database.
+     * @param token    the user's token who is initializing the challenge
      * @param username username of the opponent
-     * @return if the query succeeded.
+     * @return whether the challenge was initialized successfully
      */
     public static boolean initializeChallenge(String token, String username) {
         System.out.println("initializeChallenge called");
@@ -946,6 +954,10 @@ public class Database {
         }
     }
 
+    /**
+     * Evaluates the user's challenges in the database.
+     * @param token the user's token
+     */
     private static void evaluateChallenges(String token) {
         String username = getUsername(token);
         int    score    = getTotalScore(token);
@@ -961,7 +973,16 @@ public class Database {
         }
     }
 
-    private static void evaluateChallenge(String username, int score, PreparedStatement state, int update) throws SQLException {
+    /**
+     * Evaluates a challenge of the user in the database.
+     * @param username the user's username
+     * @param score    the user's score
+     * @param state    the state of the challenge
+     * @param update   update the updated state of challenge (0,1,10,11)
+     * @throws SQLException if the query results in an exception
+     */
+    private static void evaluateChallenge(String username, int score, PreparedStatement state,
+                                          int update) throws SQLException {
         state.setString(1, username);
 
         ResultSet result = state.executeQuery();
@@ -984,10 +1005,10 @@ public class Database {
     }
 
     /**
-     * This method updates a atate of challenge.
-     * @param time   the id of the challenge
-     * @param userA  the id of the challenge
-     * @param userB  the id of the challenge
+     * This method updates the state of challenge in the database.
+     * @param time   the start time of the challenge
+     * @param userA  user A of the challenge
+     * @param userB  user B of the challenge
      * @param update the updated state of challenge (0,1,10,11)
      * @return if the query succeeded.
      */
@@ -1010,11 +1031,11 @@ public class Database {
 
 
     /**
-     * This method returns the CO2 reduced of current user of last (cap 30) actions
-     * ordered from the most recent (at 0) to last (last)
-     * @return the ActionList containing Action objects of CO2 saved
+     * Retrieves the user's recent CO2 reductions (30 actions cap).
+     * ordered from the most recent (at 0) to last (last).
+     * @return the user's recent CO2 reductions
      */
-    public static ArrayList<Action> getRecentCOSavings(String token) {
+    public static ArrayList<Action> getRecentCoSavings(String token) {
         System.out.println("get recent CO2 savings called");
         try {
             PreparedStatement state = getRecentCOSavings;
@@ -1025,9 +1046,9 @@ public class Database {
 
             ArrayList<Action> list = new ArrayList<>();
             while (rs.next()) {
-                Action a = new Action();
-                a.setCarbonReduced(rs.getDouble(1));
-                list.add(a);
+                Action action = new Action();
+                action.setCarbonReduced(rs.getDouble(1));
+                list.add(action);
             }
             System.out.println();
             return list;

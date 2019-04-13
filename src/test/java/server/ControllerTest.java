@@ -207,8 +207,8 @@ public class ControllerTest {
         test.setEnvGroup(false);
         test.setElectricCar(false);
         test.setSolarPanel(false);
-        PowerMockito.when(Database.getOTE(anyString())).thenReturn(test);
-        OnLoadValues t= Database.getOTE("test");
+        PowerMockito.when(Database.getOte(anyString())).thenReturn(test);
+        OnLoadValues t= Database.getOte("test");
         t.setFollowing(Database.showFriends("test").getList().size());
         t.setFollowers(Database.showFriends("test").getList().size());
         t.setUser(Database.getUser("test"));
@@ -246,7 +246,7 @@ public class ControllerTest {
     @Test
     public void getRecentCO2Savings(){
         ArrayList<Action> a= new ArrayList<>();
-        PowerMockito.when(Database.getRecentCOSavings(anyString())).thenReturn(a);
+        PowerMockito.when(Database.getRecentCoSavings(anyString())).thenReturn(a);
         ActionList list= new ActionList(a);
         assertEquals(list,Controller.getRecentCoSavings("token"));
     }

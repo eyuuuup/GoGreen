@@ -174,7 +174,7 @@ public class Controller {
     @RequestMapping(value = {"/onLoad"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public static OnLoadValues onLoad(@Valid @RequestBody String token) {
-        OnLoadValues onLoadValues = Database.getOTE(token);
+        OnLoadValues onLoadValues = Database.getOte(token);
         onLoadValues.setUser(Database.getUser(token));
         onLoadValues.setChallenges(new ChallengesList(Database.retrieveChallenges(token)));
         onLoadValues.setFollowers(Database.showFollowers(token).getList().size());
@@ -238,6 +238,6 @@ public class Controller {
     @RequestMapping(value = {"/getRecentCOSavings"}, method = RequestMethod.POST,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public static ActionList getRecentCoSavings(@Valid @RequestBody String token) {
-        return new ActionList(Database.getRecentCOSavings(token));
+        return new ActionList(Database.getRecentCoSavings(token));
     }
 }
