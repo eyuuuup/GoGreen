@@ -3,11 +3,13 @@ package gogreen.actions;
 import gogreen.server.ComCached;
 
 /**
- * This class represents the one time events.
- *
- * @author Gyum cho
+ * The one time event category will handle adding an action in the one time event category.
+ * And distributing the one time event category points
  */
 public final class OneTimeEvent {
+    /**
+     * private empty constructor.
+     */
     private OneTimeEvent() {
     }
 
