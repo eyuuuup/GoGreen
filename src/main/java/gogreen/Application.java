@@ -1636,8 +1636,6 @@ public class Application extends javafx.application.Application {
             // opponent won
             challengeContainer.add(new Label("You lost!"), 2, pos);
         } else {
-            System.out.println("progress: " + ApplicationMethods.getChallengeProgress(start,
-                    challenge.getGoal()) + "\tstart: " + start + "\t goal: " + challenge.getGoal());
             ProgressBar progress = new ProgressBar(
                     ApplicationMethods.getChallengeProgress(start, challenge.getGoal()));
             progress.setId("challengeProgress");
