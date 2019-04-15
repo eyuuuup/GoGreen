@@ -1,6 +1,7 @@
 package server;
 
 import org.junit.Test;
+import server.holders.TokenResponse;
 
 import static org.junit.Assert.*;
 

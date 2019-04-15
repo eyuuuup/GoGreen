@@ -1,14 +1,26 @@
 package server;
 
-import database.Database;
+import server.database.Database;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import server.holders.Action;
+import server.holders.ActionList;
+import server.holders.Challenge;
+import server.holders.ChallengesList;
+import server.holders.CompareFriends;
+import server.holders.FriendsList;
+import server.holders.OnLoadValues;
+import server.holders.TokenResponse;
+import server.holders.User;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 
 @RunWith(PowerMockRunner.class)
@@ -24,9 +36,10 @@ public class ControllerTest {
     // ========== USER AUTHENTICATION ==========================================
 
     @Test
-    public void controller(){
-        Controller c= new Controller();
+    public void controller() {
+        Controller c = new Controller();
     }
+
     @Test
     public void login() {
         PowerMockito.when(Database.checkLogin(USER)).thenReturn(new TokenResponse("token", true));
@@ -176,14 +189,74 @@ public class ControllerTest {
 
     }
 
+//    @Test
+//    public void addAction() {
+//        Action action = new Action("user", "action", 10, 50, 50);
+//        PowerMockito.when(Database.addAction(action)).thenReturn(true);
+//
+//        boolean bool = Controller.addAction(action);
+//        PowerMockito.verifyStatic();
+//        Controller.addAction(action);
+//
+//        assertTrue(bool);
+//    }
+
+
     @Test
-    public void onLoadValues() {
-        String token = "user";
-
-        OnLoadValues ol = new OnLoadValues();
-        PowerMockito.when(Database.oneTimeEvent(token)).thenReturn(ol);
-
-        assertEquals(ol, Controller.onLoad(token));
+    public void OnLoadValues(){
+        User user= new User();
+        PowerMockito.when(Database.getUser(anyString())).thenReturn(user);
+        ArrayList<Challenge> list =new ArrayList<>();
+        PowerMockito.when(Database.retrieveChallenges(anyString())).thenReturn(list);
+        FriendsList fl = new FriendsList();
+        PowerMockito.when(Database.showFollowers(anyString())).thenReturn(fl);
+        PowerMockito.when(Database.showFriends(anyString())).thenReturn(fl);
+        PowerMockito.when(Database.getCarbonReduced(anyString())).thenReturn(50.0);
+        OnLoadValues test =new OnLoadValues();
+        test.setEnvGroup(false);
+        test.setElectricCar(false);
+        test.setSolarPanel(false);
+        PowerMockito.when(Database.getOte(anyString())).thenReturn(test);
+        OnLoadValues t= Database.getOte("test");
+        t.setFollowing(Database.showFriends("test").getList().size());
+        t.setFollowers(Database.showFriends("test").getList().size());
+        t.setUser(Database.getUser("test"));
+        t.setCarbonReduce(Database.getCarbonReduced("test"));
+        t.setChallenges(new ChallengesList(Database.retrieveChallenges("test")));
+        OnLoadValues s=Controller.onLoad("test");
+        assertEquals(s,t);
     }
 
+    @Test
+    public void addChallenge(){
+        CompareFriends friend= new CompareFriends("token", "username");
+        friend.setScore(50);
+        PowerMockito.when(Database.addChallenge(anyString(), anyString(), anyInt())).thenReturn(true);
+        assertTrue(Controller.addChallenge(friend));
+    }
+
+    @Test
+    public void showChallenges(){
+        PowerMockito.when(Database.retrieveChallenges(anyString())).thenReturn(new ArrayList<Challenge>());
+        ChallengesList list2=new ChallengesList(new ArrayList<Challenge>());
+        assertEquals(list2, Controller.showChallenges("token"));
+    }
+
+    @Test
+    public void acceptChallenge(){
+        Challenge c= new Challenge("a","b",10,20,40);
+        c.setOnA(false);
+        PowerMockito.when(Database.initializeChallenge(anyString(),anyString())).thenReturn(true);
+        assertTrue(Controller.acceptChallenge(c));
+        c.setOnA(true);
+        assertFalse(Controller.acceptChallenge(c));
+    }
+
+    @Test
+    public void getRecentCO2Savings(){
+        ArrayList<Action> a= new ArrayList<>();
+        PowerMockito.when(Database.getRecentCoSavings(anyString())).thenReturn(a);
+        ActionList list= new ActionList(a);
+        assertEquals(list,Controller.getRecentCoSavings("token"));
+    }
 }

@@ -1,6 +1,7 @@
 package server;
 
 import org.junit.Test;
+import server.holders.User;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

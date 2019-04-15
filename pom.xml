@@ -150,26 +150,42 @@
             <artifactId>postgresql</artifactId>
             <version>9.1-901-1.jdbc4</version>
         </dependency>
+
         <dependency>
             <groupId>de.jensd</groupId>
             <artifactId>fontawesomefx</artifactId>
             <version>8.9</version>
         </dependency>
+
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx</artifactId>
             <version>13-ea+2</version>
             <type>pom</type>
         </dependency>
+
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>20.0</version>
         </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock-jre8</artifactId>
+            <version>2.22.0</version>
+            <scope>test</scope>
+        </dependency><dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
+        <scope>test</scope>
+    </dependency>
+
     </dependencies>
 
     <build>
@@ -226,8 +242,9 @@
                 <version>${jacoco-maven-plugin.version}</version>
                 <configuration>
                     <excludes>
-                        <exclude>**/*Application.*</exclude>
-                        <exclude>**/*Communication.*</exclude>
+                        <exclude>**/grade/*</exclude>           // OOPP team's work
+                        <exclude>**/*Application.*</exclude>    // GUI
+                        <exclude>**/*DriverManager.*</exclude>  // Connect to remote server.database on Heroku
                     </excludes>
                 </configuration>
                 <executions>

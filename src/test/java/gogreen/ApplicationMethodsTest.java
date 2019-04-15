@@ -1,11 +1,16 @@
 package gogreen;
 
-import client.Communication;
+import gogreen.server.Communication;
+import gogreen.server.holders.OnLoadValues;
+import gogreen.server.holders.User;
 import com.google.common.hash.Hashing;
+import gogreen.actions.Energy;
+import gogreen.actions.Transport;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -18,10 +23,10 @@ import java.util.Base64;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 @RunWith (PowerMockRunner.class)
-@PrepareForTest ({Communication.class, Application.class})
+@PrepareForTest ({Communication.class, Application.class, Transport.class, Energy.class})
 public class ApplicationMethodsTest {
     private String encodedUsername;
     private String hashedPassword;
@@ -30,6 +35,8 @@ public class ApplicationMethodsTest {
     public void setUp() {
         PowerMockito.mockStatic(Communication.class);
         PowerMockito.mockStatic(Application.class);
+        PowerMockito.mockStatic(Energy.class);
+        PowerMockito.mockStatic(Transport.class);
         
         String username = "username";
         encodedUsername = Base64.getEncoder().encodeToString(username.getBytes(StandardCharsets.UTF_8));
@@ -113,7 +120,7 @@ public class ApplicationMethodsTest {
     
     @Test (expected = NullPointerException.class)
     public void checkNameNull() throws Exception {
-        Whitebox.invokeMethod(ApplicationMethods.class, "checkName", null);
+        Whitebox.invokeMethod(ApplicationMethods.class, "checkName", (String) null);
     }
     
     @Test (expected = IllegalArgumentException.class)
@@ -193,19 +200,129 @@ public class ApplicationMethodsTest {
     }
 
     @Test
+    public void setPresets() {
+        OnLoadValues onLoadValues = Mockito.mock(OnLoadValues.class);
+        User user = Mockito.mock(User.class);
+        when(Communication.onLoad()).thenReturn(onLoadValues);
+        Mockito.when(onLoadValues.getUser()).thenReturn(user);
+
+        ApplicationMethods.setPresets();
+
+        verifyStatic();
+        Transport.setHasElectricCar(false);
+        verifyStatic();
+        Energy.setHasSolarPanels(false);
+    }
+
+    @Test
+    public void setPresetsTwoOTE() {
+        OnLoadValues onLoadValues = Mockito.mock(OnLoadValues.class);
+        User user = Mockito.mock(User.class);
+        when(Communication.onLoad()).thenReturn(onLoadValues);
+        Mockito.when(onLoadValues.getUser()).thenReturn(user);
+        Mockito.when(onLoadValues.isElectricCar()).thenReturn(true);
+        Mockito.when(onLoadValues.isSolarPanel()).thenReturn(true);
+
+        ApplicationMethods.setPresets();
+
+        verifyStatic();
+        Transport.setHasElectricCar(true);
+        verifyStatic();
+        Energy.setHasSolarPanels(true);
+    }
+
+    @Test
+    public void setPresetsException() throws Exception {
+        when(Communication.class, "onLoad").thenReturn(null);
+        ApplicationMethods.setPresets();
+    }
+
+    @Test
+    public void getChallengeProgressNegative() {
+        Whitebox.setInternalState(ApplicationMethods.class, "points", 0);
+        assertEquals(0, ApplicationMethods.getChallengeProgress(10, 10), 0);
+    }
+
+    @Test
+    public void getChallengeProgressPositive() {
+        Whitebox.setInternalState(ApplicationMethods.class, "points", 100);
+        assertEquals(9, ApplicationMethods.getChallengeProgress(10, 10), 0);
+    }
+
+    @Test
+    public void getChallengeProgressExactlyZero() {
+        Whitebox.setInternalState(ApplicationMethods.class, "points", 0);
+        assertEquals(0, ApplicationMethods.getChallengeProgress(0, 10), 0);
+    }
+
+    @Test (expected = ArithmeticException.class)
+    public void getChallengeProgressDivideByZero() {
+        Whitebox.setInternalState(ApplicationMethods.class, "points", 20);
+        assertEquals(0, ApplicationMethods.getChallengeProgress(10, 0), 0);
+    }
+
+    @Test
+    public void getPoints() {
+        Whitebox.setInternalState(ApplicationMethods.class, "points", 20);
+        assertEquals(20, ApplicationMethods.getPoints());
+        assertNotEquals(30, ApplicationMethods.getPoints());
+    }
+
+    @Test
+    public void getFollowingSize() {
+        Whitebox.setInternalState(ApplicationMethods.class, "followingSize", 5);
+        assertEquals(5, ApplicationMethods.getFollowingSize());
+        assertNotEquals(0, ApplicationMethods.getFollowingSize());
+    }
+
+    @Test
+    public void getFollowersSize() {
+        Whitebox.setInternalState(ApplicationMethods.class, "followersSize", 8);
+        assertEquals(8, ApplicationMethods.getFollowersSize());
+        assertNotEquals(200, ApplicationMethods.getFollowersSize());
+    }
+
+    @Test
+    public void getUsername() {
+        Whitebox.setInternalState(ApplicationMethods.class, "username", "Username");
+        assertEquals("Username", ApplicationMethods.getUsername());
+        assertNotEquals("name", ApplicationMethods.getUsername());
+    }
+
+    @Test
+    public void getSavedCarbon() {
+        Whitebox.setInternalState(ApplicationMethods.class, "savedCarbon", 200.3);
+        assertEquals(200.3, ApplicationMethods.getSavedCarbon(), 0);
+        assertNotEquals(180.4, ApplicationMethods.getSavedCarbon(), 0);
+    }
+
+    @Test
+    public void isSolarPanel() {
+        Whitebox.setInternalState(ApplicationMethods.class, "solarPanel", true);
+        assertTrue(ApplicationMethods.isSolarPanel());
+    }
+
+    @Test
+    public void isElectricCar() {
+        Whitebox.setInternalState(ApplicationMethods.class, "electricCar", false);
+        assertFalse(ApplicationMethods.isElectricCar());
+    }
+
+    @Test
+    public void isEnvGroup() {
+        Whitebox.setInternalState(ApplicationMethods.class, "envGroup", true);
+        assertTrue(ApplicationMethods.isEnvGroup());
+    }
+    
+    @Test
     public void decodeUsername() {
         String name = ApplicationMethods.encodeUsername("username");
         assertEquals("username", ApplicationMethods.decodeUsername(name));
     }
-
+    
     @Test
     public void decodeUsernameWrong() {
         String name = ApplicationMethods.encodeUsername("username");
         assertNotEquals("user", ApplicationMethods.decodeUsername(name));
-    }
-
-    @Test
-    public void onLoad() {
-        ApplicationMethods.onLoad();
     }
 }

@@ -1,6 +1,7 @@
 package gogreen;
 
-import client.Communication;
+import gogreen.server.ComCached;
+import gogreen.actions.Extra;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,24 +10,24 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Communication.class)
+@PrepareForTest(ComCached.class)
 public class ExtraTest {
     @Before
     public void setUp() {
-        PowerMockito.mockStatic(Communication.class);
+        PowerMockito.mockStatic(ComCached.class);
     }
 
     @Test
     public void addCleanSurroundingAction() {
-        Extra.addCleanSurroundingAction();
+        Extra.addCleanSurroundingAction("description");
         PowerMockito.verifyStatic();
-        Communication.addAction("CleanSurrounding", 100, 5, 0);
+        ComCached.addAction("CleanSurrounding", 100, 5, 0, "description");
     }
 
     @Test
     public void addRecycleAction() {
-        Extra.addRecycleAction();
+        Extra.addRecycleAction("description");
         PowerMockito.verifyStatic();
-        Communication.addAction("Recycle", 50, 1, 0);
+        ComCached.addAction("Recycle", 50, 1, 0, "description");
     }
 }

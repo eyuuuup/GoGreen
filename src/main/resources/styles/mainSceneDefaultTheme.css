@@ -1,0 +1,409 @@
+/* background of the root */
+.root{
+    -fx-background-color: #F5F6F7;
+
+}
+
+/* pages */
+#loginPage{
+    -fx-vgap: 5px;
+    -fx-hgap: 10px;
+    -fx-alignment: CENTER;
+}
+
+#yourWorldPage{
+    -fx-vgap: 50;
+}
+
+#settingPage{
+    -fx-alignment: center;
+}
+
+#aboutPage{
+    -fx-alignment: center;
+    -fx-max-height: 400;
+}
+
+
+#transportPage{
+    -fx-vgap: 10;
+    -fx-alignment: center;
+
+}
+
+#foodPage{
+    -fx-vgap: 10;
+    -fx-alignment: center;
+
+}
+
+#energyPage{
+    -fx-spacing: 30;
+    -fx-padding: 30;
+    -fx-alignment: center;
+}
+
+#extraPage{
+    -fx-vgap: 10;
+    -fx-alignment: center;
+}
+
+#otePage{
+    -fx-vgap: 5;
+    -fx-alignment: center;
+}
+
+#overviewPage{
+    -fx-hgap: 30;
+    -fx-alignment: center;
+}
+
+#challengePage{
+    -fx-spacing: 5;
+}
+
+/* buttons */
+#settingButtons{
+    -fx-min-height: 100;
+    -fx-min-width: 500;
+}
+#settingButtons:hover{
+    -fx-background-color: #77C2BB;
+}
+
+#actionButton{
+    -fx-min-height: 70;
+    -fx-min-width: 500;
+}
+#actionButton:hover{
+    -fx-background-color: #77C2BB;
+}
+
+.jfx-toggle-button {
+    -jfx-toggle-color: #249677;
+    -jfx-untoggle-color: #249677;
+    -jfx-toggle-line-color: #77C2BB;
+    -jfx-untoggle-line-color: #dddddd;
+    -jfx-size: 15px;
+    -jfx-disable-visual-focus: false;
+    -fx-text-fill: #000000;
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    
+}
+.jfx-button {
+    -jfx-button-type: FLAT;
+    -fx-background-color: #29AB87;
+    -fx-text-fill:#e5e5e5;
+    -fx-font-weight: bold;
+    -fx-font-size: 24;
+}
+
+.jfx-button .jfx-rippler{
+    -jfx-rippler-fill :#9ACD32;
+}
+
+.jfx-toggle-node {
+    -jfx-toggle-color: #38cfa5;
+    -jfx-untoggle-color: #29AB87;
+}
+.jfx-toggle-node .jfx-rippler{
+    -jfx-rippler-fill :#9ACD32;
+}
+
+#smallButton{
+    -fx-font-size: 14;
+}
+
+#loginButtons{
+    -fx-pref-width: 300;
+}
+
+#loginButton{
+    -fx-pref-width: 200;
+}
+
+/* icon color */
+.glyph-icon{
+    -fx-fill: #9ACD32;
+}
+
+.jfx-check-box {
+    -jfx-checked-color: #249677;
+    -fx-font-size: 24;
+}
+
+/* The navigation bar */
+
+.jfx-tab-pane .headers-region {
+    -fx-background-color: #249677;
+}
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #249677;
+}
+.jfx-tab-pane .tab-header-area .jfx-rippler{
+    -jfx-rippler-fill :#9ACD32;
+}
+.jfx-tab-pane .tab-selected-line {
+    -fx-background-color: #9ACD32;
+}
+
+#mainNavigation{
+    -fx-pref-height: 700;
+    -fx-pref-width: 1000;
+}
+#secondNavigation{
+    -fx-pref-height: 575;
+    -fx-pref-width: 1000;
+}
+
+/* labels */
+#error{
+    -fx-text-fill: #249677;
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+}
+
+.label
+{
+    -fx-text-fill: #e5e5e5;
+    -fx-font-weight: bold;
+    -fx-font-size: 24;
+}
+#aboutText{
+    -fx-font-size: 16;
+    -fx-wrap-text: true;
+}
+
+#loginText{
+    -fx-text-fill: #249677;
+    -fx-font-weight: bold;
+    -fx-font-size: 32;
+}
+#title {
+    -fx-text-fill: #249677;
+    -fx-font-weight: bold;
+    -fx-font-size: 32;
+}
+#loginTitles{
+    -fx-text-fill: #249677;
+    -fx-font-size: 24;
+}
+#information{
+    -fx-text-fill: #249677;
+    -fx-font-size: 24;
+}
+#distance {
+    -fx-pref-width: 450;
+}
+/* stats labels */
+#amountSavedNr{
+    -fx-text-fill: #249677;
+    -fx-font-weight: bold;
+    -fx-font-size: 80;
+}
+
+#amountSavedText{
+    -fx-text-fill: #249677;
+    -fx-font-weight: bold;
+    -fx-font-size: 26;
+}
+/* containers */
+#commonContainer {
+    -fx-alignment: center;
+}
+
+#levelContainer{
+    -fx-alignment: center;
+}
+
+#longTextContainer{
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-pref-width: 475;
+}
+
+#followersContainer{
+    -fx-hgap: 30;
+}
+
+#waterContainer{
+    -fx-alignment: center;
+}
+
+#tempratureContainer{
+    -fx-alignment: center;
+}
+
+#addChallengeContainer{
+    -fx-spacing: 10;
+}
+
+
+/* level bar */
+.progress-bar {
+    -fx-indeterminate-bar-length: 60;
+    -fx-indeterminate-bar-escape: true;
+    -fx-indeterminate-bar-flip: true;
+    -fx-indeterminate-bar-animation-time: 2;
+    -fx-pref-width: 400;
+    -fx-pref-height: 10;
+}
+.progress-bar > .bar {
+    -fx-background-color: #9ACD32;
+    -fx-background-insets: 3 3 4 3;
+    -fx-background-radius: 2;
+    -fx-padding: 0.75em;
+}
+
+.progress-bar > .track {
+    -fx-background-color: #249677;
+    -fx-background-insets: 0, 0 0 1 0, 1 1 2 1;
+    -fx-background-radius: 4, 3, 2;
+}
+
+#challengeProgress {
+    -fx-pref-width: 150;
+}
+
+#challengeProgress > .track{
+    -fx-background-color: #fdfdfd;
+}
+
+/* sliders */
+.jfx-slider {
+    -fx-max-width: 500;
+    -fx-major-tick-unit: 5;
+    -fx-show-tick-labels: true;
+    -fx-show-tick-marks: true;
+}
+
+.jfx-slider > .track {
+    -fx-background-color: #249677;
+}
+
+.jfx-slider > .thumb {
+    -fx-background-color: #9ACD32;
+}
+
+.jfx-slider > .colored-track {
+    -fx-background-color: #9ACD32;
+}
+
+.jfx-slider > .animated-thumb {
+    -fx-background-color: #9ACD32;
+}
+
+.jfx-slider .slider-value {
+    -fx-fill: white;
+    -fx-stroke: white;
+}
+
+#levelStatus{
+    -fx-text-fill: #249677;
+    -fx-font-weight: bold;
+    -fx-font-size: 14;
+    -fx-alignment: center right;
+}
+
+/* leaderboard */
+#leaderboard{
+    -fx-background-color: #249677;
+    -fx-vgap: 5;
+    -fx-hgap: 10;
+    -fx-alignment: center;
+    -fx-pref-width: 500;
+}
+
+
+/* scroll pane*/
+.scroll-pane > .viewport {
+    -fx-background-color: #249677;
+}
+
+.scroll-pane {
+    -fx-background-color: #249677;
+    -fx-control-inner-background: #249677;
+}
+
+.scroll-bar:horizontal, .scroll-bar:vertical{
+    -fx-background-color: #249677;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #9ACD32;
+    -fx-background-radius: 5em;
+}
+
+#historyScrollPane{
+    -fx-max-height: 400;
+    -fx-padding: 10;
+}
+
+/* lists */
+#friendsList{
+     -fx-background-color: #249677;
+     -fx-vgap: 5;
+     -fx-hgap: 30;
+     -fx-alignment: center;
+     -fx-padding: 10;
+ }
+
+#followersList{
+    -fx-pref-width: 500;
+    -fx-pref-height: 400;
+    -fx-padding: 10;
+}
+
+#historyList{
+    -fx-vgap: 10;
+    -fx-hgap: 30;
+}
+#challengeLists{
+    -fx-min-height: 175;
+    -fx-max-height: 175;
+}
+#challenges{
+    -fx-background-color: #249677;
+    -fx-vgap: 5;
+    -fx-hgap: 30;
+    -fx-padding: 10;
+}
+
+/* text field */
+#description{
+    -fx-pref-height: 20;
+    -fx-max-width: 500;
+    -fx-background-color: #9ACD32 , white , white;
+    -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
+    -fx-alignment: center-left;
+}
+.text-field {
+    -fx-background-color: #9ACD32 , white , white;
+    -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
+    -fx-alignment: center-left;
+}
+#challengeTextfield{
+    -fx-pref-width: 250;
+}
+/* side bar */
+#sideBar >.label{
+    -fx-text-fill: #000000;
+    -fx-font-size: 16;
+}
+
+#sideBar{
+    -fx-background-color: #E9EBEE;
+    -fx-alignment: center;
+    -fx-padding: 10 ;
+    -fx-border-color: #dddddd;
+}
+
+/* chart */
+.chart-title {
+    -fx-text-fill: #249677;
+}
+.default-color0.chart-series-line {
+    -fx-stroke: #9ACD32;
+}
