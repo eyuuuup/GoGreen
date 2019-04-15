@@ -614,7 +614,8 @@ public class Application extends javafx.application.Application {
 
         // when you press the button you will add an action or you displayed an error
         cycle.setOnAction(e -> {
-            addTransportAction("cycle", transportDescription.getText(), distance.getText(), transportInfo);
+            addTransportAction("cycle", transportDescription.getText(),
+                    distance.getText(), transportInfo);
         });
 
         //button for the public transport action
@@ -626,7 +627,8 @@ public class Application extends javafx.application.Application {
 
         // when you press the button you will add an action or you displayed an error
         publicTransport.setOnAction(e -> {
-            addTransportAction("publicTransport", transportDescription.getText(), distance.getText(), transportInfo);
+            addTransportAction("publicTransport", transportDescription.getText(),
+                    distance.getText(), transportInfo);
         });
 
         //button for the car action
@@ -638,7 +640,8 @@ public class Application extends javafx.application.Application {
 
         // when you press the button you will add an action or you displayed an error
         car.setOnAction(e -> {
-            addTransportAction("car", transportDescription.getText(), distance.getText(), transportInfo);
+            addTransportAction("car", transportDescription.getText(),
+                    distance.getText(), transportInfo);
         });
 
         //button for the plane action
@@ -650,7 +653,8 @@ public class Application extends javafx.application.Application {
 
         // when you press the button you will add an action or you displayed an error
         plane.setOnAction(e -> {
-            addTransportAction("plane", transportDescription.getText(), distance.getText(), transportInfo);
+            addTransportAction("plane", transportDescription.getText(),
+                    distance.getText(), transportInfo);
         });
 
         // make the kilometer label and the distance container
