@@ -1577,8 +1577,6 @@ public class Application extends javafx.application.Application {
      */
     @Override
     public void start(Stage stage) {
-        ApplicationMethods.onLoad();
-
         this.stage = stage;
         stage.getIcons().add(new Image("file:src/main/resources/planets/icon.gif"));
         stage.setResizable(false);

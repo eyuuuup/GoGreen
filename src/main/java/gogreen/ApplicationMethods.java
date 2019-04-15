@@ -34,18 +34,6 @@ class ApplicationMethods {
     }
 
     /**
-     * checks whether user has solar panels and or an electric car in the server.database.
-     */
-    public static void onLoad() {
-        // to be implemented: fetch data from the server.database
-        Transport.setHasElectricCar(false);
-        Energy.setHasSolarPanels(false);
-        // Returns an object of class onLoadValues but action ids aren't set properly on server
-        // ComCached.onLoad();
-
-    }
-
-    /**
      * This methods logs in using the given username and password.
      * @param username the username
      * @param password the password
