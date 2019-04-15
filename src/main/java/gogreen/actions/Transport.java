@@ -55,7 +55,7 @@ public final class Transport {
         if (hasElectricCar) {
             ComCached.addAction("Car", distance / 4, carbon, 0, description);
         } else {
-            ComCached.addAction("Car", distance / 32, 0, carbon, description);
+            ComCached.addAction("Car", (2500 - distance) / 10, 0, carbon, description);
         }
     }
 
@@ -104,7 +104,7 @@ public final class Transport {
             throw new IllegalArgumentException("Distance is unacceptably low");
         }
         if (distance > max) {
-            throw new IllegalArgumentException("Distance is unacceptably low");
+            throw new IllegalArgumentException("Distance is unacceptably high");
         }
     }
 }

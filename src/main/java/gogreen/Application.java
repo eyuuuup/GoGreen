@@ -614,7 +614,7 @@ public class Application extends javafx.application.Application {
 
         // when you press the button you will add an action or you displayed an error
         cycle.setOnAction(e -> {
-            addTransportAction(transportDescription.getText(), distance.getText(), transportInfo);
+            addTransportAction("cycle", transportDescription.getText(), distance.getText(), transportInfo);
         });
 
         //button for the public transport action
@@ -626,7 +626,7 @@ public class Application extends javafx.application.Application {
 
         // when you press the button you will add an action or you displayed an error
         publicTransport.setOnAction(e -> {
-            addTransportAction(transportDescription.getText(), distance.getText(), transportInfo);
+            addTransportAction("publicTransport", transportDescription.getText(), distance.getText(), transportInfo);
         });
 
         //button for the car action
@@ -638,7 +638,7 @@ public class Application extends javafx.application.Application {
 
         // when you press the button you will add an action or you displayed an error
         car.setOnAction(e -> {
-            addTransportAction(transportDescription.getText(), distance.getText(), transportInfo);
+            addTransportAction("car", transportDescription.getText(), distance.getText(), transportInfo);
         });
 
         //button for the plane action
@@ -650,7 +650,7 @@ public class Application extends javafx.application.Application {
 
         // when you press the button you will add an action or you displayed an error
         plane.setOnAction(e -> {
-            addTransportAction(transportDescription.getText(), distance.getText(), transportInfo);
+            addTransportAction("plane", transportDescription.getText(), distance.getText(), transportInfo);
         });
 
         // make the kilometer label and the distance container
@@ -1598,20 +1598,30 @@ public class Application extends javafx.application.Application {
      * @param distance the distance
      * @param transportInfo the transport information label
      */
-    private static void addTransportAction(String description,
+    private static void addTransportAction(String method, String description,
                                            String distance, Label transportInfo) {
         try {
             checkDescriptionLength(description);
             int distanceInt = Integer.parseInt(distance);
             transportInfo.setText("");
-            Transport.addPublicTransportAction(distanceInt, description);
+            if (method.equals("cycle")) {
+                Transport.addCycleAction(distanceInt, description);
+            }
+            if (method.equals("car")) {
+                Transport.addCarAction(distanceInt, description);
+            }
+            if (method.equals("publicTransport")) {
+                Transport.addPublicTransportAction(distanceInt, description);
+            }
+            if (method.equals("plane")) {
+                Transport.addPlaneAction(distanceInt, description);
+            }
             refresh();
         } catch (NumberFormatException exception) {
             transportInfo.setText("Please only use numbers!");
         } catch (ConnectIOException | IllegalArgumentException exception) {
             exception.printStackTrace();
-            transportInfo.setText("Number is too high \n"
-                    + "Did you really used public transport that far?");
+            transportInfo.setText(exception.getMessage());
         } catch (DescriptionTooLong exception) {
             transportInfo.setText("You description is too long. \n"
                     + "Chill down and please use less then 150 characters.");
@@ -1636,8 +1646,6 @@ public class Application extends javafx.application.Application {
             // opponent won
             challengeContainer.add(new Label("You lost!"), 2, pos);
         } else {
-            System.out.println("progress: " + ApplicationMethods.getChallengeProgress(start,
-                    challenge.getGoal()) + "\tstart: " + start + "\t goal: " + challenge.getGoal());
             ProgressBar progress = new ProgressBar(
                     ApplicationMethods.getChallengeProgress(start, challenge.getGoal()));
             progress.setId("challengeProgress");
