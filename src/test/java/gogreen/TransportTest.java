@@ -37,11 +37,11 @@ public class TransportTest {
     @Test
     public void addCarAction() throws ConnectIOException {
         Whitebox.setInternalState(Transport.class, "hasElectricCar", false);
-        Transport.addCarAction(32, "description");
+        Transport.addCarAction(2400, "description");
         PowerMockito.verifyStatic();
-        Api.carbonAmount("automobile_trips.json?distance=32");
+        Api.carbonAmount("automobile_trips.json?distance=2400");
         PowerMockito.verifyStatic();
-        ComCached.addAction("Car", 1, 0, 100, "description");
+        ComCached.addAction("Car", 10, 0, 100, "description");
     }
 
     @Test
