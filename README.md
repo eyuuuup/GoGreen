@@ -79,8 +79,6 @@ I will therefor always prepare meetings, attend them in an active way, and make 
 
 ### Student number: 4929578
 
-![Eyup](./Pictures/PictureEyup.jpg)
-
 My plan for self development:
 
 My goal during the course is getting better at Java because I want to pass my Algorithms and Data-structures exam, if I pass my exam I will consider this goal achieved.
